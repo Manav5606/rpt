@@ -65,19 +65,23 @@ class DynamicLinkService {
         var referralCode = deepLink.queryParameters['refercode'];
         if (referralCode?.isNotEmpty ?? false) {
           print('referralCode : $referralCode');
+
+          UserViewModel.setRefferralCode(referralCode ?? '');
+          await Get.toNamed(AppRoutes.EnterNumberScreen);
+          // Get.to(EnterNumberScreen());
         }
       }
 
-      FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+      FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
         log("dynamicLinkData :${dynamicLinkData}");
         var isReferralCode = dynamicLinkData.link.query.contains('refercode');
         if (isReferralCode) {
           var getQuery = dynamicLinkData.link.query;
           var getReferralCode = getQuery.split('refercode=');
           if (getReferralCode.isNotEmpty) {
-            UserViewModel.setReferFlag(true);
             UserViewModel.setRefferralCode(getReferralCode[1]);
-            Get.to(EnterNumberScreen());
+            // Get.to(EnterNumberScreen());
+            await Get.toNamed(AppRoutes.EnterNumberScreen);
             // UserViewModel.setRefferralCode('StoreREST8485');
             print('getReferralCode : $getReferralCode');
           }

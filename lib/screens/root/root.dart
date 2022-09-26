@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/data/serivce/dynamic_link_service.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/address_model.dart';
@@ -66,15 +67,13 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   }
 
   Future<void> checkSession() async {
+    await DynamicLinkService().retrieveDynamicLink();
     if (hiveRepository.hasUser()) {
       try {
         final UserModel userModel = hiveRepository.getCurrentUser();
-        connectUserStream(
-            userId: userModel.id!,
-            name: "${userModel.firstName} ${userModel.lastName}");
+        connectUserStream(userId: userModel.id!, name: "${userModel.firstName} ${userModel.lastName}");
         if ((userModel.addresses?.length ?? 0) > 0) {
-          for (final AddressModel? addressModal
-              in (userModel.addresses ?? [])) {
+          for (final AddressModel? addressModal in (userModel.addresses ?? [])) {
             if (addressModal?.status ?? false) {
               WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
                 Get.offAllNamed(AppRoutes.BaseScreen);
@@ -89,17 +88,14 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
         } else {
           WidgetsBinding.instance!.addPostFrameCallback((_) {
             log("checkSession : 12121}");
-            Get.offAllNamed(AppRoutes.NewLocationScreen,
-                arguments: {"isFalse": false});
+            Get.offAllNamed(AppRoutes.NewLocationScreen, arguments: {"isFalse": false});
           });
         }
       } catch (e) {
-        Future.delayed(Duration(seconds: 2),
-            () => Get.offAllNamed(AppRoutes.Authentication));
+        Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
       }
     } else {
-      Future.delayed(Duration(seconds: 2),
-          () => Get.offAllNamed(AppRoutes.Authentication));
+      Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
     }
   }
 

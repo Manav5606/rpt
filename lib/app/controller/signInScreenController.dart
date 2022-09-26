@@ -173,6 +173,9 @@ class SignInScreenController extends GetxController {
             } catch (e) {
               print('e $e');
             }
+            if (referralController.text.isNotEmpty) {
+              UserViewModel.setReferFlag(true);
+            }
           }
           final box = Boxes.getCommonBoolBox();
           final flag = box.get(HiveConstants.SIGNUP_FLAG);

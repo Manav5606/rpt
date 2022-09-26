@@ -32,7 +32,7 @@ void main() async {
   await Firebase.initializeApp();
   await FirebaseRemoteConfigUtils().initMethod();
   await HiveHelper.init();
-  DynamicLinkHelper.init();
+  // DynamicLinkHelper.init();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppConst.white, statusBarIconBrightness: Brightness.dark));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
@@ -87,7 +87,7 @@ class AppBinding extends Bindings {
   void dependencies() async {
     // TODO: implement dependencies
     cameras = await availableCameras();
-    Get.put(HomeController());
+    // Get.put(HomeController());
     Get.put(AddLocationController());
     // Get.lazyPut(() => AddLocationController());
   }

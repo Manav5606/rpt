@@ -25,7 +25,7 @@ class MyAccountController extends GetxController {
 
   MyAccountController(this.remote, this.local);
 
-  final dynamicLinkSercive = Get.find<DynamicLinkService>();
+  // final dynamicLinkSercive = Get.find<DynamicLinkService>();
   final FlutterShareMe flutterShareMe = FlutterShareMe();
   final _user = UserModel().obs;
 
@@ -120,14 +120,14 @@ class MyAccountController extends GetxController {
   }
 
   shareToWhatsApp() async {
-    final link = await dynamicLinkSercive.createDynamicLink(referCode.value);
+    final link = await DynamicLinkService().createDynamicLink(referCode.value);
     final image = await getImageFileFromAssets("images/account_banner.png");
     print("getImageFileFromAssets | asset path: ${image.path}");
     flutterShareMe.shareToWhatsApp(msg: "My earned balance is 300. You can join and earn also \n $link", imagePath: image.path);
   }
 
   shareToSystem() async {
-    final link = await dynamicLinkSercive.createDynamicLink(referCode.value);
+    final link = await DynamicLinkService().createDynamicLink(referCode.value);
     flutterShareMe.shareToSystem(msg: "My earned balance is 300. You can join and earn also \n $link");
   }
 
@@ -148,8 +148,8 @@ class MyAccountController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getGenerateReferCode();
     getActiveOrders();
     getOrders();
-    getGenerateReferCode();
   }
 }
