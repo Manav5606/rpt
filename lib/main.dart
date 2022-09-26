@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:customer_app/app/data/provider/firebase/fcm_handler.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,13 @@ void main() async {
   await FirebaseRemoteConfigUtils().initMethod();
   await HiveHelper.init();
   DynamicLinkHelper.init();
+  await FCMHandler.init();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppConst.white, statusBarIconBrightness: Brightness.dark));
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: AppConst.white,
+      statusBarIconBrightness: Brightness.dark));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
     runApp(new MyApp());
     configLoading();
   });
@@ -60,7 +65,9 @@ void configLoading() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppConst.white, statusBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: AppConst.white,
+        statusBarIconBrightness: Brightness.dark));
     return Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
