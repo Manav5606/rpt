@@ -1,0 +1,258 @@
+{
+  "project_info": {
+    "project_number": "732082417535",
+    "project_id": "reciptonotification",
+    "storage_bucket": "reciptonotification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732082417535:android:fc58ee2473f2cda199344a",
+        "android_client_info": {
+          "package_name": "com.example.customer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5eCmRxTADhouV55dopIXP_I1JrCg2qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "in.recipto.rider"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732082417535:android:6b6122c542defb5399344a",
+        "android_client_info": {
+          "package_name": "com.recipto.customer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732082417535-c8nvnustrrsafvucl4lsrk1sodvn088j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recipto.customer_app",
+            "certificate_hash": "4117c53a97c06f1ccdad381d6d6cab6fe4e016d5"
+          }
+        },
+        {
+          "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5eCmRxTADhouV55dopIXP_I1JrCg2qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "in.recipto.rider"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732082417535:android:14e01caebd5fd33399344a",
+        "android_client_info": {
+          "package_name": "com.recipto.customer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732082417535-6dcshc04ngbblfqf7n0ao0uji1k0el17.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recipto.customer_app",
+            "certificate_hash": "58acd11583cd4aa9b1605d3e98064309d259f4ba"
+          }
+        },
+        {
+          "client_id": "732082417535-ktgbdqhotgcs292ru6qvk2h94sor1ufe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recipto.customer_app",
+            "certificate_hash": "0d03f412d35c64592614d7f5caf196676a6aa3d4"
+          }
+        },
+        {
+          "client_id": "732082417535-vmo986t743eki9uuortuhgurfs04mueb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recipto.customer_app",
+            "certificate_hash": "b6b215465ad799f0ddf33d25dba9c376ebee7aa1"
+          }
+        },
+        {
+          "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5eCmRxTADhouV55dopIXP_I1JrCg2qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "in.recipto.rider"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732082417535:android:ace968e7779ce82999344a",
+        "android_client_info": {
+          "package_name": "com.seeya.seeya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5eCmRxTADhouV55dopIXP_I1JrCg2qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "in.recipto.rider"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732082417535:android:44d58bcfbea7bc9499344a",
+        "android_client_info": {
+          "package_name": "com.seeya.seeya_store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5eCmRxTADhouV55dopIXP_I1JrCg2qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "in.recipto.rider"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732082417535:android:7fda46571b4b031099344a",
+        "android_client_info": {
+          "package_name": "in.recipto.rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5eCmRxTADhouV55dopIXP_I1JrCg2qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "in.recipto.rider"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
