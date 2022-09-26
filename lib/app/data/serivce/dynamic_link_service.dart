@@ -35,7 +35,7 @@ class DynamicLinkService {
     log('dynamicUrl : 0.1');
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://rider.page.link',
-      link: Uri.parse('https://xrstudio.in?refercode=$_referCode'),
+      link: Uri.parse('https://recipto.in?refercode=$_referCode'),
       androidParameters: AndroidParameters(
         packageName: 'com.recipto.customer_app',
         // minimumVersion: 0,

@@ -360,6 +360,7 @@ class MoreStoreController extends GetxController {
   }
 
   void _showStoreDialog(String flag) {
+    UserViewModel.setReferFlag(false);
     showDialog(
       barrierDismissible: true,
       context: Get.context!,
@@ -378,6 +379,7 @@ class MoreStoreController extends GetxController {
   }
 
   void _showBounsDialog(flag2) {
+    UserViewModel.setReferFlag(false);
     showDialog(
       barrierDismissible: true,
       context: Get.context!,
