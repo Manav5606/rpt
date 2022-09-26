@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:customer_app/app/data/serivce/dynamic_link_service.dart';
+import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/address_model.dart';
@@ -67,6 +68,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   }
 
   Future<void> checkSession() async {
+    UserViewModel.setRefferralCode('');
     await DynamicLinkService().retrieveDynamicLink();
     if (hiveRepository.hasUser()) {
       try {
