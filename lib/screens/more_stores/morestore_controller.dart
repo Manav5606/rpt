@@ -1,5 +1,9 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/data/provider/hive/hive.dart';
+import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
+import 'package:customer_app/controllers/userViewModel.dart';
+import 'package:customer_app/widgets/custom_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -25,6 +29,7 @@ class MoreStoreController extends GetxController {
   RxString storeId = ''.obs;
   Rx<GetStoreDataModel?> getStoreDataModel = GetStoreDataModel().obs;
   Rx<GetCartIDModel?> getCartIDModel = GetCartIDModel().obs;
+
   // Rx<GetCartIDModel?> getCartIDModel = GetCartIDModel().obs;
   Rx<AddToCartModel?> addToCartModel = AddToCartModel().obs;
   final HomeController homeController = Get.find();
@@ -328,6 +333,67 @@ class MoreStoreController extends GetxController {
           color: AppConst.grey,
         ),
       ),
+    );
+  }
+
+  @override
+  Future<void> onInit() async {
+    // TODO: implement onInit
+    super.onInit();
+
+    await Future.delayed(Duration(seconds: 1));
+    final box = Boxes.getCommonBoolBox();
+    final box2 = Boxes.getCommonBox();
+    final flag = box.get(HiveConstants.REFER_FLAG);
+    final flag2 = box2.get(HiveConstants.BONUS);
+    if (flag ?? false) {
+      _showBounsDialog(flag2 ?? '');
+      final box = Boxes.getCommonBox();
+      final flag = box.get(HiveConstants.REFERID);
+      if (flag?.isNotEmpty ?? false) {
+        bool isStore = flag?.contains("Store") ?? false;
+        if (isStore) {
+          _showStoreDialog(flag ?? '');
+        }
+      }
+    }
+  }
+
+  void _showStoreDialog(String flag) {
+    UserViewModel.setReferFlag(false);
+    showDialog(
+      barrierDismissible: true,
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          title: 'Store',
+          content: "Click on store button for go to store",
+          buttontext: 'Store Button',
+          onTap: () async {
+            await getStoreData(id: flag);
+            UserViewModel.setReferFlag(false);
+          },
+        );
+      },
+    );
+  }
+
+  void _showBounsDialog(flag2) {
+    UserViewModel.setReferFlag(false);
+    showDialog(
+      barrierDismissible: true,
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          title: 'Bouns',
+          content: "You get reward $flag2",
+          buttontext: 'Ok',
+          onTap: () async {
+            Get.back();
+            UserViewModel.setReferFlag(false);
+          },
+        );
+      },
     );
   }
 }

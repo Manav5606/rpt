@@ -8,11 +8,14 @@ import 'package:customer_app/app/ui/common/alret.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 
 class SignInRepository {
-  Future<UserModel?> customerLoginOrSignUp(String phoneNumber) async {
+  Future<UserModel?> customerLoginOrSignUp({required String phoneNumber, required String referID}) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.customerLoginOrSignUp, variables: {
-        'mobile': "+91" + phoneNumber,
-      });
+      final result = await GraphQLRequest.query(
+          query: referID.isNotEmpty ? GraphQLQueries.customerLoginOrSignUpWithRefferralCode : GraphQLQueries.customerLoginOrSignUp,
+          variables: {
+            'mobile': "+91" + phoneNumber,
+            if (referID.isNotEmpty) 'referID': referID,
+          });
 
       log(phoneNumber);
       if (result['error'] == false) {
@@ -20,6 +23,7 @@ class SignInRepository {
         UserViewModel.setToken(result['token']);
         UserViewModel.setStreamToken(result['streamChatToken']);
         UserViewModel.setSignupFlag(result['signup']);
+        UserViewModel.setBonus(result['bonus'].toString());
         final UserModel userModel = UserModel.fromJson(result['data']);
         return userModel;
       } else {

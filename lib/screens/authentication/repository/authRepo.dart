@@ -54,9 +54,8 @@ class AuthRepo {
         UserViewModel.setToken(result.data!['customerLoginOrSignUp']['token']);
         UserViewModel.setStreamToken(result.data!['customerLoginOrSignUp']['streamChatToken']);
         UserViewModel.setSignupFlag(result.data!['customerLoginOrSignUp']['signup']);
-
+        UserViewModel.setBonus(result.data!['customerLoginOrSignUp']['bonus']);
         UserViewModel.setUser(UserModel.fromJson(result.data!['customerLoginOrSignUp']['data']));
-
         UserViewModel.changeUserStatus(UserStatus.LOGGED_IN);
         // await NewApi.addFirebaseToken(FCMHandler.fcmToken);
 

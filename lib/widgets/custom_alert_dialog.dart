@@ -25,8 +25,7 @@ class _CustomDialogState extends State<CustomDialog> {
     return AlertDialog(
       insetPadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.all(14),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
       title: Text(
         '${widget.title}',
         textAlign: TextAlign.center,
@@ -39,9 +38,7 @@ class _CustomDialogState extends State<CustomDialog> {
         return SizedBox(
           width: SizeUtils.screenWidth! - 70,
           child: Padding(
-            padding: EdgeInsets.only(
-                bottom: SizeUtils.verticalBlockSize * 2,
-                top: SizeUtils.verticalBlockSize),
+            padding: EdgeInsets.only(bottom: SizeUtils.verticalBlockSize * 2, top: SizeUtils.verticalBlockSize),
             child: Text(
               '${widget.content}',
               textAlign: TextAlign.center,
@@ -71,16 +68,11 @@ class _CustomDialogState extends State<CustomDialog> {
               ),
               child: Center(
                 child: Container(
-                  decoration: BoxDecoration(
-                      color: AppConst.white,
-                      borderRadius: BorderRadius.circular(3)),
+                  decoration: BoxDecoration(color: AppConst.white, borderRadius: BorderRadius.circular(3)),
                   child: Center(
                     child: Text(
                       widget.buttontext!,
-                      style: TextStyle(
-                          fontFamily: 'open',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
+                      style: TextStyle(fontFamily: 'open', fontSize: 12, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
