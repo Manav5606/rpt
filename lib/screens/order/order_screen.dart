@@ -23,7 +23,7 @@ class OrderScreen extends StatelessWidget {
         elevation: 1,
         centerTitle: false,
         title: Text(
-          "Order #${order.sId?.substring(0, 15)}...",
+          "Order #${order.Id?.substring(0, 15)}...",
           style: TextStyle(
             color: AppConst.black,
             fontSize: SizeUtils.horizontalBlockSize * 5,

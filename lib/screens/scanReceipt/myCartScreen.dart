@@ -227,23 +227,27 @@ class MyCartScreen extends StatelessWidget {
                                   'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 2.w, right: 4.w),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _exploreController.getStoreDataModel.value
-                                          ?.data?.store?.name ??
-                                      '',
-                                  style: AppStyles.BOLD_STYLE,
-                                ),
-                                Text(
-                                  "",
-                                  style: AppStyles.STORES_SUBTITLE_STYLE,
-                                ),
-                              ],
+                          Container(
+                            width: 65.w,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _exploreController.getStoreDataModel.value
+                                            ?.data?.store?.name ??
+                                        '',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: AppStyles.BOLD_STYLE,
+                                  ),
+                                  Text(
+                                    "",
+                                    style: AppStyles.STORES_SUBTITLE_STYLE,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           Spacer(),

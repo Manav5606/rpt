@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/controller/account_controller.dart';
+import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
@@ -17,7 +18,7 @@ class ChatController extends GetxController {
 
   RxBool isLoading = false.obs;
   final MyAccountController _accountController = Get.find();
-  RxList<OrderData> chatList = <OrderData>[].obs;
+  RxList<ActiveOrderData> chatList = <ActiveOrderData>[].obs;
   List<String> streamChatApiID = [];
   List<String> matchedId = [];
   List<String> chatNotStarted = [];
@@ -32,12 +33,14 @@ class ChatController extends GetxController {
       getAllStreamChatChannelByIdModel.value =
           await ChatService.getAllStreamChatChannelById();
       for (var _element in getAllStreamChatChannelByIdModel.value?.data ?? []) {
-        int index = _accountController.activeOrders.data!
-            .indexWhere((element) => element.sId == _element.id);
+        int index = _accountController.activeOrdersModel.value!.data!
+            .indexWhere((element) => element.Id == _element.id);
         if (index != -1) {
-          chatList.add(_accountController.activeOrders.data![index]);
-          streamChatApiID
-              .add(_accountController.activeOrders.data![index].sId ?? '');
+          chatList
+              .add(_accountController.activeOrdersModel.value!.data![index]);
+          streamChatApiID.add(
+              _accountController.activeOrdersModel.value!.data![index].Id ??
+                  '');
         }
         log('chatList ${chatList.length}');
       }

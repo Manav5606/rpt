@@ -44,7 +44,7 @@ class _ProductRawItemScreenState extends State<ProductRawItemScreen> {
 
     //
     bool error = await _addCartController.placeOrderActive(
-      store: widget.order.sId ?? '',
+      store: widget.order.Id ?? '',
       razorPayPaymentId: response.paymentId ?? '',
       razorPayOrderId: response.orderId ?? '',
       razorPaySignature: response.signature ?? '',
@@ -317,7 +317,7 @@ class _ProductRawItemScreenState extends State<ProductRawItemScreen> {
           GestureDetector(
             onTap: () async {
               await _addCartController.createRazorPayOrder(
-                  storeId: widget.order.sId ?? '',
+                  storeId: widget.order.Id ?? '',
                   amount: widget.order.total?.toDouble() ?? 00);
               if (_addCartController.createRazorpayResponseModel.value !=
                   null) {

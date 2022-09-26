@@ -258,6 +258,7 @@ class MainRepo {
         last_name
         mobile
         email
+        firebase_token
         addresses{
           address
           location{

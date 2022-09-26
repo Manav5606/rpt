@@ -47,7 +47,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late ScrollController _scrollController;
   late ScrollController _categoryController;
 
@@ -60,7 +61,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final HomeController _homeController = Get.put(HomeController());
   final PaymentController _paymentController = Get.put(PaymentController());
   final AddCartController _addCartController = Get.put(AddCartController());
-  final MyAccountController _myAccountController = Get.put(MyAccountController(MyAccountRepository(), HiveRepository()));
+  final MyAccountController _myAccountController =
+      Get.put(MyAccountController(MyAccountRepository(), HiveRepository()));
 
   @override
   void initState() {
@@ -93,6 +95,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           break;
       }
     });
+
+    Get.find<MyAccountController>().getActiveOrders();
 
     _categoryController.addListener(_scrollListener);
 
@@ -127,7 +131,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
-    Data tempModel = Data.fromJson(jsonDecode(FirebaseRemoteConfigUtils.homeScreenTempString));
+    Data tempModel = Data.fromJson(
+        jsonDecode(FirebaseRemoteConfigUtils.homeScreenTempString));
     // _homeController.checkLocationPermission();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -151,9 +156,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               dynamic value = Get.to(AddressModel(
                                 isHomeScreen: true,
                               ));
-                              if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
+                              if (Constants.isAbleToCallApi)
+                                await _homeController.getAllCartsData();
                             },
-                            isRedDot: _homeController.getAllCartsModel.value?.cartItemsTotal != 0 ? true : false,
+                            isRedDot: _homeController.getAllCartsModel.value
+                                        ?.cartItemsTotal !=
+                                    0
+                                ? true
+                                : false,
                             address: _homeController.userAddress.value,
                           ),
                         ),
@@ -164,10 +174,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             ? SizedBox()
                             : PermissionRaw(
                                 onTap: () async {
-                                  bool isEnable = await _homeController.getCurrentLocation();
+                                  bool isEnable = await _homeController
+                                      .getCurrentLocation();
                                   if (isEnable) {
                                     _homeController.isPageAvailable = true;
-                                    _homeController.homePageFavoriteShopsList.clear();
+                                    _homeController.homePageFavoriteShopsList
+                                        .clear();
                                     await _homeController.apiCall();
                                   }
                                 },
@@ -175,7 +187,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         Obx(
                           () => Expanded(
                             child: ListView(
-                              controller: _homeController.homePageFavoriteShopsScrollController,
+                              controller: _homeController
+                                  .homePageFavoriteShopsScrollController,
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(top: 2.5.h),
@@ -184,40 +197,97 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     width: double.infinity,
                                     child: ListView.builder(
                                       controller: _categoryController,
-                                      itemCount: _homeController.getHomePageFavoriteShopsModel.value?.keywords?.length ?? 0,
+                                      itemCount: _homeController
+                                              .getHomePageFavoriteShopsModel
+                                              .value
+                                              ?.keywords
+                                              ?.length ??
+                                          0,
                                       physics: PageScrollPhysics(),
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
-                                      itemExtent: SizeUtils.horizontalBlockSize * 20,
+                                      itemExtent:
+                                          SizeUtils.horizontalBlockSize * 20,
                                       itemBuilder: (context, index) {
                                         //currentItems = index;
                                         return GestureDetector(
                                             onTap: () async {
-                                              _homeController.storeDataList.clear();
-                                              _homeController.remoteConfigPageNumber = 1;
-                                              _homeController.isRemoteConfigPageAvailable = true;
-                                              _homeController.keywordValue = CategoryModel(
-                                                isProductAvailable:
-                                                    _homeController.getHomePageFavoriteShopsModel.value?.keywords?[index].isProductAvailable ?? false,
-                                                id: _homeController.getHomePageFavoriteShopsModel.value!.keywords![index].id,
-                                                keywordHelper: _homeController.getHomePageFavoriteShopsModel.value!.keywords![index].keywordHelper,
-                                                name: _homeController.getHomePageFavoriteShopsModel.value!.keywords![index].name,
+                                              _homeController.storeDataList
+                                                  .clear();
+                                              _homeController
+                                                  .remoteConfigPageNumber = 1;
+                                              _homeController
+                                                      .isRemoteConfigPageAvailable =
+                                                  true;
+                                              _homeController.keywordValue =
+                                                  CategoryModel(
+                                                isProductAvailable: _homeController
+                                                        .getHomePageFavoriteShopsModel
+                                                        .value
+                                                        ?.keywords?[index]
+                                                        .isProductAvailable ??
+                                                    false,
+                                                id: _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .value!
+                                                    .keywords![index]
+                                                    .id,
+                                                keywordHelper: _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .value!
+                                                    .keywords![index]
+                                                    .keywordHelper,
+                                                name: _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .value!
+                                                    .keywords![index]
+                                                    .name,
                                                 subtitle: '',
                                                 image: '',
                                               );
-                                              await _homeController.homePageRemoteConfigData(
-                                                productFetch:
-                                                    _homeController.getHomePageFavoriteShopsModel.value?.keywords?[index].isProductAvailable ?? false,
-                                                keyword: _homeController.getHomePageFavoriteShopsModel.value!.keywords![index].name,
-                                                keywordHelper: _homeController.getHomePageFavoriteShopsModel.value!.keywords![index].keywordHelper,
-                                                id: _homeController.getHomePageFavoriteShopsModel.value!.keywords![index].id,
+                                              await _homeController
+                                                  .homePageRemoteConfigData(
+                                                productFetch: _homeController
+                                                        .getHomePageFavoriteShopsModel
+                                                        .value
+                                                        ?.keywords?[index]
+                                                        .isProductAvailable ??
+                                                    false,
+                                                keyword: _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .value!
+                                                    .keywords![index]
+                                                    .name,
+                                                keywordHelper: _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .value!
+                                                    .keywords![index]
+                                                    .keywordHelper,
+                                                id: _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .value!
+                                                    .keywords![index]
+                                                    .id,
                                               );
-                                              (!(_homeController.getHomePageFavoriteShopsModel.value?.keywords?[index].isProductAvailable ?? false))
-                                                  ? await Get.to(() => InStoreScreen())
-                                                  : await Get.to(() => StoreListScreen());
-                                              if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
+                                              (!(_homeController
+                                                          .getHomePageFavoriteShopsModel
+                                                          .value
+                                                          ?.keywords?[index]
+                                                          .isProductAvailable ??
+                                                      false))
+                                                  ? await Get.to(
+                                                      () => InStoreScreen())
+                                                  : await Get.to(
+                                                      () => StoreListScreen());
+                                              if (Constants.isAbleToCallApi)
+                                                await _homeController
+                                                    .getAllCartsData();
                                             },
-                                            child: CategoryCard(category: _homeController.getHomePageFavoriteShopsModel.value!.keywords![index]));
+                                            child: CategoryCard(
+                                                category: _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .value!
+                                                    .keywords![index]));
                                       },
                                     ),
                                   ),
@@ -225,7 +295,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 SizedBox(
                                   height: 2.h,
                                 ),
-                                (_homeController.getAllCartsModel.value?.carts?.isNotEmpty ?? false)
+                                (_homeController.getAllCartsModel.value?.carts
+                                            ?.isNotEmpty ??
+                                        false)
                                     ? _homeController.isAllCartLoading.value
                                         ? ShimmerEffect(
                                             child: YourStores(),
@@ -251,7 +323,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   color: AppConst.veryLightGrey,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 2.h, horizontal: 2.w),
                                   child: Container(
                                     width: double.infinity,
                                     child: Align(
@@ -270,9 +343,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
 
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 2.w),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Can't find your store ?",
@@ -288,7 +363,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         maxLines: 2,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.8,
                                           overflow: TextOverflow.visible,
                                           fontFamily: 'MuseoSans',
                                           // letterSpacing: 0.4,
@@ -307,7 +384,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           maxLines: 1,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w500,
-                                            fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    3.8,
                                             overflow: TextOverflow.visible,
                                             fontFamily: 'MuseoSans',
                                             // letterSpacing: 0.4,
@@ -345,32 +424,55 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: (_myAccountController.activeOrders.data?.isNotEmpty ?? false) ? AppConst.grey : AppConst.transparent,
+                                    color: (_myAccountController
+                                                .activeOrdersModel
+                                                .value
+                                                ?.data
+                                                ?.isNotEmpty ??
+                                            false)
+                                        ? AppConst.grey
+                                        : AppConst.transparent,
                                     blurRadius: 5.0,
                                   ),
                                 ],
-                                color: (_myAccountController.activeOrders.data?.isNotEmpty ?? false) ? AppConst.lightYellow : AppConst.transparent,
+                                color: (_myAccountController.activeOrdersModel
+                                            .value?.data?.isNotEmpty ??
+                                        false)
+                                    ? AppConst.lightYellow
+                                    : AppConst.transparent,
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 2.w),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Obx(
-                                      () => (_myAccountController.activeOrders.data?.isNotEmpty ?? false)
+                                      () => (_myAccountController
+                                                  .activeOrdersModel
+                                                  .value
+                                                  ?.data
+                                                  ?.isNotEmpty ??
+                                              false)
                                           ? GestureDetector(
                                               onTap: () {
-                                                Get.toNamed(AppRoutes.ActiveOrders);
+                                                Get.toNamed(
+                                                    AppRoutes.ActiveOrders);
                                               },
                                               child: Container(
                                                 // width: 73.w,
                                                 // height: 10.h,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(10),
-                                                    topRight: Radius.circular(10),
-                                                    bottomLeft: Radius.circular(10),
-                                                    bottomRight: Radius.circular(10),
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10),
+                                                    bottomLeft:
+                                                        Radius.circular(10),
+                                                    bottomRight:
+                                                        Radius.circular(10),
                                                   ),
                                                   // boxShadow: [
                                                   //   BoxShadow(
@@ -381,18 +483,37 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   color: AppConst.lightYellow,
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 1.h),
+                                                  padding: EdgeInsets.only(
+                                                      left: 2.w,
+                                                      top: 1.h,
+                                                      bottom: 1.h),
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: [
                                                       Text(
                                                         "Your Active orders   ",
-                                                        style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                       Text(
                                                         "See all your active orders ! ",
-                                                        style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 3.5, fontWeight: FontWeight.w300),
+                                                        style: TextStyle(
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                3.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w300),
                                                       ),
                                                       SizedBox(
                                                         height: 0.5.h,
@@ -403,14 +524,26 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                           child: ElevatedButton(
                                                             child: Text(
                                                               'All active orders',
-                                                              style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 3.2, color: AppConst.black),
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      SizeUtils
+                                                                              .horizontalBlockSize *
+                                                                          3.2,
+                                                                  color: AppConst
+                                                                      .black),
                                                             ),
                                                             onPressed: () {
-                                                              Get.toNamed(AppRoutes.ActiveOrders);
+                                                              Get.toNamed(AppRoutes
+                                                                  .ActiveOrders);
                                                             },
                                                             style: ElevatedButton.styleFrom(
-                                                                primary: AppConst.orange,
-                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+                                                                primary:
+                                                                    AppConst
+                                                                        .orange,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15))),
                                                           ),
                                                         ),
                                                       ),
@@ -537,10 +670,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       onPressed: () {
                                         Get.defaultDialog(
                                             title: "Pick any one",
-                                            titleStyle: AppStyles.STORE_NAME_STYLE,
+                                            titleStyle:
+                                                AppStyles.STORE_NAME_STYLE,
                                             content: Center(
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Column(
                                                     children: [
@@ -556,24 +692,42 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                           //       ? null
                                                           //       : Get.toNamed(AppRoutes.ScanRecipetSearch);
                                                           // } else {
-                                                          _paymentController.latLng = LatLng(UserViewModel.currentLocation.value.latitude,
-                                                              UserViewModel.currentLocation.value.longitude);
-                                                          await _paymentController.getScanReceiptPageNearMeStoresData();
+                                                          _paymentController
+                                                                  .latLng =
+                                                              LatLng(
+                                                                  UserViewModel
+                                                                      .currentLocation
+                                                                      .value
+                                                                      .latitude,
+                                                                  UserViewModel
+                                                                      .currentLocation
+                                                                      .value
+                                                                      .longitude);
+                                                          await _paymentController
+                                                              .getScanReceiptPageNearMeStoresData();
                                                           Get.back();
-                                                          (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
+                                                          (_paymentController
+                                                                      .getRedeemCashInStorePageData
+                                                                      .value
+                                                                      ?.error ??
+                                                                  false)
                                                               ? null
-                                                              : Get.toNamed(AppRoutes.ScanRecipetSearch);
+                                                              : Get.toNamed(
+                                                                  AppRoutes
+                                                                      .ScanRecipetSearch);
                                                           // }
                                                         },
                                                         child: CircleAvatar(
                                                           radius: 10.w,
-                                                          foregroundImage: NetworkImage(
-                                                              "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
+                                                          foregroundImage:
+                                                              NetworkImage(
+                                                                  "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
                                                         ),
                                                       ),
                                                       Text(
                                                         "Scan",
-                                                        style: AppStyles.BOLD_STYLE,
+                                                        style: AppStyles
+                                                            .BOLD_STYLE,
                                                       )
                                                     ],
                                                   ),
@@ -581,7 +735,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                     children: [
                                                       InkWell(
                                                         onTap: () async {
-                                                          _paymentController.isLoading.value = true;
+                                                          _paymentController
+                                                              .isLoading
+                                                              .value = true;
                                                           // await _homeController.checkLocationPermission();
                                                           // if (_homeController.checkPermission.value) {
                                                           //   Position position = await Geolocator.getCurrentPosition();
@@ -592,25 +748,44 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                           //       ? null
                                                           //       : Get.toNamed(AppRoutes.LoyaltyCardScreen);
                                                           // } else {
-                                                          _paymentController.latLng = LatLng(UserViewModel.currentLocation.value.latitude,
-                                                              UserViewModel.currentLocation.value.longitude);
-                                                          await _paymentController.getRedeemCashInStorePage();
+                                                          _paymentController
+                                                                  .latLng =
+                                                              LatLng(
+                                                                  UserViewModel
+                                                                      .currentLocation
+                                                                      .value
+                                                                      .latitude,
+                                                                  UserViewModel
+                                                                      .currentLocation
+                                                                      .value
+                                                                      .longitude);
+                                                          await _paymentController
+                                                              .getRedeemCashInStorePage();
                                                           Get.back();
-                                                          (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
+                                                          (_paymentController
+                                                                      .getRedeemCashInStorePageData
+                                                                      .value
+                                                                      ?.error ??
+                                                                  false)
                                                               ? null
-                                                              : Get.toNamed(AppRoutes.LoyaltyCardScreen);
+                                                              : Get.toNamed(
+                                                                  AppRoutes
+                                                                      .LoyaltyCardScreen);
                                                           // }
                                                         },
                                                         child: CircleAvatar(
                                                           radius: 10.w,
-                                                          backgroundColor: Colors.white,
-                                                          foregroundImage: NetworkImage(
-                                                              "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          foregroundImage:
+                                                              NetworkImage(
+                                                                  "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
                                                         ),
                                                       ),
                                                       Text(
                                                         "Refund",
-                                                        style: AppStyles.BOLD_STYLE,
+                                                        style: AppStyles
+                                                            .BOLD_STYLE,
                                                       )
                                                     ],
                                                   )

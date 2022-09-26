@@ -1,17 +1,17 @@
-class OrderModel {
+class ActiveOrderModel {
   bool? error;
   String? msg;
-  List<OrderData>? data;
+  List<ActiveOrderData>? data;
 
-  OrderModel({this.error, this.msg, this.data});
+  ActiveOrderModel({this.error, this.msg, this.data});
 
-  OrderModel.fromJson(Map<String, dynamic> json) {
+  ActiveOrderModel.fromJson(Map<String, dynamic> json) {
     error = json['error'];
     msg = json['msg'];
     if (json['data'] != null) {
-      data = <OrderData>[];
+      data = <ActiveOrderData>[];
       json['data'].forEach((v) {
-        data!.add(new OrderData.fromJson(v));
+        data!.add(new ActiveOrderData.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class OrderModel {
   }
 }
 
-class OrderData {
+class ActiveOrderData {
   String? Id;
   String? status;
   String? orderType;
@@ -42,7 +42,7 @@ class OrderData {
   List<RawItems>? rawItems;
   Store? store;
 
-  OrderData({
+  ActiveOrderData({
     this.Id,
     this.status,
     this.orderType,
@@ -57,7 +57,7 @@ class OrderData {
     this.store,
   });
 
-  OrderData.fromJson(Map<String, dynamic> json) {
+  ActiveOrderData.fromJson(Map<String, dynamic> json) {
     Id = json['_id'];
     status = json['status'];
     orderType = json['order_type'];
@@ -290,9 +290,4 @@ class Address {
     data['address'] = this.address;
     return data;
   }
-}
-
-enum OrderCardTag {
-  activeOrder,
-  allOrder,
 }

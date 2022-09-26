@@ -679,6 +679,18 @@ mutation ($token: String) {
     ''',
   );
 
+  static final addFirebaseToken = new GraphQLQuery(
+    name: 'addFirebaseTokenToCustomer',
+    query: r'''
+    mutation{
+  addFirebaseTokenToCustomer(firebase_token :$token){
+    msg
+    error
+  }
+}
+    ''',
+  );
+
   static final verifyOtp = new GraphQLQuery(
     name: 'verifyOtp',
     query: r'''
