@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class FCMHandler {
-  final MyAccountController _myAccountController = Get.find();
   static final FirebaseMessaging _firebaseMessaging =
       FirebaseMessaging.instance;
   static String? fcmToken;

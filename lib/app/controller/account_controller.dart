@@ -37,13 +37,16 @@ class MyAccountController extends GetxController {
   set wallets(value) => this._wallets.value = value;
 
   List<Wallet> get wallets => this._wallets;
+
   // final _activeOrders = OrderModel().obs;
   Rx<OrderModel?> allOrdersModel = OrderModel().obs;
   Rx<ActiveOrderModel?> activeOrdersModel = ActiveOrderModel().obs;
+
   // Rx<ActiveOrderData> activeOrders = ActiveOrderData().obs;
   // final _allOrders = OrderModel().obs;
   RxBool isOrderloading = false.obs;
   RxBool isActiveOrderloading = false.obs;
+
   // set activeOrders(value) => this._activeOrders.value = value;
   // set allOrders(value) => this._allOrders.value = value;
   // OrderModel get activeOrders => this._activeOrders.value;
@@ -73,47 +76,28 @@ class MyAccountController extends GetxController {
   }
 
   formatDate() {
-    if (activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day !=
-        null) {
+    if (activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day != null) {
       DateTime date = DateTime.now();
       currentDay.value = date.weekday.toString();
       currentHour.value = date.hour.toString();
       if (currentDay.value == "7") {
         currentDay.value = "0";
       }
-      if (currentDay.value ==
-          activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day
-              .toString()) {
-        displayHour.value = activeOrdersModel
-                .value!.data?[selectIndex.value].deliverySlot?.startTime?.hour
-                .toString() ??
-            "";
-        var endtime = activeOrdersModel
-                .value!.data?[selectIndex.value].deliverySlot?.endTime?.hour
-                .toString() ??
-            "";
+      if (currentDay.value == activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day.toString()) {
+        displayHour.value = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.startTime?.hour.toString() ?? "";
+        var endtime = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.endTime?.hour.toString() ?? "";
         if (int.parse(displayHour.value) >= 12) {
-          displayHour.value =
-              'Today ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
+          displayHour.value = 'Today ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
         } else {
-          displayHour.value =
-              'Today ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
+          displayHour.value = 'Today ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
         }
       } else {
-        displayHour.value = activeOrdersModel
-                .value!.data?[selectIndex.value].deliverySlot?.startTime?.hour
-                .toString() ??
-            "";
-        var endtime = activeOrdersModel
-                .value!.data?[selectIndex.value].deliverySlot?.endTime?.hour
-                .toString() ??
-            "";
+        displayHour.value = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.startTime?.hour.toString() ?? "";
+        var endtime = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.endTime?.hour.toString() ?? "";
         if (int.parse(displayHour.value) >= 12) {
-          displayHour.value =
-              '${orderStatus(currentDay.value)} ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
+          displayHour.value = '${orderStatus(currentDay.value)} ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
         } else {
-          displayHour.value =
-              '${orderStatus(currentDay.value)} ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
+          displayHour.value = '${orderStatus(currentDay.value)} ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
         }
       }
     } else {
@@ -147,15 +131,12 @@ class MyAccountController extends GetxController {
     final link = await DynamicLinkService().createDynamicLink(referCode.value);
     final image = await getImageFileFromAssets("images/account_banner.png");
     print("getImageFileFromAssets | asset path: ${image.path}");
-    flutterShareMe.shareToWhatsApp(
-        msg: "My earned balance is 300. You can join and earn also \n $link",
-        imagePath: image.path);
+    flutterShareMe.shareToWhatsApp(msg: "My earned balance is 300. You can join and earn also \n $link", imagePath: image.path);
   }
 
   shareToSystem() async {
-    final link = await dynamicLinkSercive.createDynamicLink(referCode.value);
-    flutterShareMe.shareToSystem(
-        msg: "My earned balance is 300. You can join and earn also \n $link");
+    final link = await DynamicLinkService().createDynamicLink(referCode.value);
+    flutterShareMe.shareToSystem(msg: "My earned balance is 300. You can join and earn also \n $link");
   }
 
   getActiveOrders() async {
@@ -189,17 +170,17 @@ class MyAccountController extends GetxController {
     // MyAccountRepository.getAllOrders().then((value) => this.allOrders = value);
   }
 
-  void getGenerateReferCode() async {
+  Future<void> getGenerateReferCode() async {
     referCode.value = await MyAccountRepository.getGenerateReferCode();
     log('referCode :${referCode.value}');
   }
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // TODO: implement onInit
     super.onInit();
     // getActiveOrders();
     // getOrders();
-    getGenerateReferCode();
+    await getGenerateReferCode();
   }
 }
