@@ -32,6 +32,7 @@ class GraphQLQueries {
           token
           streamChatToken
           signup
+          bonus
           error
           msg
           data{
@@ -88,6 +89,72 @@ class GraphQLQueries {
           }
         }
     ''',
+  );
+  static final customerLoginOrSignUpWithRefferralCode = new GraphQLQuery(
+    name: 'customerLoginOrSignUp',
+    query: r'''
+    mutation($mobile: String $referID :String){
+      customerLoginOrSignUp(mobile: $mobile,referID:$referID){
+        token
+        bonus
+        streamChatToken
+        signup
+        error
+        msg
+        data{
+          _id
+          first_name
+          last_name
+          mobile
+          email
+          type
+          status
+          addresses{
+           _id
+           title
+           address
+           house
+           apartment
+           distance
+           direction_to_reach
+           location{
+             lat
+             lng
+           }
+          status
+         }
+          stores{
+           _id
+           store{
+           _id
+            name
+            mobile
+            businesstype
+            address{
+              address
+              location{
+                lat
+                lng
+              }
+            }
+            
+          }
+           earned_cashback
+           welcome_offer
+           welcome_offer_amount
+            recently_visited
+            visited_at
+            name
+         }
+          balance
+          logo
+          date_of_birth
+          male_or_female
+          rank
+          }
+        }
+      }
+  ''',
   );
   static final verifyUserToken = new GraphQLQuery(
     name: 'verifyCustomerToken',

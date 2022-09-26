@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/routes/app_list.dart';
@@ -56,7 +57,6 @@ class DynamicLinkService {
 
   Future<void> retrieveDynamicLink() async {
     try {
-      UserViewModel.setRefferralCode('StoreREST8485');
       final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
       log("data :${data}");
       final Uri? deepLink = data?.link;
@@ -75,6 +75,10 @@ class DynamicLinkService {
           var getQuery = dynamicLinkData.link.query;
           var getReferralCode = getQuery.split('refercode=');
           if (getReferralCode.isNotEmpty) {
+            UserViewModel.setReferFlag(true);
+            UserViewModel.setRefferralCode(getReferralCode[1]);
+            Get.to(EnterNumberScreen());
+            // UserViewModel.setRefferralCode('StoreREST8485');
             print('getReferralCode : $getReferralCode');
           }
         }

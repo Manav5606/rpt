@@ -20,8 +20,11 @@ class UserViewModel extends GetxController {
 
   static var token = ''.obs;
   static var streamToken = ''.obs;
+  static var bonus = ''.obs;
   static var signupFlag = false.obs;
+  static var referFlag = false.obs;
   static var referId = ''.obs;
+
   static setToken(String data) {
     token.value = data;
     final box = Boxes.getCommonBox();
@@ -33,11 +36,22 @@ class UserViewModel extends GetxController {
     final box = Boxes.getCommonBox();
     box.put(HiveConstants.STREAM_TOKEN, data);
   }
+  static setBonus(String data) {
+    bonus.value = data;
+    final box = Boxes.getCommonBox();
+    box.put(HiveConstants.BONUS, data);
+  }
 
   static setSignupFlag(bool data) {
     signupFlag.value = data;
     final box = Boxes.getCommonBoolBox();
     box.put(HiveConstants.SIGNUP_FLAG, data);
+  }
+
+  static setReferFlag(bool data) {
+    referFlag.value = data;
+    final box = Boxes.getCommonBoolBox();
+    box.put(HiveConstants.REFER_FLAG, data);
   }
 
   static setRefferralCode(String data) {

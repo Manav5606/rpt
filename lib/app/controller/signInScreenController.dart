@@ -119,9 +119,7 @@ class SignInScreenController extends GetxController {
         phoneNumber: "+91${phoneNumberController.text}",
         timeout: Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) {
-          FirebaseAuth.instance
-              .signInWithCredential(credential)
-              .then((value) async {
+          FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
             if (value.user != null) {
               log("Verification Complete successful With Mobile number");
             }
@@ -155,29 +153,23 @@ class SignInScreenController extends GetxController {
     String smsCode = otpController.text.toString().trim();
     log('smsCode :$smsCode');
     log('smsCode :${verification.value}');
-    phoneAuthCredential = PhoneAuthProvider.credential(
-        verificationId: verification.value, smsCode: smsCode);
+    phoneAuthCredential = PhoneAuthProvider.credential(verificationId: verification.value, smsCode: smsCode);
     _login();
   }
 
   Future<void> _login() async {
     try {
-      await FirebaseAuth.instance
-          .signInWithCredential(phoneAuthCredential)
-          .then((UserCredential authRes) async {
+      await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential).then((UserCredential authRes) async {
         user = authRes.user;
         // _timer.cancel();
         if (user != null) {
-          userModel = await signInRepository
-              .customerLoginOrSignUp(phoneNumberController.text);
+          userModel = await signInRepository.customerLoginOrSignUp(phoneNumber: phoneNumberController.text, referID: referralController.text);
           List<Wallet>? wallet = await signInRepository.getAllWallet();
           userModel?.wallet = wallet;
           if (userModel != null) {
             UserViewModel.setUser(userModel!);
             try {
-              await connectUserStream(
-                  userId: userModel?.id ?? '',
-                  name: "${userModel?.firstName} ${userModel?.lastName}");
+              await connectUserStream(userId: userModel?.id ?? '', name: "${userModel?.firstName} ${userModel?.lastName}");
             } catch (e) {
               print('e $e');
             }
@@ -200,25 +192,20 @@ class SignInScreenController extends GetxController {
     } catch (e, st) {
       otpController.clear();
       isLoading.value = false;
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(content: Text("Invalid OTP : Please Enter Valid OTP")));
+      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("Invalid OTP : Please Enter Valid OTP")));
       print('eeee :$e $st');
     }
   }
 
-  Future<void> signUpButton(
-      String firstName, String lastName, String email) async {
-    var flag = await SignInRepository.updateCustomerInformation(
-        firstName, lastName, email);
+  Future<void> signUpButton(String firstName, String lastName, String email) async {
+    var flag = await SignInRepository.updateCustomerInformation(firstName, lastName, email);
     if (flag) {
       await checkSession();
     }
   }
 
-  Future<void> UpdateInfo(
-      String firstName, String lastName, String email) async {
-    var flag = await SignInRepository.updateCustomerInformation(
-        firstName, lastName, email);
+  Future<void> UpdateInfo(String firstName, String lastName, String email) async {
+    var flag = await SignInRepository.updateCustomerInformation(firstName, lastName, email);
     if (flag) {
       await checkUpdateInfo();
     }
@@ -249,12 +236,9 @@ class SignInScreenController extends GetxController {
       try {
         final UserModel userModel = hiveRepository.getCurrentUser();
         log("userModeluserModel :${userModel.toJson()}");
-        final box = Boxes.getCommonBox();
-        final flag = box.get(HiveConstants.REFERID);
         // final MoreStoreController _moreStoreController = Get.put(MoreStoreController());
         if ((userModel.addresses?.length ?? 0) > 0) {
-          for (final AddressModel? addressModal
-              in (userModel.addresses ?? [])) {
+          for (final AddressModel? addressModal in (userModel.addresses ?? [])) {
             if (addressModal?.status ?? false) {
               log("checkSession : 0000}");
               Get.offAllNamed(
@@ -263,26 +247,19 @@ class SignInScreenController extends GetxController {
               break;
             }
           }
-          // if (flag?.isNotEmpty ?? false) {
-          //   bool isStore = flag?.contains("Store") ?? false;
-          //   if (isStore) {
-          //     await _moreStoreController.getStoreData(id: flag ?? '');
-          //   }
-          // }
           Get.offAllNamed(AppRoutes.BaseScreen);
           // Get.offAll(() => ManageAddressScreen());
         } else {
           log("checkSession : 879879897}");
-          Get.offAllNamed(AppRoutes.NewLocationScreen,
-              arguments: {"isFalse": false});
+          Get.offAllNamed(AppRoutes.NewLocationScreen, arguments: {"isFalse": false});
         }
       } catch (e) {
-        Future.delayed(Duration(seconds: 2),
-            () => Get.offAllNamed(AppRoutes.Authentication));
+        log("e:$e");
+        Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
       }
     } else {
-      Future.delayed(Duration(seconds: 2),
-          () => Get.offAllNamed(AppRoutes.Authentication));
+      log("eggjmghhj");
+      Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
     }
   }
 }
