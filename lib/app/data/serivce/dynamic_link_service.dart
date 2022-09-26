@@ -1,10 +1,10 @@
 import 'dart:developer';
-
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:get/route_manager.dart';
+import 'package:uni_links/uni_links.dart';
 
 class DynamicLinkService {
   // Future handleDynamicLinks() async {
@@ -46,13 +46,18 @@ class DynamicLinkService {
         // appStoreId: '1608481261',
       ),
     );
+
     final link = await FirebaseDynamicLinks.instance.buildLink(parameters);
-    // log('link : $link');
+    log('link : $link');
     // var dynamicUrl = await parameters.link;
     // log('dynamicUrl : $dynamicUrl');
+    log("link data: ${link.data}");
+    log("link normalizePath: ${link.normalizePath()}");
     String appUrl = link.toString();
     log('appUrl : $appUrl');
-    return appUrl;
+    String decodeUrl = Uri.decodeFull(appUrl);
+    log('appUrl : $decodeUrl');
+    return decodeUrl;
   }
 
   Future<void> retrieveDynamicLink() async {
