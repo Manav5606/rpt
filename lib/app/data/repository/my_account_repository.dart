@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/data/model/wallet_model.dart';
@@ -47,12 +48,15 @@ class MyAccountRepository {
     }
   }
 
-  static Future<OrderModel?> getAllActiveOrders() async {
+  static Future<ActiveOrderModel?> getAllActiveOrders() async {
     try {
       final result = await GraphQLRequest.query(
-          query: GraphQLQueries.getAllActiveOrders, variables: {},isLogOff: true);
+          query: GraphQLQueries.getAllActiveOrders,
+          variables: {},
+          isLogOff: true);
       if (result['error'] == false) {
-        final OrderModel _getAllActiveOrders = OrderModel.fromJson(result);
+        final ActiveOrderModel _getAllActiveOrders =
+            ActiveOrderModel.fromJson(result);
         return _getAllActiveOrders;
       }
     } catch (e, st) {
@@ -64,7 +68,9 @@ class MyAccountRepository {
   static Future<String> getGenerateReferCode() async {
     try {
       final result = await GraphQLRequest.query(
-          query: GraphQLQueries.generateReferCode, variables: {},isLogOff: true);
+          query: GraphQLQueries.generateReferCode,
+          variables: {},
+          isLogOff: true);
       return result['data'];
     } catch (e, st) {
       log("$e , $st");
@@ -75,7 +81,7 @@ class MyAccountRepository {
   static Future<OrderModel?> getAllOrders() async {
     try {
       final result = await GraphQLRequest.query(
-          query: GraphQLQueries.getAllOrders, variables: {},isLogOff: true);
+          query: GraphQLQueries.getAllOrders, variables: {}, isLogOff: true);
       if (result['error'] == false) {
         final OrderModel _getAllOrders = OrderModel.fromJson(result);
         return _getAllOrders;

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
@@ -6,9 +7,13 @@ import 'package:customer_app/constants/app_const.dart';
 import 'package:get/get.dart';
 
 class ShopItemsScreen extends StatelessWidget {
-  final OrderData order;
+  final OrderData? order;
+  final ActiveOrderData? activeOrder;
+  bool? allorder;
 
-  const ShopItemsScreen({Key? key, required this.order}) : super(key: key);
+  ShopItemsScreen(
+      {Key? key, this.order, this.activeOrder, this.allorder = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +99,9 @@ class ShopItemsScreen extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: order.products?.length ?? 0,
+              itemCount: (allorder!)
+                  ? (order?.products?.length ?? 0)
+                  : (activeOrder?.products?.length ?? 0),
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(
@@ -124,7 +131,9 @@ class ShopItemsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            order.products?[index].name ?? '',
+                            (allorder!)
+                                ? (order?.products?[index].name ?? '')
+                                : (activeOrder?.products?[index].name ?? ''),
                             style: TextStyle(
                               color: AppConst.grey,
                               fontSize: SizeUtils.horizontalBlockSize * 5,
@@ -135,7 +144,9 @@ class ShopItemsScreen extends StatelessWidget {
                             height: SizeUtils.verticalBlockSize * 1,
                           ),
                           Text(
-                            '${order.products?[index].quantity ?? ''}',
+                            (allorder!)
+                                ? ('${order?.products?[index].quantity ?? ''}')
+                                : ('${activeOrder?.products?[index].quantity ?? ''}'),
                             style: TextStyle(
                               color: AppConst.grey.withOpacity(0.6),
                               fontSize: SizeUtils.horizontalBlockSize * 4,
@@ -146,7 +157,9 @@ class ShopItemsScreen extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        '${order.products?[index].sellingPrice ?? ''}',
+                        (allorder!)
+                            ? ('${order?.products?[index].sellingPrice ?? ''}')
+                            : ('${activeOrder?.products?[index].sellingPrice ?? ''}'),
                         style: TextStyle(
                             color: AppConst.black.withOpacity(0.6),
                             fontWeight: FontWeight.w800,
@@ -182,7 +195,9 @@ class ShopItemsScreen extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: order.rawItems?.length ?? 0,
+              itemCount: (allorder!)
+                  ? (order?.rawItems?.length ?? 0)
+                  : (activeOrder?.rawItems?.length ?? 0),
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(
@@ -212,7 +227,9 @@ class ShopItemsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            order.rawItems?[index].item ?? '',
+                            (allorder!)
+                                ? (order?.rawItems?[index].item ?? '')
+                                : (activeOrder?.rawItems?[index].item ?? ''),
                             style: TextStyle(
                               color: AppConst.grey,
                               fontSize: SizeUtils.horizontalBlockSize * 5,
@@ -223,7 +240,9 @@ class ShopItemsScreen extends StatelessWidget {
                             height: SizeUtils.verticalBlockSize * 1,
                           ),
                           Text(
-                            '${order.rawItems?[index].quantity ?? ''}',
+                            (allorder!)
+                                ? ('${order?.rawItems?[index].quantity ?? ''}')
+                                : ('${activeOrder?.rawItems?[index].quantity ?? ''}'),
                             style: TextStyle(
                               color: AppConst.grey.withOpacity(0.6),
                               fontSize: SizeUtils.horizontalBlockSize * 4,
@@ -234,7 +253,9 @@ class ShopItemsScreen extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        '${order.rawItems?[index].quantity ?? ''}',
+                        (allorder!)
+                            ? ('${order?.rawItems?[index].quantity ?? ''}')
+                            : ('${activeOrder?.rawItems?[index].quantity ?? ''}'),
                         style: TextStyle(
                             color: AppConst.black.withOpacity(0.6),
                             fontWeight: FontWeight.w800,

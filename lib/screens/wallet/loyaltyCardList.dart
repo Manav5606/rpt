@@ -130,19 +130,67 @@ class ListViewChild extends StatelessWidget {
                   ),
                   if (storeSearchModel.storeType?.isNotEmpty ?? false)
                     if ((storeSearchModel.storeType ?? '') == 'online')
-                      Column(
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(StringContants.pickUp,
-                              style: AppStyles.BOLD_STYLE),
+                          Text("Pickup/", style: AppStyles.BOLD_STYLE),
                           Text(
-                            StringContants.delivery,
+                            "Delivery",
                             style: AppStyles.BOLD_STYLE_GREEN,
                           ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          (storeSearchModel.distance != null)
+                              ? Container(
+                                  margin: EdgeInsets.only(),
+                                  padding: EdgeInsets.all(1.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(color: AppConst.grey),
+                                  ),
+                                  child: Text(
+                                      "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km away",
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize * 3,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'Stag',
+                                          color: AppConst.darkGrey,
+                                          letterSpacing: 0.5)),
+                                )
+                              : SizedBox(),
                         ],
                       )
                     else
-                      Text(StringContants.pickUp, style: AppStyles.BOLD_STYLE),
+                      Row(
+                        children: [
+                          Text(StringContants.pickUp,
+                              style: AppStyles.BOLD_STYLE),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          (storeSearchModel.distance != null)
+                              ? Container(
+                                  margin: EdgeInsets.only(),
+                                  padding: EdgeInsets.all(1.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(color: AppConst.grey),
+                                  ),
+                                  child: Text(
+                                      "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km away",
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize * 3,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'Stag',
+                                          color: AppConst.darkGrey,
+                                          letterSpacing: 0.5)),
+                                )
+                              : SizedBox(),
+                        ],
+                      ),
                 ],
               ),
               Spacer(),

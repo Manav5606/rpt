@@ -107,10 +107,9 @@ class ListViewChildShimmer extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(StringContants.pickUp,
-                              style: AppStyles.BOLD_STYLE),
+                          Text("Pickup/", style: AppStyles.BOLD_STYLE),
                           Text(
-                            StringContants.delivery,
+                            "Delivery",
                             style: AppStyles.BOLD_STYLE_GREEN,
                           ),
                         ],
