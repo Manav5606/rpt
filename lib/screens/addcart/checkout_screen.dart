@@ -47,15 +47,25 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
   void finalPlaceOrder({PaymentSuccessResponse? response}) async {
     await _addCartController.finalPlaceOrder(
-      total: double.parse(_addCartController.getOrderConfirmPageDataModel.value?.data?.total?.toStringAsFixed(2) ?? ''),
+      order_type: "online",
+      total: double.parse(_addCartController
+              .getOrderConfirmPageDataModel.value?.data?.total
+              ?.toStringAsFixed(2) ??
+          ''),
       store: _addCartController.store.value,
       cartId: _addCartController.cartId.value,
       products: _addCartController.reviewCart.value?.data?.products,
       rawItem: _addCartController.reviewCart.value?.data?.rawItems,
+      inventories: _addCartController.reviewCart.value?.data?.inventories,
       deliveryTimeSlot: _addCartController.timeSlots.value,
-      walletAmount: _addCartController.reviewCart.value?.data?.walletAmount ?? 0,
-      deliveryFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.deliveryFee ?? 0,
-      packagingFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.packagingFee ?? 0,
+      walletAmount:
+          _addCartController.reviewCart.value?.data?.walletAmount ?? 0,
+      deliveryFee: _addCartController
+              .getOrderConfirmPageDataModel.value?.data?.deliveryFee ??
+          0,
+      packagingFee: _addCartController
+              .getOrderConfirmPageDataModel.value?.data?.packagingFee ??
+          0,
       razorPayPaymentId: response?.paymentId ?? '',
       razorPayOrderId: response?.orderId ?? '',
       razorPaySignature: response?.signature ?? '',
@@ -104,7 +114,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         actions: [
           Center(
             child: Padding(
-              padding: EdgeInsets.only(right: SizeUtils.horizontalBlockSize * 3),
+              padding:
+                  EdgeInsets.only(right: SizeUtils.horizontalBlockSize * 3),
               child: GestureDetector(
                 onTap: () {
                   Get.back();
@@ -150,11 +161,15 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
               child: SingleChildScrollView(
                 child: Obx(
                   () => Column(
-                    key: Key('builder ${_addCartController.selectExpendTile.value.toString()}'),
+                    key: Key(
+                        'builder ${_addCartController.selectExpendTile.value.toString()}'),
                     children: [
                       _buildPlayerModelList(
                         iconData: Icons.location_on_rounded,
-                        title: _addCartController.selectAddressHouse.value.isNotEmpty || _addCartController.selectAddress.value.isNotEmpty
+                        title: _addCartController
+                                    .selectAddressHouse.value.isNotEmpty ||
+                                _addCartController
+                                    .selectAddress.value.isNotEmpty
                             ? "${_addCartController.selectAddressHouse.value} ${_addCartController.selectAddress.value}"
                             : StringContants.addDeliveryAddresses,
                         bottomWidget: addressView(context),
@@ -165,16 +180,21 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                         iconData: Icons.account_balance_wallet_outlined,
                         title: StringContants.walletAmount,
                         bottomWidget: walletAmountView(context),
-                        isEnable: _addCartController.selectAddressHouse.value.isNotEmpty || _addCartController.selectAddress.value.isNotEmpty,
+                        isEnable: _addCartController
+                                .selectAddressHouse.value.isNotEmpty ||
+                            _addCartController.selectAddress.value.isNotEmpty,
                         key: 1,
                       ),
                       _buildPlayerModelList(
                         iconData: Icons.timer,
-                        title: _addCartController.deliveryMessage.value.isNotEmpty
-                            ? _addCartController.deliveryMessage.value
-                            : StringContants.chooseDeliveryTime,
+                        title:
+                            _addCartController.deliveryMessage.value.isNotEmpty
+                                ? _addCartController.deliveryMessage.value
+                                : StringContants.chooseDeliveryTime,
                         bottomWidget: timeSheetView(context),
-                        isEnable: _addCartController.selectAddressHouse.value.isNotEmpty || _addCartController.selectAddress.value.isNotEmpty,
+                        isEnable: _addCartController
+                                .selectAddressHouse.value.isNotEmpty ||
+                            _addCartController.selectAddress.value.isNotEmpty,
                         key: 2,
                       ),
                       _buildPlayerModelList(
@@ -182,7 +202,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                           title: StringContants.paymentMode,
                           bottomWidget: paymentMode(),
                           key: 3,
-                          isEnable: _addCartController.deliveryMessage.value.isNotEmpty),
+                          isEnable: _addCartController
+                              .deliveryMessage.value.isNotEmpty),
                       payView(),
                     ],
                   ),
@@ -195,10 +216,20 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   if (_addCartController.selectPaymentMode.value == 'paynow') {
                     await _addCartController.createRazorPayOrder(
                         storeId: _addCartController.store.value?.sId ?? '',
-                        amount: _addCartController.getOrderConfirmPageDataModel.value?.data?.total?.toDouble() ?? 00);
-                    if (_addCartController.createRazorpayResponseModel.value != null) {
-                      launchPayment(_addCartController.getOrderConfirmPageDataModel.value?.data?.total?.toInt() ?? 00,
-                          _addCartController.createRazorpayResponseModel.value?.orderId ?? '');
+                        amount: _addCartController
+                                .getOrderConfirmPageDataModel.value?.data?.total
+                                ?.toDouble() ??
+                            00);
+                    if (_addCartController.createRazorpayResponseModel.value !=
+                        null) {
+                      launchPayment(
+                          _addCartController.getOrderConfirmPageDataModel.value
+                                  ?.data?.total
+                                  ?.toInt() ??
+                              00,
+                          _addCartController
+                                  .createRazorpayResponseModel.value?.orderId ??
+                              '');
                     } else {
                       Get.showSnackbar(GetBar(
                         message: "failed to create razor order",
@@ -242,8 +273,10 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                             ),
                             child: Center(
                               child: Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 3, vertical: SizeUtils.verticalBlockSize * 1),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        SizeUtils.horizontalBlockSize * 3,
+                                    vertical: SizeUtils.verticalBlockSize * 1),
                                 child: Text(
                                   "\₹${_addCartController.getOrderConfirmPageDataModel.value?.data?.total.toString() ?? ''}",
                                   style: TextStyle(
@@ -283,7 +316,9 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: _addCartController.cartLocationModel.value?.addresses?.length ?? 0,
+          itemCount:
+              _addCartController.cartLocationModel.value?.addresses?.length ??
+                  0,
           itemBuilder: (context, index) {
             return Obx(
               () => GestureDetector(
@@ -300,7 +335,10 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                           IgnorePointer(
                             child: Radio(
                               value: true,
-                              groupValue: _addCartController.currentSelectValue.value == index && _addCartController.isSelectFirstAddress.value,
+                              groupValue: _addCartController
+                                          .currentSelectValue.value ==
+                                      index &&
+                                  _addCartController.isSelectFirstAddress.value,
                               onChanged: (value) {},
                             ),
                           ),
@@ -309,15 +347,21 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                               "${_addCartController.cartLocationModel.value?.addresses?[index].house ?? ''} ${_addCartController.cartLocationModel.value?.addresses?[index].address ?? ''}",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: AppConst.grey, fontWeight: FontWeight.w400, fontSize: SizeUtils.horizontalBlockSize * 4),
+                              style: TextStyle(
+                                  color: AppConst.grey,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4),
                             ),
                           ),
                         ],
                       ),
-                      if (_addCartController.currentSelectValue.value == index && _addCartController.isSelectFirstAddress.value)
+                      if (_addCartController.currentSelectValue.value ==
+                              index &&
+                          _addCartController.isSelectFirstAddress.value)
                         button(
                             onTap: () {
-                              selectAddress(_addCartController.cartLocationModel.value?.addresses?[index]);
+                              selectAddress(_addCartController
+                                  .cartLocationModel.value?.addresses?[index]);
                             },
                             text: "Choose Address")
                       else
@@ -332,7 +376,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
             return Divider(height: 0);
           },
         ),
-        Obx(() => _addCartController.cartLocationModel.value?.storeAddress != null
+        Obx(() => _addCartController.cartLocationModel.value?.storeAddress !=
+                null
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -357,7 +402,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                 child: IgnorePointer(
                                   child: Radio(
                                     value: true,
-                                    groupValue: !_addCartController.isSelectFirstAddress.value,
+                                    groupValue: !_addCartController
+                                        .isSelectFirstAddress.value,
                                     onChanged: (value) {},
                                   ),
                                 ),
@@ -367,7 +413,11 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                   "${_addCartController.cartLocationModel.value?.storeAddress?.house ?? ''} ${_addCartController.cartLocationModel.value?.storeAddress?.address ?? ''}",
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: AppConst.grey, fontWeight: FontWeight.w400, fontSize: SizeUtils.horizontalBlockSize * 4),
+                                  style: TextStyle(
+                                      color: AppConst.grey,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4),
                                 ),
                               ),
                             ],
@@ -375,7 +425,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                           if (!_addCartController.isSelectFirstAddress.value)
                             button(
                                 onTap: () {
-                                  selectAddress(_addCartController.cartLocationModel.value?.storeAddress);
+                                  selectAddress(_addCartController
+                                      .cartLocationModel.value?.storeAddress);
                                 },
                                 text: "Choose Address")
                           else
@@ -402,11 +453,15 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           //   );
           // },
           onTap: () async {
-            Get.toNamed(AppRoutes.NewLocationScreen, arguments: {"isFalse": false});
+            Get.toNamed(AppRoutes.NewLocationScreen,
+                arguments: {"isFalse": false});
           },
           child: Text(
             StringContants.addAddresses,
-            style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4.5, fontWeight: FontWeight.bold, color: AppConst.green),
+            style: TextStyle(
+                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                fontWeight: FontWeight.bold,
+                color: AppConst.green),
           ),
         ),
       ],
@@ -418,7 +473,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       _addCartController.selectAddress.value = addresses?.address ?? '';
       _addCartController.selectAddressHouse.value = addresses?.house ?? '';
       _addCartController.selectAddressIndex.value = addresses;
-      await _addCartController.selectCartLocation(addresses: addresses, cardId: _addCartController.cartId.value);
+      await _addCartController.selectCartLocation(
+          addresses: addresses, cardId: _addCartController.cartId.value);
       await _addCartController.getCartPageInformation(
         storeId: _addCartController.store.value?.sId ?? '',
       );
@@ -471,7 +527,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         Row(
           children: [
             Expanded(child: Text("Wallet Amount")),
-            Text("${_addCartController.getCartPageInformationModel.value?.data?.walletAmount ?? 0}"),
+            Text(
+                "${_addCartController.getCartPageInformationModel.value?.data?.walletAmount ?? 0}"),
           ],
         ),
         Obx(
@@ -483,7 +540,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   value: "yes",
                   groupValue: _addCartController.selectWalletMode.value,
                   onChanged: (value) {
-                    _addCartController.selectWalletMode.value = value.toString();
+                    _addCartController.selectWalletMode.value =
+                        value.toString();
                   },
                 ),
               ),
@@ -493,7 +551,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   value: "no",
                   groupValue: _addCartController.selectWalletMode.value,
                   onChanged: (value) {
-                    _addCartController.selectWalletMode.value = value.toString();
+                    _addCartController.selectWalletMode.value =
+                        value.toString();
                   },
                 ),
               ),
@@ -506,8 +565,14 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   storeId: _addCartController.store.value?.sId ?? '',
                   distance: 0,
                   products: _addCartController.reviewCart.value?.data?.products,
+                  inventories:
+                      _addCartController.reviewCart.value?.data?.inventories,
                   walletAmount:
-                      _addCartController.selectWalletMode.value == 'true' ? _addCartController.reviewCart.value?.data?.walletAmount ?? 0.0 : 0);
+                      _addCartController.selectWalletMode.value == 'true'
+                          ? _addCartController
+                                  .reviewCart.value?.data?.walletAmount ??
+                              0.0
+                          : 0);
               _addCartController.selectExpendTile.value = 2;
             },
             text: "Choose Wallet")
@@ -536,11 +601,19 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           onTap: () {
             if (_addCartController.selectTimeSheetIndex.value == 1) {
               _addCartController.timeSlots.value = _addCartController
-                  .getCartPageInformationModel.value?.data?.deliverySlots?[int.parse(_addCartController.currentDay.value)].slots?.first;
-              _addCartController.deliveryMessage.value = _addCartController.displayHour.value;
+                  .getCartPageInformationModel
+                  .value
+                  ?.data
+                  ?.deliverySlots?[
+                      int.parse(_addCartController.currentDay.value)]
+                  .slots
+                  ?.first;
+              _addCartController.deliveryMessage.value =
+                  _addCartController.displayHour.value;
               _addCartController.selectExpendTile.value = 3;
             } else {
-              _addCartController.deliveryMessage.value = "${_addCartController.timeZoneCustom.value}  ${_addCartController.timeTitleCustom.value}";
+              _addCartController.deliveryMessage.value =
+                  "${_addCartController.timeZoneCustom.value}  ${_addCartController.timeTitleCustom.value}";
               _addCartController.selectExpendTile.value = 3;
             }
           },
@@ -554,21 +627,41 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
     return Column(
       children: [
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow('Total Amount', _addCartController.getOrderConfirmPageDataModel.value?.data?.previousTotalAmount.toString() ?? '0'),
+        bottomRow(
+            'Total Amount',
+            _addCartController.getOrderConfirmPageDataModel.value?.data
+                    ?.previousTotalAmount
+                    .toString() ??
+                '0'),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         Divider(
           height: 0,
         ),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow('Gst Amount', _addCartController.getOrderConfirmPageDataModel.value?.data?.totalGstAmount.toString() ?? '0'),
+        bottomRow(
+            'Gst Amount',
+            _addCartController
+                    .getOrderConfirmPageDataModel.value?.data?.totalGstAmount
+                    .toString() ??
+                '0'),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         Divider(
           height: 0,
         ),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow('Packaging Fee', _addCartController.getOrderConfirmPageDataModel.value?.data?.packagingFee.toString() ?? '0'),
+        bottomRow(
+            'Packaging Fee',
+            _addCartController
+                    .getOrderConfirmPageDataModel.value?.data?.packagingFee
+                    .toString() ??
+                '0'),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow('Wallet Amount', _addCartController.getCartPageInformationModel.value?.data?.walletAmount.toString() ?? '0'),
+        bottomRow(
+            'Wallet Amount',
+            _addCartController
+                    .getCartPageInformationModel.value?.data?.walletAmount
+                    .toString() ??
+                '0'),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
       ],
     );
@@ -584,7 +677,10 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           height: SizeUtils.horizontalBlockSize * 16,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: _addCartController.selectTimeSheetIndex.value == 1 ? AppConst.black : AppConst.lightGrey),
+            border: Border.all(
+                color: _addCartController.selectTimeSheetIndex.value == 1
+                    ? AppConst.black
+                    : AppConst.lightGrey),
           ),
           child: Padding(
             padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
@@ -597,11 +693,13 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   children: [
                     Text(
                       _addCartController.displayHour.value,
-                      style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4),
+                      style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 4),
                     ),
                     Text(
                       "Standard",
-                      style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4),
+                      style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 4),
                     ),
                   ],
                 )
@@ -618,11 +716,15 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       height: SizeUtils.horizontalBlockSize * 16,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: _addCartController.selectTimeSheetIndex.value == 2 ? AppConst.black : AppConst.lightGrey),
+        border: Border.all(
+            color: _addCartController.selectTimeSheetIndex.value == 2
+                ? AppConst.black
+                : AppConst.lightGrey),
       ),
       child: Padding(
         padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
-        child: _addCartController.timeTitleCustom.value.isNotEmpty || _addCartController.timeZoneCustom.value.isNotEmpty
+        child: _addCartController.timeTitleCustom.value.isNotEmpty ||
+                _addCartController.timeZoneCustom.value.isNotEmpty
             ? GestureDetector(
                 onTap: () {
                   _addCartController.selectTimeSheetIndex.value = 2;
@@ -647,7 +749,11 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                 "${_addCartController.timeTitleCustom.value}",
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: AppConst.black, fontWeight: FontWeight.w600, fontSize: SizeUtils.horizontalBlockSize * 4),
+                                style: TextStyle(
+                                    color: AppConst.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4),
                               ),
                               SizedBox(
                                 width: SizeUtils.horizontalBlockSize * 2,
@@ -656,7 +762,11 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                 "${_addCartController.timeZoneCustom.value}",
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: AppConst.black, fontWeight: FontWeight.w600, fontSize: SizeUtils.horizontalBlockSize * 4),
+                                style: TextStyle(
+                                    color: AppConst.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4),
                               ),
                             ],
                           ),
@@ -669,7 +779,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                             },
                             child: Text(
                               "Change",
-                              style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4),
+                              style: TextStyle(
+                                  fontSize: SizeUtils.horizontalBlockSize * 4),
                             ),
                           ),
                         ],
@@ -690,12 +801,14 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                       SizedBox(width: SizeUtils.horizontalBlockSize * 2),
                       Text(
                         "Schedule a time",
-                        style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4),
+                        style: TextStyle(
+                            fontSize: SizeUtils.horizontalBlockSize * 4),
                       ),
                       SizedBox(
                         width: 2.w,
                       ),
-                      Icon(Icons.arrow_forward_ios, size: SizeUtils.horizontalBlockSize * 4),
+                      Icon(Icons.arrow_forward_ios,
+                          size: SizeUtils.horizontalBlockSize * 4),
                     ],
                   ),
                 ),
@@ -727,7 +840,11 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   }
 
   Widget _buildPlayerModelList(
-      {required IconData iconData, required String title, required int key, required Widget bottomWidget, required bool isEnable}) {
+      {required IconData iconData,
+      required String title,
+      required int key,
+      required Widget bottomWidget,
+      required bool isEnable}) {
     return Card(
       child: IgnorePointer(
         ignoring: !isEnable,
@@ -787,7 +904,9 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           child: Center(
               child: Text(
             text,
-            style: TextStyle(color: AppConst.white, fontSize: SizeUtils.horizontalBlockSize * 4),
+            style: TextStyle(
+                color: AppConst.white,
+                fontSize: SizeUtils.horizontalBlockSize * 4),
           )),
         ),
       ),

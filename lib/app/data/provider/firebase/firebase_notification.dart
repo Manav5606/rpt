@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/data/provider/graphql/queries.dart';
+import 'package:customer_app/app/data/provider/graphql/request.dart';
+import 'package:customer_app/constants/app_const.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -7,11 +10,12 @@ import 'package:customer_app/models/received_notification.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:sizer/sizer.dart';
 
 class FireBaseNotification {
   static final FireBaseNotification _fireBaseNotification =
       FireBaseNotification.init();
-
+  static String? fcmToken;
   factory FireBaseNotification() {
     return _fireBaseNotification;
   }
@@ -51,9 +55,34 @@ class FireBaseNotification {
 
     iOSPermission(firebaseMessaging);
 
-    await firebaseMessaging.getToken().then((token) {
-      log('TOKEN to be Registered: $token');
-    });
+    Future<bool> addFirebaseToken(String? firebase_token) async {
+      log("inside the box");
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.addFirebaseToken,
+          variables: {
+            'firebase_token': firebase_token,
+          });
+      log("resultfcm:$result");
+      if (result['error'] == false) {
+        log('fcm token updated successfully');
+        return true;
+      } else {
+        log('fcm token not upload to db');
+        return false;
+      }
+    }
+
+    fcmToken = await firebaseMessaging.getToken();
+
+    if (fcmToken != null && fcmToken!.isNotEmpty) {
+      addFirebaseToken(fcmToken);
+    }
+    log('TOKEN to be Registered: $fcmToken');
+
+    // await firebaseMessaging.getToken().then((token) {
+    //   log('TOKEN to be Registered: $token');
+    // }
+    // );
 
     // Fired when app is coming from a terminated state
     var initialMessage = await FirebaseMessaging.instance.getInitialMessage();
@@ -135,11 +164,31 @@ class FireBaseNotification {
     /// Local Notification
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
-    // await flutterLocalNotificationsPlugin.show(
-    //     0, notification!.title, notification.body, platformChannelSpecifics,
-    //     payload: notification.title);
+    await flutterLocalNotificationsPlugin.show(
+        0, notification!.title, notification.body, platformChannelSpecifics,
+        payload: notification.title);
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-      content: Text(notification?.title ?? ''),
+      backgroundColor: AppConst.transparent,
+      behavior: SnackBarBehavior.floating,
+      duration: Duration(seconds: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      // margin: EdgeInsets.only(bottom: 75.h, right: 2.w, left: 2.w),
+      content: Container(
+          height: 7.h,
+          decoration: BoxDecoration(
+              color: AppConst.darkGrey, borderRadius: BorderRadius.circular(8)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(notification.title ?? ''),
+                Text(notification.body ?? ''),
+              ],
+            ),
+          )),
     ));
   }
 

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/data/model/order_model.dart' as order_model;
+import 'package:customer_app/app/ui/pages/search/models/GetProductsByNameModel.dart';
 import 'package:customer_app/screens/addcart/models/cartLocation_model.dart';
 import 'package:customer_app/screens/addcart/models/cartPageInfo_model.dart';
 import 'package:customer_app/screens/addcart/models/create_razorpay_model.dart';
@@ -14,9 +15,11 @@ import '../models/review_cart_model.dart';
 class AddCartService {
   static Future<Cart?> getReviewCartData(String cartId) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.reviewCart, variables: {
-        'cart_id': cartId,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.reviewCart,
+          variables: {
+            'cart_id': cartId,
+          });
       log("result------${result}");
       if (result['error'] == false) {
         final Cart _reviewCart = Cart.fromJson(result);
@@ -28,14 +31,18 @@ class AddCartService {
     }
   }
 
-  static Future<GetCartPageInformation?> getCartPageInformation(String storeId) async {
+  static Future<GetCartPageInformation?> getCartPageInformation(
+      String storeId) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getCartPageInformation, variables: {
-        'store_id': storeId,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getCartPageInformation,
+          variables: {
+            'store_id': storeId,
+          });
       log("getCartPageInformation------${result}");
       // if (result['error'] == false) {
-      final GetCartPageInformation getCartPageInformation = GetCartPageInformation.fromJson(result);
+      final GetCartPageInformation getCartPageInformation =
+          GetCartPageInformation.fromJson(result);
       return getCartPageInformation;
       // }
     } catch (e, st) {
@@ -44,15 +51,19 @@ class AddCartService {
     }
   }
 
-  static Future<CartLocationModel?> getCartLocation(String storeId, String cartId) async {
+  static Future<CartLocationModel?> getCartLocation(
+      String storeId, String cartId) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getCartLocation, variables: {
-        'store_id': storeId,
-        'cart_id': cartId,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getCartLocation,
+          variables: {
+            'store_id': storeId,
+            'cart_id': cartId,
+          });
       log("getCartLocation------${result}");
       if (result['error'] == false) {
-        final CartLocationModel cartLocationModel = CartLocationModel.fromJson(result);
+        final CartLocationModel cartLocationModel =
+            CartLocationModel.fromJson(result);
         log("cartLocationModel------${cartLocationModel.toJson()}");
         return cartLocationModel;
       }
@@ -62,13 +73,16 @@ class AddCartService {
     }
   }
 
-  static Future<void> selectCartLocation(String cardId, Addresses addresses) async {
+  static Future<void> selectCartLocation(
+      String cardId, Addresses addresses) async {
     try {
       log('addresses : ${addresses.toJson()}');
-      final result = await GraphQLRequest.query(query: GraphQLQueries.selectCartLocation, variables: {
-        'cart_id': cardId,
-        'address': addresses,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.selectCartLocation,
+          variables: {
+            'cart_id': cardId,
+            'address': addresses,
+          });
       log("selectCartLocation------${result}");
     } catch (e, st) {
       log("selectCartLocation $e , $st");
@@ -77,17 +91,24 @@ class AddCartService {
   }
 
   static Future<GetOrderConfirmPageData?> getOrderConfirmPageData(
-      {required String storeId, required double distance, required double walletAmount, var products}) async {
+      {required String storeId,
+      required double distance,
+      required double walletAmount,
+      var products,
+      var inventories}) async {
     try {
       final variables = {
         'store': storeId,
         'products': List.from(products.map((Products e) => e.toJson())),
         'distance': distance,
         'wallet_amount': walletAmount,
+        'inventories': List.from(inventories.map((Products e) => e.toJson())),
       };
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getOrderConfirmPageData, variables: variables);
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getOrderConfirmPageData, variables: variables);
       if (result['error'] == false) {
-        final GetOrderConfirmPageData getOrderConfirmPageData = GetOrderConfirmPageData.fromJson(result);
+        final GetOrderConfirmPageData getOrderConfirmPageData =
+            GetOrderConfirmPageData.fromJson(result);
         return getOrderConfirmPageData;
       }
     } catch (e, st) {
@@ -96,15 +117,18 @@ class AddCartService {
     }
   }
 
-  static Future<CreateRazorpayResponse?> createRazorPayOrder({required String storeId, required double amount}) async {
+  static Future<CreateRazorpayResponse?> createRazorPayOrder(
+      {required String storeId, required double amount}) async {
     try {
       final variables = {
         'store_id': storeId,
         'amount': amount,
       };
-      final result = await GraphQLRequest.query(query: GraphQLQueries.createRazorPayOrder, variables: variables);
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.createRazorPayOrder, variables: variables);
       if (result['error'] == false) {
-        final CreateRazorpayResponse createRazorpayResponse = CreateRazorpayResponse.fromJson(result['data']);
+        final CreateRazorpayResponse createRazorpayResponse =
+            CreateRazorpayResponse.fromJson(result['data']);
         return createRazorpayResponse;
       }
     } catch (e, st) {
@@ -114,10 +138,12 @@ class AddCartService {
   }
 
   static Future<order_model.OrderData> finalPlaceOrder({
-    required Store store,
+    required store,
     required var rawItem,
     required var products,
+    required var inventories,
     required double total,
+    required String order_type,
     required String cartId,
     required String razorPayOrderId,
     required String razorPaySignature,
@@ -135,6 +161,8 @@ class AddCartService {
         'order_type': store.storeType,
         'products': List.from(products.map((e) => e.toJson())),
         'rawitems': List.from(rawItem.map((e) => e.toJson())),
+        'inventories': List.from(inventories.map((e) => e.toJson())),
+        'order_type': order_type,
         'storeId': store.sId,
         'total': total,
         'delivery_slot': deliveryTimeSlot?.toJson(),
@@ -150,9 +178,11 @@ class AddCartService {
         'lng': lng,
         'cartID': cartId,
       };
-      final result = await GraphQLRequest.query(query: GraphQLQueries.finalPlaceOrder, variables: variables);
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.finalPlaceOrder, variables: variables);
       if (result['error'] == false) {
-        final order_model.OrderData _getAllActiveOrders = order_model.OrderData.fromJson(result['data']);
+        final order_model.OrderData _getAllActiveOrders =
+            order_model.OrderData.fromJson(result['data']);
         return _getAllActiveOrders;
       }
       return result['error'];
@@ -175,7 +205,8 @@ class AddCartService {
         'razor_order_id': razorPayOrderId,
         'razor_payment_id': razorPayPaymentId,
       };
-      final result = await GraphQLRequest.query(query: GraphQLQueries.placeOrderActive, variables: variables);
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.placeOrderActive, variables: variables);
 
       return result['error'];
     } catch (e, st) {

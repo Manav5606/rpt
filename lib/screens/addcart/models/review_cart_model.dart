@@ -34,7 +34,12 @@ class Data {
   List<Products>? inventories;
   List<RawItems>? rawItems;
 
-  Data({this.total, this.addresses, this.walletAmount, this.products, this.inventories});
+  Data(
+      {this.total,
+      this.addresses,
+      this.walletAmount,
+      this.products,
+      this.inventories});
 
   Data.fromJson(Map<String, dynamic> json) {
     total = json['total'];
@@ -96,7 +101,15 @@ class Addresses {
   bool? selected;
   Location? location;
 
-  Addresses({this.title, this.house, this.apartment, this.directionToReach, this.address, this.distance, this.selected, this.location});
+  Addresses(
+      {this.title,
+      this.house,
+      this.apartment,
+      this.directionToReach,
+      this.address,
+      this.distance,
+      this.selected,
+      this.location});
 
   Addresses.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -107,7 +120,9 @@ class Addresses {
     address = json['address'];
     distance = json['distance'];
     selected = json['selected'];
-    location = json['location'] != null ? new Location.fromJson(json['location']) : null;
+    location = json['location'] != null
+        ? new Location.fromJson(json['location'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -175,7 +190,15 @@ class Products {
   num? cashback;
   num? gstAmount;
 
-  Products({this.sId, this.status, this.name, this.mrp, this.sellingPrice, this.quantity, this.cashback, this.gstAmount});
+  Products(
+      {this.sId,
+      this.status,
+      this.name,
+      this.mrp,
+      this.sellingPrice,
+      this.quantity,
+      this.cashback,
+      this.gstAmount});
 
   Products.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -201,3 +224,39 @@ class Products {
     return data;
   }
 }
+// class Inventory {
+//   String? sId;
+//   bool? status;
+//   String? name;
+//   num? mrp;
+//   num? sellingPrice;
+//   RxInt? quantity = 0.obs;
+//   num? cashback;
+//   num? gstAmount;
+
+//   Inventory({this.sId, this.status, this.name, this.mrp, this.sellingPrice, this.quantity, this.cashback, this.gstAmount});
+
+//   Inventory.fromJson(Map<String, dynamic> json) {
+//     sId = json['_id'];
+//     status = json['status'];
+//     name = json['name'];
+//     mrp = json['mrp'];
+//     sellingPrice = json['selling_price'];
+//     quantity?.value = json['quantity'];
+//     cashback = json['cashback'];
+//     gstAmount = json['gst_amount'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['_id'] = this.sId;
+//     // data['status'] = this.status;
+//     data['name'] = this.name;
+//     data['mrp'] = this.mrp;
+//     data['selling_price'] = this.sellingPrice;
+//     data['quantity'] = this.quantity?.value;
+//     data['cashback'] = this.cashback;
+//     data['gst_amount'] = this.gstAmount;
+//     return data;
+//   }
+// }

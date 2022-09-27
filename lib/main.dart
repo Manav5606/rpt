@@ -28,12 +28,13 @@ List<CameraDescription> cameras = [];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await FireBaseNotification().setUpLocalNotification();
   await GetStorage.init();
-  await Firebase.initializeApp();
+
   await FirebaseRemoteConfigUtils().initMethod();
   await HiveHelper.init();
-  await FCMHandler.init();
+  // await FCMHandler.init();
   // DynamicLinkHelper.init();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

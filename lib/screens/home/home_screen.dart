@@ -416,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen>
                           // crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Container(
-                              height: 12.h,
+                              height: 13.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(10),

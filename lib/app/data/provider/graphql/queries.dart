@@ -682,8 +682,8 @@ mutation ($token: String) {
   static final addFirebaseToken = new GraphQLQuery(
     name: 'addFirebaseTokenToCustomer',
     query: r'''
-    mutation{
-  addFirebaseTokenToCustomer(firebase_token :$token){
+    mutation($firebase_token: String ){
+  addFirebaseTokenToCustomer(firebase_token :$firebase_token){
     msg
     error
   }
@@ -1468,12 +1468,13 @@ data{
   static final getOrderConfirmPageData = new GraphQLQuery(
     name: 'getOrderConfirmPageData',
     query: r'''
-    query($store: ID  $products: [OrderProduct] $distance: Int $wallet_amount :Int){
+    query($store: ID  $products: [OrderProduct] $distance: Int $wallet_amount :Int $inventories: [OrderInventory]){
       getOrderConfirmPageData(
         store: $store
         products: $products
         distance: $distance
         wallet_amount: $wallet_amount
+        inventories: $inventories
       ){
         error
         msg
@@ -1726,11 +1727,12 @@ data{
       $delivery_slot: SingleDeliverySlotInput
       $products: [OrderProduct] 
       $rawitems: [OrderRawDataInput] 
+      $inventories: [OrderInventory]
       $total: Float 
       $cashback: Float 
       $lat: Float 
       $lng: Float 
-      $order_type: String 
+      $order_type: String
       $address: String
       $razor_order_id: String
       $razor_signature: String
@@ -1744,6 +1746,7 @@ data{
         cartID: $cartID
         products: $products
         rawitems: $rawitems
+        inventories: $inventories
         total: $total
         cashback_percentage: $cashback
         wallet_amount: $wallet_amount
