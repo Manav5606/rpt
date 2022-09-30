@@ -337,10 +337,13 @@ class MoreStoreController extends GetxController {
   }
 
   @override
-  Future<void> onInit() async {
+  onInit() {
     // TODO: implement onInit
     super.onInit();
+    // getAndSetData();
+  }
 
+  Future<void> getAndSetData() async {
     await Future.delayed(Duration(seconds: 1));
     final box = Boxes.getCommonBoolBox();
     final box2 = Boxes.getCommonBox();

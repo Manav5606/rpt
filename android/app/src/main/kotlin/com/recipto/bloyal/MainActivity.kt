@@ -1,0 +1,6 @@
+package com.recipto.bloyal
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}

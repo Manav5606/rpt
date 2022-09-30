@@ -14,7 +14,6 @@ import 'package:customer_app/app/data/repository/sigin_in_repository.dart';
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/routes/app_list.dart';
-import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/utils/utils.dart';
 import 'package:get/get.dart';
 
@@ -114,11 +113,13 @@ class SignInScreenController extends GetxController {
 
   Future submitPhoneNumber() async {
     try {
+      log("aavoooo :2");
       isLoading.value = true;
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: "+91${phoneNumberController.text}",
         timeout: Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) {
+          log("aavoooo :4");
           FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
             if (value.user != null) {
               log("Verification Complete successful With Mobile number");
@@ -144,6 +145,7 @@ class SignInScreenController extends GetxController {
         },
       );
     } catch (e) {
+      log("aavoooo :3");
       print(e);
     }
   }

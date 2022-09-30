@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -511,44 +513,44 @@ class EnterNumberScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              // height: 9.h,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: AppConst.black, width: 1.5)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 0.5.h),
-                    child: Text(
-                      "Referral code",
-                      style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    // height: 9.h,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: AppConst.black, width: 1.5)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 0.5.h),
+                          child: Text(
+                            "Referral code",
+                            style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        TextField(
+                          style: TextStyle(fontSize: 14.sp),
+                          textAlign: TextAlign.start,
+                          cursorColor: AppConst.kPrimaryColor,
+                          maxLength: 10,
+                          controller: _signInController.referralController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: InputBorder.none,
+                            hintText: 'Enter Referral code',
+                            contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                            hintTextDirection: TextDirection.ltr,
+                            counterText: "",
+                          ),
+                          onChanged: (value) {
+                            _signInController.referral.value = value;
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  TextField(
-                    style: TextStyle(fontSize: 14.sp),
-                    textAlign: TextAlign.start,
-                    cursorColor: AppConst.kPrimaryColor,
-                    maxLength: 10,
-                    controller: _signInController.referralController,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: InputBorder.none,
-                      hintText: 'Enter Referral code',
-                      contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                      hintTextDirection: TextDirection.ltr,
-                      counterText: "",
-                    ),
-                    onChanged: (value) {
-                      _signInController.referral.value = value;
-                    },
-                  ),
-                ],
-              ),
-            ),
                   SizedBox(
                     height: 2.h,
                   ),
@@ -556,7 +558,13 @@ class EnterNumberScreen extends StatelessWidget {
                     () => GestureDetector(
                         onTap: (_signInController.phoneNumber.value.length == 10)
                             ? () {
-                                _signInController.submitPhoneNumber();
+                                log("aavoooo :0");
+                                try {
+                                  _signInController.submitPhoneNumber();
+                                } catch (e) {
+                                  print(e);
+                                }
+                                log("aavoooo :1");
                               }
                             : null,
                         child: BottomWideButton(
