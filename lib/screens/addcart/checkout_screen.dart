@@ -278,7 +278,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                         SizeUtils.horizontalBlockSize * 3,
                                     vertical: SizeUtils.verticalBlockSize * 1),
                                 child: Text(
-                                  "\₹${_addCartController.getOrderConfirmPageDataModel.value?.data?.total.toString() ?? ''}",
+                                  "\u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.total.toString() ?? ''}",
                                   style: TextStyle(
                                     color: AppConst.white,
                                     fontSize: SizeUtils.horizontalBlockSize * 3,
@@ -629,10 +629,10 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         bottomRow(
             'Total Amount',
-            _addCartController.getOrderConfirmPageDataModel.value?.data
-                    ?.previousTotalAmount
-                    .toString() ??
-                '0'),
+            (_addCartController.getOrderConfirmPageDataModel.value?.data
+                        ?.previousTotalAmount ??
+                    '0')
+                .toString()),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         Divider(
           height: 0,
@@ -640,10 +640,10 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         bottomRow(
             'Gst Amount',
-            _addCartController
-                    .getOrderConfirmPageDataModel.value?.data?.totalGstAmount
-                    .toString() ??
-                '0'),
+            (_addCartController.getOrderConfirmPageDataModel.value?.data
+                        ?.totalGstAmount ??
+                    '0')
+                .toString()),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         Divider(
           height: 0,
@@ -651,17 +651,17 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         bottomRow(
             'Packaging Fee',
-            _addCartController
-                    .getOrderConfirmPageDataModel.value?.data?.packagingFee
-                    .toString() ??
-                '0'),
+            (_addCartController.getOrderConfirmPageDataModel.value?.data
+                        ?.packagingFee ??
+                    '0')
+                .toString()),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
         bottomRow(
             'Wallet Amount',
-            _addCartController
-                    .getCartPageInformationModel.value?.data?.walletAmount
-                    .toString() ??
-                '0'),
+            (_addCartController.getCartPageInformationModel.value?.data
+                        ?.walletAmount ??
+                    '0')
+                .toString()),
         SizedBox(height: SizeUtils.horizontalBlockSize * 2),
       ],
     );

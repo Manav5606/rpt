@@ -156,8 +156,8 @@ class _HomeScreenState extends State<HomeScreen>
                               dynamic value = Get.to(AddressModel(
                                 isHomeScreen: true,
                               ));
-                              if (Constants.isAbleToCallApi)
-                                await _homeController.getAllCartsData();
+                              // if (Constants.isAbleToCallApi)
+                              //   await _homeController.getAllCartsData();
                             },
                             isRedDot: _homeController.getAllCartsModel.value
                                         ?.cartItemsTotal !=
@@ -165,6 +165,11 @@ class _HomeScreenState extends State<HomeScreen>
                                 ? true
                                 : false,
                             address: _homeController.userAddress.value,
+                            balance: (_myAccountController.user.balance ?? 0),
+                            onTapWallet: () {
+                              Get.toNamed(AppRoutes.Wallet);
+                            },
+                            isHomeScreen: true,
                           ),
                         ),
                         SizedBox(
