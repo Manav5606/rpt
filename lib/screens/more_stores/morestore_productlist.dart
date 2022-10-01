@@ -76,7 +76,9 @@ class _StoreScreenState extends State<MoreStoreProductScreen> {
           activeColorSecondary: AppConst.green,
           inactiveColorPrimary: AppConst.grey),
       PersistentBottomNavBarItem(
-          icon: isGrocery ? Icon(Icons.chat_bubble_outlined) : Icon(Icons.shopping_cart),
+          icon: isGrocery
+              ? Icon(Icons.chat_bubble_outlined)
+              : Icon(Icons.shopping_cart),
           title: isGrocery ? "Chat Order" : "Fresh Store",
           activeColorPrimary: AppConst.kSecondaryColor,
           activeColorSecondary: AppConst.green,
@@ -105,7 +107,9 @@ class MoreStoreProductView extends StatelessWidget {
                 floating: true,
                 backgroundColor: Colors.green[600],
                 title: (innerBoxIsScrolled)
-                    ? CircleAvatar(radius: SizeUtils.horizontalBlockSize * 3.82, child: Image.asset("assets/images/image4.png"))
+                    ? CircleAvatar(
+                        radius: SizeUtils.horizontalBlockSize * 3.82,
+                        child: Image.asset("assets/images/image4.png"))
                     : Text(""),
                 leading: IconButton(
                   onPressed: () {
@@ -125,21 +129,36 @@ class MoreStoreProductView extends StatelessWidget {
                         Get.toNamed(
                           AppRoutes.CartReviewScreen,
                           arguments: {
-                            'logo': _moreStoreController.getStoreDataModel.value?.data?.store?.logo,
-                            'storeName': _moreStoreController.getStoreDataModel.value?.data?.store?.name,
-                            'totalCount': _moreStoreController.addToCartModel.value?.totalItemsCount.toString() ?? "",
+                            'logo': _moreStoreController
+                                .getStoreDataModel.value?.data?.store?.logo,
+                            'storeName': _moreStoreController
+                                .getStoreDataModel.value?.data?.store?.name,
+                            'totalCount': _moreStoreController
+                                    .addToCartModel.value?.totalItemsCount
+                                    .toString() ??
+                                "",
                           },
                         );
-                        await _addCartController.getReviewCartData(cartId: _moreStoreController.addToCartModel.value?.sId ?? "");
+                        await _addCartController.getReviewCartData(
+                            cartId: _moreStoreController
+                                    .addToCartModel.value?.sId ??
+                                "");
                         // await _addCartController.getCartPageInformation(storeId: _moreStoreController.addToCartModel.value?.store ?? "");
                         await _addCartController.getCartLocation(
-                            storeId: _moreStoreController.storeId.value, cartId: _moreStoreController.addToCartModel.value?.sId ?? "");
-                        _addCartController.cartId.value = _moreStoreController.addToCartModel.value?.sId ?? "";
+                            storeId: _moreStoreController.storeId.value,
+                            cartId: _moreStoreController
+                                    .addToCartModel.value?.sId ??
+                                "");
+                        _addCartController.cartId.value =
+                            _moreStoreController.addToCartModel.value?.sId ??
+                                "";
                         if (_addCartController.store.value?.sId == null) {
-                          _addCartController.store.value?.sId = _moreStoreController.storeId.value;
+                          _addCartController.store.value?.sId =
+                              _moreStoreController.storeId.value;
                         }
                       },
-                      count: "${_moreStoreController.addToCartModel.value?.totalItemsCount ?? 0}",
+                      count:
+                          "${_moreStoreController.addToCartModel.value?.totalItemsCount ?? 0}",
                     ),
                   ),
                 ],
@@ -155,8 +174,12 @@ class MoreStoreProductView extends StatelessWidget {
                       Obx(
                         () => CircleAvatar(
                           radius: SizeUtils.horizontalBlockSize * 3.82,
-                          child: (_moreStoreController.getStoreDataModel.value?.data?.store?.logo?.isNotEmpty ?? false)
-                              ? Image.network(_moreStoreController.getStoreDataModel.value!.data!.store!.logo.toString())
+                          child: (_moreStoreController.getStoreDataModel.value
+                                      ?.data?.store?.logo?.isNotEmpty ??
+                                  false)
+                              ? Image.network(_moreStoreController
+                                  .getStoreDataModel.value!.data!.store!.logo
+                                  .toString())
                               : Image.asset("assets/images/image4.png"),
                         ),
                       ),
@@ -165,21 +188,28 @@ class MoreStoreProductView extends StatelessWidget {
                       ),
                       Obx(
                         () => Text(
-                          _moreStoreController.getStoreDataModel.value?.data?.store?.name.toString() ?? "",
-                          style: TextStyle(color: Colors.white, fontSize: SizeUtils.horizontalBlockSize * 4),
+                          _moreStoreController
+                                  .getStoreDataModel.value?.data?.store?.name
+                                  .toString() ??
+                              "",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: SizeUtils.horizontalBlockSize * 4),
                         ),
                       ),
                       SizedBox(
-                        height: 1.5.h,
+                        height: 1.h,
                       ),
                       InkWell(
                         onTap: () {
-                          Get.toNamed(AppRoutes.InStoreSearch, arguments: {'storeId': _moreStoreController.storeId.value});
+                          Get.toNamed(AppRoutes.InStoreSearch, arguments: {
+                            'storeId': _moreStoreController.storeId.value
+                          });
                         },
                         child: SizedBox(width: 90.w, child: StoreSearchField()),
                       ),
                       SizedBox(
-                        height: 1.5.h,
+                        height: 1.h,
                       ),
                     ],
                   ),
@@ -253,7 +283,9 @@ class BannerWidget extends StatelessWidget {
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                   primary: AppConst.kPrimaryColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 7.65))),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          SizeUtils.horizontalBlockSize * 7.65))),
             ),
           ],
         ),
@@ -289,14 +321,24 @@ class DeliveryTimeWidget extends StatelessWidget {
             activeFgColor: Colors.black,
             inactiveBgColor: Colors.grey,
             inactiveFgColor: Colors.black,
-            initialLabelIndex: (_moreStoreController.getStoreDataModel.value?.data?.store?.storeType ?? 'online') == 'online' ? 0 : 1,
+            initialLabelIndex: (_moreStoreController
+                            .getStoreDataModel.value?.data?.store?.storeType ??
+                        'online') ==
+                    'online'
+                ? 0
+                : 1,
             totalSwitches: 2,
             labels: ['Delivery', 'Pickup'],
-            customTextStyles: [TextStyle(fontSize: SizeUtils.horizontalBlockSize * 3.06), TextStyle(fontSize: SizeUtils.horizontalBlockSize * 3.06)],
+            customTextStyles: [
+              TextStyle(fontSize: SizeUtils.horizontalBlockSize * 3.06),
+              TextStyle(fontSize: SizeUtils.horizontalBlockSize * 3.06)
+            ],
             radiusStyle: true,
             onToggle: (index) {},
           ),
-          _moreStoreController.displayHour.isNotEmpty ? Text('Ready by ${_moreStoreController.displayHour}') : SizedBox(),
+          _moreStoreController.displayHour.isNotEmpty
+              ? Text('Ready by ${_moreStoreController.displayHour}')
+              : SizedBox(),
         ],
       ),
     );
@@ -311,20 +353,26 @@ class MoewStoreViewProductsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => (_moreStoreController.getStoreDataModel.value?.data?.mainProducts?.isNotEmpty ?? false)
+      () => (_moreStoreController
+                  .getStoreDataModel.value?.data?.mainProducts?.isNotEmpty ??
+              false)
           ? ListView.separated(
               // controller: this.controller,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
-              itemCount: _moreStoreController.getStoreDataModel.value?.data?.mainProducts?.length ?? 0,
+              itemCount: _moreStoreController
+                      .getStoreDataModel.value?.data?.mainProducts?.length ??
+                  0,
               //data.length,
               itemBuilder: (context, index) {
-                MainProducts? storesWithProductsModel = _moreStoreController.getStoreDataModel.value?.data?.mainProducts?[index];
+                MainProducts? storesWithProductsModel = _moreStoreController
+                    .getStoreDataModel.value?.data?.mainProducts?[index];
                 return Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 2),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeUtils.horizontalBlockSize * 2),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,13 +409,17 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                 physics: ClampingScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
-                                itemCount: storesWithProductsModel.products?.length ?? 0,
+                                itemCount:
+                                    storesWithProductsModel.products?.length ??
+                                        0,
                                 itemBuilder: (context, i) {
-                                  StoreModelProducts product = storesWithProductsModel.products![i];
+                                  StoreModelProducts product =
+                                      storesWithProductsModel.products![i];
                                   return Container(
                                     width: SizeUtils.horizontalBlockSize * 40,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Stack(
                                           // crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,58 +428,114 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                               child: Image.network(
                                                 product.logo!,
                                                 fit: BoxFit.cover,
-                                                height: SizeUtils.verticalBlockSize * 12,
-                                                width: SizeUtils.horizontalBlockSize * 24,
+                                                height: SizeUtils
+                                                        .verticalBlockSize *
+                                                    12,
+                                                width: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    24,
                                               ),
                                             ),
                                             Obx(
-                                              () => product.quntity!.value > 0 && product.isQunitityAdd?.value == false
-                                                  ? _shoppingItem(product)
-                                                  : GestureDetector(
-                                                      onTap: () async {
-                                                        if (product.quntity!.value == 0) {
-                                                          product.quntity!.value++;
-                                                          _moreStoreController.addToCart(
-                                                              store_id: _moreStoreController.storeId.value,
-                                                              index: 0,
-                                                              increment: true,
-                                                              cart_id: _moreStoreController.addToCartModel.value?.sId ?? '',
-                                                              product: product);
-                                                          totalCalculated();
-                                                        }
-                                                        if (product.quntity!.value != 0 && product.isQunitityAdd?.value == false) {
-                                                          product.isQunitityAdd?.value = false;
-                                                          await Future.delayed(Duration(milliseconds: 500))
-                                                              .whenComplete(() => product.isQunitityAdd?.value = true);
-                                                        }
-                                                        // addItem(product);
-                                                      },
-                                                      child: product.isQunitityAdd?.value == true && product.quntity!.value != 0
-                                                          ? _dropDown(product, storesWithProductsModel.sId ?? '')
-                                                          : Align(
-                                                              alignment: Alignment.topRight,
-                                                              child: Container(
-                                                                height: SizeUtils.horizontalBlockSize * 8,
-                                                                width: SizeUtils.horizontalBlockSize * 8,
-                                                                decoration: BoxDecoration(
-                                                                  shape: BoxShape.circle,
-                                                                  color: Colors.grey,
+                                              () =>
+                                                  product.quntity!.value > 0 &&
+                                                          product.isQunitityAdd
+                                                                  ?.value ==
+                                                              false
+                                                      ? _shoppingItem(product)
+                                                      : GestureDetector(
+                                                          onTap: () async {
+                                                            if (product.quntity!
+                                                                    .value ==
+                                                                0) {
+                                                              product.quntity!
+                                                                  .value++;
+                                                              _moreStoreController.addToCart(
+                                                                  store_id:
+                                                                      _moreStoreController
+                                                                          .storeId
+                                                                          .value,
+                                                                  index: 0,
+                                                                  increment:
+                                                                      true,
+                                                                  cart_id: _moreStoreController
+                                                                          .addToCartModel
+                                                                          .value
+                                                                          ?.sId ??
+                                                                      '',
+                                                                  product:
+                                                                      product);
+                                                              totalCalculated();
+                                                            }
+                                                            if (product.quntity!
+                                                                        .value !=
+                                                                    0 &&
+                                                                product.isQunitityAdd
+                                                                        ?.value ==
+                                                                    false) {
+                                                              product
+                                                                  .isQunitityAdd
+                                                                  ?.value = false;
+                                                              await Future.delayed(
+                                                                      Duration(
+                                                                          milliseconds:
+                                                                              500))
+                                                                  .whenComplete(
+                                                                      () => product
+                                                                          .isQunitityAdd
+                                                                          ?.value = true);
+                                                            }
+                                                            // addItem(product);
+                                                          },
+                                                          child: product.isQunitityAdd
+                                                                          ?.value ==
+                                                                      true &&
+                                                                  product.quntity!
+                                                                          .value !=
+                                                                      0
+                                                              ? _dropDown(
+                                                                  product,
+                                                                  storesWithProductsModel
+                                                                          .sId ??
+                                                                      '')
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topRight,
+                                                                  child:
+                                                                      Container(
+                                                                    height:
+                                                                        SizeUtils.horizontalBlockSize *
+                                                                            8,
+                                                                    width: SizeUtils
+                                                                            .horizontalBlockSize *
+                                                                        8,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                      color: Colors
+                                                                          .grey,
+                                                                    ),
+                                                                    child: product.isQunitityAdd?.value ==
+                                                                                true &&
+                                                                            product.quntity!.value !=
+                                                                                0
+                                                                        ? Center(
+                                                                            child: Text("${product.quntity!.value}",
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                  fontSize: SizeUtils.horizontalBlockSize * 4,
+                                                                                )),
+                                                                          )
+                                                                        : Icon(
+                                                                            Icons.add,
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                  ),
                                                                 ),
-                                                                child: product.isQunitityAdd?.value == true && product.quntity!.value != 0
-                                                                    ? Center(
-                                                                        child: Text("${product.quntity!.value}",
-                                                                            style: TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                                                                            )),
-                                                                      )
-                                                                    : Icon(
-                                                                        Icons.add,
-                                                                        color: Colors.white,
-                                                                      ),
-                                                              ),
-                                                            ),
-                                                    ),
+                                                        ),
                                             ),
                                           ],
                                         ),
@@ -483,7 +591,8 @@ class MoewStoreViewProductsList extends StatelessWidget {
 
   totalCalculated() async {
     int total = 0;
-    _moreStoreController.getStoreDataModel.value?.data?.mainProducts?.forEach((element) {
+    _moreStoreController.getStoreDataModel.value?.data?.mainProducts
+        ?.forEach((element) {
       element.products?.forEach((element) {
         total = total + (element.quntity?.value ?? 0);
       });
@@ -522,7 +631,8 @@ class MoewStoreViewProductsList extends StatelessWidget {
               shape: BoxShape.circle,
               color: Colors.grey,
             ),
-            child: product.isQunitityAdd?.value == true && product.quntity!.value != 0
+            child: product.isQunitityAdd?.value == true &&
+                    product.quntity!.value != 0
                 ? Center(
                     child: Text("${product.quntity!.value}",
                         style: TextStyle(
@@ -607,7 +717,8 @@ class MoewStoreViewProductsList extends StatelessWidget {
         color: Colors.grey,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
+        padding:
+            EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
         child: Obx(
           () => Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -615,7 +726,10 @@ class MoewStoreViewProductsList extends StatelessWidget {
               _decrementButton(product),
               Text(
                 '${product.quntity!.value}',
-                style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5, fontWeight: FontWeight.bold, color: Colors.black54),
+                style: TextStyle(
+                    fontSize: SizeUtils.horizontalBlockSize * 5,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54),
               ),
               _incrementButton(product),
             ],
@@ -640,7 +754,8 @@ class MoewStoreViewProductsList extends StatelessWidget {
       onTap: () async {
         product.isQunitityAdd?.value = false;
         product.quntity!.value++;
-        await Future.delayed(Duration(seconds: 2)).whenComplete(() => product.isQunitityAdd?.value = true);
+        await Future.delayed(Duration(seconds: 2))
+            .whenComplete(() => product.isQunitityAdd?.value = true);
         // addItem(products);
       },
     );
@@ -651,7 +766,8 @@ class MoewStoreViewProductsList extends StatelessWidget {
       onTap: () async {
         product.isQunitityAdd?.value = false;
         product.quntity!.value--;
-        await Future.delayed(Duration(seconds: 2)).whenComplete(() => product.isQunitityAdd?.value = true);
+        await Future.delayed(Duration(seconds: 2))
+            .whenComplete(() => product.isQunitityAdd?.value = true);
         // addItem(products);
       },
       child: Container(

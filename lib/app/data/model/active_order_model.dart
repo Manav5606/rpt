@@ -40,6 +40,7 @@ class ActiveOrderData {
   Rider? rider;
   List<Products>? products;
   List<RawItems>? rawItems;
+  List<InventoriesData>? inventories;
   Store? store;
 
   ActiveOrderData({
@@ -54,6 +55,7 @@ class ActiveOrderData {
     this.deliverySlot,
     this.rider,
     this.products,
+    this.inventories,
     this.store,
   });
 
@@ -74,6 +76,12 @@ class ActiveOrderData {
       rawItems = <RawItems>[];
       json['rawitems'].forEach((v) {
         rawItems!.add(new RawItems.fromJson(v));
+      });
+    }
+    if (json['inventories'] != null) {
+      inventories = <InventoriesData>[];
+      json['inventories'].forEach((v) {
+        inventories!.add(new InventoriesData.fromJson(v));
       });
     }
     if (json['products'] != null) {
@@ -101,6 +109,9 @@ class ActiveOrderData {
     }
     if (this.products != null) {
       data['products'] = this.products!.map((v) => v.toJson()).toList();
+    }
+    if (this.inventories != null) {
+      data['inventories'] = this.inventories!.map((v) => v.toJson()).toList();
     }
     if (this.store != null) {
       data['store'] = this.store!.toJson();
@@ -240,6 +251,43 @@ class Products {
     data['deleted'] = this.deleted;
     data['modified'] = this.modified;
     data['selling_price'] = this.sellingPrice;
+    return data;
+  }
+}
+
+class InventoriesData {
+  String? name;
+  int? quantity;
+  bool? status;
+  num? sellingPrice;
+  num? mrp;
+  num? gst_amount;
+
+  InventoriesData(
+      {this.name,
+      this.quantity,
+      this.status,
+      this.sellingPrice,
+      this.mrp,
+      this.gst_amount});
+
+  InventoriesData.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    quantity = json['quantity'];
+    status = json['status'];
+    sellingPrice = json['selling_price'];
+    mrp = json['mrp'];
+    gst_amount = json['gst_amount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['quantity'] = this.quantity;
+    data['status'] = this.status;
+    data['selling_price'] = this.sellingPrice;
+    data['mrp'] = this.mrp;
+    data['gst_amount'] = this.gst_amount;
     return data;
   }
 }

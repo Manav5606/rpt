@@ -87,20 +87,36 @@ class ScheduleTimeScreen extends StatelessWidget {
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: _addCartController
-                            .getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?.length ??
+                            .getOrderConfirmPageDataModel
+                            .value
+                            ?.data
+                            ?.deliverySlots?[
+                                _addCartController.dayIndexForTimeSlot.value]
+                            .slots
+                            ?.length ??
                         0,
                     itemBuilder: (context, index) {
                       return Obx(
                         () {
                           return GestureDetector(
                             onTap: () {
-                              if (_addCartController.selectedTimeIndex.value == index) {
+                              if (_addCartController.selectedTimeIndex.value ==
+                                  index) {
                                 _addCartController.selectedTimeIndex.value = -1;
                               } else {
-                                _addCartController.selectedTimeIndex.value = index;
-                                _addCartController.timeSlots.value = _addCartController.getCartPageInformationModel.value?.data
-                                    ?.deliverySlots?[int.parse(_addCartController.currentDay.value)].slots?[index];
-                                _addCartController.timeZoneCustom.value = getTemp(index);
+                                _addCartController.selectedTimeIndex.value =
+                                    index;
+                                _addCartController.timeSlots.value =
+                                    _addCartController
+                                        .getCartPageInformationModel
+                                        .value
+                                        ?.data
+                                        ?.deliverySlots?[int.parse(
+                                            _addCartController
+                                                .currentDay.value)]
+                                        .slots?[index];
+                                _addCartController.timeZoneCustom.value =
+                                    getTemp(index);
                               }
                             },
                             child: Container(
@@ -109,7 +125,9 @@ class ScheduleTimeScreen extends StatelessWidget {
                                 children: [
                                   IgnorePointer(
                                     child: Checkbox(
-                                      value: _addCartController.selectedTimeIndex.value == index,
+                                      value: _addCartController
+                                              .selectedTimeIndex.value ==
+                                          index,
                                       onChanged: (value) {},
                                     ),
                                   ),
@@ -140,17 +158,31 @@ class ScheduleTimeScreen extends StatelessWidget {
 
   String getTemp(index) {
     var date1 =
-        "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]?.slots?[index].startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
-    var date2 = (_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]
-                    .slots?[index].startTime?.hour ??
+        "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
+    var date2 = (_addCartController
+                    .getOrderConfirmPageDataModel
+                    .value
+                    ?.data
+                    ?.deliverySlots?[
+                        _addCartController.dayIndexForTimeSlot.value]
+                    .slots?[index]
+                    .startTime
+                    ?.hour ??
                 0) >
             1
         ? "PM - "
         : "AM - ";
     var date3 =
-        "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]?.slots?[index].endTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.minute}";
-    var date4 = (_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]
-                    .slots?[index].endTime?.hour ??
+        "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.minute}";
+    var date4 = (_addCartController
+                    .getOrderConfirmPageDataModel
+                    .value
+                    ?.data
+                    ?.deliverySlots?[
+                        _addCartController.dayIndexForTimeSlot.value]
+                    .slots?[index]
+                    .endTime
+                    ?.hour ??
                 0) >
             12
         ? "PM"
@@ -283,26 +315,45 @@ class ScheduleTimeScreen extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     _addCartController.selectedDayIndex.value = index;
-                    _addCartController.timeTitleCustom.value = _addCartController.weekDayList[index].day ?? '';
-                    _addCartController.dayIndexForTimeSlot.value = _addCartController.weekDayList[index].value!;
+                    _addCartController.timeTitleCustom.value =
+                        _addCartController.weekDayList[index].day ?? '';
+                    _addCartController.dayIndexForTimeSlot.value =
+                        _addCartController.weekDayList[index].value!;
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: _addCartController.selectedDayIndex.value == index ? AppConst.green : AppConst.lightGrey,
+                      color: _addCartController.selectedDayIndex.value == index
+                          ? AppConst.green
+                          : AppConst.lightGrey,
                       borderRadius: BorderRadius.circular(6.0),
-                      border: Border.all(width: 0.5, color: _addCartController.selectedDayIndex.value == index ? AppConst.green : AppConst.black),
+                      border: Border.all(
+                          width: 0.5,
+                          color:
+                              _addCartController.selectedDayIndex.value == index
+                                  ? AppConst.green
+                                  : AppConst.black),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 2.w, vertical: 0.5.h),
                       child: Center(
                         child: Column(
                           children: [
                             Text(
-                              index == 0 ? "TODAY" : _addCartController.weekDayList[index].day.toString().substring(0, 3).toUpperCase(),
+                              index == 0
+                                  ? "TODAY"
+                                  : _addCartController.weekDayList[index].day
+                                      .toString()
+                                      .substring(0, 3)
+                                      .toUpperCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: SizeUtils.horizontalBlockSize * 4,
-                                color: _addCartController.selectedDayIndex.value == index ? AppConst.white : AppConst.green,
+                                color:
+                                    _addCartController.selectedDayIndex.value ==
+                                            index
+                                        ? AppConst.white
+                                        : AppConst.green,
                               ),
                             ),
                             SizedBox(
@@ -313,7 +364,11 @@ class ScheduleTimeScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: SizeUtils.horizontalBlockSize * 4,
-                                color: _addCartController.selectedDayIndex.value == index ? AppConst.white : AppConst.green,
+                                color:
+                                    _addCartController.selectedDayIndex.value ==
+                                            index
+                                        ? AppConst.white
+                                        : AppConst.green,
                               ),
                             ),
                           ],

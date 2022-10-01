@@ -14,7 +14,8 @@ class StoreListScreen extends StatefulWidget {
   State<StoreListScreen> createState() => _StoreListScreenState();
 }
 
-class _StoreListScreenState extends State<StoreListScreen> with TickerProviderStateMixin {
+class _StoreListScreenState extends State<StoreListScreen>
+    with TickerProviderStateMixin {
   final HomeController _homeController = Get.find();
   final AddCartController _addCartController = Get.find();
 
@@ -26,7 +27,8 @@ class _StoreListScreenState extends State<StoreListScreen> with TickerProviderSt
         body: NestedScrollView(
           physics: BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            var category = _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
+            var category =
+                _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
             return <Widget>[
               SliverAppBar(
                 expandedHeight: 18.h,
@@ -63,27 +65,48 @@ class _StoreListScreenState extends State<StoreListScreen> with TickerProviderSt
                 actions: [
                   CartWidget(
                     onTap: () async {
-                      if ((_homeController.getAllCartsModel.value?.carts?.length ?? 0) == 1) {
+                      if ((_homeController
+                                  .getAllCartsModel.value?.carts?.length ??
+                              0) ==
+                          1) {
                         Get.toNamed(
                           AppRoutes.CartReviewScreen,
                           arguments: {
-                            'logo': _homeController.getAllCartsModel.value?.carts?[1].store?.logo,
-                            'storeName': _homeController.getAllCartsModel.value?.carts?[1].store?.name,
-                            'totalCount': _homeController.getAllCartsModel.value?.cartItemsTotal.toString() ?? ""
+                            'logo': _homeController
+                                .getAllCartsModel.value?.carts?[1].store?.logo,
+                            'storeName': _homeController
+                                .getAllCartsModel.value?.carts?[1].store?.name,
+                            'totalCount': _homeController
+                                    .getAllCartsModel.value?.cartItemsTotal
+                                    .toString() ??
+                                ""
                           },
                         );
-                        await _addCartController.getReviewCartData(cartId: _homeController.getAllCartsModel.value?.carts?[1].sId ?? "");
+                        await _addCartController.getReviewCartData(
+                            cartId: _homeController
+                                    .getAllCartsModel.value?.carts?[1].sId ??
+                                "");
                         // await _addCartController.getCartPageInformation(storeId: _homeController.getAllCartsModel.value?.carts?[1].store?.sId ?? "");
-                        _addCartController.store.value = _homeController.getAllCartsModel.value?.carts?[1].store;
+                        _addCartController.store.value = _homeController
+                            .getAllCartsModel.value?.carts?[1].store;
                         await _addCartController.getCartLocation(
-                            storeId: _homeController.getAllCartsModel.value?.carts?[1].store?.sId ?? '',
-                            cartId: _homeController.getAllCartsModel.value?.carts?[1].sId ?? "");
+                            storeId: _homeController.getAllCartsModel.value
+                                    ?.carts?[1].store?.sId ??
+                                '',
+                            cartId: _homeController
+                                    .getAllCartsModel.value?.carts?[1].sId ??
+                                "");
 
-                        _addCartController.cartId.value = _homeController.getAllCartsModel.value?.carts?[1].sId ?? "";
+                        _addCartController.cartId.value = _homeController
+                                .getAllCartsModel.value?.carts?[1].sId ??
+                            "";
                       }
                       Get.toNamed(AppRoutes.AddCartListScreen);
                     },
-                    count: _homeController.getAllCartsModel.value?.cartItemsTotal.toString() ?? "",
+                    count:
+                        //  _homeController.getAllCartsModel.value?.cartItemsTotal.toString() ??
+                        "",
+                    isRedButton: true,
                   ),
                   SizedBox(
                     width: 2.w,

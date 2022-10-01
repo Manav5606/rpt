@@ -69,226 +69,7 @@ class _ActiveOrdersScreenState extends State<ActiveOrdersScreen> {
               ),
               Expanded(
                 child: TabBarView(
-                  children: [
-                    Expanded(
-                      child: GetX<MyAccountController>(
-                        builder: (state) {
-                          // if (state.activeOrdersModel.value?.data == null) {
-                          //   return Center(
-                          //     child: CircularProgressIndicator(),
-                          //   );
-                          // }
-                          return state.isActiveOrderloading == true
-                              ? ordershimmer()
-                              : Container(
-                                  child: (state.activeOrdersModel.value?.data!
-                                                  .where((c) =>
-                                                      c.orderType == "online")
-                                                  .toList() ==
-                                              null ||
-                                          state.activeOrdersModel.value?.data!
-                                                  .where((c) =>
-                                                      c.orderType == "online")
-                                                  .toList()
-                                                  .length ==
-                                              0)
-                                      ? Center(
-                                          child: EmptyHistoryPage(
-                                            icon: CupertinoIcons.cart_fill,
-                                            text1: " No orders found !",
-                                            text2:
-                                                "Orders that you save will appear here.   ",
-                                            text3: "Place your first order!",
-                                          ),
-                                        )
-                                      : ListView.separated(
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 1.h),
-                                          itemBuilder: (context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                // Get.toNamed(AppRoutes.OrderTreckScreen);
-                                                state.selectIndex.value = index;
-                                                state.formatDate();
-
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        OrderTreckScreen(
-                                                      // historyTab: false,
-                                                      displayHour: state
-                                                          .displayHour.value,
-                                                      activeOrder: (state
-                                                          .activeOrdersModel
-                                                          .value!
-                                                          .data!
-                                                          .where((c) =>
-                                                              c.orderType ==
-                                                              "online")
-                                                          .toList())[(state
-                                                              .activeOrdersModel
-                                                              .value
-                                                              ?.data!
-                                                              .where((c) =>
-                                                                  c.orderType ==
-                                                                  "online")
-                                                              .toList()
-                                                              .length)! -
-                                                          1 -
-                                                          index],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: ActiveOrderTabViewCard(
-                                                order: state.activeOrdersModel
-                                                    .value?.data!
-                                                    .where((c) =>
-                                                        c.orderType == "online")
-                                                    .toList()[(state
-                                                        .activeOrdersModel
-                                                        .value
-                                                        ?.data!
-                                                        .where((c) =>
-                                                            c.orderType ==
-                                                            "online")
-                                                        .toList()
-                                                        .length)! -
-                                                    1 -
-                                                    index],
-                                              ),
-                                              // HistoryCardWidget(
-                                              //   tag: OrderCardTag.activeOrder,
-                                              //   order: state.activeOrders.data![index],
-                                              // ),
-                                            );
-                                          },
-                                          itemCount: state
-                                              .activeOrdersModel.value!.data!
-                                              .where((c) =>
-                                                  c.orderType == "online")
-                                              .toList()
-                                              .length,
-                                          separatorBuilder: (context, index) {
-                                            return Container(
-                                              height: 2.h,
-                                              color: AppConst.veryLightGrey,
-                                            );
-                                          },
-                                        ),
-                                );
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: GetX<MyAccountController>(
-                        builder: (state) {
-                          return state.isActiveOrderloading == true
-                              ? ordershimmer()
-                              : Container(
-                                  child: (state.activeOrdersModel.value?.data!
-                                                  .where((c) =>
-                                                      c.orderType == "receipt")
-                                                  .toList() ==
-                                              null ||
-                                          state.activeOrdersModel.value?.data!
-                                                  .where((c) =>
-                                                      c.orderType == "receipt")
-                                                  .toList()
-                                                  .length ==
-                                              0)
-                                      ? Center(
-                                          child: EmptyHistoryPage(
-                                            icon: Icons.receipt,
-                                            text1: " No receipt placed yet!",
-                                            text2:
-                                                "receipt that you save will appear here.   ",
-                                            text3: "Scan your first receipt!",
-                                          ),
-                                        )
-                                      : ListView.separated(
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 1.h),
-                                          itemBuilder: (context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                // Get.toNamed(AppRoutes.OrderTreckScreen);
-                                                state.selectIndex.value = index;
-                                                state.formatDate();
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        OrderTreckScreen(
-                                                      // historyTab: false,
-                                                      displayHour: state
-                                                          .displayHour.value,
-                                                      activeOrder: (state
-                                                          .activeOrdersModel
-                                                          .value!
-                                                          .data!
-                                                          .where((c) =>
-                                                              c.orderType ==
-                                                              "receipt")
-                                                          .toList())[(state
-                                                              .activeOrdersModel
-                                                              .value
-                                                              ?.data!
-                                                              .where((c) =>
-                                                                  c.orderType ==
-                                                                  "receipt")
-                                                              .toList()
-                                                              .length)! -
-                                                          1 -
-                                                          index],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: ActiveOrderTabViewCard(
-                                                order: state.activeOrdersModel
-                                                    .value?.data!
-                                                    .where((c) =>
-                                                        c.orderType ==
-                                                        "receipt")
-                                                    .toList()[(state
-                                                        .activeOrdersModel
-                                                        .value
-                                                        ?.data!
-                                                        .where((c) =>
-                                                            c.orderType ==
-                                                            "receipt")
-                                                        .toList()
-                                                        .length)! -
-                                                    1 -
-                                                    index],
-                                              ),
-                                              // HistoryCardWidget(
-                                              //   tag: OrderCardTag.activeOrder,
-                                              //   order: state.activeOrders.data![index],
-                                              // ),
-                                            );
-                                          },
-                                          itemCount: state
-                                              .activeOrdersModel.value!.data!
-                                              .where((c) =>
-                                                  c.orderType == "receipt")
-                                              .toList()
-                                              .length,
-                                          separatorBuilder: (context, index) {
-                                            return Container(
-                                              height: 2.h,
-                                              color: AppConst.veryLightGrey,
-                                            );
-                                          },
-                                        ));
-                        },
-                      ),
-                    )
-                  ],
+                  children: [ActiveOrderTabView(), ActiveReciptTabView()],
                 ),
               ),
 
@@ -327,6 +108,197 @@ class _ActiveOrdersScreenState extends State<ActiveOrdersScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ActiveReciptTabView extends StatelessWidget {
+  const ActiveReciptTabView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetX<MyAccountController>(
+      builder: (state) {
+        return state.isActiveOrderloading == true
+            ? ordershimmer()
+            : Container(
+                child: (state.activeOrdersModel.value?.data!
+                                .where((c) => c.orderType == "receipt")
+                                .toList() ==
+                            null ||
+                        state.activeOrdersModel.value?.data!
+                                .where((c) => c.orderType == "receipt")
+                                .toList()
+                                .length ==
+                            0)
+                    ? Center(
+                        child: EmptyHistoryPage(
+                          icon: Icons.receipt,
+                          text1: " No receipt placed yet!",
+                          text2: "receipt that you save will appear here.   ",
+                          text3: "Scan your first receipt!",
+                        ),
+                      )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(vertical: 1.h),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              // Get.toNamed(AppRoutes.OrderTreckScreen);
+                              state.selectIndex.value = index;
+                              state.formatDate();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OrderTreckScreen(
+                                    // historyTab: false,
+                                    displayHour: state.displayHour.value,
+                                    activeOrder: (state
+                                        .activeOrdersModel.value!.data!
+                                        .where((c) => c.orderType == "receipt")
+                                        .toList())[(state
+                                            .activeOrdersModel.value?.data!
+                                            .where(
+                                                (c) => c.orderType == "receipt")
+                                            .toList()
+                                            .length)! -
+                                        1 -
+                                        index],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ActiveOrderTabViewCard(
+                              order: state.activeOrdersModel.value?.data!
+                                  .where((c) => c.orderType == "receipt")
+                                  .toList()[(state
+                                      .activeOrdersModel.value?.data!
+                                      .where((c) => c.orderType == "receipt")
+                                      .toList()
+                                      .length)! -
+                                  1 -
+                                  index],
+                            ),
+                            // HistoryCardWidget(
+                            //   tag: OrderCardTag.activeOrder,
+                            //   order: state.activeOrders.data![index],
+                            // ),
+                          );
+                        },
+                        itemCount: state.activeOrdersModel.value!.data!
+                            .where((c) => c.orderType == "receipt")
+                            .toList()
+                            .length,
+                        separatorBuilder: (context, index) {
+                          return Container(
+                            height: 2.h,
+                            color: AppConst.veryLightGrey,
+                          );
+                        },
+                      ));
+      },
+    );
+  }
+}
+
+class ActiveOrderTabView extends StatelessWidget {
+  const ActiveOrderTabView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetX<MyAccountController>(
+      builder: (state) {
+        // if (state.activeOrdersModel.value?.data == null) {
+        //   return Center(
+        //     child: CircularProgressIndicator(),
+        //   );
+        // }
+        return state.isActiveOrderloading == true
+            ? ordershimmer()
+            : Container(
+                child: (state.activeOrdersModel.value?.data!
+                                .where((c) => c.orderType == "online")
+                                .toList() ==
+                            null ||
+                        state.activeOrdersModel.value?.data!
+                                .where((c) => c.orderType == "online")
+                                .toList()
+                                .length ==
+                            0)
+                    ? Center(
+                        child: EmptyHistoryPage(
+                          icon: CupertinoIcons.cart_fill,
+                          text1: " No orders found !",
+                          text2: "Orders that you save will appear here.   ",
+                          text3: "Place your first order!",
+                        ),
+                      )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(vertical: 1.h),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              // Get.toNamed(AppRoutes.OrderTreckScreen);
+                              state.selectIndex.value = index;
+                              state.formatDate();
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OrderTreckScreen(
+                                    // historyTab: false,
+                                    displayHour: state.displayHour.value,
+                                    activeOrder: (state
+                                        .activeOrdersModel.value!.data!
+                                        .where((c) => c.orderType == "online")
+                                        .toList())[(state
+                                            .activeOrdersModel.value?.data!
+                                            .where(
+                                                (c) => c.orderType == "online")
+                                            .toList()
+                                            .length)! -
+                                        1 -
+                                        index],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ActiveOrderTabViewCard(
+                              order: state.activeOrdersModel.value?.data!
+                                  .where((c) => c.orderType == "online")
+                                  .toList()[(state
+                                      .activeOrdersModel.value?.data!
+                                      .where((c) => c.orderType == "online")
+                                      .toList()
+                                      .length)! -
+                                  1 -
+                                  index],
+                            ),
+                            // HistoryCardWidget(
+                            //   tag: OrderCardTag.activeOrder,
+                            //   order: state.activeOrders.data![index],
+                            // ),
+                          );
+                        },
+                        itemCount: state.activeOrdersModel.value!.data!
+                            .where((c) => c.orderType == "online")
+                            .toList()
+                            .length,
+                        separatorBuilder: (context, index) {
+                          return Container(
+                            height: 2.h,
+                            color: AppConst.veryLightGrey,
+                          );
+                        },
+                      ),
+              );
+      },
     );
   }
 }
@@ -439,10 +411,14 @@ class ActiveOrderTabViewCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "${order?.store?.name ?? "Defalut name "}",
-                      // "Store name",
-                      style: AppStyles.STORE_NAME_STYLE,
+                    Container(
+                      width: 70.w,
+                      child: Text(
+                        "${order?.store?.name ?? "Defalut name "}",
+
+                        // "Store name",
+                        style: AppStyles.STORE_NAME_STYLE,
+                      ),
                     ),
                     // SizedBox(
                     //   height: 1.h,

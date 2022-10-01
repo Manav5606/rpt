@@ -96,7 +96,9 @@ class _HomeScreenState extends State<HomeScreen>
       }
     });
 
-    Get.find<MyAccountController>().getActiveOrders();
+    Get.find<MyAccountController>()
+      ..getActiveOrders()
+      ..getUserData();
 
     _categoryController.addListener(_scrollListener);
 

@@ -737,51 +737,51 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                         Icons.timer,
                         color: AppConst.black,
                       ),
-                      SizedBox(width: SizeUtils.horizontalBlockSize * 2),
+                      SizedBox(width: 2.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "${_addCartController.timeTitleCustom.value}",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: AppConst.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 4),
-                              ),
-                              SizedBox(
-                                width: SizeUtils.horizontalBlockSize * 2,
-                              ),
-                              Text(
-                                "${_addCartController.timeZoneCustom.value}",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: AppConst.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 4),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: SizeUtils.horizontalBlockSize * 1,
-                          ),
                           GestureDetector(
                             onTap: () {
                               Get.toNamed(AppRoutes.ScheduleTimeScreen);
                             },
-                            child: Text(
-                              "Change",
-                              style: TextStyle(
-                                  fontSize: SizeUtils.horizontalBlockSize * 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${_addCartController.timeTitleCustom.value}",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: AppConst.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4),
+                                ),
+                                SizedBox(
+                                  width: SizeUtils.horizontalBlockSize * 2,
+                                ),
+                                Text(
+                                  "${_addCartController.timeZoneCustom.value}",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: AppConst.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4),
+                                ),
+                              ],
                             ),
+                          ),
+                          SizedBox(
+                            height: SizeUtils.horizontalBlockSize * 1,
+                          ),
+                          Text(
+                            "Change",
+                            style: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 4),
                           ),
                         ],
                       )

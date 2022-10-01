@@ -13,7 +13,7 @@ class StoreSearchField extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       elevation: 2,
       child: Container(
-        padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(

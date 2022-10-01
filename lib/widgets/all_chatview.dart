@@ -57,12 +57,12 @@ class _AllChatsState extends State<AllChats> {
             //   ),
             // ),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             GestureDetector(
               onTap: () {},
               child: Container(
-                height: 3.h,
+                height: 3.5.h,
                 width: MediaQuery.of(context).size.width,
                 color: AppConst.veryLightGrey,
                 child: Text(

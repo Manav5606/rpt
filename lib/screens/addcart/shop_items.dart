@@ -5,6 +5,7 @@ import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 
 class ShopItemsScreen extends StatelessWidget {
   final OrderData? order;
@@ -94,7 +95,7 @@ class ShopItemsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: SizeUtils.verticalBlockSize * 1,
+              height: 1.h,
             ),
             ListView.separated(
               shrinkWrap: true,
@@ -104,14 +105,14 @@ class ShopItemsScreen extends StatelessWidget {
                   : (activeOrder?.products?.length ?? 0),
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeUtils.horizontalBlockSize * 4),
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: Row(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: CachedNetworkImage(
-                          height: SizeUtils.horizontalBlockSize * 12,
+                          width: 12.w,
+                          height: 6.h,
                           fit: BoxFit.contain,
                           imageUrl:
                               'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
@@ -124,24 +125,28 @@ class ShopItemsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: SizeUtils.horizontalBlockSize * 5,
+                        width: 2.w,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            (allorder!)
-                                ? (order?.products?[index].name ?? '')
-                                : (activeOrder?.products?[index].name ?? ''),
-                            style: TextStyle(
-                              color: AppConst.grey,
-                              fontSize: SizeUtils.horizontalBlockSize * 5,
-                              fontWeight: FontWeight.w700,
+                          Container(
+                            width: 70.w,
+                            child: Text(
+                              (allorder!)
+                                  ? (order?.products?[index].name ?? '')
+                                  : (activeOrder?.products?[index].name ?? ''),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: AppConst.grey,
+                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            height: SizeUtils.verticalBlockSize * 1,
+                            height: 1.h,
                           ),
                           Text(
                             (allorder!)
@@ -207,7 +212,8 @@ class ShopItemsScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: CachedNetworkImage(
-                          height: SizeUtils.horizontalBlockSize * 12,
+                          width: 12.w,
+                          height: 6.h,
                           fit: BoxFit.contain,
                           imageUrl:
                               'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
@@ -220,24 +226,27 @@ class ShopItemsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: SizeUtils.horizontalBlockSize * 5,
+                        width: 2.w,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            (allorder!)
-                                ? (order?.rawItems?[index].item ?? '')
-                                : (activeOrder?.rawItems?[index].item ?? ''),
-                            style: TextStyle(
-                              color: AppConst.grey,
-                              fontSize: SizeUtils.horizontalBlockSize * 5,
-                              fontWeight: FontWeight.w700,
+                          Container(
+                            width: 70.w,
+                            child: Text(
+                              (allorder!)
+                                  ? (order?.rawItems?[index].item ?? '')
+                                  : (activeOrder?.rawItems?[index].item ?? ''),
+                              style: TextStyle(
+                                color: AppConst.grey,
+                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            height: SizeUtils.verticalBlockSize * 1,
+                            height: 1.h,
                           ),
                           Text(
                             (allorder!)
@@ -256,6 +265,110 @@ class ShopItemsScreen extends StatelessWidget {
                         (allorder!)
                             ? ('${order?.rawItems?[index].quantity ?? ''}')
                             : ('${activeOrder?.rawItems?[index].quantity ?? ''}'),
+                        style: TextStyle(
+                            color: AppConst.black.withOpacity(0.6),
+                            fontWeight: FontWeight.w800,
+                            fontSize: SizeUtils.horizontalBlockSize * 4),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                color: AppConst.grey.withOpacity(0.2),
+                thickness: 2,
+              ),
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Container(
+              height: SizeUtils.verticalBlockSize * 5,
+              width: double.infinity,
+              decoration: BoxDecoration(color: AppConst.grey.withOpacity(0.15)),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Inventory',
+                    style: TextStyle(
+                        color: AppConst.grey.withOpacity(0.9),
+                        fontWeight: FontWeight.w600,
+                        fontSize: SizeUtils.horizontalBlockSize * 5),
+                  ),
+                ),
+              ),
+            ),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: (allorder!)
+                  ? (order?.inventories?.length ?? 0)
+                  : (activeOrder?.inventories?.length ?? 0),
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: CachedNetworkImage(
+                          width: 12.w,
+                          height: 6.h,
+                          fit: BoxFit.contain,
+                          imageUrl:
+                              'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                                  child: CircularProgressIndicator(
+                                      value: downloadProgress.progress)),
+                          errorWidget: (context, url, error) => Image.network(
+                              'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 70.w,
+                            child: Text(
+                              (allorder!)
+                                  ? (order?.inventories?[index].name ?? '')
+                                  : (activeOrder?.inventories?[index].name ??
+                                      ''),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: AppConst.grey,
+                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          Text(
+                            (allorder!)
+                                ? ('${order?.inventories?[index].quantity ?? ''}')
+                                : ('${activeOrder?.inventories?[index].quantity ?? ''}'),
+                            style: TextStyle(
+                              color: AppConst.grey.withOpacity(0.6),
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Text(
+                        (allorder!)
+                            ? ('${order?.inventories?[index].sellingPrice ?? ''}')
+                            : ('${activeOrder?.inventories?[index].sellingPrice ?? ''}'),
                         style: TextStyle(
                             color: AppConst.black.withOpacity(0.6),
                             fontWeight: FontWeight.w800,

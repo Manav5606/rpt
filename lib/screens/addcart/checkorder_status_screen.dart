@@ -138,9 +138,7 @@ class OrderTreckScreen extends StatelessWidget {
             color: AppConst.green,
             child: Center(
               child: Padding(
-                padding: EdgeInsets.all(
-                  SizeUtils.horizontalBlockSize * 4,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
                 child: CircleAvatar(
                   backgroundColor: AppConst.green,
                   radius: 40,
@@ -628,6 +626,7 @@ class OrderTreckScreen extends StatelessWidget {
                                 child: GestureDetector(
                                   onTap: () {
                                     Get.to(ShopItemsScreen(
+                                      allorder: true,
                                       order: order,
                                     ));
                                   },

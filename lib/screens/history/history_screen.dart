@@ -522,10 +522,13 @@ class OrderTabViewCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "${order?.store?.name ?? "Defalut name "}",
-                      // "Store name",
-                      style: AppStyles.STORE_NAME_STYLE,
+                    Container(
+                      width: 70.w,
+                      child: Text(
+                        "${order?.store?.name ?? "Defalut name "}",
+                        // "Store name",
+                        style: AppStyles.STORE_NAME_STYLE,
+                      ),
                     ),
                     // SizedBox(
                     //   height: 1.h,
@@ -715,9 +718,12 @@ class RefundTabViewCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      " ${order?.store?.name ?? "Store name"}",
-                      style: AppStyles.STORE_NAME_STYLE,
+                    Container(
+                      width: 70.w,
+                      child: Text(
+                        " ${order?.store?.name ?? "Store name"}",
+                        style: AppStyles.STORE_NAME_STYLE,
+                      ),
                     ),
                     SizedBox(
                       height: 1.h,

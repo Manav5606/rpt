@@ -178,20 +178,26 @@ class _SignInScreenState extends State<SignInScreen> {
                                               Container(
                                                 height: 15.h,
                                                 width: 45.w,
-                                                child: Lottie.asset('assets/lottie/loginscreen1.json'),
+                                                child: Lottie.asset(
+                                                    'assets/lottie/loginscreen1.json'),
                                               ),
                                               Container(
                                                 height: 15.h,
                                                 width: 45.w,
-                                                child: Lottie.asset('assets/lottie/loginscreen2.json'),
+                                                child: Lottie.asset(
+                                                    'assets/lottie/loginscreen2.json'),
                                               ),
                                               Text(
                                                 "Scan recipts \n and earn money",
                                                 textAlign: TextAlign.center,
-                                                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, fontFamily: "MuseoSans_700.otf"),
+                                                style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily:
+                                                        "MuseoSans_700.otf"),
                                               ),
                                               SizedBox(
-                                                height: 2.h,
+                                                height: 1.5.h,
                                               ),
                                               Text(
                                                 "Scan recipts  and earn money Scan recipts  and earn money Scan recipts  and earn money",
@@ -206,14 +212,19 @@ class _SignInScreenState extends State<SignInScreen> {
                                         }),
                                   ),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       CurrentIndex > 0
                                           ? GestureDetector(
                                               onTap: () {
                                                 if (CurrentIndex == 4) {}
-                                                _controller.previousPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                                                _controller.previousPage(
+                                                    duration: Duration(
+                                                        milliseconds: 100),
+                                                    curve: Curves.bounceIn);
                                               },
                                               child: Icon(
                                                 Icons.arrow_back,
@@ -226,15 +237,22 @@ class _SignInScreenState extends State<SignInScreen> {
                                             )),
                                       Container(
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: List.generate(4, (index) => buildDot(index, context)),
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: List.generate(
+                                              4,
+                                              (index) =>
+                                                  buildDot(index, context)),
                                         ),
                                       ),
                                       CurrentIndex < 3
                                           ? GestureDetector(
                                               onTap: () {
                                                 if (CurrentIndex == 4) {}
-                                                _controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                                                _controller.nextPage(
+                                                    duration: Duration(
+                                                        milliseconds: 100),
+                                                    curve: Curves.bounceIn);
                                               },
                                               child: Icon(
                                                 Icons.arrow_forward,
@@ -359,7 +377,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               children: [
                                 Text(
                                   "Don't have an account ? | ",
-                                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -367,7 +387,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   },
                                   child: Text(
                                     "Sign up ",
-                                    style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: AppConst.blue),
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppConst.blue),
                                   ),
                                 ),
                               ],
@@ -389,7 +412,8 @@ class _SignInScreenState extends State<SignInScreen> {
       height: 10,
       width: CurrentIndex == index ? 25 : 10,
       margin: EdgeInsets.only(right: 2.w),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Color(0xFFDF2A63)
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20), color: Color(0xFFDF2A63)
           // Colors.green
           // kSecondaryColor
           ),
@@ -400,7 +424,8 @@ class _SignInScreenState extends State<SignInScreen> {
 class BottomWideButton extends StatelessWidget {
   final Color color;
 
-  BottomWideButton({Key? key, this.text, this.color = AppConst.kSecondaryColor}) : super(key: key);
+  BottomWideButton({Key? key, this.text, this.color = AppConst.kSecondaryColor})
+      : super(key: key);
   String? text;
 
   @override
@@ -472,7 +497,10 @@ class EnterNumberScreen extends StatelessWidget {
                   ),
                   Text(
                     " Sign in ",
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, fontFamily: "MuseoSans_700.otf"),
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "MuseoSans_700.otf"),
                   ),
                   SizedBox(
                     height: 2.h,
@@ -480,15 +508,19 @@ class EnterNumberScreen extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     // height: 9.h,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: AppConst.black, width: 1.5)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppConst.black, width: 1.5)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 0.5.h),
+                          padding: EdgeInsets.only(
+                              left: 2.w, top: 0.5.h, bottom: 0.5.h),
                           child: Text(
                             "Mobile",
-                            style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 9.sp, fontWeight: FontWeight.w500),
                           ),
                         ),
                         TextField(
@@ -502,7 +534,8 @@ class EnterNumberScreen extends StatelessWidget {
                             isDense: true,
                             border: InputBorder.none,
                             hintText: 'Enter Phone Number',
-                            contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                            contentPadding:
+                                EdgeInsets.only(left: 2.w, bottom: 1.h),
                             hintTextDirection: TextDirection.ltr,
                             counterText: "",
                           ),
@@ -519,15 +552,19 @@ class EnterNumberScreen extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     // height: 9.h,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: AppConst.black, width: 1.5)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppConst.black, width: 1.5)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 0.5.h),
+                          padding: EdgeInsets.only(
+                              left: 2.w, top: 0.5.h, bottom: 0.5.h),
                           child: Text(
                             "Referral code",
-                            style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 9.sp, fontWeight: FontWeight.w500),
                           ),
                         ),
                         TextField(
@@ -540,7 +577,8 @@ class EnterNumberScreen extends StatelessWidget {
                             isDense: true,
                             border: InputBorder.none,
                             hintText: 'Enter Referral code',
-                            contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                            contentPadding:
+                                EdgeInsets.only(left: 2.w, bottom: 1.h),
                             hintTextDirection: TextDirection.ltr,
                             counterText: "",
                           ),
@@ -556,21 +594,23 @@ class EnterNumberScreen extends StatelessWidget {
                   ),
                   Obx(
                     () => GestureDetector(
-                        onTap: (_signInController.phoneNumber.value.length == 10)
-                            ? () {
-                                log("aavoooo :0");
-                                try {
-                                  _signInController.submitPhoneNumber();
-                                } catch (e) {
-                                  print(e);
-                                }
-                                log("aavoooo :1");
-                              }
-                            : null,
+                        onTap:
+                            (_signInController.phoneNumber.value.length == 10)
+                                ? () {
+                                    log("aavoooo :0");
+                                    try {
+                                      _signInController.submitPhoneNumber();
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                    log("aavoooo :1");
+                                  }
+                                : null,
                         child: BottomWideButton(
-                          color: _signInController.phoneNumber.value.length == 10
-                              ? AppConst.kSecondaryColor
-                              : AppConst.kSecondaryColor.withOpacity(0.60),
+                          color:
+                              _signInController.phoneNumber.value.length == 10
+                                  ? AppConst.kSecondaryColor
+                                  : AppConst.kSecondaryColor.withOpacity(0.60),
                         )),
                   ),
                 ]),
@@ -610,7 +650,10 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   Text(
                     " Sign Up ",
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, fontFamily: "MuseoSans_700.otf"),
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "MuseoSans_700.otf"),
                   ),
                   SizedBox(
                     height: 2.h,
@@ -639,15 +682,19 @@ class SignUpScreen extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     // height: 9.h,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: AppConst.black, width: 1.5)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppConst.black, width: 1.5)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 0.5.h),
+                          padding: EdgeInsets.only(
+                              left: 2.w, top: 0.5.h, bottom: 0.5.h),
                           child: Text(
                             "Email",
-                            style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 9.sp, fontWeight: FontWeight.w500),
                           ),
                         ),
                         TextField(
@@ -661,7 +708,8 @@ class SignUpScreen extends StatelessWidget {
                             isDense: true,
                             border: InputBorder.none,
                             hintText: 'Enter Email',
-                            contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                            contentPadding:
+                                EdgeInsets.only(left: 2.w, bottom: 1.h),
                             hintTextDirection: TextDirection.ltr,
                             counterText: "",
                           ),
@@ -674,7 +722,10 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                       onTap: () async {
-                        _signInController.signUpButton(firstNameController.text, lastNameController.text, mobileNumberController.text);
+                        _signInController.signUpButton(
+                            firstNameController.text,
+                            lastNameController.text,
+                            mobileNumberController.text);
                       },
 
                       // onTap: (_signInController
@@ -712,7 +763,9 @@ class SignUpFeilds extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       // height: 9.h,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: AppConst.black, width: 1.5)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppConst.black, width: 1.5)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

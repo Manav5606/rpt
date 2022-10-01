@@ -1,3 +1,5 @@
+import 'package:customer_app/app/controller/account_controller.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -26,13 +28,16 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
   final HomeController _homeController = Get.find();
 
   final PaymentController _paymentController = Get.find();
+  final MyAccountController _myaccount = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _homeController.checkPermission.listen((p0) async {
-      _paymentController.latLng = LatLng(UserViewModel.currentLocation.value.latitude, UserViewModel.currentLocation.value.longitude);
+      _paymentController.latLng = LatLng(
+          UserViewModel.currentLocation.value.latitude,
+          UserViewModel.currentLocation.value.longitude);
       await _paymentController.getRedeemCashInStorePage();
     });
   }
@@ -45,16 +50,25 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
         title: Obx(
           () => HomeAppBar(
             onTap: () async {
-              dynamic value =await Get.to(AddressModel(
+              dynamic value = await Get.to(AddressModel(
                 isHomeScreen: true,
               ));
-              _paymentController.latLng = LatLng(UserViewModel.currentLocation.value.latitude,
+              _paymentController.latLng = LatLng(
+                  UserViewModel.currentLocation.value.latitude,
                   UserViewModel.currentLocation.value.longitude);
               await _paymentController.getRedeemCashInStorePage();
-              if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
+              if (Constants.isAbleToCallApi)
+                await _homeController.getAllCartsData();
             },
-            isRedDot: _homeController.getAllCartsModel.value?.cartItemsTotal != 0 ? true : false,
+            isRedDot:
+                _homeController.getAllCartsModel.value?.cartItemsTotal != 0
+                    ? true
+                    : false,
             address: _homeController.userAddress.value,
+            balance: (_myaccount.user.balance ?? 0),
+            onTapWallet: () {
+              Get.toNamed(AppRoutes.Wallet);
+            },
           ),
         ),
       ),
@@ -67,10 +81,12 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
                   ? SizedBox()
                   : PermissionRaw(
                       onTap: () async {
-                        bool isEnable = await _homeController.getCurrentLocation();
+                        bool isEnable =
+                            await _homeController.getCurrentLocation();
                         if (isEnable) {
-                          _paymentController.latLng =
-                              LatLng(UserViewModel.currentLocation.value.latitude, UserViewModel.currentLocation.value.longitude);
+                          _paymentController.latLng = LatLng(
+                              UserViewModel.currentLocation.value.latitude,
+                              UserViewModel.currentLocation.value.longitude);
                           await _paymentController.getRedeemCashInStorePage();
                         }
                       },
@@ -85,7 +101,9 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
                   child: FittedBox(
                     child: Text(
                       "Loyalty Cards",
-                      style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 8, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 8,
+                          fontWeight: FontWeight.bold),
                     ),
                   )),
               SizedBox(

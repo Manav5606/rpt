@@ -407,7 +407,7 @@ class MyAccountPage extends GetView<MyAccountController> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
-          padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 1.5.h),
+          padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 1.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -425,7 +425,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                     fontWeight: FontWeight.w300),
               ),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               FittedBox(
                 child: SizedBox(

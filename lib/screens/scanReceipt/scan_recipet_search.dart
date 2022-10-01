@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_app/app/controller/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -29,13 +30,16 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
   final PaymentController _paymentController = Get.find();
 
   final HomeController _homeController = Get.find();
+  final MyAccountController _MyController = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _homeController.checkPermission.listen((p0) async {
-      _paymentController.latLng = LatLng(UserViewModel.currentLocation.value.latitude, UserViewModel.currentLocation.value.longitude);
+      _paymentController.latLng = LatLng(
+          UserViewModel.currentLocation.value.latitude,
+          UserViewModel.currentLocation.value.longitude);
       await _paymentController.getScanReceiptPageNearMeStoresData();
     });
   }
@@ -52,18 +56,28 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                 dynamic value = await Get.to(AddressModel(
                   isHomeScreen: true,
                 ));
-                _paymentController.latLng = LatLng(UserViewModel.currentLocation.value.latitude,
+                _paymentController.latLng = LatLng(
+                    UserViewModel.currentLocation.value.latitude,
                     UserViewModel.currentLocation.value.longitude);
                 await _paymentController.getScanReceiptPageNearMeStoresData();
-                if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
+                if (Constants.isAbleToCallApi)
+                  await _homeController.getAllCartsData();
               },
-              isRedDot: _homeController.getAllCartsModel.value?.cartItemsTotal != 0 ? true : false,
+              isRedDot:
+                  _homeController.getAllCartsModel.value?.cartItemsTotal != 0
+                      ? true
+                      : false,
               address: _homeController.userAddress.value,
+              balance: (_MyController.user.balance ?? 0),
+              onTapWallet: () {
+                Get.toNamed(AppRoutes.Wallet);
+              },
             ),
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 2),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeUtils.horizontalBlockSize * 2),
           child: Obx(
             () => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,11 +86,14 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                     ? SizedBox()
                     : PermissionRaw(
                         onTap: () async {
-                          bool isEnable = await _homeController.getCurrentLocation();
+                          bool isEnable =
+                              await _homeController.getCurrentLocation();
                           if (isEnable) {
-                            _paymentController.latLng =
-                                LatLng(UserViewModel.currentLocation.value.latitude, UserViewModel.currentLocation.value.longitude);
-                            await _paymentController.getScanReceiptPageNearMeStoresData();
+                            _paymentController.latLng = LatLng(
+                                UserViewModel.currentLocation.value.latitude,
+                                UserViewModel.currentLocation.value.longitude);
+                            await _paymentController
+                                .getScanReceiptPageNearMeStoresData();
                           }
                         },
                       ),
@@ -87,7 +104,9 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                   onTap: () {
                     _paymentController.searchController.clear();
                     _paymentController.searchText.value = '';
-                    _paymentController.getNearMePageDataModel.value?.data?.stores?.clear();
+                    _paymentController
+                        .getNearMePageDataModel.value?.data?.stores
+                        ?.clear();
                     Get.toNamed(AppRoutes.SearchRecipeScreen);
                   },
                   child: TextField(
@@ -114,7 +133,9 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                           ),
                           hintTextDirection: TextDirection.rtl,
                           hintText: " Search products,stores & recipes",
-                          hintStyle: TextStyle(color: AppConst.grey, fontSize: SizeUtils.horizontalBlockSize * 4)),
+                          hintStyle: TextStyle(
+                              color: AppConst.grey,
+                              fontSize: SizeUtils.horizontalBlockSize * 4)),
                       showCursor: true,
                       cursorColor: AppConst.black,
                       cursorHeight: SizeUtils.horizontalBlockSize * 5,
@@ -145,12 +166,16 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                   child: Container(
                     color: AppConst.blue.withOpacity(0.2),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 1, vertical: SizeUtils.verticalBlockSize * 2),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeUtils.horizontalBlockSize * 1,
+                          vertical: SizeUtils.verticalBlockSize * 2),
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
-                            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AppConst.grey)),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppConst.grey)),
                             child: ClipOval(
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
@@ -158,11 +183,15 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                                   height: SizeUtils.verticalBlockSize * 5,
                                   width: SizeUtils.horizontalBlockSize * 10,
                                   fit: BoxFit.contain,
-                                  imageUrl: 'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
-                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                      CircularProgressIndicator(value: downloadProgress.progress),
+                                  imageUrl:
+                                      'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
                                   errorWidget: (context, url, error) =>
-                                      Image.network('https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+                                      Image.network(
+                                          'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
                                 ),
                               ),
                             ),

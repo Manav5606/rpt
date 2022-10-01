@@ -1147,6 +1147,15 @@ wallet_amount
             modified
             selling_price
           }
+           inventories
+          {
+            name
+            quantity
+            mrp
+            status
+            selling_price
+            gst_amount
+          }
              rawitems{
             item
             _id
@@ -1222,6 +1231,15 @@ wallet_amount
             deleted
             modified
             selling_price
+          }
+          inventories
+          {
+            name
+            quantity
+            mrp
+            status
+            selling_price
+            gst_amount
           }
              rawitems{
             item
