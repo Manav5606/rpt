@@ -106,7 +106,9 @@ class ScheduleTimeScreen extends StatelessWidget {
                               } else {
                                 _addCartController.selectedTimeIndex.value =
                                     index;
-                                _addCartController.timeSlots.value =
+
+                                _addCartController
+                                        .dayTimeSlots.value?.startTime =
                                     _addCartController
                                         .getCartPageInformationModel
                                         .value
@@ -114,7 +116,18 @@ class ScheduleTimeScreen extends StatelessWidget {
                                         ?.deliverySlots?[int.parse(
                                             _addCartController
                                                 .currentDay.value)]
-                                        .slots?[index];
+                                        .slots?[index]
+                                        .startTime;
+                                _addCartController.dayTimeSlots.value?.endTime =
+                                    _addCartController
+                                        .getCartPageInformationModel
+                                        .value
+                                        ?.data
+                                        ?.deliverySlots?[int.parse(
+                                            _addCartController
+                                                .currentDay.value)]
+                                        .slots?[index]
+                                        .endTime;
                                 _addCartController.timeZoneCustom.value =
                                     getTemp(index);
                               }
@@ -315,6 +328,8 @@ class ScheduleTimeScreen extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     _addCartController.selectedDayIndex.value = index;
+                    _addCartController.dayTimeSlots.value?.day =
+                        _addCartController.deliverySlots[index]?.day ?? 0;
                     _addCartController.timeTitleCustom.value =
                         _addCartController.weekDayList[index].day ?? '';
                     _addCartController.dayIndexForTimeSlot.value =

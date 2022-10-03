@@ -72,6 +72,7 @@ class AddCartController extends GetxController {
   Rx<order_model.OrderData?> orderModel = order_model.OrderData().obs;
   Rx<Store?> store = Store().obs;
   Rx<TimeSlots?> timeSlots = TimeSlots().obs;
+  Rx<DayTimeSlots?> dayTimeSlots = DayTimeSlots().obs;
   Rx<CreateRazorpayResponse?> createRazorpayResponseModel =
       CreateRazorpayResponse().obs;
   Rx<Addresses?> selectAddressIndex = Addresses().obs;

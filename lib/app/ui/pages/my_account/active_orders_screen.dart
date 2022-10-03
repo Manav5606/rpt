@@ -32,7 +32,7 @@ class _ActiveOrdersScreenState extends State<ActiveOrdersScreen> {
     return Scaffold(
       backgroundColor: AppConst.white,
       body: SafeArea(
-        minimum: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
+        minimum: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
         top: true,
         child: DefaultTabController(
           length: 2,
@@ -145,7 +145,8 @@ class ActiveReciptTabView extends StatelessWidget {
                         shrinkWrap: true,
                         padding: EdgeInsets.symmetric(vertical: 1.h),
                         itemBuilder: (context, index) {
-                          return GestureDetector(
+                          return InkWell(
+                            highlightColor: AppConst.highLightColor,
                             onTap: () {
                               // Get.toNamed(AppRoutes.OrderTreckScreen);
                               state.selectIndex.value = index;
@@ -240,9 +241,10 @@ class ActiveOrderTabView extends StatelessWidget {
                       )
                     : ListView.separated(
                         shrinkWrap: true,
-                        padding: EdgeInsets.symmetric(vertical: 1.h),
+                        // padding: EdgeInsets.symmetric(vertical: 1.h),
                         itemBuilder: (context, index) {
-                          return GestureDetector(
+                          return InkWell(
+                            highlightColor: AppConst.highLightColor,
                             onTap: () {
                               // Get.toNamed(AppRoutes.OrderTreckScreen);
                               state.selectIndex.value = index;
@@ -312,11 +314,7 @@ class ActiveOrderTabViewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-            // decoration: BoxDecoration(
-            //     border: Border.all(width: 0.5),
-            //     borderRadius: BorderRadius.circular(8)),
-            child: Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Row(
@@ -495,7 +493,7 @@ class ActiveOrderTabViewCard extends StatelessWidget {
               height: 1.h,
             )
           ]),
-        )),
+        ),
       ],
     );
   }

@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:customer_app/constants/app_const.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/my_wallet_controller.dart';
@@ -24,7 +26,7 @@ class WalletScreen extends GetView<MyWalletController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        minimum: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
+        minimum: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
         child: Obx(
           () => _myWalletController.isLoading.value
               // true
@@ -32,28 +34,8 @@ class WalletScreen extends GetView<MyWalletController> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    BackButtonWidget(),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    Container(
-                        // color: Colors.red,
-                        height: 5.h,
-                        width: 65.w,
-                        alignment: Alignment.topLeft,
-                        child: FittedBox(
-                          child: Text(
-                            "Wallet",
-                            style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 7,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )),
-                    SizedBox(
-                      height: 2.h,
+                    BackButtonAppbar(
+                      text: "Wallet",
                     ),
                     Expanded(
                         child: Container(
@@ -90,7 +72,8 @@ class WalletScreen extends GetView<MyWalletController> {
                                           //         icon: Icons.receipt,
                                           //       )
                                           // :
-                                          GestureDetector(
+                                          InkWell(
+                                        highlightColor: AppConst.highLightColor,
                                         onTap: () async {
                                           Get.to(() => WalletTransactionCard(
                                               storeSearchModel: _paymentController
@@ -117,8 +100,8 @@ class WalletScreen extends GetView<MyWalletController> {
                                               "";
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 12.0),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2.h),
                                           child: Column(
                                             children: [
                                               Row(
@@ -299,9 +282,10 @@ class WalletScreen extends GetView<MyWalletController> {
                                     );
                                   },
                                   separatorBuilder: (context, index) {
-                                    return Divider(
-                                      height: 3.h,
-                                    );
+                                    return SizedBox();
+                                    // Divider(
+                                    //   height: 3.h,
+                                    // );
                                   },
                                 ),
                               ),

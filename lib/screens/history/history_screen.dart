@@ -33,7 +33,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       // backgroundColor: kGreyColor,
       body: SafeArea(
-        minimum: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
+        minimum: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
         top: true,
         child: DefaultTabController(
           length: 3,
@@ -114,21 +114,24 @@ class BackButtonAppbar extends StatelessWidget {
       children: [
         BackButtonWidget(),
         SizedBox(
-          height: 3.h,
+          height: 2.h,
         ),
-        Container(
-            // color: Colors.yellow,
-            height: 5.h,
-            width: 70.w,
-            alignment: Alignment.topLeft,
-            child: FittedBox(
-              child: Text(
-                text!, //" History",
-                style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 7.5,
-                    fontWeight: FontWeight.bold),
-              ),
-            )),
+        Padding(
+          padding: EdgeInsets.only(left: 2.w),
+          child: Container(
+              // color: Colors.yellow,
+              height: 5.h,
+              width: 70.w,
+              alignment: Alignment.topLeft,
+              child: FittedBox(
+                child: Text(
+                  text!, //" History",
+                  style: TextStyle(
+                      fontSize: SizeUtils.horizontalBlockSize * 7.5,
+                      fontWeight: FontWeight.bold),
+                ),
+              )),
+        ),
         SizedBox(
           height: 2.h,
         ),
@@ -168,7 +171,8 @@ class OrderTabView extends StatelessWidget {
                         shrinkWrap: true,
                         padding: EdgeInsets.symmetric(vertical: 1.h),
                         itemBuilder: (context, index) {
-                          return GestureDetector(
+                          return InkWell(
+                            highlightColor: AppConst.highLightColor,
                             onTap: () async {
                               // Get.toNamed(AppRoutes.OrderTreckScreen);
                               _.selectIndex.value = index;
@@ -258,7 +262,8 @@ class RefundTabView extends StatelessWidget {
                   shrinkWrap: true,
                   padding: EdgeInsets.symmetric(vertical: 1.h),
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    return InkWell(
+                      highlightColor: AppConst.highLightColor,
                       onTap: () {
                         // Get.toNamed(AppRoutes.OrderTreckScreen);
                         _.selectIndex.value = index;
@@ -347,7 +352,8 @@ class ReciptTabView extends StatelessWidget {
                   shrinkWrap: true,
                   padding: EdgeInsets.symmetric(vertical: 1.h),
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    return InkWell(
+                      highlightColor: AppConst.highLightColor,
                       onTap: () {
                         // Get.toNamed(AppRoutes.OrderTreckScreen);
                         _.selectIndex.value = index;

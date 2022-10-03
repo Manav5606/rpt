@@ -57,7 +57,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       products: _addCartController.reviewCart.value?.data?.products,
       rawItem: _addCartController.reviewCart.value?.data?.rawItems,
       inventories: _addCartController.reviewCart.value?.data?.inventories,
-      deliveryTimeSlot: _addCartController.timeSlots.value,
+      deliveryTimeSlot: _addCartController.dayTimeSlots.value,
       walletAmount:
           _addCartController.reviewCart.value?.data?.walletAmount ?? 0,
       deliveryFee: _addCartController

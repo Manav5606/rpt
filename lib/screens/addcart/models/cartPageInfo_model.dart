@@ -29,7 +29,12 @@ class Data {
   int? walletAmount;
   List<DeliverySlot>? deliverySlots;
 
-  Data({this.billDiscountOfferStatus, this.billDiscountOfferTarget, this.billDiscountOfferAmount, this.walletAmount, this.deliverySlots});
+  Data(
+      {this.billDiscountOfferStatus,
+      this.billDiscountOfferTarget,
+      this.billDiscountOfferAmount,
+      this.walletAmount,
+      this.deliverySlots});
 
   Data.fromJson(Map<String, dynamic> json) {
     billDiscountOfferStatus = json['bill_discount_offer_status'];
@@ -51,7 +56,8 @@ class Data {
     data['bill_discount_offer_amount'] = this.billDiscountOfferAmount;
     data['wallet_amount'] = this.walletAmount;
     if (this.deliverySlots != null) {
-      data['delivery_slots'] = this.deliverySlots!.map((v) => v.toJson()).toList();
+      data['delivery_slots'] =
+          this.deliverySlots!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -87,18 +93,24 @@ class DeliverySlot {
 }
 
 class TimeSlots {
-  String? sId;
-  CutOffTime? cutOffTime;
+  // String? sId;
+  // CutOffTime? cutOffTime;
   CutOffTime? startTime;
   CutOffTime? endTime;
 
-  TimeSlots({this.sId, this.cutOffTime, this.startTime, this.endTime});
+  TimeSlots({this.startTime, this.endTime});
 
   TimeSlots.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    cutOffTime = json['cut_off_time'] != null ? new CutOffTime.fromJson(json['cut_off_time']) : null;
-    startTime = json['start_time'] != null ? new CutOffTime.fromJson(json['start_time']) : null;
-    endTime = json['end_time'] != null ? new CutOffTime.fromJson(json['end_time']) : null;
+    // sId = json['_id'];
+    // cutOffTime = json['cut_off_time'] != null
+    //     ? new CutOffTime.fromJson(json['cut_off_time'])
+    //     : null;
+    startTime = json['start_time'] != null
+        ? new CutOffTime.fromJson(json['start_time'])
+        : null;
+    endTime = json['end_time'] != null
+        ? new CutOffTime.fromJson(json['end_time'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -132,6 +144,36 @@ class CutOffTime {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['hour'] = this.hour;
     data['minute'] = this.minute;
+    return data;
+  }
+}
+
+class DayTimeSlots {
+  int? day;
+  CutOffTime? startTime;
+  CutOffTime? endTime;
+
+  DayTimeSlots({this.day, this.startTime, this.endTime});
+
+  DayTimeSlots.fromJson(Map<String, dynamic> json) {
+    day = json['day'];
+    startTime = json['start_time'] != null
+        ? new CutOffTime.fromJson(json['start_time'])
+        : null;
+    endTime = json['end_time'] != null
+        ? new CutOffTime.fromJson(json['end_time'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['day'] = this.day;
+    if (this.startTime != null) {
+      data['start_time'] = this.startTime!.toJson();
+    }
+    if (this.endTime != null) {
+      data['end_time'] = this.endTime!.toJson();
+    }
     return data;
   }
 }
