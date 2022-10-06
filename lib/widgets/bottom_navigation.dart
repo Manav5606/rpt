@@ -1,15 +1,23 @@
+import 'package:badges/badges.dart';
+import 'package:customer_app/app/controller/signInScreenController.dart';
+import 'package:customer_app/app/data/provider/hive/hive.dart';
+import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/constants/string_constants.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class BottomNavigation extends StatelessWidget {
   static ValueNotifier<int> pageIndex = ValueNotifier(0);
 
+  final SignInScreenController _signinContoller =
+      Get.put(SignInScreenController());
+
   final BuildContext context;
 
-  const BottomNavigation({Key? key, required this.context}) : super(key: key);
+  BottomNavigation({Key? key, required this.context}) : super(key: key);
 
   void _onItemTapped(int index) {
     pageIndex.value = index;
@@ -44,12 +52,26 @@ class BottomNavigation extends StatelessWidget {
                   ),
                 ),
                 BottomNavigationBarItem(
-                  label: StringContants.chats,
-                  icon: Icon(
-                    CupertinoIcons.chat_bubble_fill,
-                    size: 3.5.h,
-                  ),
-                ),
+                    label: StringContants.chats,
+                    icon: ((UserViewModel.unreadCount.value != 0 &&
+                            value != 1 &&
+                            value != 2 &&
+                            value != 3)
+                        ? Badge(
+                            badgeContent:
+                                Text("${UserViewModel.unreadCount.value}"),
+                            child: Icon(
+                              CupertinoIcons.chat_bubble_fill,
+                              size: 3.5.h,
+                            ),
+                          )
+                        : Badge(
+                            badgeContent: Text(""),
+                            child: Icon(
+                              CupertinoIcons.chat_bubble_fill,
+                              size: 3.5.h,
+                            ),
+                          ))),
                 BottomNavigationBarItem(
                   label: StringContants.explore,
                   icon: Icon(

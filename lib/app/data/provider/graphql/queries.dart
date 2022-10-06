@@ -1895,21 +1895,21 @@ data{
 }
     ''',
   );
-  static final getAllStreamChatChannelById = new GraphQLQuery(
-    name: 'getAllStreamChatChannelById',
-    query: r'''
-query{
-  getAllStreamChatChannelById{
-    msg
-    error
-    data{
-      id
-      name
-  }
-}
-}
-    ''',
-  );
+//   static final getAllStreamChatChannelById = new GraphQLQuery(
+//     name: 'getAllStreamChatChannelById',
+//     query: r'''
+// query{
+//   getAllStreamChatChannelById{
+//     msg
+//     error
+//     data{
+//       id
+//       name
+//   }
+// }
+// }
+//     ''',
+//   );
 
   static final updateCustomerInformation = new GraphQLQuery(
     name: 'updateCustomerInformation',

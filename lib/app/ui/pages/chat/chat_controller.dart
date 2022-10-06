@@ -13,8 +13,8 @@ import 'package:get/get.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChatController extends GetxController {
-  Rx<GetAllStreamChatChannelById?> getAllStreamChatChannelByIdModel =
-      GetAllStreamChatChannelById().obs;
+  // Rx<GetAllStreamChatChannelById?> getAllStreamChatChannelByIdModel =
+  //     GetAllStreamChatChannelById().obs;
 
   RxBool isLoading = false.obs;
   final MyAccountController _accountController = Get.find();
@@ -27,29 +27,29 @@ class ChatController extends GetxController {
   List<Channel> messageList = [];
   List<Channel> noMessageList = [];
 
-  Future<void> getAllStreamChatChannelById() async {
-    try {
-      isLoading.value = true;
-      getAllStreamChatChannelByIdModel.value =
-          await ChatService.getAllStreamChatChannelById();
-      for (var _element in getAllStreamChatChannelByIdModel.value?.data ?? []) {
-        int index = _accountController.activeOrdersModel.value!.data!
-            .indexWhere((element) => element.Id == _element.id);
-        if (index != -1) {
-          chatList
-              .add(_accountController.activeOrdersModel.value!.data![index]);
-          streamChatApiID.add(
-              _accountController.activeOrdersModel.value!.data![index].Id ??
-                  '');
-        }
-        log('chatList ${chatList.length}');
-      }
-      isLoading.value = false;
-    } catch (e, st) {
-      log('eee:$e st $st');
-      isLoading.value = false;
-    }
-  }
+  // Future<void> getAllStreamChatChannelById() async {
+  //   try {
+  //     isLoading.value = true;
+  //     getAllStreamChatChannelByIdModel.value =
+  //         await ChatService.getAllStreamChatChannelById();
+  //     for (var _element in getAllStreamChatChannelByIdModel.value?.data ?? []) {
+  //       int index = _accountController.activeOrdersModel.value!.data!
+  //           .indexWhere((element) => element.Id == _element.id);
+  //       if (index != -1) {
+  //         chatList
+  //             .add(_accountController.activeOrdersModel.value!.data![index]);
+  //         streamChatApiID.add(
+  //             _accountController.activeOrdersModel.value!.data![index].Id ??
+  //                 '');
+  //       }
+  //       log('chatList ${chatList.length}');
+  //     }
+  //     isLoading.value = false;
+  //   } catch (e, st) {
+  //     log('eee:$e st $st');
+  //     isLoading.value = false;
+  //   }
+  // }
 
   Future<void> launchChat(String id, String name) async {
     try {
@@ -69,7 +69,7 @@ class ChatController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    getAllStreamChatChannelById();
+    // getAllStreamChatChannelById();
     userModel = hiveRepository.getCurrentUser();
   }
 }

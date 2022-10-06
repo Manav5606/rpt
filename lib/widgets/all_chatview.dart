@@ -169,8 +169,8 @@ class _AllChatsState extends State<AllChats> {
                             builder: (context, snapshot) {
                               final lastMessage = snapshot.data?.lastWhere(
                                 (m) => m.shadowed != true,
-                                orElse: () =>
-                                    null!, // show an error null check operator used on null value
+                                // orElse: () =>
+                                //     null!, // show an error null check operator used on null value
                               );
                               if (lastMessage == null) {
                                 return SizedBox();
@@ -223,7 +223,7 @@ class _AllChatsState extends State<AllChats> {
                                           height: 5.h,
                                           width: 12.w,
                                           decoration: BoxDecoration(
-                                            color: AppConst.kPrimaryColor,
+                                            color: AppConst.kSecondaryColor,
                                             shape: BoxShape.circle,
                                             border: Border.all(width: 0.1),
                                             boxShadow: [
@@ -252,57 +252,110 @@ class _AllChatsState extends State<AllChats> {
                                       SizedBox(
                                         width: 2.w,
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      Row(
                                         children: [
-                                          SizedBox(
-                                            height: 1.h,
-                                          ),
-                                          Container(
-                                            width: 70.w,
-                                            child: Text(
-                                                channel.extraData["store_name"]
-                                                        ?.toString() ??
-                                                    "store_name is not gettting ",
-                                                //  user.extraData["email"]?.stringValue ?? ""
-                                                // "Store Name",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 13.sp,
-                                                    color: AppConst.black)),
-                                          ),
-                                          SizedBox(
-                                            height: 0.5.h,
-                                          ),
-                                          Container(
-                                            width: 70.w,
-                                            child: Text(
-                                                DateFormat()
-                                                    // .add_yMMMMEEEEd()
-                                                    .add_jm()
-                                                    .format(localTime),
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 12.5.sp,
-                                                    color: AppConst.black)),
-                                          ),
-                                          SizedBox(
-                                            height: 0.5.h,
-                                          ),
-                                          Container(
-                                            width: 70.w,
-                                            // height: 3.h,
-                                            child: Text(text!,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 12.sp,
-                                                    color: AppConst.grey)),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 1.h,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: 60.w,
+                                                    child: Text(
+                                                        channel.extraData[
+                                                                    "store_name"]
+                                                                ?.toString() ??
+                                                            "store_name is not gettting ",
+                                                        //  user.extraData["email"]?.stringValue ?? ""
+                                                        // "Store Name",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 13.sp,
+                                                            color: AppConst
+                                                                .black)),
+                                                  ),
+                                                  Text(
+                                                      DateFormat()
+                                                          // .add_yMMMMEEEEd()
+                                                          .add_jm()
+                                                          .format(localTime),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 12.sp,
+                                                          color:
+                                                              AppConst.green)),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 0.5.h,
+                                              ),
+                                              // Text(
+                                              //     DateFormat()
+                                              //         // .add_yMMMMEEEEd()
+                                              //         .add_jm()
+                                              //         .format(localTime),
+                                              //     overflow:
+                                              //         TextOverflow.ellipsis,
+                                              //     style: TextStyle(
+                                              //         fontWeight:
+                                              //             FontWeight.w500,
+                                              //         fontSize: 12.5.sp,
+                                              //         color: AppConst.black)),
+                                              // SizedBox(
+                                              //   height: 0.5.h,
+                                              // ),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: 70.w,
+                                                    // height: 3.h,
+                                                    child: Text(text!,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            fontSize: 12.sp,
+                                                            color:
+                                                                AppConst.grey)),
+                                                  ),
+                                                  (channel.state!.unreadCount >
+                                                          0)
+                                                      ? Container(
+                                                          padding:
+                                                              EdgeInsets.all(3),
+                                                          decoration: BoxDecoration(
+                                                              color: AppConst
+                                                                  .green,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                          child: Text(
+                                                            " ${channel.state!.unreadCount} ",
+
+                                                            // "1",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        )
+                                                      : SizedBox(),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),

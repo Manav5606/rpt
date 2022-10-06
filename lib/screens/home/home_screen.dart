@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen>
   final AddCartController _addCartController = Get.put(AddCartController());
   final MyAccountController _myAccountController =
       Get.put(MyAccountController(MyAccountRepository(), HiveRepository()));
-
+  final UserViewModel userViewModel = Get.put(UserViewModel());
   @override
   void initState() {
     super.initState();
@@ -99,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen>
     Get.find<MyAccountController>()
       ..getActiveOrders()
       ..getUserData();
+    Get.find<UserViewModel>();
 
     _categoryController.addListener(_scrollListener);
 

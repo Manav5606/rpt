@@ -25,6 +25,9 @@ class UserViewModel extends GetxController {
   static var referFlag = false.obs;
   static var referId = ''.obs;
 
+  static var unreadCount = 0.obs;
+  static setUnreadCount(int value) => unreadCount.value = value;
+
   static setToken(String data) {
     token.value = data;
     final box = Boxes.getCommonBox();
@@ -36,6 +39,7 @@ class UserViewModel extends GetxController {
     final box = Boxes.getCommonBox();
     box.put(HiveConstants.STREAM_TOKEN, data);
   }
+
   static setBonus(String data) {
     bonus.value = data;
     final box = Boxes.getCommonBox();
