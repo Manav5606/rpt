@@ -110,7 +110,7 @@ class SignInScreenController extends GetxController {
   //     isLoading.value = false;
   //   }
   // }
-
+  int? _resendToken;
   Future submitPhoneNumber() async {
     try {
       log("aavoooo :2");
@@ -129,6 +129,7 @@ class SignInScreenController extends GetxController {
         codeSent: (String verificationId, int? forceResendingToken) {
           isLoading.value = false;
           verification.value = verificationId;
+          _resendToken = forceResendingToken;
           if (!isFromOTP.value) {
             Get.to(() => OtpScreen());
           }
@@ -137,6 +138,7 @@ class SignInScreenController extends GetxController {
           isLoading.value = false;
           verification.value = verificationId;
         },
+        forceResendingToken: _resendToken,
         verificationFailed: (FirebaseAuthException e) {
           isLoading.value = false;
           if (e.code == 'invalid-phone-number') {
