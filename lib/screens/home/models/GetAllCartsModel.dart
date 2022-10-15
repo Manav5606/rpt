@@ -129,14 +129,16 @@ class AllCartProducts {
 class RawItems {
   String? item;
   String? unit;
+  String? logo;
   RxInt? quantity = 0.obs;
   String? sId;
 
-  RawItems({this.item, this.quantity, this.sId ,this.unit});
+  RawItems({this.item, this.quantity, this.sId ,this.unit , this.logo});
 
   RawItems.fromJson(Map<String, dynamic> json) {
     item = json['item'];
     unit = json['unit'];
+    logo = json['logo'];
     quantity?.value = json['quantity'];
     sId = json['_id'];
   }
@@ -145,6 +147,7 @@ class RawItems {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['item'] = this.item;
     data['unit'] = this.unit;
+    data['logo'] = this.logo;
     data['quantity'] = this.quantity?.value;
     // data['_id'] = this.sId;
     return data;

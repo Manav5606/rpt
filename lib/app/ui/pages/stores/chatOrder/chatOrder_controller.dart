@@ -1,5 +1,5 @@
-import 'dart:math';
-
+import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
@@ -7,6 +7,7 @@ import 'package:customer_app/app/ui/pages/stores/chatOrder/chatorder_service.dar
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/screens/home/models/GetAllCartsModel.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../screens/more_stores/morestore_controller.dart';
 
@@ -16,6 +17,8 @@ class ChatOrderController extends GetxController {
   RxInt quntity = 0.obs;
   RxInt selectUnitIndex = 0.obs;
   RxString oldItem = ''.obs;
+  RxString logo = ''.obs;
+  RxString imagePath = ''.obs;
   RxInt oldQuntity = 0.obs;
   final TextEditingController itemController = TextEditingController();
   RxBool isLoading = false.obs;
@@ -26,7 +29,8 @@ class ChatOrderController extends GetxController {
   final MoreStoreController _moreStoreController = Get.find();
   bool isNewStore = false;
   final HomeController _homeController = Get.find();
-
+  final ImagePicker _picker = ImagePicker();
+  File? file;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -87,6 +91,17 @@ class ChatOrderController extends GetxController {
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
+    }
+  }
+
+
+
+  Future<void> imagePicker() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      file = File(image.path);
+      imagePath.value = file!.path;
+      log('file :${imagePath.value}');
     }
   }
 }

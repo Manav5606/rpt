@@ -127,15 +127,17 @@ class RawItems {
   String? item;
   int? quantity;
   String? sId;
+  String? logo;
   bool? modified;
 
-  RawItems({this.item, this.quantity, this.sId, this.modified});
+  RawItems({this.item, this.quantity, this.sId, this.modified,this.logo});
 
   RawItems.fromJson(Map<String, dynamic> json) {
     item = json['item'];
     quantity = json['quantity'];
     sId = json['_id'];
     modified = json['modified'];
+    logo = json['logo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -144,6 +146,7 @@ class RawItems {
     data['quantity'] = this.quantity;
     data['_id'] = this.sId;
     data['modified'] = this.modified;
+    data['logo'] = this.logo;
     return data;
   }
 }

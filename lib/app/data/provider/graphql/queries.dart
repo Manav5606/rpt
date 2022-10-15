@@ -1047,6 +1047,7 @@ wallet_amount
         quantity
       }
             rawitems{
+            logo
         item
         quantity
         _id
@@ -1157,6 +1158,7 @@ wallet_amount
             gst_amount
           }
              rawitems{
+             logo
             item
             _id
             quantity 
@@ -1222,6 +1224,7 @@ wallet_amount
           rawitems
           {
             item
+            logo
             quantity
           }
           products
@@ -1245,6 +1248,7 @@ wallet_amount
             item
             _id
             quantity
+            logo
             modified
           }
         store
@@ -1297,6 +1301,7 @@ getAllcarts{
       rawitems{
         item
         quantity
+        logo
         _id
         unit
       }
@@ -1431,6 +1436,7 @@ data{
       {
         item
         quantity
+        logo
       }
               inventories
       {
@@ -1571,6 +1577,7 @@ data{
         quantity
       }
             rawitems{
+            logo
         item
         quantity
         _id
@@ -1619,6 +1626,7 @@ data{
         quantity
       }
             rawitems{
+            logo
         item
         quantity
         _id
@@ -1665,6 +1673,7 @@ data{
         quantity
       }
             rawitems{
+            logo
         item
         quantity
         _id
@@ -1713,6 +1722,7 @@ data{
             rawitems{
         item
         quantity
+        logo
         _id
         unit
       }
@@ -2086,6 +2096,7 @@ mutation{
         item
         quantity
         unit
+        logo
       }
     }
   }}
@@ -2115,6 +2126,7 @@ mutation{
         item
         quantity
         unit
+        logo
       }
     }
   }}

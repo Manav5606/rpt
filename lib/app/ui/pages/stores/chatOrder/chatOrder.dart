@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:customer_app/widgets/imagePicker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -32,9 +36,9 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
     _chatOrderController.setValue(widget.isNewStore);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -125,6 +129,15 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                               children: [
                                 Row(
                                   children: [
+                                    Image.network(
+                                      _chatOrderController.cartIndex.value?.rawItems?[index].logo ??
+                                          'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg',
+                                      height: 40,
+                                      width: 40,
+                                    ),
+                                    SizedBox(
+                                      width: SizeUtils.horizontalBlockSize * 1,
+                                    ),
                                     Expanded(child: Text(_chatOrderController.cartIndex.value?.rawItems?[index].item ?? '')),
                                     Obx(
                                       () => CustomPopMenu(
@@ -247,9 +260,50 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
       padding: EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 3),
       child: Row(
         children: [
+          Obx(
+            () => (_chatOrderController.imagePath.value.isNotEmpty)
+                ? Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Image.file(
+                        File(_chatOrderController.imagePath.value),
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            _chatOrderController.imagePath.value = '';
+                            _chatOrderController.file = null;
+                          },
+                          child: Icon(
+                            Icons.close,
+                            size: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      _chatOrderController.imagePicker();
+                    },
+                    child: Icon(
+                      Icons.camera_enhance_rounded,
+                      size: 26,
+                    ),
+                  ),
+          ),
           Expanded(
             child: TextFormField(
               controller: _chatOrderController.itemController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
               style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5),
               onChanged: (value) {},
               decoration: InputDecoration(
@@ -288,16 +342,24 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
           ),
           GestureDetector(
             onTap: () async {
+              log("_chatOrderController.file:${_chatOrderController.file}");
+              if (_chatOrderController.file != null) {
+                _chatOrderController.logo.value = await ImageHelper.uploadImage(_chatOrderController.file!);
+              }
+              log("_chatOrderController.logo.value:${_chatOrderController.logo.value}");
               RawItems rawItems = RawItems(
                 item: _chatOrderController.isEdit.value ? _chatOrderController.oldItem.value : _chatOrderController.itemController.text,
                 quantity: _chatOrderController.isEdit.value ? _chatOrderController.oldQuntity : 1.obs,
                 unit: _chatOrderController.unitList[_chatOrderController.selectUnitIndex.value],
+                logo: _chatOrderController.logo.value,
               );
               await _chatOrderController.addToCart(
                   newValueItem: _chatOrderController.itemController.text,
                   cartId: _chatOrderController.cartIndex.value?.sId ?? '',
                   rawItem: rawItems,
                   isEdit: _chatOrderController.isEdit.value);
+              _chatOrderController.imagePath.value = '';
+              _chatOrderController.file = null;
               _chatOrderController.isEdit.value = false;
               _chatOrderController.itemController.clear();
               _chatOrderController.oldItem.isEmpty;
