@@ -17,6 +17,7 @@ import '../models/review_cart_model.dart';
 import '../services/addcart_service.dart';
 
 class AddCartController extends GetxController {
+  RxBool onTabChange = false.obs;
   RxString selectAddress = ''.obs;
   RxString selectAddressHouse = ''.obs;
   RxString timeTitle = ''.obs;

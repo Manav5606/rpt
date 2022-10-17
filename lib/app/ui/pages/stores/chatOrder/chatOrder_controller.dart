@@ -31,6 +31,7 @@ class ChatOrderController extends GetxController {
   final HomeController _homeController = Get.find();
   final ImagePicker _picker = ImagePicker();
   File? file;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -38,6 +39,7 @@ class ChatOrderController extends GetxController {
   }
 
   void setValue(bool _isNewStore) {
+    log('setValue');
     isNewStore = _isNewStore;
     if (!isNewStore) {
       cartIndex.value = _exploreController.cartIndex.value;
@@ -63,6 +65,7 @@ class ChatOrderController extends GetxController {
       cartIndex.value?.store?.sId = _moreStoreController.getStoreDataModel.value?.data?.store?.sId ?? '';
       cartIndex.value?.store?.storeType = _moreStoreController.getStoreDataModel.value?.data?.store?.storeType ?? '';
       cartIndex.value?.totalItemsCount?.value = _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+      log('cartIndex.value?.totalItemsCount?.value : ${cartIndex.value?.totalItemsCount?.value}');
       cartIndex.value?.sId = _moreStoreController.addToCartModel.value?.sId;
       cartIndex.value?.rawItems = _moreStoreController.rawItemsList;
     }
@@ -85,6 +88,7 @@ class ChatOrderController extends GetxController {
         _exploreController.totalItemCount.value = cart.value?.totalItemsCount?.value ?? 0;
       } else {
         _moreStoreController.addToCartModel.value?.totalItemsCount = cart.value?.totalItemsCount?.value ?? 0;
+        _moreStoreController.totalItemsCount.value = cart.value?.totalItemsCount?.value ?? 0;
       }
       cartIndex.refresh();
       cart.refresh();
@@ -93,8 +97,6 @@ class ChatOrderController extends GetxController {
       isLoading.value = false;
     }
   }
-
-
 
   Future<void> imagePicker() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);

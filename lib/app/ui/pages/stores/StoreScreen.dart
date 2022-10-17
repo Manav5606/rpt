@@ -1,3 +1,4 @@
+import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/ui/pages/stores/StoreView.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
@@ -16,6 +17,7 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   late PersistentTabController _controller;
   bool isGrocery = false;
+  final AddCartController _addCartController = Get.find();
 
   @override
   void initState() {
@@ -41,6 +43,9 @@ class _StoreScreenState extends State<StoreScreen> {
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
       navBarStyle: NavBarStyle.style14,
+      onItemSelected: (int) {
+        _addCartController.onTabChange.value = !_addCartController.onTabChange.value;
+      },
     );
   }
 

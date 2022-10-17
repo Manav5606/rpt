@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -270,7 +272,11 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                       product: _addCartController.reviewCart.value?.data?.products?[i]);
                                                                   _addCartController.totalCount.value =
                                                                       _exploreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
-                                                                  _moreStoreController.totalItemsCount.value = _exploreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                                  _moreStoreController.totalItemsCount.value =
+                                                                      _exploreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                                  _moreStoreController.addToCartModel.value?.totalItemsCount =
+                                                                      _exploreController.addToCartModel.value?.totalItemsCount ?? 0;
+
                                                                 },
                                                                 list: _addCartController.quntityList,
                                                               ),
@@ -349,6 +355,10 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                         _addCartController.reviewCart.refresh();
                                                         _addCartController.totalCount.value =
                                                             _exploreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
+                                                        _moreStoreController.totalItemsCount.value =
+                                                            _exploreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                        _moreStoreController.addToCartModel.value?.totalItemsCount =
+                                                            _exploreController.addToCartModel.value?.totalItemsCount ?? 0;
                                                         // total();
                                                       },
                                                       child: Row(
@@ -439,10 +449,12 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                     cartId: _addCartController.cartId.value,
                                                                     rawItem: rawItems,
                                                                     isEdit: true);
-
-                                                                _moreStoreController.totalItemsCount.value = _addCartController.cart.value?.totalItemsCount?.value ?? 0;
-
-
+                                                                _moreStoreController.rawItemsList.value =
+                                                                    _addCartController.cart.value?.rawItems ?? [];
+                                                                _moreStoreController.totalItemsCount.value =
+                                                                    _addCartController.cart.value?.totalItemsCount?.value ?? 0;
+                                                                _moreStoreController.addToCartModel.value?.totalItemsCount =
+                                                                    _addCartController.cart.value?.totalItemsCount?.value ?? 0;
                                                               },
                                                               list: _addCartController.quntityList,
                                                             ),
@@ -467,7 +479,12 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                   rawItem: rawItems,
                                                                   isEdit: false,
                                                                   newValueItem: '');
-                                                              _moreStoreController.totalItemsCount.value = _addCartController.cart.value?.totalItemsCount?.value ?? 0;
+                                                              _moreStoreController.rawItemsList.value = _addCartController.cart.value?.rawItems ?? [];
+                                                              _moreStoreController.totalItemsCount.value =
+                                                                  _addCartController.cart.value?.totalItemsCount?.value ?? 0;
+                                                              _moreStoreController.addToCartModel.value?.totalItemsCount =
+                                                                  _addCartController.cart.value?.totalItemsCount?.value ?? 0;
+
                                                               _addCartController.reviewCart.refresh();
                                                             },
                                                             child: Row(
@@ -559,7 +576,10 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                   cart_id: _addCartController.cartId.value,
                                                                   store_id: _addCartController.store.value?.sId ?? '',
                                                                 );
-                                                                _moreStoreController.totalItemsCount.value =  _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                                _moreStoreController.totalItemsCount.value =
+                                                                    _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                                _moreStoreController.addToCartModel.value?.totalItemsCount =
+                                                                    _addCartController.cart.value?.totalItemsCount?.value ?? 0;
 
                                                                 _addCartController.totalCount.value =
                                                                     _moreStoreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
@@ -587,7 +607,11 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                               );
                                                               _addCartController.reviewCart.value?.data?.inventories?.removeAt(index);
                                                               _addCartController.reviewCart.refresh();
-                                                              _moreStoreController.totalItemsCount.value =  _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                              _moreStoreController.totalItemsCount.value =
+                                                                  _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                              _moreStoreController.addToCartModel.value?.totalItemsCount =
+                                                                  _addCartController.cart.value?.totalItemsCount?.value ?? 0;
+                                                              _moreStoreController.rawItemsList.value = _addCartController.cart.value?.rawItems ?? [];
                                                               _addCartController.totalCount.value =
                                                                   _moreStoreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
                                                             },
