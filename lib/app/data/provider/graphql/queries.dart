@@ -1423,6 +1423,13 @@ getAllcarts{
     msg
 data{
       total
+      total_items_count
+      storeDoc{
+        actual_welcome_offer
+        actual_cashback
+        bill_discount_offer_status
+        bill_discount_offer_amount
+      }
       products{
         _id
         name
@@ -1444,6 +1451,7 @@ data{
         name
         _id
         quantity
+        status
       }
     }
   }

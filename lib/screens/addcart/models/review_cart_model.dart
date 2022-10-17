@@ -28,21 +28,28 @@ class Cart {
 
 class Data {
   int? total;
+  int? totalItemsCount;
   List<Addresses>? addresses;
   double? walletAmount;
   List<Products>? products;
   List<Products>? inventories;
   List<RawItems>? rawItems;
-
+  StoreDoc? storeDoc;
   Data(
       {this.total,
       this.addresses,
+      this.totalItemsCount,
       this.walletAmount,
       this.products,
+        this.storeDoc,
       this.inventories});
 
   Data.fromJson(Map<String, dynamic> json) {
     total = json['total'];
+    totalItemsCount = json['total_items_count'];
+    storeDoc = json['storeDoc'] != null
+        ? new StoreDoc.fromJson(json['storeDoc'])
+        : null;
     if (json['addresses'] != null) {
       addresses = <Addresses>[];
       json['addresses'].forEach((v) {
@@ -73,6 +80,10 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['total'] = this.total;
+    data['total_items_count'] = this.totalItemsCount;
+    if (this.storeDoc != null) {
+      data['storeDoc'] = this.storeDoc!.toJson();
+    }
     if (this.addresses != null) {
       data['addresses'] = this.addresses!.map((v) => v.toJson()).toList();
     }
@@ -260,3 +271,31 @@ class Products {
 //     return data;
 //   }
 // }
+class StoreDoc {
+  int? actualWelcomeOffer;
+  int? actualCashback;
+  bool? billDiscountOfferStatus;
+  int? billDiscountOfferAmount;
+
+  StoreDoc(
+      {this.actualWelcomeOffer,
+        this.actualCashback,
+        this.billDiscountOfferStatus,
+        this.billDiscountOfferAmount});
+
+  StoreDoc.fromJson(Map<String, dynamic> json) {
+    actualWelcomeOffer = json['actual_welcome_offer'];
+    actualCashback = json['actual_cashback'];
+    billDiscountOfferStatus = json['bill_discount_offer_status'];
+    billDiscountOfferAmount = json['bill_discount_offer_amount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['actual_welcome_offer'] = this.actualWelcomeOffer;
+    data['actual_cashback'] = this.actualCashback;
+    data['bill_discount_offer_status'] = this.billDiscountOfferStatus;
+    data['bill_discount_offer_amount'] = this.billDiscountOfferAmount;
+    return data;
+  }
+}

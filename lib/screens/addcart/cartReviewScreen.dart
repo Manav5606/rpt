@@ -77,15 +77,11 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
           children: [
             (logo.isEmpty)
                 ? Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: AppConst.grey)),
+                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AppConst.grey)),
                     child: ClipOval(
                       child: ClipRRect(
                         child: CircleAvatar(
-                          child: Text(storeName.substring(0, 1),
-                              style: TextStyle(
-                                  fontSize: SizeUtils.horizontalBlockSize * 2)),
+                          child: Text(storeName.substring(0, 1), style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 2)),
                           backgroundColor: AppConst.kPrimaryColor,
                           radius: SizeUtils.horizontalBlockSize * 2.5,
                         ),
@@ -112,9 +108,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
           () => _addCartController.isLoading.value
               ? CartReviewScreenShimmer()
               : Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeUtils.horizontalBlockSize * 2,
-                      vertical: SizeUtils.verticalBlockSize * 1),
+                  padding: EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 2, vertical: SizeUtils.verticalBlockSize * 1),
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
@@ -127,69 +121,46 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            SizeUtils.horizontalBlockSize * 3,
-                                        vertical:
-                                            SizeUtils.verticalBlockSize * 1),
+                                        horizontal: SizeUtils.horizontalBlockSize * 3, vertical: SizeUtils.verticalBlockSize * 1),
                                     child: Container(
                                       width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3.w),
-                                          color: AppConst.lightYellow),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.w), color: AppConst.lightYellow),
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3,
-                                            vertical:
-                                                SizeUtils.verticalBlockSize *
-                                                    1),
+                                            horizontal: SizeUtils.horizontalBlockSize * 3, vertical: SizeUtils.verticalBlockSize * 1),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              "You could save \₹${(_addCartController.getCartPageInformationModel.value?.data?.walletAmount ?? 0) + (_addCartController.getCartPageInformationModel.value?.data?.billDiscountOfferTarget ?? 0)} a month",
-                                              style: TextStyle(
-                                                color: AppConst.black,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4.5,
-                                              ),
-                                            ),
+                                            (_addCartController.reviewCart.value?.data?.storeDoc?.billDiscountOfferStatus ?? false) == true
+                                                ? Text(
+                                                    "billDiscountOfferAmount ${_addCartController.reviewCart.value?.data?.storeDoc?.billDiscountOfferAmount}")
+                                                : Text("actualCashback ${_addCartController.reviewCart.value?.data?.storeDoc?.actualCashback}"),
+                                            // Text(
+                                            //   "You could save \₹${(_addCartController.getCartPageInformationModel.value?.data?.walletAmount ?? 0) + (_addCartController.getCartPageInformationModel.value?.data?.billDiscountOfferTarget ?? 0)} a month",
+                                            //   style: TextStyle(
+                                            //     color: AppConst.black,
+                                            //     fontWeight: FontWeight.w600,
+                                            //     fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                                            //   ),
+                                            // ),
                                             Text(
                                               "Unlock unlimited free delivery and more",
                                               style: TextStyle(
                                                 color: AppConst.grey,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4,
+                                                fontSize: SizeUtils.horizontalBlockSize * 4,
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: SizeUtils
-                                                          .verticalBlockSize *
-                                                      1),
+                                              padding: EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
                                               child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.w),
-                                                    color: AppConst.orange),
+                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: AppConst.orange),
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(SizeUtils
-                                                          .horizontalBlockSize *
-                                                      2),
+                                                  padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
                                                   child: Text(
                                                     "Here's how",
                                                     style: TextStyle(
                                                       color: AppConst.black,
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          4,
+                                                      fontSize: SizeUtils.horizontalBlockSize * 4,
                                                     ),
                                                   ),
                                                 ),
@@ -205,13 +176,10 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                   ),
                                   Obx(
                                     () => ListView.separated(
-                                      itemCount: _addCartController.reviewCart
-                                              .value?.data?.products?.length ??
-                                          0,
+                                      itemCount: _addCartController.reviewCart.value?.data?.products?.length ?? 0,
                                       separatorBuilder: (context, index) {
                                         return SizedBox(
-                                          height:
-                                              SizeUtils.verticalBlockSize * 1,
+                                          height: SizeUtils.verticalBlockSize * 1,
                                         );
                                       },
                                       shrinkWrap: true,
@@ -220,145 +188,74 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                       itemBuilder: (context, i) {
                                         return Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  3,
-                                              vertical:
-                                                  SizeUtils.verticalBlockSize *
-                                                      2),
+                                              horizontal: SizeUtils.horizontalBlockSize * 3, vertical: SizeUtils.verticalBlockSize * 2),
                                           child: Column(
                                             children: [
                                               Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100),
+                                                    borderRadius: BorderRadius.circular(100),
                                                     child: CachedNetworkImage(
-                                                      width: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          12,
+                                                      width: SizeUtils.horizontalBlockSize * 12,
                                                       height: 6.h,
                                                       fit: BoxFit.contain,
-                                                      imageUrl:
-                                                          'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
-                                                      progressIndicatorBuilder: (context,
-                                                              url,
-                                                              downloadProgress) =>
-                                                          Center(
-                                                              child: CircularProgressIndicator(
-                                                                  value: downloadProgress
-                                                                      .progress)),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Image.network(
-                                                              'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+                                                      imageUrl: 'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
+                                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                          Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                                      errorWidget: (context, url, error) => Image.network(
+                                                          'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
                                                     ),
                                                   ),
                                                   Expanded(
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text(
-                                                          _addCartController
-                                                                  .reviewCart
-                                                                  .value
-                                                                  ?.data
-                                                                  ?.products?[i]
-                                                                  .name ??
-                                                              "",
+                                                          _addCartController.reviewCart.value?.data?.products?[i].name ?? "",
                                                           maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: AppStyles
-                                                              .BOLD_STYLE,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: AppStyles.BOLD_STYLE,
                                                         ),
                                                         Text(
                                                           '2 rs kilo',
-                                                          style: AppStyles
-                                                              .STORES_SUBTITLE_STYLE,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                          style: AppStyles.STORES_SUBTITLE_STYLE,
+                                                          overflow: TextOverflow.ellipsis,
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                   Container(
-                                                    width: _addCartController
-                                                                .reviewCart
-                                                                .value
-                                                                ?.data
-                                                                ?.products?[i]
-                                                                .status ==
-                                                            false
-                                                        ? 18.w
-                                                        : 12.w,
+                                                    width: _addCartController.reviewCart.value?.data?.products?[i].status == false ? 18.w : 12.w,
                                                     height: 5.h,
                                                     child: Center(
-                                                      child: _addCartController
-                                                                  .reviewCart
-                                                                  .value
-                                                                  ?.data
-                                                                  ?.products?[i]
-                                                                  .status ==
-                                                              false
-                                                          ? Text(
-                                                              "Item Not Available",
+                                                      child: _addCartController.reviewCart.value?.data?.products?[i].status == false
+                                                          ? Text("Item Not Available",
                                                               maxLines: 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                              overflow: TextOverflow.ellipsis,
                                                               style: TextStyle(
-                                                                fontSize: SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    3,
+                                                                fontSize: SizeUtils.horizontalBlockSize * 3,
                                                               ))
                                                           : Obx(
-                                                              () =>
-                                                                  CustomPopMenu(
-                                                                title:
-                                                                    'Quantity',
-                                                                child:
-                                                                    Container(
+                                                              () => CustomPopMenu(
+                                                                title: 'Quantity',
+                                                                child: Container(
                                                                   decoration: BoxDecoration(
-                                                                      shape: BoxShape
-                                                                          .rectangle,
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              AppConst.grey)),
+                                                                      shape: BoxShape.rectangle, border: Border.all(color: AppConst.grey)),
                                                                   child: Center(
-                                                                    child:
-                                                                        Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              8.0),
-                                                                      child:
-                                                                          Text(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Text(
                                                                         "${_addCartController.reviewCart.value?.data?.products?[i].quantity?.value.toString() ?? ''}",
-                                                                        maxLines:
-                                                                            1,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                        style: AppStyles
-                                                                            .BOLD_STYLE,
+                                                                        maxLines: 1,
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        style: AppStyles.BOLD_STYLE,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                onSelected:
-                                                                    (value) async {
-                                                                  _addCartController
-                                                                      .reviewCart
-                                                                      .value
-                                                                      ?.data
-                                                                      ?.products?[
-                                                                          i]
-                                                                      .quantity
-                                                                      ?.value = value;
+                                                                onSelected: (value) async {
+                                                                  _addCartController.reviewCart.value?.data?.products?[i].quantity?.value = value;
                                                                   // await _addCartController.addToCart(
                                                                   //     newValueItem:
                                                                   //         _addCartController.reviewCart.value?.data?.products?[i].name ?? '',
@@ -366,31 +263,16 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                   //     rawItem: rawItems,
                                                                   //     isEdit: true);
                                                                   await _exploreController.addToCart(
-                                                                      cart_id: _addCartController
-                                                                          .cartId
-                                                                          .value,
-                                                                      store_id:
-                                                                          _addCartController.store.value?.sId ??
-                                                                              '',
+                                                                      cart_id: _addCartController.cartId.value,
+                                                                      store_id: _addCartController.store.value?.sId ?? '',
                                                                       index: 0,
-                                                                      increment:
-                                                                          true,
-                                                                      product: _addCartController
-                                                                          .reviewCart
-                                                                          .value
-                                                                          ?.data
-                                                                          ?.products?[i]);
-                                                                  _addCartController
-                                                                      .totalCount
-                                                                      .value = _exploreController
-                                                                          .addToCartModel
-                                                                          .value
-                                                                          ?.totalItemsCount
-                                                                          .toString() ??
-                                                                      '';
+                                                                      increment: true,
+                                                                      product: _addCartController.reviewCart.value?.data?.products?[i]);
+                                                                  _addCartController.totalCount.value =
+                                                                      _exploreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
+                                                                  _moreStoreController.totalItemsCount.value = _exploreController.addToCartModel.value?.totalItemsCount ?? 0;
                                                                 },
-                                                                list: _addCartController
-                                                                    .quntityList,
+                                                                list: _addCartController.quntityList,
                                                               ),
                                                             ),
 
@@ -401,60 +283,25 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                               style: AppStyles.BOLD_STYLE,
                                                             ),*/
                                                     ),
-                                                    decoration: BoxDecoration(
-                                                        shape:
-                                                            BoxShape.rectangle,
-                                                        border: Border.all(
-                                                            color:
-                                                                AppConst.grey)),
+                                                    decoration: BoxDecoration(shape: BoxShape.rectangle, border: Border.all(color: AppConst.grey)),
                                                   ),
                                                   SizedBox(
-                                                    width: SizeUtils
-                                                            .verticalBlockSize *
-                                                        2,
+                                                    width: SizeUtils.verticalBlockSize * 2,
                                                   ),
-                                                  _addCartController
-                                                              .reviewCart
-                                                              .value
-                                                              ?.data
-                                                              ?.products?[i]
-                                                              .status ==
-                                                          false
+                                                  _addCartController.reviewCart.value?.data?.products?[i].status == false
                                                       ? GestureDetector(
                                                           onTap: () {
-                                                            _addCartController
-                                                                .reviewCart
-                                                                .value
-                                                                ?.data
-                                                                ?.products
-                                                                ?.removeAt(i);
-                                                            _addCartController
-                                                                .reviewCart
-                                                                .refresh();
+                                                            _addCartController.reviewCart.value?.data?.products?.removeAt(i);
+                                                            _addCartController.reviewCart.refresh();
                                                           },
                                                           child: Icon(
                                                             Icons.clear,
-                                                            size: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                5,
+                                                            size: SizeUtils.horizontalBlockSize * 5,
                                                           ),
                                                         )
                                                       : Text(
-                                                          _addCartController
-                                                                  .reviewCart
-                                                                  .value
-                                                                  ?.data
-                                                                  ?.products?[i]
-                                                                  .sellingPrice
-                                                                  .toString() ??
-                                                              "",
-                                                          style: TextStyle(
-                                                              fontSize: SizeUtils
-                                                                      .horizontalBlockSize *
-                                                                  4,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                          _addCartController.reviewCart.value?.data?.products?[i].sellingPrice.toString() ?? "",
+                                                          style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
                                                         ),
                                                   // Obx(
                                                   //       () => _exploreController.addCartProduct[i].quntity!.value > 0
@@ -472,104 +319,52 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                               GestureDetector(
                                                 onTap: () {},
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     FaIcon(
-                                                      FontAwesomeIcons
-                                                          .moneyBill,
-                                                      size: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          4,
+                                                      FontAwesomeIcons.moneyBill,
+                                                      size: SizeUtils.horizontalBlockSize * 4,
                                                       color: AppConst.green,
                                                     ),
                                                     SizedBox(
-                                                      width: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          4,
+                                                      width: SizeUtils.horizontalBlockSize * 4,
                                                     ),
                                                     Text(
                                                       "${_addCartController.reviewCart.value?.data?.products?[i].cashback.toString() ?? ""} CV",
-                                                      style: TextStyle(
-                                                          fontSize: SizeUtils
-                                                                  .horizontalBlockSize *
-                                                              4,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                      style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
                                                     ),
                                                     SizedBox(
                                                       width: 3.w,
                                                     ),
                                                     GestureDetector(
                                                       onTap: () async {
-                                                        _addCartController
-                                                            .reviewCart
-                                                            .value
-                                                            ?.data
-                                                            ?.products?[i]
-                                                            .quantity
-                                                            ?.value = 0;
+                                                        _addCartController.reviewCart.value?.data?.products?[i].quantity?.value = 0;
                                                         await _exploreController.addToCart(
-                                                            cart_id:
-                                                                _addCartController
-                                                                    .cartId
-                                                                    .value,
-                                                            store_id:
-                                                                _addCartController
-                                                                        .store
-                                                                        .value
-                                                                        ?.sId ??
-                                                                    '',
+                                                            cart_id: _addCartController.cartId.value,
+                                                            store_id: _addCartController.store.value?.sId ?? '',
                                                             index: 0,
                                                             increment: true,
-                                                            product:
-                                                                _addCartController
-                                                                    .reviewCart
-                                                                    .value
-                                                                    ?.data
-                                                                    ?.products?[i]);
-                                                        _addCartController
-                                                            .reviewCart
-                                                            .value
-                                                            ?.data
-                                                            ?.products
-                                                            ?.removeAt(i);
-                                                        _addCartController
-                                                            .reviewCart
-                                                            .refresh();
-                                                        _addCartController
-                                                            .totalCount
-                                                            .value = _exploreController
-                                                                .addToCartModel
-                                                                .value
-                                                                ?.totalItemsCount
-                                                                .toString() ??
-                                                            '';
+                                                            product: _addCartController.reviewCart.value?.data?.products?[i]);
+                                                        _addCartController.reviewCart.value?.data?.products?.removeAt(i);
+                                                        _addCartController.reviewCart.refresh();
+                                                        _addCartController.totalCount.value =
+                                                            _exploreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
                                                         // total();
                                                       },
                                                       child: Row(
                                                         children: [
                                                           FaIcon(
-                                                            FontAwesomeIcons
-                                                                .trash,
-                                                            size: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                4,
-                                                            color:
-                                                                AppConst.green,
+                                                            FontAwesomeIcons.trash,
+                                                            size: SizeUtils.horizontalBlockSize * 4,
+                                                            color: AppConst.green,
                                                           ),
                                                           SizedBox(
                                                             width: 3.w,
                                                           ),
                                                           Text(
                                                             "Remove",
-                                                            style: TextStyle(
-                                                                fontSize: SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    4,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                            style:
+                                                                TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
                                                           ),
                                                         ],
                                                       ),
@@ -584,9 +379,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                     ),
                                   ),
                                   Divider(),
-                                  if (_addCartController.reviewCart.value?.data
-                                          ?.rawItems?.isNotEmpty ??
-                                      false)
+                                  if (_addCartController.reviewCart.value?.data?.rawItems?.isNotEmpty ?? false)
                                     Column(
                                       children: [
                                         Text(
@@ -598,193 +391,91 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                             return ListView.builder(
                                               shrinkWrap: true,
                                               primary: true,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              itemCount: _addCartController
-                                                      .reviewCart
-                                                      .value
-                                                      ?.data
-                                                      ?.rawItems
-                                                      ?.length ??
-                                                  0,
+                                              physics: NeverScrollableScrollPhysics(),
+                                              itemCount: _addCartController.reviewCart.value?.data?.rawItems?.length ?? 0,
                                               itemBuilder: (context, index) {
                                                 return Padding(
-                                                  padding: EdgeInsets.all(SizeUtils
-                                                          .horizontalBlockSize *
-                                                      5),
+                                                  padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 5),
                                                   child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Row(
                                                         children: [
                                                           Expanded(
                                                               child: Text(
-                                                            _addCartController
-                                                                    .reviewCart
-                                                                    .value
-                                                                    ?.data
-                                                                    ?.rawItems?[
-                                                                        index]
-                                                                    .item ??
-                                                                '',
-                                                            style: TextStyle(
-                                                                fontSize: SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    4,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                            _addCartController.reviewCart.value?.data?.rawItems?[index].item ?? '',
+                                                            style:
+                                                                TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
                                                           )),
                                                           Obx(
                                                             () => CustomPopMenu(
                                                               title: 'Quantity',
                                                               child: Container(
                                                                 decoration: BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .rectangle,
-                                                                    border: Border.all(
-                                                                        color: AppConst
-                                                                            .grey)),
+                                                                    shape: BoxShape.rectangle, border: Border.all(color: AppConst.grey)),
                                                                 child: Center(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            8.0),
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.all(8.0),
                                                                     child: Text(
                                                                       "${_addCartController.reviewCart.value?.data?.rawItems?[index].quantity?.value ?? 0}",
-                                                                      maxLines:
-                                                                          1,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: AppStyles
-                                                                          .BOLD_STYLE,
+                                                                      maxLines: 1,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      style: AppStyles.BOLD_STYLE,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                              onSelected:
-                                                                  (value) async {
-                                                                _addCartController
-                                                                    .reviewCart
-                                                                    .value
-                                                                    ?.data
-                                                                    ?.rawItems?[
-                                                                        index]
-                                                                    .quantity
-                                                                    ?.value = value;
+                                                              onSelected: (value) async {
+                                                                _addCartController.reviewCart.value?.data?.rawItems?[index].quantity?.value = value;
 
                                                                 RawItems rawItems = RawItems(
-                                                                    item: _addCartController
-                                                                            .reviewCart
-                                                                            .value
-                                                                            ?.data
-                                                                            ?.rawItems?[
-                                                                                index]
-                                                                            .item ??
-                                                                        '',
-                                                                    quantity: _addCartController
-                                                                        .reviewCart
-                                                                        .value
-                                                                        ?.data
-                                                                        ?.rawItems?[
-                                                                            index]
-                                                                        .quantity,
-                                                                    unit: _addCartController
-                                                                            .reviewCart
-                                                                            .value
-                                                                            ?.data
-                                                                            ?.rawItems?[index]
-                                                                            .unit ??
-                                                                        '');
+                                                                    item: _addCartController.reviewCart.value?.data?.rawItems?[index].item ?? '',
+                                                                    quantity: _addCartController.reviewCart.value?.data?.rawItems?[index].quantity,
+                                                                    unit: _addCartController.reviewCart.value?.data?.rawItems?[index].unit ?? '');
                                                                 await _addCartController.addToCart(
-                                                                    newValueItem: _addCartController
-                                                                            .reviewCart
-                                                                            .value
-                                                                            ?.data
-                                                                            ?.rawItems?[
-                                                                                index]
-                                                                            .item ??
-                                                                        '',
-                                                                    cartId: _addCartController
-                                                                        .cartId
-                                                                        .value,
-                                                                    rawItem:
-                                                                        rawItems,
-                                                                    isEdit:
-                                                                        true);
+                                                                    newValueItem:
+                                                                        _addCartController.reviewCart.value?.data?.rawItems?[index].item ?? '',
+                                                                    cartId: _addCartController.cartId.value,
+                                                                    rawItem: rawItems,
+                                                                    isEdit: true);
+
+                                                                _moreStoreController.totalItemsCount.value = _addCartController.cart.value?.totalItemsCount?.value ?? 0;
+
+
                                                               },
-                                                              list: _addCartController
-                                                                  .quntityList,
+                                                              list: _addCartController.quntityList,
                                                             ),
                                                           ),
                                                         ],
                                                       ),
-                                                      Text(_addCartController
-                                                              .reviewCart
-                                                              .value
-                                                              ?.data
-                                                              ?.rawItems?[index]
-                                                              .unit ??
-                                                          ''),
+                                                      Text(_addCartController.reviewCart.value?.data?.rawItems?[index].unit ?? ''),
                                                       Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
                                                           SizedBox(
                                                             width: 3.w,
                                                           ),
                                                           GestureDetector(
-                                                            onTap: () {
+                                                            onTap: () async {
                                                               RawItems rawItems = RawItems(
-                                                                  item: _addCartController
-                                                                          .reviewCart
-                                                                          .value
-                                                                          ?.data
-                                                                          ?.rawItems?[
-                                                                              index]
-                                                                          .item ??
-                                                                      '',
-                                                                  quantity:
-                                                                      0.obs,
-                                                                  unit: _addCartController
-                                                                          .reviewCart
-                                                                          .value
-                                                                          ?.data
-                                                                          ?.rawItems?[
-                                                                              index]
-                                                                          .unit ??
-                                                                      '');
-                                                              _addCartController.addToCart(
-                                                                  cartId:
-                                                                      _addCartController
-                                                                          .cartId
-                                                                          .value,
-                                                                  rawItem:
-                                                                      rawItems,
+                                                                  item: _addCartController.reviewCart.value?.data?.rawItems?[index].item ?? '',
+                                                                  quantity: 0.obs,
+                                                                  unit: _addCartController.reviewCart.value?.data?.rawItems?[index].unit ?? '');
+                                                              await _addCartController.addToCart(
+                                                                  cartId: _addCartController.cartId.value,
+                                                                  rawItem: rawItems,
                                                                   isEdit: false,
-                                                                  newValueItem:
-                                                                      '');
-                                                              _addCartController
-                                                                  .reviewCart
-                                                                  .refresh();
+                                                                  newValueItem: '');
+                                                              _moreStoreController.totalItemsCount.value = _addCartController.cart.value?.totalItemsCount?.value ?? 0;
+                                                              _addCartController.reviewCart.refresh();
                                                             },
                                                             child: Row(
                                                               children: [
                                                                 FaIcon(
-                                                                  FontAwesomeIcons
-                                                                      .trash,
-                                                                  size: SizeUtils
-                                                                          .horizontalBlockSize *
-                                                                      4,
-                                                                  color: AppConst
-                                                                      .green,
+                                                                  FontAwesomeIcons.trash,
+                                                                  size: SizeUtils.horizontalBlockSize * 4,
+                                                                  color: AppConst.green,
                                                                 ),
                                                                 SizedBox(
                                                                   width: 3.w,
@@ -792,12 +483,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                 Text(
                                                                   "Remove",
                                                                   style: TextStyle(
-                                                                      fontSize:
-                                                                          SizeUtils.horizontalBlockSize *
-                                                                              4,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                      fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
                                                                 ),
                                                               ],
                                                             ),
@@ -813,9 +499,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                         ),
                                       ],
                                     ),
-                                  if (_addCartController.reviewCart.value?.data
-                                          ?.inventories?.isNotEmpty ??
-                                      false)
+                                  if (_addCartController.reviewCart.value?.data?.inventories?.isNotEmpty ?? false)
                                     Column(
                                       children: [
                                         Text(
@@ -827,210 +511,92 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                             return ListView.builder(
                                               shrinkWrap: true,
                                               primary: true,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              itemCount: _addCartController
-                                                      .reviewCart
-                                                      .value
-                                                      ?.data
-                                                      ?.inventories
-                                                      ?.length ??
-                                                  0,
+                                              physics: NeverScrollableScrollPhysics(),
+                                              itemCount: _addCartController.reviewCart.value?.data?.inventories?.length ?? 0,
                                               itemBuilder: (context, index) {
                                                 return Padding(
-                                                  padding: EdgeInsets.all(SizeUtils
-                                                          .horizontalBlockSize *
-                                                      5),
+                                                  padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 5),
                                                   child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Row(
                                                         children: [
                                                           Expanded(
                                                               child: Text(
-                                                            _addCartController
-                                                                    .reviewCart
-                                                                    .value
-                                                                    ?.data
-                                                                    ?.inventories?[
-                                                                        index]
-                                                                    .name ??
-                                                                '',
-                                                            style: TextStyle(
-                                                                fontSize: SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    4,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                            _addCartController.reviewCart.value?.data?.inventories?[index].name ?? '',
+                                                            style:
+                                                                TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
                                                           )),
                                                           Obx(
                                                             () => CustomPopMenu(
                                                               title: 'Quantity',
                                                               child: Container(
                                                                 decoration: BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .rectangle,
-                                                                    border: Border.all(
-                                                                        color: AppConst
-                                                                            .grey)),
+                                                                    shape: BoxShape.rectangle, border: Border.all(color: AppConst.grey)),
                                                                 child: Center(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            8.0),
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.all(8.0),
                                                                     child: Text(
                                                                       "${_addCartController.reviewCart.value?.data?.inventories?[index].quantity?.value ?? 0}",
-                                                                      maxLines:
-                                                                          1,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: AppStyles
-                                                                          .BOLD_STYLE,
+                                                                      maxLines: 1,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      style: AppStyles.BOLD_STYLE,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                              onSelected:
-                                                                  (value) async {
-                                                                _addCartController
-                                                                    .reviewCart
-                                                                    .value
-                                                                    ?.data
-                                                                    ?.inventories?[
-                                                                        index]
-                                                                    .quantity
-                                                                    ?.value = value;
+                                                              onSelected: (value) async {
+                                                                _addCartController.reviewCart.value?.data?.inventories?[index].quantity?.value =
+                                                                    value;
 
-                                                                await _moreStoreController
-                                                                    .addToCartInventory(
-                                                                  name: _addCartController
-                                                                          .reviewCart
-                                                                          .value
-                                                                          ?.data
-                                                                          ?.inventories?[
-                                                                              index]
-                                                                          .name ??
-                                                                      '',
+                                                                await _moreStoreController.addToCartInventory(
+                                                                  name: _addCartController.reviewCart.value?.data?.inventories?[index].name ?? '',
                                                                   quntity: _addCartController
-                                                                          .reviewCart
-                                                                          .value
-                                                                          ?.data
-                                                                          ?.inventories?[
-                                                                              index]
-                                                                          .quantity
-                                                                          ?.value ??
+                                                                          .reviewCart.value?.data?.inventories?[index].quantity?.value ??
                                                                       0,
-                                                                  sId: _addCartController
-                                                                          .reviewCart
-                                                                          .value
-                                                                          ?.data
-                                                                          ?.inventories?[
-                                                                              index]
-                                                                          .sId ??
-                                                                      '',
-                                                                  cart_id:
-                                                                      _addCartController
-                                                                          .cartId
-                                                                          .value,
-                                                                  store_id: _addCartController
-                                                                          .store
-                                                                          .value
-                                                                          ?.sId ??
-                                                                      '',
+                                                                  sId: _addCartController.reviewCart.value?.data?.inventories?[index].sId ?? '',
+                                                                  cart_id: _addCartController.cartId.value,
+                                                                  store_id: _addCartController.store.value?.sId ?? '',
                                                                 );
-                                                                _addCartController
-                                                                    .totalCount
-                                                                    .value = _moreStoreController
-                                                                        .addToCartModel
-                                                                        .value
-                                                                        ?.totalItemsCount
-                                                                        .toString() ??
-                                                                    '';
-                                                                _addCartController
-                                                                    .reviewCart
-                                                                    .refresh();
+                                                                _moreStoreController.totalItemsCount.value =  _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+
+                                                                _addCartController.totalCount.value =
+                                                                    _moreStoreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
+                                                                _addCartController.reviewCart.refresh();
                                                               },
-                                                              list: _addCartController
-                                                                  .quntityList,
+                                                              list: _addCartController.quntityList,
                                                             ),
                                                           ),
                                                         ],
                                                       ),
                                                       Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
                                                           SizedBox(
                                                             width: 3.w,
                                                           ),
                                                           GestureDetector(
                                                             onTap: () async {
-                                                              await _moreStoreController
-                                                                  .addToCartInventory(
-                                                                name: _addCartController
-                                                                        .reviewCart
-                                                                        .value
-                                                                        ?.data
-                                                                        ?.inventories?[
-                                                                            index]
-                                                                        .name ??
-                                                                    '',
+                                                              await _moreStoreController.addToCartInventory(
+                                                                name: _addCartController.reviewCart.value?.data?.inventories?[index].name ?? '',
                                                                 quntity: 0,
-                                                                sId: _addCartController
-                                                                        .reviewCart
-                                                                        .value
-                                                                        ?.data
-                                                                        ?.inventories?[
-                                                                            index]
-                                                                        .sId ??
-                                                                    '',
-                                                                cart_id:
-                                                                    _addCartController
-                                                                        .cartId
-                                                                        .value,
-                                                                store_id: _addCartController
-                                                                        .store
-                                                                        .value
-                                                                        ?.sId ??
-                                                                    '',
+                                                                sId: _addCartController.reviewCart.value?.data?.inventories?[index].sId ?? '',
+                                                                cart_id: _addCartController.cartId.value,
+                                                                store_id: _addCartController.store.value?.sId ?? '',
                                                               );
-                                                              _addCartController
-                                                                  .reviewCart
-                                                                  .value
-                                                                  ?.data
-                                                                  ?.inventories
-                                                                  ?.removeAt(
-                                                                      index);
-                                                              _addCartController
-                                                                  .reviewCart
-                                                                  .refresh();
-                                                              _addCartController
-                                                                  .totalCount
-                                                                  .value = _moreStoreController
-                                                                      .addToCartModel
-                                                                      .value
-                                                                      ?.totalItemsCount
-                                                                      .toString() ??
-                                                                  '';
+                                                              _addCartController.reviewCart.value?.data?.inventories?.removeAt(index);
+                                                              _addCartController.reviewCart.refresh();
+                                                              _moreStoreController.totalItemsCount.value =  _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+                                                              _addCartController.totalCount.value =
+                                                                  _moreStoreController.addToCartModel.value?.totalItemsCount.toString() ?? '';
                                                             },
                                                             child: Row(
                                                               children: [
                                                                 FaIcon(
-                                                                  FontAwesomeIcons
-                                                                      .trash,
-                                                                  size: SizeUtils
-                                                                          .horizontalBlockSize *
-                                                                      4,
-                                                                  color: AppConst
-                                                                      .green,
+                                                                  FontAwesomeIcons.trash,
+                                                                  size: SizeUtils.horizontalBlockSize * 4,
+                                                                  color: AppConst.green,
                                                                 ),
                                                                 SizedBox(
                                                                   width: 3.w,
@@ -1038,12 +604,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                 Text(
                                                                   "Remove",
                                                                   style: TextStyle(
-                                                                      fontSize:
-                                                                          SizeUtils.horizontalBlockSize *
-                                                                              4,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                      fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
                                                                 ),
                                                               ],
                                                             ),
@@ -1070,36 +631,25 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                       ),
                       Obx(
                         () {
-                          var temp = _addCartController
-                              .reviewCart.value?.data?.products
-                              ?.indexWhere((Products element) =>
-                                  element.status == false);
-                          return _addCartController.reviewCart.value?.data
-                                      ?.products?.isEmpty ??
-                                  true
+                          var temp = _addCartController.reviewCart.value?.data?.products?.indexWhere((Products element) => element.status == false);
+                          return _addCartController.reviewCart.value?.data?.products?.isEmpty ?? true
                               ? SizedBox()
                               : temp != -1
                                   ? GestureDetector(
                                       onTap: () async {
-                                        _addCartController
-                                            .reviewCart.value?.data?.products
-                                            ?.removeWhere((element) =>
-                                                element.status == false);
+                                        _addCartController.reviewCart.value?.data?.products?.removeWhere((element) => element.status == false);
                                         _addCartController.reviewCart.refresh();
                                         // total();
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: AppConst.orange,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
+                                          borderRadius: BorderRadius.circular(6),
                                         ),
                                         height: SizeUtils.verticalBlockSize * 6,
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                SizeUtils.horizontalBlockSize *
-                                                    2,
+                                            horizontal: SizeUtils.horizontalBlockSize * 2,
                                           ),
                                           child: Row(
                                             children: [
@@ -1109,9 +659,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                     "Remove Unavailable Items",
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          4,
+                                                      fontSize: SizeUtils.horizontalBlockSize * 4,
                                                     ),
                                                   ),
                                                 ),
@@ -1125,26 +673,18 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: GestureDetector(
                                         onTap: () async {
-                                          Get.toNamed(
-                                              AppRoutes.orderCheckOutScreen);
+                                          Get.toNamed(AppRoutes.orderCheckOutScreen);
                                         },
                                         child: Container(
-                                          height:
-                                              SizeUtils.horizontalBlockSize *
-                                                  12,
+                                          height: SizeUtils.horizontalBlockSize * 12,
                                           decoration: BoxDecoration(
                                             color: AppConst.kSecondaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(6),
+                                            borderRadius: BorderRadius.circular(6),
                                           ),
                                           child: Center(
                                               child: Text(
                                             "Go to CheckOut",
-                                            style: TextStyle(
-                                                color: AppConst.white,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4),
+                                            style: TextStyle(color: AppConst.white, fontSize: SizeUtils.horizontalBlockSize * 4),
                                           )),
                                         ),
                                       ),

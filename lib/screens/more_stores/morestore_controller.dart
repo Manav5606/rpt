@@ -37,6 +37,7 @@ class MoreStoreController extends GetxController {
   TextEditingController storeSearchController = TextEditingController();
   RxString storeSearchText = ''.obs;
   RxList<RawItems> rawItemsList = <RawItems>[].obs;
+  RxInt totalItemsCount = 0.obs;
 
   Future<void> getStoreData({required String id, bool isScanFunction = false, String businessId = '', bool isNeedToNevigate = true}) async {
     try {
@@ -65,6 +66,7 @@ class MoreStoreController extends GetxController {
               int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
               if (index != -1) {
                 addToCartModel.value?.totalItemsCount = getCartIDModel.value?.totalItemsCount ?? 0;
+                totalItemsCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
                 mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
                 mainProducts.products?[index].isQunitityAdd!.value = true;
                 rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
@@ -98,6 +100,7 @@ class MoreStoreController extends GetxController {
           // }
         } else {
           addToCartModel.value?.totalItemsCount = getCartIDModel.value?.totalItemsCount ?? 0;
+          totalItemsCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
         }
       }
       getStoreDataModel.refresh();
@@ -130,6 +133,8 @@ class MoreStoreController extends GetxController {
           int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
           if (index != -1) {
             getCartIDModel.value?.totalItemsCount = addToCartModel.value?.totalItemsCount;
+            totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
+
             mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
             mainProducts.products?[index].isQunitityAdd!.value = true;
             rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
@@ -200,6 +205,8 @@ class MoreStoreController extends GetxController {
           int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
           if (index != -1) {
             getCartIDModel.value?.totalItemsCount = addToCartModel.value?.totalItemsCount;
+            totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
+
             mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
             mainProducts.products?[index].isQunitityAdd!.value = true;
             rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56

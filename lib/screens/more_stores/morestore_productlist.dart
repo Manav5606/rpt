@@ -158,7 +158,7 @@ class MoreStoreProductView extends StatelessWidget {
                         }
                       },
                       count:
-                          "${_moreStoreController.addToCartModel.value?.totalItemsCount ?? 0}",
+                          "${_moreStoreController.totalItemsCount.value}",
                     ),
                   ),
                 ],
