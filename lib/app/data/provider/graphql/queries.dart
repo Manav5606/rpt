@@ -94,7 +94,7 @@ class GraphQLQueries {
     name: 'customerLoginOrSignUp',
     query: r'''
     mutation($mobile: String $referID :String){
-      customerLoginOrSignUp(mobile: $mobile,referID:$referID){
+      customerLoginOrSignUp(mobile: $mobile,referID:$referID){ 
         token
         bonus
         streamChatToken
@@ -980,6 +980,7 @@ query($lat: Float, $lng: Float) {
       _id
       name
         store_type
+        color
         default_cashback
         default_welcome_offer
         promotion_cashback
@@ -1131,10 +1132,10 @@ wallet_amount
 }
           total
         location
-          {
-            lat
-            lng
-}
+           {
+          type
+          coordinates
+        }
           rawitems
           {
             item
@@ -1218,9 +1219,9 @@ wallet_amount
           total
         location
           {
-            lat
-            lng
-}
+          type
+          coordinates
+        }
           rawitems
           {
             item
@@ -1810,6 +1811,10 @@ data{
           delivery_slot
           {
           day
+          cut_off_time{
+            hour
+            minute
+          }
             start_time
             {
               hour
@@ -1823,8 +1828,8 @@ data{
           total
         location
           {
-            lat
-            lng
+           type
+          coordinates
 }
           rawitems
           {

@@ -36,6 +36,7 @@ class OrderData {
   num? wallet_amount;
   String? createdAt;
   String? address;
+  LocationCoordinates? location;
   DeliverySlot? deliverySlot;
   Rider? rider;
   List<Products>? products;
@@ -52,6 +53,7 @@ class OrderData {
     this.wallet_amount,
     this.createdAt,
     this.address,
+    this.location,
     this.deliverySlot,
     this.rider,
     this.products,
@@ -68,6 +70,9 @@ class OrderData {
     wallet_amount = json['wallet_amount'];
     createdAt = json['createdAt'];
     address = json['address'];
+    location = json['LocationCoordinates'] != null
+        ? new LocationCoordinates.fromJson(json['LocationCoordinates'])
+        : null;
     deliverySlot = json['delivery_slot'] != null
         ? new DeliverySlot.fromJson(json['delivery_slot'])
         : null;
@@ -106,6 +111,9 @@ class OrderData {
     data['address'] = this.address;
     if (this.deliverySlot != null) {
       data['delivery_slot'] = this.deliverySlot!.toJson();
+    }
+    if (this.location != null) {
+      data['LocationCoordinates'] = this.location!.toJson();
     }
     if (this.products != null) {
       data['products'] = this.products!.map((v) => v.toJson()).toList();
@@ -336,6 +344,22 @@ class Address {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['address'] = this.address;
+    return data;
+  }
+}
+
+class LocationCoordinates {
+  String? type;
+  List<double>? coordinates;
+  LocationCoordinates({this.type, this.coordinates});
+  LocationCoordinates.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }

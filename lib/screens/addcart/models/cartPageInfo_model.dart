@@ -94,7 +94,7 @@ class DeliverySlot {
 
 class TimeSlots {
   // String? sId;
-  // CutOffTime? cutOffTime;
+  CutOffTime? cutOffTime;
   CutOffTime? startTime;
   CutOffTime? endTime;
 
@@ -102,9 +102,9 @@ class TimeSlots {
 
   TimeSlots.fromJson(Map<String, dynamic> json) {
     // sId = json['_id'];
-    // cutOffTime = json['cut_off_time'] != null
-    //     ? new CutOffTime.fromJson(json['cut_off_time'])
-    //     : null;
+    cutOffTime = json['cut_off_time'] != null
+        ? new CutOffTime.fromJson(json['cut_off_time'])
+        : null;
     startTime = json['start_time'] != null
         ? new CutOffTime.fromJson(json['start_time'])
         : null;
@@ -116,9 +116,9 @@ class TimeSlots {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     // data['_id'] = this.sId;
-    // if (this.cutOffTime != null) {
-    //   data['cut_off_time'] = this.cutOffTime!.toJson();
-    // }
+    if (this.cutOffTime != null) {
+      data['cut_off_time'] = this.cutOffTime!.toJson();
+    }
     if (this.startTime != null) {
       data['start_time'] = this.startTime!.toJson();
     }
@@ -150,13 +150,17 @@ class CutOffTime {
 
 class DayTimeSlots {
   int? day;
+  CutOffTime? cutOffTime;
   CutOffTime? startTime;
   CutOffTime? endTime;
 
-  DayTimeSlots({this.day, this.startTime, this.endTime});
+  DayTimeSlots({this.day, this.startTime, this.endTime, this.cutOffTime});
 
   DayTimeSlots.fromJson(Map<String, dynamic> json) {
     day = json['day'];
+    cutOffTime = json['cut_off_time'] != null
+        ? new CutOffTime.fromJson(json['cut_off_time'])
+        : null;
     startTime = json['start_time'] != null
         ? new CutOffTime.fromJson(json['start_time'])
         : null;
@@ -168,6 +172,10 @@ class DayTimeSlots {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['day'] = this.day;
+    if (this.cutOffTime != null) {
+      data['cut_off_time'] = this.cutOffTime!.toJson();
+    }
+
     if (this.startTime != null) {
       data['start_time'] = this.startTime!.toJson();
     }

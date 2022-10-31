@@ -128,6 +128,19 @@ class ScheduleTimeScreen extends StatelessWidget {
                                                 .currentDay.value)]
                                         .slots?[index]
                                         .endTime;
+
+                                _addCartController
+                                        .dayTimeSlots.value?.cutOffTime =
+                                    _addCartController
+                                        .getCartPageInformationModel
+                                        .value
+                                        ?.data
+                                        ?.deliverySlots?[int.parse(
+                                            _addCartController
+                                                .currentDay.value)]
+                                        .slots![index]
+                                        .cutOffTime;
+
                                 _addCartController.timeZoneCustom.value =
                                     getTemp(index);
                               }

@@ -36,6 +36,7 @@ class ActiveOrderData {
   num? wallet_amount;
   String? createdAt;
   String? address;
+  LocationCoordinates? location;
   DeliverySlot? deliverySlot;
   Rider? rider;
   List<Products>? products;
@@ -52,6 +53,7 @@ class ActiveOrderData {
     this.wallet_amount,
     this.createdAt,
     this.address,
+    this.location,
     this.deliverySlot,
     this.rider,
     this.products,
@@ -68,6 +70,9 @@ class ActiveOrderData {
     wallet_amount = json['wallet_amount'];
     createdAt = json['createdAt'];
     address = json['address'];
+    location = json['LocationCoordinates'] != null
+        ? new LocationCoordinates.fromJson(json['LocationCoordinates'])
+        : null;
     deliverySlot = json['delivery_slot'] != null
         ? new DeliverySlot.fromJson(json['delivery_slot'])
         : null;
@@ -104,6 +109,9 @@ class ActiveOrderData {
     data['createdAt'] = this.createdAt;
     data['rider'] = this.rider;
     data['address'] = this.address;
+    if (this.location != null) {
+      data['LocationCoordinates'] = this.location!.toJson();
+    }
     if (this.deliverySlot != null) {
       data['delivery_slot'] = this.deliverySlot!.toJson();
     }
@@ -130,7 +138,7 @@ class RawItems {
   String? logo;
   bool? modified;
 
-  RawItems({this.item, this.quantity, this.sId, this.modified,this.logo});
+  RawItems({this.item, this.quantity, this.sId, this.modified, this.logo});
 
   RawItems.fromJson(Map<String, dynamic> json) {
     item = json['item'];
@@ -339,6 +347,22 @@ class Address {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['address'] = this.address;
+    return data;
+  }
+}
+
+class LocationCoordinates {
+  String? type;
+  List<double>? coordinates;
+  LocationCoordinates({this.type, this.coordinates});
+  LocationCoordinates.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
     return data;
   }
 }
