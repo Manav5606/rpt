@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/account_controller.dart';
@@ -25,9 +27,11 @@ class AllChats extends StatefulWidget {
 class _AllChatsState extends State<AllChats> {
   final ChatController _controller = Get.find();
   final MyAccountController _MyController = Get.find();
+  final freshChatController _freshChat = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _freshChat.scaffoldKey,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -38,10 +42,37 @@ class _AllChatsState extends State<AllChats> {
               fontWeight: FontWeight.bold,
               color: AppConst.black),
         ),
-        leading: Icon(
-          Icons.close_rounded,
-          size: 3.h,
+        leading: GestureDetector(
+          onTap: () {
+            Get.toNamed(AppRoutes.BaseScreen);
+          },
+          child: Icon(
+            Icons.close_rounded,
+            size: 3.h,
+          ),
         ),
+        actions: [
+          InkWell(
+              highlightColor: AppConst.highLightColor,
+              onTap: () async {
+                _freshChat.initState();
+                await _freshChat.showChatConversation();
+              },
+              child: Container(
+                width: 15.w,
+                child: Center(
+                  child: Text(
+                    "HELP",
+                    style: TextStyle(
+                        fontSize: SizeUtils.horizontalBlockSize * 4,
+                        fontWeight: FontWeight.bold,
+                        color: AppConst.black,
+                        fontFamily: "MuseoSans",
+                        letterSpacing: 0.5),
+                  ),
+                ),
+              ))
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 4.w),
@@ -126,8 +157,6 @@ class _AllChatsState extends State<AllChats> {
                     Filter.equal('type', 'messaging'),
                     Filter.in_('members', [
                       "${_MyController.user.id}",
-                      // '60d1a57f0d9c919a19251eb5',
-                      // "system_message"
                     ]), //60d1a57f0d9c919a19251eb5
                   ]),
 
@@ -206,10 +235,7 @@ class _AllChatsState extends State<AllChats> {
 
                               return GestureDetector(
                                 onTap: () {
-                                  Get.to(
-                                      // MainChatScreen()
-
-                                      ChattingScreen(
+                                  Get.to(ChattingScreen(
                                     channel: channel,
                                   ));
                                 },
@@ -240,11 +266,27 @@ class _AllChatsState extends State<AllChats> {
                                             ],
                                           ),
                                           child: Center(
-                                            child: Icon(
-                                              Icons.person,
-                                              size: 4.h,
-                                              color: AppConst.white,
-                                            ),
+                                            child: (channel.extraData[
+                                                                "store_name"]
+                                                            .toString() ==
+                                                        null ||
+                                                    channel.extraData[
+                                                                "store_name"]
+                                                            .toString() ==
+                                                        "")
+                                                ? Icon(
+                                                    Icons.person,
+                                                    size: 4.h,
+                                                    color: AppConst.white,
+                                                  )
+                                                : Text(
+                                                    channel
+                                                        .extraData["store_name"]
+                                                        .toString()[0],
+                                                    style: TextStyle(
+                                                        color: AppConst.white,
+                                                        fontSize: 13.sp),
+                                                  ),
                                           ),
                                         ),
                                         //  CircleAvatar(),

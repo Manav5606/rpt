@@ -57,9 +57,9 @@ class HomeAppBar extends StatelessWidget {
                   // AppStyles.ADDRESS_STYLE,
                 ),
               ),
-              SizedBox(
-                width: 1.w,
-              ),
+              // SizedBox(
+              //   width: 1.w,
+              // ),
               Icon(
                 Icons.keyboard_arrow_down_outlined,
                 size: 6.w,

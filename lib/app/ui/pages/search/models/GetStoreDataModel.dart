@@ -58,6 +58,7 @@ class Data {
 class Store {
   String? name;
   String? storeType;
+  String? color;
   String? sId;
   int? defaultCashback;
   int? defaultWelcomeOffer;
@@ -65,12 +66,22 @@ class Store {
   String? logo;
   List<DeliverySlots>? deliverySlots;
 
-  Store({this.name, this.storeType, this.defaultCashback, this.defaultWelcomeOffer, this.promotionCashback, this.logo, this.deliverySlots, this.sId});
+  Store(
+      {this.name,
+      this.storeType,
+      this.color,
+      this.defaultCashback,
+      this.defaultWelcomeOffer,
+      this.promotionCashback,
+      this.logo,
+      this.deliverySlots,
+      this.sId});
 
   Store.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     sId = json['_id'];
     storeType = json['store_type'];
+    color = json['color'];
     defaultCashback = json['default_cashback'];
     defaultWelcomeOffer = json['default_welcome_offer'];
     promotionCashback = json['promotion_cashback'];
@@ -87,13 +98,15 @@ class Store {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['_id'] = this.sId;
+    data['color'] = this.color;
     data['store_type'] = this.storeType;
     data['default_cashback'] = this.defaultCashback;
     data['default_welcome_offer'] = this.defaultWelcomeOffer;
     data['promotion_cashback'] = this.promotionCashback;
     data['logo'] = this.logo;
     if (this.deliverySlots != null) {
-      data['delivery_slots'] = this.deliverySlots!.map((v) => v.toJson()).toList();
+      data['delivery_slots'] =
+          this.deliverySlots!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -132,8 +145,12 @@ class Slots {
   Slots({this.startTime, this.endTime});
 
   Slots.fromJson(Map<String, dynamic> json) {
-    startTime = json['start_time'] != null ? new StartTime.fromJson(json['start_time']) : null;
-    endTime = json['end_time'] != null ? new StartTime.fromJson(json['end_time']) : null;
+    startTime = json['start_time'] != null
+        ? new StartTime.fromJson(json['start_time'])
+        : null;
+    endTime = json['end_time'] != null
+        ? new StartTime.fromJson(json['end_time'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -201,7 +218,13 @@ class StoreModelProducts {
   RxInt? quntity = 0.obs;
   RxBool? isQunitityAdd = false.obs;
 
-  StoreModelProducts({this.sId, this.name, this.logo, this.cashback = 0, this.quntity, this.isQunitityAdd});
+  StoreModelProducts(
+      {this.sId,
+      this.name,
+      this.logo,
+      this.cashback = 0,
+      this.quntity,
+      this.isQunitityAdd});
 
   StoreModelProducts.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];

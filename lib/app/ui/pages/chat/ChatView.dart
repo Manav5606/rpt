@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:customer_app/app/ui/pages/chat/chat_controller.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,26 +27,27 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChatView extends StatelessWidget {
   ChatView({Key? key}) : super(key: key);
-  // final freshChatController _freshChat = Get.put(freshChatController());
+  final ChatController _chatController = Get.put(ChatController());
+  final freshChatController _freshChat = Get.put(freshChatController());
   @override
   Widget build(BuildContext context) {
     return
         //  Scaffold(
-        //   key: _freshChat.scaffoldKey,
-        //   appBar: AppBar(
-        //     title: Text(
-        //       'Start chatting ',
-        //       style: TextStyle(color: AppConst.black),
-        //     ),
+        // key: _freshChat.scaffoldKey,
+        // appBar: AppBar(
+        //   title: Text(
+        //     'Start chatting ',
+        //     style: TextStyle(color: AppConst.black),
         //   ),
-        //   floatingActionButton: FloatingActionButton(
-        //     onPressed: () async {
-        //       _freshChat.initState();
-        //       await _freshChat.showChatConversation();
-        //     },
-        //     tooltip: 'Chat',
-        //     child: Icon(Icons.chat),
-        //   ),
+        // ),
+        // floatingActionButton: FloatingActionButton(
+        // onPressed: () async {
+        //   _freshChat.initState();
+        //   await _freshChat.showChatConversation();
+        // },
+        //   tooltip: 'Chat',
+        //   child: Icon(Icons.chat),
+        // ),
         // );
 
         AllChats();

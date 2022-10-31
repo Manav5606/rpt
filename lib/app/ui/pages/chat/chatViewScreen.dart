@@ -1,3 +1,4 @@
+import 'package:customer_app/scan_receipt/theBoss/view/TheBossCameraScreen.dart';
 import 'package:customer_app/scan_receipt/theBoss/view/camera_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,30 @@ class ChattingScreen extends StatelessWidget {
               child: Scaffold(
                 appBar: ChannelHeader(
                   showTypingIndicator: true,
+                  title: StreamBuilder<Map<String, dynamic>>(
+                    stream: channel!.extraDataStream,
+                    initialData: channel!.extraData,
+                    builder: (context, snapshot) {
+                      String title;
+                      if (snapshot.data!['name'] == null &&
+                          channel!.state!.members.length == 2) {
+                        final otherMember = channel!.state!.members.firstWhere(
+                            (member) =>
+                                member.user!.id != UserViewModel.user.value.id);
+                        title = otherMember.user!.name;
+                      } else {
+                        title = snapshot.data!['name'] ?? channel!.id;
+                      }
+
+                      return Text(
+                        titleName ?? title.trim().capitalize!,
+                        style: TextStyle(
+                            color: AppConst.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.5.sp),
+                      );
+                    },
+                  ),
                   subtitle: Center(),
                   leading: IconButton(
                     onPressed: () => Get.back(),
@@ -89,27 +114,27 @@ class ChattingScreen extends StatelessWidget {
                 //     ),
                 //   ),
                 //   centerTitle: true,
-                //   title: StreamBuilder<Map<String, dynamic>>(
-                //     stream: channel!.extraDataStream,
-                //     initialData: channel!.extraData,
-                //     builder: (context, snapshot) {
-                //       String title;
-                //       if (snapshot.data!['name'] == null &&
-                //           channel!.state!.members.length == 2) {
-                //         final otherMember = channel!.state!.members.firstWhere(
-                //             (member) =>
-                //                 member.user!.id != UserViewModel.user.value.id);
-                //         title = otherMember.user!.name;
-                //       } else {
-                //         title = snapshot.data!['name'] ?? channel!.id;
-                //       }
+                // title: StreamBuilder<Map<String, dynamic>>(
+                //   stream: channel!.extraDataStream,
+                //   initialData: channel!.extraData,
+                //   builder: (context, snapshot) {
+                //     String title;
+                //     if (snapshot.data!['name'] == null &&
+                //         channel!.state!.members.length == 2) {
+                //       final otherMember = channel!.state!.members.firstWhere(
+                //           (member) =>
+                //               member.user!.id != UserViewModel.user.value.id);
+                //       title = otherMember.user!.name;
+                //     } else {
+                //       title = snapshot.data!['name'] ?? channel!.id;
+                //     }
 
-                //       return Text(
-                //         titleName ?? title.trim().capitalize!,
-                //         style: TextStyle(color: AppConst.black),
-                //       );
-                //     },
-                //   ),
+                //     return Text(
+                //       titleName ?? title.trim().capitalize!,
+                //       style: TextStyle(color: AppConst.black),
+                //     );
+                //   },
+                // ),
                 //   actions: [
                 //     PopupMenuButton(
                 //       icon: Icon(
@@ -142,35 +167,96 @@ class ChattingScreen extends StatelessWidget {
                 body: Column(
                   children: [
                     Expanded(child: MessageListView(
-                      // systemMessageBuilder: (context, Message) {
-                      //   return Text("hiiiiii");
+                      // systemMessageBuilder: (BuildContext, Message) {
+                      //   return Container();
                       // },
+
                       messageBuilder:
                           (context, details, messageList, defaultImpl) {
                         return defaultImpl.copyWith(
-                          showUserAvatar: defaultImpl.message.silent
-                              ? (DisplayWidget.hide)
-                              : (DisplayWidget.show),
-                          showUsername:
-                              defaultImpl.message.silent ? false : true,
+                          // messageTheme: MessageThemeData(
+                          //   messageTextStyle:
+                          //      TextStyle(fontWeight: FontWeight.bold),
+                          // ),
+                          // padding: EdgeInsets.only(left: 0,),
+                          userAvatarBuilder: (BuildContext, user) {
+                            return (defaultImpl.message.user?.role == "admin")
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 10.w, bottom: 2.5.h),
+                                    child: Icon(
+                                      Icons.chat_bubble_outline,
+                                      color: AppConst.grey,
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.only(bottom: 1.h),
+                                    child: CircleAvatar(
+                                      backgroundColor: (defaultImpl
+                                                  .message.user?.extraData[0] ==
+                                              "customer")
+                                          ? AppConst.kSecondaryColor
+                                          : AppConst.kSecondaryColor,
+                                      child: Icon(
+                                        Icons.person,
+                                        color: AppConst.white,
+                                      ),
+                                      // Text(defaultImpl.message.user?.name
+                                      //         .substring(0, 1) ??
+                                      //     '')
+                                    ),
+                                  );
+                          },
+                          // textPadding:
+                          //     (defaultImpl.message.user?.role == "admin")
+                          //         ? EdgeInsets.only(left: 10.w)
+                          //         : EdgeInsets.symmetric(
+                          //             horizontal: 3.w, vertical: 1.h),
+
+                          showUserAvatar:
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? (DisplayWidget.show)
+                                  : (DisplayWidget.hide),
+                          showUsername: false,
+                          // (defaultImpl.message.user?.role == "admin")
+                          //     ? false
+                          //     : (messageList.)
+                          //         ? false
+                          //         : true,
                           showTimestamp:
-                              defaultImpl.message.silent ? false : true,
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? false
+                                  : true,
                           showFlagButton:
-                              defaultImpl.message.silent ? false : true,
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? false
+                                  : true,
                           showPinButton:
-                              defaultImpl.message.silent ? false : true,
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? false
+                                  : true,
                           showEditMessage:
-                              defaultImpl.message.silent ? false : true,
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? false
+                                  : true,
                           showCopyMessage:
-                              defaultImpl.message.silent ? false : true,
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? false
+                                  : true,
                           showDeleteMessage:
-                              defaultImpl.message.silent ? false : true,
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? false
+                                  : true,
                           showReactions:
-                              defaultImpl.message.silent ? false : true,
+                              (defaultImpl.message.user?.role == "admin")
+                                  ? false
+                                  : true,
 
                           // shape of the message
-                          // shape:
-                          //     Border.all(style: BorderStyle.none),
+                          shape: (defaultImpl.message.user?.role == "admin")
+                              ? Border.all(style: BorderStyle.none)
+                              : null,
+
                           // username and storeId
 
                           // messageTheme: MessageThemeData(
@@ -187,29 +273,36 @@ class ChattingScreen extends StatelessWidget {
                       },
 
                       commandButtonBuilder: (context, IconButton) {
-                        return
-                            //  Center(); // it will remove the instants commands options
-                            IconButton.copyWith(
-                                // enableFeedback: true,
-                                color: Colors.black, // command button color
-                                // focusColor: Colors.red,
-                                icon: Icon(Icons.camera_alt),
-                                onPressed: () {
-                                  // channel!.sendMessage(
-                                  //     Message(text: "custom message send "));
+                        return Center(); // it will remove the instants commands options
+                        // IconButton.copyWith(
+                        //     // enableFeedback: true,
+                        //     color: Colors.black, // command button color
+                        //     // focusColor: Colors.red,
+                        //     icon: Icon(Icons.camera_alt),
+                        //     onPressed: () {
+                        //       channel!.sendMessage(Message(
+                        //           text: "custom message send ",
+                        //           attachments: [
+                        //             Attachment(
+                        //                 uploadState: UploadState.success(),
+                        //                 thumbUrl:
+                        //                     "https://d3tjfuo6kzp7yv.cloudfront.net/74c7ac039ac7c7194ea8309e8b02dac9.jpg",
+                        //                 imageUrl:
+                        //                     "https://d3tjfuo6kzp7yv.cloudfront.net/74c7ac039ac7c7194ea8309e8b02dac9.jpg")
+                        //           ]));
+                        //       // Get.to(TheBossCameraScreen());
+                        //       // Get.to(CameraPicker(
+                        //       //   channel: channel,
+                        //       // ));
 
-                                  // Get.to(CameraPicker(
-                                  //   channel: channel,
-                                  // ));
-
-                                  // await channel!.sendImage(AttachmentFile(
-                                  //     size: 20,
-                                  //     path:
-                                  //         "https://d3tjfuo6kzp7yv.cloudfront.net/74c7ac039ac7c7194ea8309e8b02dac9.jpg"
-                                  //     // "/data/user/0/com.recipto.customer_app/cache/CAP150287181574112682.jpg"
-                                  // ));
-                                } //  command button icon
-                                );
+                        //       // channel!.sendImage(AttachmentFile(
+                        //       //     size: 20,
+                        //       //     path:
+                        //       //         "https://d3tjfuo6kzp7yv.cloudfront.net/74c7ac039ac7c7194ea8309e8b02dac9.jpg"
+                        //       //     // "/data/user/0/com.recipto.customer_app/cache/CAP150287181574112682.jpg"
+                        //       //     ));
+                        //     } //  command button icon
+                        //     );
                       },
                       actionsLocation: ActionsLocation.leftInside,
                       sendButtonLocation: SendButtonLocation.inside,

@@ -33,8 +33,11 @@ void main() async {
   await HiveHelper.init();
   // DynamicLinkHelper.init();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppConst.white, statusBarIconBrightness: Brightness.dark));
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //     statusBarColor: AppConst.white,
+  //     statusBarIconBrightness: Brightness.dark));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
     runApp(new MyApp());
     configLoading();
   });
@@ -59,7 +62,9 @@ void configLoading() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppConst.white, statusBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: AppConst.white,
+        statusBarIconBrightness: Brightness.dark));
     return Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
