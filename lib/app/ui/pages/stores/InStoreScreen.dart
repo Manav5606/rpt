@@ -67,57 +67,57 @@ class InStoreScreen extends StatelessWidget {
                 //     color: Colors.black,
                 //   ),
                 // ),
-                actions: [
-                  CartWidget(
-                    onTap: () async {
-                      if ((_homeController
-                                  .getAllCartsModel.value?.carts?.length ??
-                              0) ==
-                          1) {
-                        Get.toNamed(
-                          AppRoutes.CartReviewScreen,
-                          arguments: {
-                            'logo': _homeController.getAllCartsModel.value
-                                ?.carts?.first.store?.logo,
-                            'storeName': _homeController.getAllCartsModel.value
-                                ?.carts?.first.store?.name,
-                            'totalCount': _homeController
-                                    .getAllCartsModel.value?.cartItemsTotal
-                                    .toString() ??
-                                "",
-                          },
-                        );
-                        await _addCartController.getReviewCartData(
-                            cartId: _homeController
-                                    .getAllCartsModel.value?.carts?[1].sId ??
-                                "");
-                        // await _addCartController.getCartPageInformation(storeId: _homeController.getAllCartsModel.value?.carts?[1].store?.sId ?? "");
-                        await _addCartController.getCartLocation(
-                            storeId: _homeController.getAllCartsModel.value
-                                    ?.carts?.first.store?.sId ??
-                                "",
-                            cartId: _homeController
-                                    .getAllCartsModel.value?.carts?.first.sId ??
-                                "");
-                        _addCartController.store.value = _homeController
-                            .getAllCartsModel.value?.carts?.first.store;
-                        _addCartController.cartId.value = _homeController
-                                .getAllCartsModel.value?.carts?.first.sId ??
-                            "";
-                      }
-                      Get.toNamed(AppRoutes.AddCartListScreen);
-                    },
-                    count:
-                        // _homeController
-                        //         .getAllCartsModel.value?.cartItemsTotal
-                        //         .toString() ??
-                        "",
-                    isRedButton: true,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  )
-                ],
+                // actions: [
+                //   CartWidget(
+                //     onTap: () async {
+                //       if ((_homeController
+                //                   .getAllCartsModel.value?.carts?.length ??
+                //               0) ==
+                //           1) {
+                //         Get.toNamed(
+                //           AppRoutes.CartReviewScreen,
+                //           arguments: {
+                //             'logo': _homeController.getAllCartsModel.value
+                //                 ?.carts?.first.store?.logo,
+                //             'storeName': _homeController.getAllCartsModel.value
+                //                 ?.carts?.first.store?.name,
+                //             'totalCount': _homeController
+                //                     .getAllCartsModel.value?.cartItemsTotal
+                //                     .toString() ??
+                //                 "",
+                //           },
+                //         );
+                //         await _addCartController.getReviewCartData(
+                //             cartId: _homeController
+                //                     .getAllCartsModel.value?.carts?[1].sId ??
+                //                 "");
+                //         // await _addCartController.getCartPageInformation(storeId: _homeController.getAllCartsModel.value?.carts?[1].store?.sId ?? "");
+                //         await _addCartController.getCartLocation(
+                //             storeId: _homeController.getAllCartsModel.value
+                //                     ?.carts?.first.store?.sId ??
+                //                 "",
+                //             cartId: _homeController
+                //                     .getAllCartsModel.value?.carts?.first.sId ??
+                //                 "");
+                //         _addCartController.store.value = _homeController
+                //             .getAllCartsModel.value?.carts?.first.store;
+                //         _addCartController.cartId.value = _homeController
+                //                 .getAllCartsModel.value?.carts?.first.sId ??
+                //             "";
+                //       }
+                //       Get.toNamed(AppRoutes.AddCartListScreen);
+                //     },
+                //     count:
+                //         // _homeController
+                //         //         .getAllCartsModel.value?.cartItemsTotal
+                //         //         .toString() ??
+                //         "",
+                //     isRedButton: true,
+                //   ),
+                //   SizedBox(
+                //     width: 2.w,
+                //   )
+                // ],
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   collapseMode: CollapseMode.parallax,

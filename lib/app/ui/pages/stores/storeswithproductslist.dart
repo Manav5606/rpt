@@ -1,3 +1,5 @@
+import 'package:customer_app/app/ui/pages/my_wallet/wallet_details_screen.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -129,16 +131,20 @@ class ListViewChild extends StatelessWidget {
                           false)
                         if ((storesWithProductsModel.storeType ?? '') ==
                             'online')
-                          Row(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Pickup /", style: AppStyles.BOLD_STYLE),
-                              Text(
-                                " Delivery",
-                                style: AppStyles.BOLD_STYLE_GREEN,
+                              Row(
+                                children: [
+                                  Text("Pickup /", style: AppStyles.BOLD_STYLE),
+                                  Text(
+                                    " Delivery",
+                                    style: AppStyles.BOLD_STYLE_GREEN,
+                                  ),
+                                ],
                               ),
                               SizedBox(
-                                width: 2.w,
+                                height: 1.h,
                               ),
                               (storesWithProductsModel.calculatedDistance !=
                                       null)
@@ -169,13 +175,12 @@ class ListViewChild extends StatelessWidget {
                             ],
                           )
                         else
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(StringContants.pickUp,
                                   style: AppStyles.BOLD_STYLE),
-                              SizedBox(
-                                width: 2.w,
-                              ),
+                              SizedBox(height: 1.h),
                               (storesWithProductsModel.calculatedDistance !=
                                       null)
                                   ? Container(
@@ -244,7 +249,7 @@ class ListViewChild extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 2.h),
+                  padding: EdgeInsets.only(top: 3.h),
                   child: Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: AppConst.grey,
@@ -255,108 +260,196 @@ class ListViewChild extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
-          height: 1.h,
-        ),
+        // SizedBox(
+        //   height: 1.h,
+        // ),
         storesWithProductsModel.products!.isEmpty
-            ? Padding(
-                padding: EdgeInsets.only(bottom: 1.h),
-                child: Text(
-                  "No Products",
-                  style: AppStyles.STORE_NAME_STYLE,
+            ? InkWell(
+                highlightColor: AppConst.highLightColor,
+                onTap: () async {
+                  _moreStoreController.storeId.value =
+                      storesWithProductsModel.sId ?? '';
+                  await _moreStoreController.getStoreData(
+                    id: storesWithProductsModel.sId ?? '',
+                  );
+                },
+                child: Container(
+                  height: 30.h,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.shopping_cart,
+                            // Icons.receipt,
+                            size: 10.h,
+                            color: AppConst.lightYellow,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        "To view products",
+                        style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "Go to store and start shopping",
+                        style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                          fontWeight: FontWeight.w200,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
+            // Padding(
+            //     padding: EdgeInsets.only(bottom: 1.h),
+            //     child: Text(
+            //       "No Products",
+            //       style: AppStyles.STORE_NAME_STYLE,
+            //     ),
+            //   )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Container(
-                      height: 25.h,
-                      width: double.infinity,
-                      child: ListView.separated(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        primary: false,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: storesWithProductsModel.products!.length,
-                        itemBuilder: (context, index) {
-                          Products product =
-                              storesWithProductsModel.products![index];
-                          return Container(
-                            width: 40.w,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 1.h),
+                      child: Container(
+                        height: 30.h,
+                        width: double.infinity,
+                        child: ListView.separated(
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          primary: false,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: storesWithProductsModel.products!.length,
+                          itemBuilder: (context, index) {
+                            Products product =
+                                storesWithProductsModel.products![index];
+                            return InkWell(
+                              onTap: () async {
+                                product.quntity!.value++;
+                                _moreStoreController.addToCart(
+                                    store_id: storesWithProductsModel.sId ?? '',
+                                    index: 0,
+                                    increment: true,
+                                    cart_id: _moreStoreController
+                                            .addToCartModel.value?.sId ??
+                                        '',
+                                    product: product);
+                                _moreStoreController.storeId.value =
+                                    storesWithProductsModel.sId ?? '';
+                                await _moreStoreController.getStoreData(
+                                  id: storesWithProductsModel.sId ?? '',
+                                );
+                                // Get.toNamed(AppRoutes.MoreStoreProductScreen);
+                              },
+                              child: Container(
+                                width: 33.w,
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Center(
-                                        child: Image.network(
-                                      product.logo!,
-                                      fit: BoxFit.fill,
-                                      height: 15.h,
-                                      width: 22.w,
+                                        child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        product.logo!,
+                                        fit: BoxFit.fill,
+                                        height: 18.h,
+                                        width: 28.w,
+                                      ),
                                     )),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          product.quntity!.value++;
-                                          _moreStoreController.addToCart(
-                                              store_id:
-                                                  storesWithProductsModel.sId ??
-                                                      '',
-                                              index: 0,
-                                              increment: true,
-                                              cart_id: _moreStoreController
-                                                      .addToCartModel
-                                                      .value
-                                                      ?.sId ??
-                                                  '',
-                                              product: product);
-                                          _moreStoreController.storeId.value =
-                                              storesWithProductsModel.sId ?? '';
-                                          await _moreStoreController
-                                              .getStoreData(
-                                            id: storesWithProductsModel.sId ??
-                                                '',
-                                          );
-                                          // Get.toNamed(AppRoutes.MoreStoreProductScreen);
-                                        },
-                                        child: Icon(
-                                          Icons.add,
-                                          size:
-                                              SizeUtils.horizontalBlockSize * 7,
-                                        ),
+                                    // Align(
+                                    //   alignment: Alignment.topRight,
+                                    //   child: GestureDetector(
+                                    // onTap: () async {
+                                    //   product.quntity!.value++;
+                                    //   _moreStoreController.addToCart(
+                                    //       store_id:
+                                    //           storesWithProductsModel.sId ??
+                                    //               '',
+                                    //       index: 0,
+                                    //       increment: true,
+                                    //       cart_id: _moreStoreController
+                                    //               .addToCartModel
+                                    //               .value
+                                    //               ?.sId ??
+                                    //           '',
+                                    //       product: product);
+                                    //   _moreStoreController.storeId.value =
+                                    //       storesWithProductsModel.sId ?? '';
+                                    //   await _moreStoreController
+                                    //       .getStoreData(
+                                    //     id: storesWithProductsModel.sId ??
+                                    //         '',
+                                    //   );
+                                    //   // Get.toNamed(AppRoutes.MoreStoreProductScreen);
+                                    // },
+                                    //     // child: Icon(
+                                    //     //   Icons.add,
+                                    //     //   size:
+                                    //     //       SizeUtils.horizontalBlockSize * 7,
+                                    //     // ),
+                                    //   ),
+                                    // ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 2.w),
+                                      child: Text(
+                                        "\u20b9 ${product.cashback.toString()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12.sp,
+                                            fontFamily: "Musosane"),
                                       ),
                                     ),
+                                    SizedBox(
+                                      height: 0.5.h,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 2.w),
+                                      child: Text(
+                                        product.name.toString(),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 12.sp,
+                                            fontFamily: "Musosane"),
+                                      ),
+                                    ),
+
+                                    // Text(
+                                    //   storesWithProductsModel.quantity.toString(),
+                                    //   style: AppStyles.STORE_NAME_STYLE,
+                                    // )
                                   ],
                                 ),
-                                Text(
-                                  " \u20b9 ${product.cashback.toString()}",
-                                  style: AppStyles.STORE_NAME_STYLE,
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    product.name.toString(),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppStyles.STORE_NAME_STYLE,
-                                  ),
-                                ),
-                                // Text(
-                                //   storesWithProductsModel.quantity.toString(),
-                                //   style: AppStyles.STORE_NAME_STYLE,
-                                // )
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(
-                            width: 2.w,
-                          );
-                        },
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox();
+                            // Container(
+                            //   width: 2.w,
+                            //   color: AppConst.highLightColor,
+                            // );
+                          },
+                        ),
                       ),
                     ),
                   ),
