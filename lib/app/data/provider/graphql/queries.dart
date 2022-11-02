@@ -691,6 +691,18 @@ mutation ($token: String) {
     ''',
   );
 
+  static final addrestoreIDtoCustomer = new GraphQLQuery(
+    name: 'addrestoreIDtoCustomer',
+    query: r'''
+    mutation($restoreID: String){
+      addrestoreIDtoCustomer(restoreID : $restoreID){
+      error
+      msg
+  }
+}
+    ''',
+  );
+
   static final verifyOtp = new GraphQLQuery(
     name: 'verifyOtp',
     query: r'''

@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:customer_app/app/data/provider/graphql/queries.dart';
+import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -108,10 +110,29 @@ class freshChatController extends GetxController {
     }
   }
 
+  Future<bool> addrestoreIDtoCustomer(String? restoreID) async {
+    log(restoreID!);
+    final result = await GraphQLRequest.query(
+        query: GraphQLQueries.addrestoreIDtoCustomer,
+        variables: {
+          'restoreID': restoreID,
+        });
+
+    log("resultRestoreId:$result");
+    if (result['error'] == false) {
+      log('restoreID added successfully');
+      return true;
+    } else {
+      log('restoreID  not upload to db');
+      return false;
+    }
+  }
+
   Future<void> showChatConversation() async {
     FreshchatUser user = await Freshchat.getUser;
-    var restoreId = user.getRestoreId();
 
+    var restoreId = user.getRestoreId();
+    addrestoreIDtoCustomer(restoreId);
     log("restoreIdddddd:$restoreId");
 
     FreshchatUser freshchatUser =

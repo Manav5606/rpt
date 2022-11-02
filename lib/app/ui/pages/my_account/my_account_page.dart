@@ -173,6 +173,7 @@
 // }
 import 'dart:math';
 import 'dart:ui';
+import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -190,6 +191,7 @@ import 'package:get/route_manager.dart';
 import 'package:sizer/sizer.dart';
 
 class MyAccountPage extends GetView<MyAccountController> {
+  final freshChatController _freshChat = Get.find();
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -199,6 +201,7 @@ class MyAccountPage extends GetView<MyAccountController> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
+        key: _freshChat.scaffoldKey,
         body: SafeArea(
           child: SingleChildScrollView(
             physics: ClampingScrollPhysics(),
@@ -311,7 +314,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                           ),
                           myWalletControl(context, _),
                           SizedBox(
-                            height: 3.h,
+                            height: 1.h,
                           ),
                           ListView.builder(
                             itemCount: profileScreenData.length,
@@ -331,7 +334,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                           SizeUtils.horizontalBlockSize * 4.5,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                onTap: () {
+                                onTap: () async {
                                   if (index == 0) {
                                     // Get.toNamed(AppRoutes.Orders);
                                     Get.toNamed(AppRoutes.EditProfile);
@@ -339,10 +342,10 @@ class MyAccountPage extends GetView<MyAccountController> {
                                     Get.toNamed(AppRoutes.History);
                                   } else if (index == 2) {
                                     Get.toNamed(AppRoutes.MyAddresses);
+                                  } else if (index == 3) {
+                                    _freshChat.initState();
+                                    await _freshChat.showChatConversation();
                                   }
-                                  // else if (index == 3) {
-
-                                  // }
                                   // else if (index == 4) {
                                   //   Get.toNamed(AppRoutes.ActiveOrders);
                                   // }
@@ -350,6 +353,8 @@ class MyAccountPage extends GetView<MyAccountController> {
                               );
                             },
                           ),
+                          // myAccount_item_maker(
+                          //     Icons.help_rounded, "Chat Support", () {}),
                           lineSeparator(),
                           Row(
                             children: [
@@ -359,26 +364,26 @@ class MyAccountPage extends GetView<MyAccountController> {
                               Text(
                                 "Credits Proms & giftcards ",
                                 style: TextStyle(
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 4.5,
+                                    fontSize: SizeUtils.horizontalBlockSize * 4,
                                     color: AppConst.black),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
+                          // SizedBox(
+                          //   height: 1.h,
+                          // ),
                           myAccount_item_maker(
                               Icons.currency_rupee, "Invite friends, get  10 ",
                               () {
                             Get.to(ReferAndEarnScreen());
                           }),
-                          lineSeparator(),
+
+                          // lineSeparator(),
                           myAccount_item_maker(Icons.logout_rounded, "Logout",
                               () {
                             _showLogOutDialog();
                           }),
-                          lineSeparator(),
+                          // lineSeparator(),
                         ],
                       );
               },
@@ -389,98 +394,109 @@ class MyAccountPage extends GetView<MyAccountController> {
     );
   }
 
-  Padding myWalletControl(BuildContext context, MyAccountController _) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      child: Container(
-        height: 13.h,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: AppConst.lightYellow,
-          border: Border.all(width: 0.1),
+  InkWell myWalletControl(BuildContext context, MyAccountController _) {
+    return InkWell(
+      highlightColor: AppConst.lightGrey,
+      onTap: () {
+        Get.toNamed(AppRoutes.Wallet);
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 2.w),
+        child: Container(
+          height: 13.h,
+          margin: EdgeInsets.only(bottom: 1.h),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: AppConst.lightYellow,
+            border: Border.all(width: 0.1),
 
-          // image: DecorationImage(
-          //     image: NetworkImage(
-          //         'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
-          //     fit: BoxFit.cover,
-          //     opacity: 0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 1.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "Your total wallet amount is \u{20B9} ${_.user.balance?.toStringAsFixed(2)} ",
-                style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 5,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Unlock unlimited free delivery and more ! ",
-                style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                    fontWeight: FontWeight.w300),
-              ),
-              SizedBox(
-                height: 0.5.h,
-              ),
-              FittedBox(
-                child: SizedBox(
-                  height: 3.5.h,
-                  child: ElevatedButton(
-                    child: Text(
-                      'So many wallets!',
-                      style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 3.2,
-                          color: AppConst.black),
+            // image: DecorationImage(
+            //     image: NetworkImage(
+            //         'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+            //     fit: BoxFit.cover,
+            //     opacity: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 1.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Your total wallet amount is \u{20B9} ${_.user.balance?.toStringAsFixed(2)} ",
+                  style: TextStyle(
+                      fontSize: SizeUtils.horizontalBlockSize * 5,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Unlock unlimited free delivery and more ! ",
+                  style: TextStyle(
+                      fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                      fontWeight: FontWeight.w300),
+                ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                FittedBox(
+                  child: SizedBox(
+                    height: 3.5.h,
+                    child: ElevatedButton(
+                      child: Text(
+                        'So many wallets!',
+                        style: TextStyle(
+                            fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                            color: AppConst.black),
+                      ),
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.Wallet);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: AppConst.orange,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15))),
                     ),
-                    onPressed: () {
-                      Get.toNamed(AppRoutes.Wallet);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: AppConst.orange,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15))),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  GestureDetector myAccount_item_maker(IconData icon, String text, onTap) {
-    return GestureDetector(
+  InkWell myAccount_item_maker(IconData icon, String text, onTap) {
+    return InkWell(
+      highlightColor: AppConst.lightGrey,
       onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 5.w,
-          ),
-          Icon(icon),
-          SizedBox(
-            width: 2.w,
-          ),
-          Text(
-            text,
-            style: TextStyle(
-                fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                fontWeight: FontWeight.w500),
-          )
-        ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 1.5.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 5.w,
+            ),
+            Icon(icon),
+            SizedBox(
+              width: 2.w,
+            ),
+            Text(
+              text,
+              style: TextStyle(
+                  fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                  fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget lineSeparator() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      padding: EdgeInsets.only(left: 3.w, right: 3.w, bottom: 1.5.h, top: 1.h),
       child: Divider(
         height: 1,
         color: AppConst.black,

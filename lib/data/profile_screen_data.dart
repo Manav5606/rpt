@@ -37,12 +37,12 @@ List<ProfileScreen> profileScreenData = [
         color: AppConst.kIconColor,
       ),
       name: "My Addresses"),
-  // ProfileScreen(
-  //     icon: Icon(
-  //       Icons.receipt_outlined,
-  //       color: kIconColor,
-  //     ),
-  //     name: "My Wallet"),
+  ProfileScreen(
+      icon: Icon(
+        Icons.help,
+        color: AppConst.kIconColor,
+      ),
+      name: "Chat Support"),
   // ProfileScreen(
   //     icon: Icon(
   //       Icons.calendar_today_outlined,
