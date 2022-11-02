@@ -77,7 +77,7 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: SizeUtils.horizontalBlockSize * 2),
+              horizontal: SizeUtils.horizontalBlockSize * 0.2),
           child: Obx(
             () => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,66 +109,73 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                         ?.clear();
                     Get.toNamed(AppRoutes.SearchRecipeScreen);
                   },
-                  child: TextField(
-                      textAlign: TextAlign.left,
-                      textDirection: TextDirection.rtl,
-                      // controller: _paymentController.searchController,
-                      textAlignVertical: TextAlignVertical.center,
-                      enabled: false,
-                      decoration: InputDecoration(
-                          isDense: true,
-                          suffixIcon: Icon(
-                            Icons.search,
-                            size: SizeUtils.horizontalBlockSize * 6,
-                            color: AppConst.black,
-                          ),
-                          counterText: "",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppConst.black),
-                          ),
-                          hintTextDirection: TextDirection.rtl,
-                          hintText: " Search products,stores & recipes",
-                          hintStyle: TextStyle(
-                              color: AppConst.grey,
-                              fontSize: SizeUtils.horizontalBlockSize * 4)),
-                      showCursor: true,
-                      cursorColor: AppConst.black,
-                      cursorHeight: SizeUtils.horizontalBlockSize * 5,
-                      maxLength: 30,
-                      style: TextStyle(
-                        color: AppConst.black,
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                      ),
-                      onChanged: (value) {}),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.w),
+                    child: TextField(
+                        textAlign: TextAlign.left,
+                        textDirection: TextDirection.rtl,
+                        // controller: _paymentController.searchController,
+                        textAlignVertical: TextAlignVertical.center,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            suffixIcon: Icon(
+                              Icons.search,
+                              size: SizeUtils.horizontalBlockSize * 6,
+                              color: AppConst.black,
+                            ),
+                            counterText: "",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: AppConst.black),
+                            ),
+                            hintTextDirection: TextDirection.rtl,
+                            hintText: " Search products,stores & recipes",
+                            hintStyle: TextStyle(
+                                color: AppConst.grey,
+                                fontSize: SizeUtils.horizontalBlockSize * 4)),
+                        showCursor: true,
+                        cursorColor: AppConst.black,
+                        cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                        maxLength: 30,
+                        style: TextStyle(
+                          color: AppConst.black,
+                          fontSize: SizeUtils.horizontalBlockSize * 4,
+                        ),
+                        onChanged: (value) {}),
+                  ),
                 ),
                 SizedBox(
                   height: SizeUtils.verticalBlockSize * 1,
                 ),
-                Text(
-                  'Popular Searches',
-                  style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                    fontWeight: FontWeight.bold,
-                    color: AppConst.black,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: Text(
+                    'Popular Searches',
+                    style: TextStyle(
+                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                      fontWeight: FontWeight.bold,
+                      color: AppConst.black,
+                    ),
                   ),
                 ),
                 SizedBox(height: SizeUtils.verticalBlockSize * 1),
-                GestureDetector(
+                InkWell(
+                  highlightColor: AppConst.lightGrey,
                   onTap: () {
                     // Get.toNamed(AppRoutes.MyCartScreen);
                     Get.to(() => TheBossCameraScreen());
                   },
                   child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 0.5.h),
                     color: AppConst.blue.withOpacity(0.2),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeUtils.horizontalBlockSize * 1,
-                          vertical: SizeUtils.verticalBlockSize * 2),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
