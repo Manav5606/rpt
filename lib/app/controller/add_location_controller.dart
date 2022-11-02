@@ -35,12 +35,16 @@ class AddLocationController extends GetxController {
   final LocationRepository locationRepository = LocationRepository();
   List<Stores> allStores = [];
   RxBool isSeeMoreEnable = false.obs;
-  Rx<CameraPosition> initialLocation = const CameraPosition(target: LatLng(0.0, 0.0)).obs;
+  Rx<CameraPosition> initialLocation =
+      const CameraPosition(target: LatLng(0.0, 0.0)).obs;
   final TextEditingController searchController = TextEditingController();
-  GooglePlace googlePlace = GooglePlace('AIzaSyAVKjCxMvk5Nymx6VYSlhc4iOasFoTxuCk');
+  GooglePlace googlePlace =
+      GooglePlace('AIzaSyAVKjCxMvk5Nymx6VYSlhc4iOasFoTxuCk');
   RxList<AutocompletePrediction> predictions = <AutocompletePrediction>[].obs;
-  RxList<AutocompletePrediction> savePredictionsList = <AutocompletePrediction>[].obs;
-  RxList<RecentAddressDetails> recentAddressDetails = <RecentAddressDetails>[].obs;
+  RxList<AutocompletePrediction> savePredictionsList =
+      <AutocompletePrediction>[].obs;
+  RxList<RecentAddressDetails> recentAddressDetails =
+      <RecentAddressDetails>[].obs;
   Rx<DetailsResult> detailsResult = DetailsResult().obs;
   final HiveRepository hiveRepository = HiveRepository();
   UserModel? userModel;
@@ -89,7 +93,8 @@ class AddLocationController extends GetxController {
       if (result != null && result.result != null) {
         detailsResult.value = result.result ?? DetailsResult();
         if (detailsResult.value.geometry != null) {
-          await setLocation(detailsResult.value.geometry?.location?.lat ?? 0.0, detailsResult.value.geometry?.location?.lng ?? 0.0);
+          await setLocation(detailsResult.value.geometry?.location?.lat ?? 0.0,
+              detailsResult.value.geometry?.location?.lng ?? 0.0);
           Get.back();
           isFullAddressBottomSheet.value = false;
         }
@@ -117,7 +122,7 @@ class AddLocationController extends GetxController {
   void getSaveAddress() async {
     if (AppSharedPreference.getRecentAddressHasData) {
       recentAddressDetails.value = AppSharedPreference.getRecentAddress;
-      log('onMapCreated:---getSaveAddress->>> ${recentAddressDetails.value}');
+      log('onMapCreated:---getSaveAddress->>> ${recentAddressDetails.value.length} 1st address ${recentAddressDetails.value.first.description}');
     }
   }
 
@@ -132,7 +137,9 @@ class AddLocationController extends GetxController {
       final Placemark place = p[0];
       // Address address = await GeoCode().reverseGeocoding(
       //     latitude: _addLocationController.middlePointOfScreenOnMap.latitude, longitude: _addLocationController.middlePointOfScreenOnMap.longitude);
-      currentAddress.value = "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      // currentAddress.value = "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      currentAddress.value =
+          "${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
       loading.value = false;
     } catch (e, st) {
       loading.value = false;
@@ -153,7 +160,9 @@ class AddLocationController extends GetxController {
   }
 
   Future<void> initLocation() async {
-    isRecentAddress.value ? await getRecentLocation() : await getCurrentLocation();
+    isRecentAddress.value
+        ? await getRecentLocation()
+        : await getCurrentLocation();
   }
 
   Future getCurrentLocation() async {
@@ -161,7 +170,8 @@ class AddLocationController extends GetxController {
 
     ///TODO Add LOCATION Permission and permissionHandler
     // await Geolocator.requestPermission();
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
       log('onMapCreated:---getCurrentLocation->>> position $position');
       currentPosition = position;
       middlePointOfScreenOnMap = LatLng(position.latitude, position.longitude);
@@ -185,7 +195,8 @@ class AddLocationController extends GetxController {
   Future getRecentLocation() async {
     log('getRecentLocation : ');
     loading.value = true;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
       currentPosition = position;
       middlePointOfScreenOnMap = LatLng(latitude.value, longitude.value);
       mapController.animateCamera(
@@ -206,11 +217,13 @@ class AddLocationController extends GetxController {
 
   Future getAddress() async {
     try {
-      final List<Placemark> p = await placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
+      final List<Placemark> p = await placemarkFromCoordinates(
+          currentPosition.latitude, currentPosition.longitude);
       log('getRecentLocation getAddress : $p');
       final Placemark place = p[0];
 
-      currentAddress.value = "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      currentAddress.value =
+          "${place.subLocality}, ${place.locality}, ${place.postalCode}";
     } catch (e) {
       print(e);
     }
@@ -218,7 +231,8 @@ class AddLocationController extends GetxController {
 
   Future getCurrentAddress() async {
     try {
-      final List<Placemark> p = await placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
+      final List<Placemark> p = await placemarkFromCoordinates(
+          currentPosition.latitude, currentPosition.longitude);
       log('getRecentLocation getCurrentAddress : $p');
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -229,7 +243,8 @@ class AddLocationController extends GetxController {
         ),
       );
       final Placemark place = p[0];
-      currentAddress.value = "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      currentAddress.value =
+          "${place.subLocality}, ${place.locality}, ${place.postalCode}";
     } catch (e) {
       print(e);
     }
@@ -239,7 +254,9 @@ class AddLocationController extends GetxController {
     try {
       loading.value = true;
       final GetClaimRewardsPageCountModel? getClaimRewardsPageCountModel =
-          await locationRepository.getClaimRewardsPageCount(middlePointOfScreenOnMap?.latitude ?? 0.0, middlePointOfScreenOnMap?.longitude ?? 0.0);
+          await locationRepository.getClaimRewardsPageCount(
+              middlePointOfScreenOnMap?.latitude ?? 0.0,
+              middlePointOfScreenOnMap?.longitude ?? 0.0);
       storesCount.value = getClaimRewardsPageCountModel?.storesCount ?? 0;
       totalCashBack.value = getClaimRewardsPageCountModel?.totalCashBack ?? 0;
       loading.value = false;
@@ -250,7 +267,9 @@ class AddLocationController extends GetxController {
 
   Future<void> getClaimRewardsPageData() async {
     final GetClaimRewardsModel? getClaimRewardsModel =
-        await locationRepository.getClaimRewardsPageData(middlePointOfScreenOnMap?.latitude ?? 0.0, middlePointOfScreenOnMap?.longitude ?? 0.0);
+        await locationRepository.getClaimRewardsPageData(
+            middlePointOfScreenOnMap?.latitude ?? 0.0,
+            middlePointOfScreenOnMap?.longitude ?? 0.0);
     allStores.clear();
     allStores.addAll(getClaimRewardsModel?.stores ?? []);
   }
@@ -308,7 +327,8 @@ class AddLocationController extends GetxController {
           });
         }
       }
-      await locationRepository.addMultipleStoreToWallet(currentPosition.latitude, currentPosition.longitude);
+      await locationRepository.addMultipleStoreToWallet(
+          currentPosition.latitude, currentPosition.longitude);
     } catch (e) {
       print(e);
     }

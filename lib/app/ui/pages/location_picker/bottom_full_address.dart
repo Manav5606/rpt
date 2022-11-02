@@ -406,8 +406,8 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                     Expanded(
                                       child: Text(
                                         widget.address,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.visible,
                                         style: TextStyle(
                                           color: AppConst.grey,
                                           fontSize:

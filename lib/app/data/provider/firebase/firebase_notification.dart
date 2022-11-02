@@ -1,8 +1,14 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
+import 'package:customer_app/app/data/provider/hive/hive.dart';
+import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
+import 'package:customer_app/app/data/repository/hive_repository.dart';
+import 'package:customer_app/app/ui/pages/chat/ChatView.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:customer_app/data/models/user_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -11,6 +17,7 @@ import 'package:customer_app/routes/app_list.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class FireBaseNotification {
   static final FireBaseNotification _fireBaseNotification =
@@ -31,6 +38,7 @@ class FireBaseNotification {
   );
 
   final _selectNotificationSubject = PublishSubject<String?>();
+  final HiveRepository hiveRepository = HiveRepository();
 
   Stream<String?> get selectNotificationStream =>
       _selectNotificationSubject.stream;
@@ -73,6 +81,16 @@ class FireBaseNotification {
     }
 
     fcmToken = await firebaseMessaging.getToken();
+    String fcmTok = fcmToken.toString();
+
+    firebaseMessaging.onTokenRefresh.listen((event) {
+      Constants.client.addDevice(event, PushProvider.firebase);
+    }).onError((err) {
+      log(err);
+      // Error getting token.
+    });
+    ;
+    Constants.client.addDevice(fcmTok, PushProvider.firebase);
 
     if (fcmToken != null && fcmToken!.isNotEmpty) {
       addFirebaseToken(fcmToken);
@@ -89,17 +107,68 @@ class FireBaseNotification {
     if (initialMessage != null) _showLocalNotification(initialMessage);
 
     // Fired when app is in foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       _showLocalNotification(message);
+      notificationToNavigat();
       debugPrint(
           'Got a message, app is in the foreground! ${message.notification}');
     });
 
     // Fired when app is in foreground
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      notificationToNavigat();
+      _showLocalNotification(message);
       selectNotification('playLoad -->');
-      debugPrint('Got a message, app is in the foreground!');
+      debugPrint('Got a message, app is in the foreground! onMessage');
     });
+
+    // background message
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
+  }
+
+  Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+    final chatClient = StreamChatClient('8gm7wmg4ep65');
+    log("inside the background messge");
+    final box = Boxes.getCommonBox();
+    final token = box.get(HiveConstants.STREAM_TOKEN);
+    final HiveRepository hiveRepository = HiveRepository();
+    UserModel? userModel;
+
+    chatClient.connectUser(
+      User(id: userModel?.id ?? ''),
+      token!,
+      connectWebSocket: false,
+    );
+
+    handleNotification(message, chatClient);
+    debugPrint(
+        'Got a message, app is in the background! ${message.notification}');
+    print('_backgroundMessageHandler');
+    print(message.data);
+  }
+
+  void handleNotification(
+    RemoteMessage message,
+    StreamChatClient chatClient,
+  ) async {
+    final data = message.data;
+
+    if (data['type'] == 'message.new') {
+      // final flutterLocalNotificationsPlugin = await setupLocalNotifications();
+      final messageId = data['id'];
+      final response = await chatClient.getMessage(messageId);
+      log("response: ${response.message.text}");
+      // flutterLocalNotificationsPlugin.show(
+      //   1,
+      //   'New message from ${response.message.user?.name} in ${response.channel?.name}',
+      //   response.message.text,
+      //   NotificationDetails(
+      //       android: AndroidNotificationDetails(
+      //     'new_message',
+      //     'New message notifications channel',
+      //   )),
+      // );
+    }
   }
 
   Future<void> setUpLocalNotification() async {
@@ -170,22 +239,29 @@ class FireBaseNotification {
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
       backgroundColor: AppConst.transparent,
       behavior: SnackBarBehavior.floating,
-      duration: Duration(seconds: 10),
+      duration: Duration(seconds: 3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
       // margin: EdgeInsets.only(bottom: 75.h, right: 2.w, left: 2.w),
       content: Container(
-          height: 7.h,
+          height: 12.h,
           decoration: BoxDecoration(
-              color: AppConst.darkGrey, borderRadius: BorderRadius.circular(8)),
+              color: AppConst.lightYellow,
+              borderRadius: BorderRadius.circular(8)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(notification.title ?? ''),
-                Text(notification.body ?? ''),
+                Text(
+                  notification.title ?? '',
+                  style: TextStyle(color: AppConst.black),
+                ),
+                Text(
+                  notification.body ?? '',
+                  style: TextStyle(color: AppConst.black),
+                ),
               ],
             ),
           )),
@@ -231,7 +307,7 @@ class FireBaseNotification {
 
   void notificationToNavigat() {
     log('notificationToNavigat : ');
-    Get.toNamed(AppRoutes.Orders);
+    Get.toNamed(AppRoutes.ChatView);
   }
 
   void localNotificationDispose() {

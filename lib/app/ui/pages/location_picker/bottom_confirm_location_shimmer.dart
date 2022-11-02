@@ -135,13 +135,13 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       this.address,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.visible,
                                       style: TextStyle(
                                         color: AppConst.black,
                                         fontSize:
-                                            SizeUtils.horizontalBlockSize * 4.5,
-                                        fontWeight: FontWeight.bold,
+                                            SizeUtils.horizontalBlockSize * 4,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
@@ -171,7 +171,7 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                     child: ConfirmLocationWideButton(
                       isHome: false,
                       notifyParent: notifyParent,
-                      skipButton: (){},
+                      skipButton: () {},
                     ),
                   ),
                   SizedBox(height: 1.h),

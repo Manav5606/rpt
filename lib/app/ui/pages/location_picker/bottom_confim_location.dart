@@ -54,25 +54,33 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                 decoration: BoxDecoration(
                     // shape: BoxShape.circle,
                     color: AppConst.white,
-                    borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 1.27),
-                    border: Border.all(color: AppConst.black, width: SizeUtils.horizontalBlockSize - 2.92),
+                    borderRadius: BorderRadius.circular(
+                        SizeUtils.horizontalBlockSize * 1.27),
+                    border: Border.all(
+                        color: AppConst.black,
+                        width: SizeUtils.horizontalBlockSize - 2.92),
                     boxShadow: [AppConst.shadowBasic]),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                  Center(
-                    child: Icon(
-                      Icons.gps_fixed_rounded,
-                      color: AppConst.kSecondaryTextColor,
-                      size: SizeUtils.horizontalBlockSize * 6.5,
-                    ),
-                  ),
-                  // SizedBox(
-                  //   width: 2.w,
-                  // ),
-                  Text(
-                    "Use current location",
-                    style: TextStyle(color: AppConst.green, fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.bold),
-                  ),
-                ]),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Center(
+                        child: Icon(
+                          Icons.gps_fixed_rounded,
+                          color: AppConst.kSecondaryTextColor,
+                          size: SizeUtils.horizontalBlockSize * 6.5,
+                        ),
+                      ),
+                      // SizedBox(
+                      //   width: 2.w,
+                      // ),
+                      Text(
+                        "Use current location",
+                        style: TextStyle(
+                            color: AppConst.green,
+                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ]),
               ),
             ),
             Container(
@@ -82,7 +90,8 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
                     child: Text(
                       "Confirm Delivery Location",
                       style: TextStyle(
@@ -93,7 +102,8 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                   ),
                   Divider(height: 0),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: AppConst.black, width: 0.6),
@@ -114,7 +124,8 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 1.h, bottom: 1.h, left: 3.w, right: 2.w),
+                            padding: EdgeInsets.only(
+                                top: 1.h, bottom: 1.h, left: 3.w, right: 2.w),
                             child: Row(
                               children: [
                                 // Icon(
@@ -128,12 +139,13 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                                 Expanded(
                                   child: Text(
                                     this.address,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.visible,
                                     style: TextStyle(
                                       color: AppConst.black,
-                                      fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
@@ -153,7 +165,8 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                                     // },
                                     // );
                                     if (value != null) {
-                                      getCurrentLocation.call(); // how to call this when i don't want bottom sheet ??
+                                      getCurrentLocation
+                                          .call(); // how to call this when i don't want bottom sheet ??
                                     }
                                     log('value is:--->>>$value');
                                   },
@@ -161,7 +174,8 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                                     "CHANGE",
                                     style: TextStyle(
                                       color: AppConst.green,
-                                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -227,8 +241,8 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                   // Divider(),
                   ConfirmLocationWideButton(
                     isHome: isHome,
-                    notifyParent:notifyParent,
-                    skipButton:skipButton,
+                    notifyParent: notifyParent,
+                    skipButton: skipButton,
                   ),
                   SizedBox(height: 1.h),
                 ],
@@ -270,9 +284,11 @@ class ConfirmLocationWideButton extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           primary: AppConst.kSecondaryColor,
-                          padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
+                          padding:
+                              EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 3),
+                            borderRadius: BorderRadius.circular(
+                                SizeUtils.horizontalBlockSize * 3),
                           ),
                         ),
                         onPressed: () {
@@ -288,7 +304,9 @@ class ConfirmLocationWideButton extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: SizeUtils.verticalBlockSize * 1,),
+                  SizedBox(
+                    width: SizeUtils.verticalBlockSize * 1,
+                  ),
                   Expanded(
                     child: SizedBox(
                       height: 7.3.h,
@@ -296,12 +314,14 @@ class ConfirmLocationWideButton extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           primary: AppConst.kSecondaryColor,
-                          padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
+                          padding:
+                              EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 3),
+                            borderRadius: BorderRadius.circular(
+                                SizeUtils.horizontalBlockSize * 3),
                           ),
                         ),
-                        onPressed: () async{
+                        onPressed: () async {
                           skipButton();
                         },
                         child: Text(
@@ -327,7 +347,8 @@ class ConfirmLocationWideButton extends StatelessWidget {
                     primary: AppConst.kSecondaryColor,
                     padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 3),
+                      borderRadius: BorderRadius.circular(
+                          SizeUtils.horizontalBlockSize * 3),
                     ),
                   ),
                   onPressed: () {

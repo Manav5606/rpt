@@ -255,7 +255,7 @@ class _BottomFullAddressSheetShimmerState
                     Expanded(
                       child: Text(
                         widget.address,
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: AppConst.black,
