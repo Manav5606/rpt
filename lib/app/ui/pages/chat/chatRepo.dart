@@ -29,15 +29,17 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 // }
 
 class ChatRepo {
-  static Future<Channel> createOrJoinChat(String orderId) async {
+  static Future<Channel> createOrJoinChat(
+    String orderId,
+  ) async {
     // log('userID :$userID , orderId $orderId');
 
-    final channel = Constants.client.channel(
-      'messaging', id: orderId,
-      // extraData: {
-      //   'members': [ orderId,]
-      // }
-    );
+    final channel =
+        Constants.client.channel('messaging', id: orderId, extraData: {
+      'members': [
+        orderId,
+      ]
+    });
 
     // log('click on GROCERYOFFLINE 000 $userID');
     ChannelState channelState = await channel.create();

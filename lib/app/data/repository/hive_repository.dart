@@ -12,12 +12,13 @@ class HiveRepository {
     return box.get(HiveConstants.USER_KEY) ?? UserModel();
   }
 
-  bool hasWallets() => Boxes.getUserBox().containsKey(HiveConstants.ALL_WALLET_KEY);
+  bool hasWallets() =>
+      Boxes.getUserBox().containsKey(HiveConstants.ALL_WALLET_KEY);
 
   List<Wallet> getWallets() {
     final box = Boxes.getWalletBox();
     return box.get(HiveConstants.ALL_WALLET_KEY)!;
   }
 
-  var currentLocation = LatLng(0.0, 0.0);
+  // var currentLocation = LatLng(0.0, 0.0);
 }

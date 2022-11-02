@@ -27,7 +27,8 @@ class ChatOrderScreen extends StatefulWidget {
 }
 
 class _ChatOrderScreenState extends State<ChatOrderScreen> {
-  final ChatOrderController _chatOrderController = Get.put(ChatOrderController());
+  final ChatOrderController _chatOrderController =
+      Get.put(ChatOrderController());
 
   final AddCartController _addCartController = Get.find();
 
@@ -65,19 +66,32 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                       Get.toNamed(
                         AppRoutes.CartReviewScreen,
                         arguments: {
-                          'logo': _chatOrderController.cartIndex.value?.store?.logo,
-                          'storeName': _chatOrderController.cartIndex.value?.store?.name,
-                          'totalCount': _chatOrderController.cartIndex.value?.totalItemsCount?.value.toString()
+                          'logo':
+                              _chatOrderController.cartIndex.value?.store?.logo,
+                          'storeName':
+                              _chatOrderController.cartIndex.value?.store?.name,
+                          'totalCount': _chatOrderController
+                              .cartIndex.value?.totalItemsCount?.value
+                              .toString()
                         },
                       );
-                      await _addCartController.getReviewCartData(cartId: _chatOrderController.cartIndex.value?.sId ?? "");
+                      await _addCartController.getReviewCartData(
+                          cartId:
+                              _chatOrderController.cartIndex.value?.sId ?? "");
                       // await _addCartController.getCartPageInformation(storeId: _chatOrderController.cartIndex.value?.store?.sId ?? "");
                       await _addCartController.getCartLocation(
-                          storeId: _chatOrderController.cartIndex.value?.store?.sId ?? "", cartId: _chatOrderController.cartIndex.value?.sId ?? "");
-                      _addCartController.store.value = _chatOrderController.cartIndex.value?.store;
-                      _addCartController.cartId.value = _chatOrderController.cartIndex.value?.sId ?? "";
+                          storeId: _chatOrderController
+                                  .cartIndex.value?.store?.sId ??
+                              "",
+                          cartId:
+                              _chatOrderController.cartIndex.value?.sId ?? "");
+                      _addCartController.store.value =
+                          _chatOrderController.cartIndex.value?.store;
+                      _addCartController.cartId.value =
+                          _chatOrderController.cartIndex.value?.sId ?? "";
                     },
-                    count: '${_chatOrderController.cartIndex.value?.totalItemsCount?.value}',
+                    count:
+                        '${_chatOrderController.cartIndex.value?.totalItemsCount?.value}',
                   );
                 },
               ),
@@ -86,12 +100,20 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
               children: [
                 (_chatOrderController.cartIndex.value?.store?.logo != null)
                     ? Container(
-                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AppConst.grey)),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppConst.grey)),
                         child: ClipOval(
                           child: ClipRRect(
                             child: CircleAvatar(
-                              child: Text(_chatOrderController.cartIndex.value?.store?.name?.substring(0, 1) ?? "",
-                                  style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 2)),
+                              child: Text(
+                                  _chatOrderController
+                                          .cartIndex.value?.store?.name
+                                          ?.substring(0, 1) ??
+                                      "",
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 2)),
                               backgroundColor: AppConst.kPrimaryColor,
                               radius: SizeUtils.horizontalBlockSize * 2.5,
                             ),
@@ -99,7 +121,9 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                         ),
                       )
                     : CircleAvatar(
-                        backgroundImage: NetworkImage(_chatOrderController.cartIndex.value?.store?.logo ?? ''),
+                        backgroundImage: NetworkImage(
+                            _chatOrderController.cartIndex.value?.store?.logo ??
+                                ''),
                         backgroundColor: AppConst.white,
                         radius: SizeUtils.horizontalBlockSize * 2.5,
                       ),
@@ -121,12 +145,15 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                     children: [
                       Obx(
                         () => ListView.builder(
-                            itemCount: _chatOrderController.cartIndex.value?.rawItems?.length ?? 0,
+                            itemCount: _chatOrderController
+                                    .cartIndex.value?.rawItems?.length ??
+                                0,
                             shrinkWrap: true,
                             primary: false,
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 5),
+                                padding: EdgeInsets.all(
+                                    SizeUtils.horizontalBlockSize * 5),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,78 +161,157 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                                     Row(
                                       children: [
                                         Image.network(
-                                          _chatOrderController.cartIndex.value?.rawItems?[index].logo ??
+                                          _chatOrderController.cartIndex.value
+                                                  ?.rawItems?[index].logo ??
                                               'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg',
                                           height: 40,
                                           width: 40,
                                         ),
                                         SizedBox(
-                                          width: SizeUtils.horizontalBlockSize * 1,
+                                          width:
+                                              SizeUtils.horizontalBlockSize * 1,
                                         ),
-                                        Expanded(child: Text(_chatOrderController.cartIndex.value?.rawItems?[index].item ?? '')),
+                                        Expanded(
+                                            child: Text(_chatOrderController
+                                                    .cartIndex
+                                                    .value
+                                                    ?.rawItems?[index]
+                                                    .item ??
+                                                '')),
                                         Obx(
                                           () {
                                             return CustomPopMenu(
                                               title: 'Quantity',
                                               child: Container(
-                                                decoration: BoxDecoration(shape: BoxShape.rectangle, border: Border.all(color: AppConst.grey)),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.rectangle,
+                                                    border: Border.all(
+                                                        color: AppConst.grey)),
                                                 child: Center(
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Text(
                                                       "${_chatOrderController.cartIndex.value?.rawItems?[index].quantity?.value ?? 0}",
                                                       maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: AppStyles.BOLD_STYLE,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style:
+                                                          AppStyles.BOLD_STYLE,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                               onSelected: (value) async {
-                                                _chatOrderController.cartIndex.value?.rawItems?[index].quantity?.value = value;
+                                                _chatOrderController
+                                                    .cartIndex
+                                                    .value
+                                                    ?.rawItems?[index]
+                                                    .quantity
+                                                    ?.value = value;
                                                 RawItems rawItems = RawItems(
-                                                    item: _chatOrderController.cartIndex.value?.rawItems?[index].item ?? '',
-                                                    quantity: _chatOrderController.cartIndex.value?.rawItems?[index].quantity,
-                                                    unit: _chatOrderController.cartIndex.value?.rawItems?[index].unit ?? '');
-                                                await _chatOrderController.addToCart(
-                                                    newValueItem: _chatOrderController.cartIndex.value?.rawItems?[index].item ?? '',
-                                                    cartId: _chatOrderController.cartIndex.value?.sId ?? '',
-                                                    rawItem: rawItems,
-                                                    isEdit: true);
+                                                    item: _chatOrderController
+                                                            .cartIndex
+                                                            .value
+                                                            ?.rawItems?[index]
+                                                            .item ??
+                                                        '',
+                                                    quantity:
+                                                        _chatOrderController
+                                                            .cartIndex
+                                                            .value
+                                                            ?.rawItems?[index]
+                                                            .quantity,
+                                                    unit: _chatOrderController
+                                                            .cartIndex
+                                                            .value
+                                                            ?.rawItems?[index]
+                                                            .unit ??
+                                                        '');
+                                                await _chatOrderController
+                                                    .addToCart(
+                                                        newValueItem:
+                                                            _chatOrderController
+                                                                    .cartIndex
+                                                                    .value
+                                                                    ?.rawItems?[
+                                                                        index]
+                                                                    .item ??
+                                                                '',
+                                                        cartId:
+                                                            _chatOrderController
+                                                                    .cartIndex
+                                                                    .value
+                                                                    ?.sId ??
+                                                                '',
+                                                        rawItem: rawItems,
+                                                        isEdit: true);
                                               },
-                                              list: _chatOrderController.quntityList,
+                                              list: _chatOrderController
+                                                  .quntityList,
                                             );
                                           },
                                         ),
                                       ],
                                     ),
-                                    Text(_chatOrderController.cartIndex.value?.rawItems?[index].unit ?? ''),
+                                    Text(_chatOrderController.cartIndex.value
+                                            ?.rawItems?[index].unit ??
+                                        ''),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            _chatOrderController.itemController.text =
-                                                _chatOrderController.cartIndex.value?.rawItems?[index].item ?? '';
-                                            _chatOrderController.oldItem.value = _chatOrderController.cartIndex.value?.rawItems?[index].item ?? '';
-                                            _chatOrderController.oldQuntity.value =
-                                                _chatOrderController.cartIndex.value?.rawItems?[index].quantity?.value ?? 0;
+                                            _chatOrderController.itemController
+                                                .text = _chatOrderController
+                                                    .cartIndex
+                                                    .value
+                                                    ?.rawItems?[index]
+                                                    .item ??
+                                                '';
+                                            _chatOrderController.oldItem.value =
+                                                _chatOrderController
+                                                        .cartIndex
+                                                        .value
+                                                        ?.rawItems?[index]
+                                                        .item ??
+                                                    '';
+                                            _chatOrderController.oldQuntity
+                                                .value = _chatOrderController
+                                                    .cartIndex
+                                                    .value
+                                                    ?.rawItems?[index]
+                                                    .quantity
+                                                    ?.value ??
+                                                0;
 
-                                            _chatOrderController.isEdit.value = true;
+                                            _chatOrderController.isEdit.value =
+                                                true;
                                           },
                                           child: Row(
                                             children: [
                                               FaIcon(
                                                 FontAwesomeIcons.edit,
-                                                size: SizeUtils.horizontalBlockSize * 4,
+                                                size: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    4,
                                                 color: AppConst.green,
                                               ),
                                               SizedBox(
-                                                width: SizeUtils.horizontalBlockSize * 4,
+                                                width: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    4,
                                               ),
                                               Text(
                                                 "Edit",
-                                                style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
+                                                style: TextStyle(
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        4,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                             ],
                                           ),
@@ -216,21 +322,36 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                                         GestureDetector(
                                           onTap: () {
                                             RawItems rawItems = RawItems(
-                                                item: _chatOrderController.cartIndex.value?.rawItems?[index].item ?? '',
+                                                item: _chatOrderController
+                                                        .cartIndex
+                                                        .value
+                                                        ?.rawItems?[index]
+                                                        .item ??
+                                                    '',
                                                 quantity: 0.obs,
-                                                unit: _chatOrderController.cartIndex.value?.rawItems?[index].unit ?? '');
+                                                unit: _chatOrderController
+                                                        .cartIndex
+                                                        .value
+                                                        ?.rawItems?[index]
+                                                        .unit ??
+                                                    '');
                                             _chatOrderController.addToCart(
-                                                cartId: _chatOrderController.cartIndex.value?.sId ?? '',
+                                                cartId: _chatOrderController
+                                                        .cartIndex.value?.sId ??
+                                                    '',
                                                 rawItem: rawItems,
                                                 isEdit: false,
                                                 newValueItem: '');
-                                            _chatOrderController.cartIndex.refresh();
+                                            _chatOrderController.cartIndex
+                                                .refresh();
                                           },
                                           child: Row(
                                             children: [
                                               FaIcon(
                                                 FontAwesomeIcons.trash,
-                                                size: SizeUtils.horizontalBlockSize * 4,
+                                                size: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    4,
                                                 color: AppConst.green,
                                               ),
                                               SizedBox(
@@ -238,7 +359,12 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                                               ),
                                               Text(
                                                 "Remove",
-                                                style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4, fontWeight: FontWeight.w500),
+                                                style: TextStyle(
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        4,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                             ],
                                           ),
@@ -259,11 +385,13 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
           ),
         ),
         Obx(() {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
             _chatOrderController.setValue(widget.isNewStore);
           });
 
-          return _addCartController.onTabChange.value ? SizedBox.shrink() : SizedBox.shrink();
+          return _addCartController.onTabChange.value
+              ? SizedBox.shrink()
+              : SizedBox.shrink();
         })
       ],
     );
@@ -272,7 +400,8 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
 //bottom textformfield and add button
   Widget _enterItem() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 3),
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 3),
       child: Row(
         children: [
           Obx(
@@ -287,7 +416,8 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                         fit: BoxFit.cover,
                       ),
                       Container(
-                        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                        decoration: BoxDecoration(
+                            color: Colors.white, shape: BoxShape.circle),
                         child: GestureDetector(
                           onTap: () {
                             _chatOrderController.imagePath.value = '';
@@ -332,7 +462,9 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
             () => CustomPopMenu(
               title: 'Unit',
               child: Container(
-                decoration: BoxDecoration(shape: BoxShape.rectangle, border: Border.all(color: AppConst.grey)),
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(color: AppConst.grey)),
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -356,13 +488,19 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
             onTap: () async {
               log("_chatOrderController.file:${_chatOrderController.file}");
               if (_chatOrderController.file != null) {
-                _chatOrderController.logo.value = await ImageHelper.uploadImage(_chatOrderController.file!);
+                _chatOrderController.logo.value =
+                    await ImageHelper.uploadImage(_chatOrderController.file!);
               }
               log("_chatOrderController.logo.value:${_chatOrderController.logo.value}");
               RawItems rawItems = RawItems(
-                item: _chatOrderController.isEdit.value ? _chatOrderController.oldItem.value : _chatOrderController.itemController.text,
-                quantity: _chatOrderController.isEdit.value ? _chatOrderController.oldQuntity : 1.obs,
-                unit: _chatOrderController.unitList[_chatOrderController.selectUnitIndex.value],
+                item: _chatOrderController.isEdit.value
+                    ? _chatOrderController.oldItem.value
+                    : _chatOrderController.itemController.text,
+                quantity: _chatOrderController.isEdit.value
+                    ? _chatOrderController.oldQuntity
+                    : 1.obs,
+                unit: _chatOrderController
+                    .unitList[_chatOrderController.selectUnitIndex.value],
                 logo: _chatOrderController.logo.value,
               );
               await _chatOrderController.addToCart(
@@ -376,7 +514,9 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
               _chatOrderController.itemController.clear();
               _chatOrderController.oldItem.isEmpty;
             },
-            child: Padding(padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h), child: Icon(Icons.send)),
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                child: Icon(Icons.send)),
           ),
         ],
       ),

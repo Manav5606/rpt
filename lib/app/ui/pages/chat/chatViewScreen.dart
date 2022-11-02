@@ -1,5 +1,3 @@
-import 'package:customer_app/scan_receipt/theBoss/view/TheBossCameraScreen.dart';
-import 'package:customer_app/scan_receipt/theBoss/view/camera_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -41,14 +39,14 @@ class ChattingScreen extends StatelessWidget {
                     initialData: channel!.extraData,
                     builder: (context, snapshot) {
                       String title;
-                      if (snapshot.data!['name'] == null &&
+                      if (snapshot.data!['store_name'] == null &&
                           channel!.state!.members.length == 2) {
                         final otherMember = channel!.state!.members.firstWhere(
                             (member) =>
                                 member.user!.id != UserViewModel.user.value.id);
                         title = otherMember.user!.name;
                       } else {
-                        title = snapshot.data!['name'] ?? channel!.id;
+                        title = snapshot.data!['store_name'] ?? channel!.id;
                       }
 
                       return Text(
@@ -274,35 +272,6 @@ class ChattingScreen extends StatelessWidget {
 
                       commandButtonBuilder: (context, IconButton) {
                         return Center(); // it will remove the instants commands options
-                        // IconButton.copyWith(
-                        //     // enableFeedback: true,
-                        //     color: Colors.black, // command button color
-                        //     // focusColor: Colors.red,
-                        //     icon: Icon(Icons.camera_alt),
-                        //     onPressed: () {
-                        //       channel!.sendMessage(Message(
-                        //           text: "custom message send ",
-                        //           attachments: [
-                        //             Attachment(
-                        //                 uploadState: UploadState.success(),
-                        //                 thumbUrl:
-                        //                     "https://d3tjfuo6kzp7yv.cloudfront.net/74c7ac039ac7c7194ea8309e8b02dac9.jpg",
-                        //                 imageUrl:
-                        //                     "https://d3tjfuo6kzp7yv.cloudfront.net/74c7ac039ac7c7194ea8309e8b02dac9.jpg")
-                        //           ]));
-                        //       // Get.to(TheBossCameraScreen());
-                        //       // Get.to(CameraPicker(
-                        //       //   channel: channel,
-                        //       // ));
-
-                        //       // channel!.sendImage(AttachmentFile(
-                        //       //     size: 20,
-                        //       //     path:
-                        //       //         "https://d3tjfuo6kzp7yv.cloudfront.net/74c7ac039ac7c7194ea8309e8b02dac9.jpg"
-                        //       //     // "/data/user/0/com.recipto.customer_app/cache/CAP150287181574112682.jpg"
-                        //       //     ));
-                        //     } //  command button icon
-                        //     );
                       },
                       actionsLocation: ActionsLocation.leftInside,
                       sendButtonLocation: SendButtonLocation.inside,
