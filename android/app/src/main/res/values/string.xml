@@ -2,4 +2,6 @@
 <resources>
     <!-- Replace "343254889799245" with your Facebook App ID here. -->
     <string name="facebook_app_id">343254889799245</string>
+    <string name="freshchat_file_provider_authority">com.recipto.customer_app.provider
+</string>
 </resources>
