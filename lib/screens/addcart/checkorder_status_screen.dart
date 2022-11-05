@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/ui/pages/chat/chat_controller.dart';
+import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/controller/account_controller.dart';
@@ -33,6 +34,7 @@ class OrderTreckScreen extends StatelessWidget {
   final AddCartController _addCartController = Get.find();
   final ChatController _chatController = Get.find();
   // final MyAccountController _myAccountController = Get.find();
+  final freshChatController _freshChat = Get.find();
 
   final List<String> stepperItem = [
     'Pending',
@@ -106,26 +108,48 @@ class OrderTreckScreen extends StatelessWidget {
                         style: AppStyles.STORE_NAME_STYLE,
                       ),
                 Spacer(),
-                RichText(
-                  text: TextSpan(
-                    text: '',
-                    style: TextStyle(
-                        color: AppConst.black,
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontWeight: FontWeight.bold),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: historyTab!
-                            ? order?.orderType
-                            : activeOrder?.orderType,
-                        style: TextStyle(
-                            color: AppConst.green,
-                            fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                            fontWeight: FontWeight.bold),
+                InkWell(
+                    highlightColor: AppConst.highLightColor,
+                    onTap: () async {
+                      _freshChat.initState();
+                      await _freshChat.showChatConversation(historyTab!
+                          ? "Have a problem with Order\n${order?.Id}\n${order?.status}\n${order?.createdAt}\n${order?.address}\n"
+                          : "Have a problem with order \n${activeOrder?.Id}\n${activeOrder?.status}\n${activeOrder?.createdAt}\n${activeOrder?.address}\n");
+                    },
+                    child: Container(
+                      width: 15.w,
+                      child: Center(
+                        child: Text(
+                          "HELP",
+                          style: TextStyle(
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                              fontWeight: FontWeight.bold,
+                              color: AppConst.black,
+                              fontFamily: "MuseoSans",
+                              letterSpacing: 0.5),
+                        ),
                       ),
-                    ],
-                  ),
-                ),
+                    )),
+                // RichText(
+                //   text: TextSpan(
+                //     text: 'HELP',
+                //     style: TextStyle(
+                //         color: AppConst.black,
+                //         fontSize: SizeUtils.horizontalBlockSize * 4,
+                //         fontWeight: FontWeight.bold),
+                //     children: <TextSpan>[
+                //       TextSpan(
+                //         text: historyTab!
+                //             ? order?.orderType
+                //             : activeOrder?.orderType,
+                //         style: TextStyle(
+                //             color: AppConst.green,
+                //             fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                //             fontWeight: FontWeight.bold),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ],

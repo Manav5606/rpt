@@ -128,17 +128,16 @@ class freshChatController extends GetxController {
     }
   }
 
-  Future<void> showChatConversation() async {
+  Future<void> showChatConversation(String? ChatInfo) async {
     FreshchatUser user = await Freshchat.getUser;
-  var restoreId = _myAccountController.user.restoreID;
-if(_myAccountController.user.restoreID == "" ){
- restoreId = user.getRestoreId();
-    addrestoreIDtoCustomer(restoreId);
-    log("restoreIdddddd:$restoreId");
-} else{
-  restoreId =_myAccountController.user.restoreID;
-}
-    
+    var restoreId = _myAccountController.user.restoreID;
+    if (_myAccountController.user.restoreID == "") {
+      restoreId = user.getRestoreId();
+      addrestoreIDtoCustomer(restoreId);
+      log("restoreIdddddd:$restoreId");
+    } else {
+      restoreId = _myAccountController.user.restoreID;
+    }
 
     FreshchatUser freshchatUser =
         new FreshchatUser("${_myAccountController.user.id}", restoreId);
@@ -150,6 +149,11 @@ if(_myAccountController.user.restoreID == "" ){
 
     Freshchat.identifyUser(
         externalId: "${_myAccountController.user.id}", restoreId: restoreId);
+    if (ChatInfo != "") {
+      Freshchat.sendMessage("tag",
+          "$ChatInfo \n ${_myAccountController.user.firstName ?? ''} ${_myAccountController.user.lastName ?? ''}\n${_myAccountController.user.mobile ?? ""}");
+      // "${_myAccountController.user.firstName ?? ''}\n${_myAccountController.user.mobile?? ""}"
+    }
 
     Freshchat.showConversations();
     // Freshchat.showFAQ();

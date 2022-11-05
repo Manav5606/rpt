@@ -344,7 +344,9 @@ class MyAccountPage extends GetView<MyAccountController> {
                                     Get.toNamed(AppRoutes.MyAddresses);
                                   } else if (index == 3) {
                                     _freshChat.initState();
-                                    await _freshChat.showChatConversation();
+                                    await _freshChat.showChatConversation(
+                                        "opening chat support \n");
+                                    // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.mobile ?? ''}
                                   }
                                   // else if (index == 4) {
                                   //   Get.toNamed(AppRoutes.ActiveOrders);

@@ -150,12 +150,12 @@ class OrderTabView extends StatelessWidget {
         return _.isOrderloading == true
             ? ordershimmer()
             : Container(
-                child: (_.allOrdersModel.value!.data!
-                                .where((c) => c.orderType == "online")
+                child: (_.allOrdersModel.value?.data
+                                ?.where((c) => c.orderType == "online")
                                 .toList() ==
                             null ||
-                        _.allOrdersModel.value!.data!
-                                .where((c) => c.orderType == "online")
+                        _.allOrdersModel.value?.data
+                                ?.where((c) => c.orderType == "online")
                                 .toList()
                                 .length ==
                             0)
@@ -185,11 +185,12 @@ class OrderTabView extends StatelessWidget {
                                       // _.allOrdersModel.value!.data!
                                       //     .where((c) => c.orderType == "online")
                                       //     .toList()[index],
-                                      _.allOrdersModel.value!.data!
-                                          .where((c) => c.orderType == "online")
+                                      _.allOrdersModel.value?.data
+                                          ?.where(
+                                              (c) => c.orderType == "online")
                                           .toList()[(_
-                                              .allOrdersModel.value?.data!
-                                              .where((c) =>
+                                              .allOrdersModel.value?.data
+                                              ?.where((c) =>
                                                   c.orderType == "online")
                                               .toList()
                                               .length)! -
@@ -203,8 +204,8 @@ class OrderTabView extends StatelessWidget {
                                   // _.allOrdersModel.value!.data!
                                   //     .where((c) => c.orderType == "online")
                                   //     .toList()[index],
-                                  _.allOrdersModel.value!.data!
-                                      .where((c) => c.orderType == "online")
+                                  _.allOrdersModel.value?.data
+                                      ?.where((c) => c.orderType == "online")
                                       .toList()[_.allOrdersModel.value!.data!
                                           .where((c) => c.orderType == "online")
                                           .toList()
@@ -239,12 +240,12 @@ class RefundTabView extends StatelessWidget {
     return GetX<MyAccountController>(
       builder: (_) {
         return Container(
-          child: (_.allOrdersModel.value!.data!
-                          .where((c) => c.orderType == "redeem_cash")
+          child: (_.allOrdersModel.value?.data
+                          ?.where((c) => c.orderType == "redeem_cash")
                           .toList() ==
                       null ||
-                  _.allOrdersModel.value!.data!
-                          .where((c) => c.orderType == "redeem_cash")
+                  _.allOrdersModel.value?.data
+                          ?.where((c) => c.orderType == "redeem_cash")
                           .toList()
                           .length ==
                       0)
@@ -274,8 +275,8 @@ class RefundTabView extends StatelessWidget {
                                 // _.allOrdersModel.value!.data!
                                 //     .where((c) => c.orderType == "redeem_cash")
                                 //     .toList()[index],
-                                _.allOrdersModel.value!.data!
-                                    .where((c) => c.orderType == "redeem_cash")
+                                _.allOrdersModel.value?.data
+                                    ?.where((c) => c.orderType == "redeem_cash")
                                     .toList()[(_.allOrdersModel.value?.data!
                                         .where(
                                             (c) => c.orderType == "redeem_cash")
@@ -293,8 +294,8 @@ class RefundTabView extends StatelessWidget {
                             //  _.allOrdersModel.value!.data!
                             //     .where((c) => c.orderType == "redeem_cash")
                             //     .toList()[index],
-                            _.allOrdersModel.value!.data!
-                                .where((c) => c.orderType == "redeem_cash")
+                            _.allOrdersModel.value?.data
+                                ?.where((c) => c.orderType == "redeem_cash")
                                 .toList()[_.allOrdersModel.value!.data!
                                     .where((c) => c.orderType == "redeem_cash")
                                     .toList()
@@ -329,12 +330,12 @@ class ReciptTabView extends StatelessWidget {
     return GetX<MyAccountController>(
       builder: (_) {
         return Container(
-          child: (_.allOrdersModel.value!.data!
-                          .where((c) => c.orderType == "receipt")
+          child: (_.allOrdersModel.value?.data
+                          ?.where((c) => c.orderType == "receipt")
                           .toList() ==
                       null ||
-                  _.allOrdersModel.value!.data!
-                          .where((c) => c.orderType == "receipt")
+                  _.allOrdersModel.value?.data
+                          ?.where((c) => c.orderType == "receipt")
                           .toList()
                           .length ==
                       0)
@@ -364,8 +365,8 @@ class ReciptTabView extends StatelessWidget {
                                 // _.allOrdersModel.value!.data!
                                 //     .where((c) => c.orderType == "receipt")
                                 //     .toList()[index],
-                                _.allOrdersModel.value!.data!
-                                    .where((c) => c.orderType == "receipt")
+                                _.allOrdersModel.value?.data
+                                    ?.where((c) => c.orderType == "receipt")
                                     .toList()[(_.allOrdersModel.value?.data!
                                         .where((c) => c.orderType == "receipt")
                                         .toList()
@@ -392,8 +393,8 @@ class ReciptTabView extends StatelessWidget {
                             //  _.allOrdersModel.value!.data!
                             //     .where((c) => c.orderType == "receipt")
                             //     .toList()[index],
-                            _.allOrdersModel.value!.data!
-                                .where((c) => c.orderType == "receipt")
+                            _.allOrdersModel.value?.data
+                                ?.where((c) => c.orderType == "receipt")
                                 .toList()[_.allOrdersModel.value!.data!
                                     .where((c) => c.orderType == "receipt")
                                     .toList()

@@ -56,7 +56,8 @@ class _AllChatsState extends State<AllChats> {
               highlightColor: AppConst.highLightColor,
               onTap: () async {
                 _freshChat.initState();
-                await _freshChat.showChatConversation();
+                await _freshChat
+                    .showChatConversation("Face issue with store chat \n");
               },
               child: Container(
                 width: 15.w,

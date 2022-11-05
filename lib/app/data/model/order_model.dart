@@ -266,7 +266,7 @@ class Products {
 class InventoriesData {
   String? name;
   int? quantity;
-  bool? status;
+  String? status;
   num? sellingPrice;
   num? mrp;
   num? gst_amount;
