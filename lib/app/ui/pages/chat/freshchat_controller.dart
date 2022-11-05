@@ -130,10 +130,15 @@ class freshChatController extends GetxController {
 
   Future<void> showChatConversation() async {
     FreshchatUser user = await Freshchat.getUser;
-
-    var restoreId = user.getRestoreId();
+  var restoreId = _myAccountController.user.restoreID;
+if(_myAccountController.user.restoreID == "" ){
+ restoreId = user.getRestoreId();
     addrestoreIDtoCustomer(restoreId);
     log("restoreIdddddd:$restoreId");
+} else{
+  restoreId =_myAccountController.user.restoreID;
+}
+    
 
     FreshchatUser freshchatUser =
         new FreshchatUser("${_myAccountController.user.id}", restoreId);

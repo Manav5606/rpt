@@ -19,6 +19,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
     return UserModel(
       id: fields[0] as String?,
       firstName: fields[1] as String?,
+      wallet: (fields[11] as List?)?.cast<Wallet>(),
       lastName: fields[2] as String?,
       mobile: fields[3] as String?,
       email: fields[4] as String?,
@@ -28,14 +29,14 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       dateOfBirth: fields[8] as String?,
       maleOrFemale: fields[9] as String?,
       rank: fields[10] as int?,
-      wallet: (fields[11] as List?)?.cast<Wallet>(),
+      restoreID: fields[12] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -59,12 +60,18 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(10)
       ..write(obj.rank)
       ..writeByte(11)
-      ..write(obj.wallet);
+      ..write(obj.wallet)
+      ..writeByte(12)
+      ..write(obj.restoreID);
   }
 
   @override
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is UserModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

@@ -19,7 +19,8 @@ class UserModel {
       this.logo,
       this.dateOfBirth,
       this.maleOrFemale,
-      this.rank});
+      this.rank,
+      this.restoreID});
 
   @HiveField(0)
   String? id;
@@ -57,6 +58,9 @@ class UserModel {
   @HiveField(11)
   List<Wallet>? wallet;
 
+  @HiveField(12)
+  String? restoreID;
+
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
         firstName: json["first_name"] ?? '',
@@ -69,6 +73,8 @@ class UserModel {
         dateOfBirth: json["date_of_birth"] ?? '',
         maleOrFemale: json["male_or_female"] ?? '',
         rank: json["rank"] ?? 0,
+        restoreID: json["restoreID"] ?? '',
+
       );
 
   Map<String, dynamic> toJson() => {
@@ -82,6 +88,7 @@ class UserModel {
         "logo": logo,
         "date_of_birth": dateOfBirth,
         "male_or_female": maleOrFemale,
-        "rank": rank
+        "rank": rank,
+        "restoreID": restoreID
       };
 }

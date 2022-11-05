@@ -57,19 +57,22 @@ class NearMePageDataAdapter extends TypeAdapter<NearMePageData> {
       sId: fields[0] as String?,
       products: (fields[1] as List?)?.cast<Products>(),
       stores: (fields[2] as List?)?.cast<Stores>(),
+      inventories: (fields[3] as List?)?.cast<Inventories>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, NearMePageData obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.sId)
       ..writeByte(1)
       ..write(obj.products)
       ..writeByte(2)
-      ..write(obj.stores);
+      ..write(obj.stores)
+      ..writeByte(3)
+      ..write(obj.inventories);
   }
 
   @override
@@ -98,13 +101,14 @@ class ProductsAdapter extends TypeAdapter<Products> {
       name: fields[1] as String?,
       logo: fields[2] as String?,
       catalog: fields[3] as Catalog?,
+      store: fields[4] as Stores?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Products obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.sId)
       ..writeByte(1)
@@ -112,7 +116,9 @@ class ProductsAdapter extends TypeAdapter<Products> {
       ..writeByte(2)
       ..write(obj.logo)
       ..writeByte(3)
-      ..write(obj.catalog);
+      ..write(obj.catalog)
+      ..writeByte(4)
+      ..write(obj.store);
   }
 
   @override
