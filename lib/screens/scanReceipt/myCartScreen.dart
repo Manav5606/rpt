@@ -91,8 +91,14 @@ class MyCartScreen extends StatelessWidget {
                                       await ScanRecipetService.placeOrder(
                                     images: Get.arguments,
                                     total: double.parse(amountController.text),
-                                    store: _paymentController
-                                        .redeemCashInStorePageDataIndex.value,
+                                    storeId: _exploreController
+                                        .getStoreDataModel
+                                        .value
+                                        ?.data
+                                        ?.store
+                                        ?.sId,
+                                    //  _paymentController
+                                    //     .redeemCashInStorePageDataIndex.value,
                                     products: _exploreController.addCartProduct,
                                     latLng: _paymentController.latLng,
                                   );
