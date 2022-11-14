@@ -27,7 +27,7 @@ class GraphQLRequest {
     );
     final QueryResult result = await client.query(options);
     log("variables : $variables");
-    if(!isLogOff)log("result : $result");
+    if (!isLogOff) log("result : $result");
     if (result.hasException) {
       return {
         'error': true,

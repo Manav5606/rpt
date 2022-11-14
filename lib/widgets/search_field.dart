@@ -34,11 +34,12 @@ class SearchField extends StatelessWidget {
       // elevation: 2,
       child: Container(
         // margin: EdgeInsets.only(top: 1.h),
-        height: 4.5.h,
+        height: 4.8.h,
         child: Center(
           child: TextFormField(
             onChanged: onChange,
             controller: controller,
+            cursorColor: AppConst.black,
             focusNode: focusNode,
             textAlign: TextAlign.start,
             textAlignVertical: TextAlignVertical.center,
@@ -58,17 +59,17 @@ class SearchField extends StatelessWidget {
               ),
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
+              fillColor: AppConst.lightGrey,
+              filled: true,
+              isDense: true,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: AppConst.black, width: 1.5),
-              ),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none
+                  // borderSide: const BorderSide(color: AppConst.black, width: 1.5),
+                  ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  width: 1.5,
-                  color: AppConst.black,
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
               floatingLabelBehavior: FloatingLabelBehavior.never,

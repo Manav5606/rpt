@@ -349,9 +349,9 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
               //       Get.to(() => LocationPickerScreen());
               //     },
               //     backgroundColor: kSecondaryColor,
-              //     child: SvgPicture.asset(AssetsContants.cartLogo,
-              //         color: Colors.white, semanticsLabel: 'Acme Logo'),
-              //   ),
+              //   child: SvgPicture.asset(AssetsContants.cartLogo,
+              //       color: Colors.white, semanticsLabel: 'Acme Logo'),
+              // ),
               // ),
               FloatingActionButton(
                 heroTag: '2',

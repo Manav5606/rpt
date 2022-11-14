@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
@@ -11,7 +12,7 @@ import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
 import 'package:customer_app/app/data/repository/sigin_in_repository.dart';
-import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
+
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/utils/utils.dart';
@@ -120,7 +121,9 @@ class SignInScreenController extends GetxController {
         timeout: Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) {
           log("aavoooo :4");
-          FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
+          FirebaseAuth.instance
+              .signInWithCredential(credential)
+              .then((value) async {
             if (value.user != null) {
               log("Verification Complete successful With Mobile number");
             }
@@ -157,23 +160,30 @@ class SignInScreenController extends GetxController {
     String smsCode = otpController.text.toString().trim();
     log('smsCode :$smsCode');
     log('smsCode :${verification.value}');
-    phoneAuthCredential = PhoneAuthProvider.credential(verificationId: verification.value, smsCode: smsCode);
+    phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: verification.value, smsCode: smsCode);
     _login();
   }
 
   Future<void> _login() async {
     try {
-      await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential).then((UserCredential authRes) async {
+      await FirebaseAuth.instance
+          .signInWithCredential(phoneAuthCredential)
+          .then((UserCredential authRes) async {
         user = authRes.user;
         // _timer.cancel();
         if (user != null) {
-          userModel = await signInRepository.customerLoginOrSignUp(phoneNumber: phoneNumberController.text, referID: referralController.text);
+          userModel = await signInRepository.customerLoginOrSignUp(
+              phoneNumber: phoneNumberController.text,
+              referID: referralController.text);
           List<Wallet>? wallet = await signInRepository.getAllWallet();
           userModel?.wallet = wallet;
           if (userModel != null) {
             UserViewModel.setUser(userModel!);
             try {
-              await connectUserStream(userId: userModel?.id ?? '', name: "${userModel?.firstName} ${userModel?.lastName}");
+              await connectUserStream(
+                  userId: userModel?.id ?? '',
+                  name: "${userModel?.firstName} ${userModel?.lastName}");
             } catch (e) {
               print('e $e');
             }
@@ -199,20 +209,25 @@ class SignInScreenController extends GetxController {
     } catch (e, st) {
       otpController.clear();
       isLoading.value = false;
-      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("Invalid OTP : Please Enter Valid OTP")));
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(content: Text("Invalid OTP : Please Enter Valid OTP")));
       print('eeee :$e $st');
     }
   }
 
-  Future<void> signUpButton(String firstName, String lastName, String email) async {
-    var flag = await SignInRepository.updateCustomerInformation(firstName, lastName, email);
+  Future<void> signUpButton(
+      String firstName, String lastName, String email) async {
+    var flag = await SignInRepository.updateCustomerInformation(
+        firstName, lastName, email);
     if (flag) {
       await checkSession();
     }
   }
 
-  Future<void> UpdateInfo(String firstName, String lastName, String email) async {
-    var flag = await SignInRepository.updateCustomerInformation(firstName, lastName, email);
+  Future<void> UpdateInfo(
+      String firstName, String lastName, String email) async {
+    var flag = await SignInRepository.updateCustomerInformation(
+        firstName, lastName, email);
     if (flag) {
       await checkUpdateInfo();
     }
@@ -245,7 +260,8 @@ class SignInScreenController extends GetxController {
         log("userModeluserModel :${userModel.toJson()}");
         // final MoreStoreController _moreStoreController = Get.put(MoreStoreController());
         if ((userModel.addresses?.length ?? 0) > 0) {
-          for (final AddressModel? addressModal in (userModel.addresses ?? [])) {
+          for (final AddressModel? addressModal
+              in (userModel.addresses ?? [])) {
             if (addressModal?.status ?? false) {
               log("checkSession : 0000}");
               Get.offAllNamed(
@@ -258,15 +274,18 @@ class SignInScreenController extends GetxController {
           // Get.offAll(() => ManageAddressScreen());
         } else {
           log("checkSession : 879879897}");
-          Get.offAllNamed(AppRoutes.NewLocationScreen, arguments: {"isFalse": false});
+          Get.offAllNamed(AppRoutes.NewLocationScreen,
+              arguments: {"isFalse": false});
         }
       } catch (e) {
         log("e:$e");
-        Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
+        Future.delayed(Duration(seconds: 2),
+            () => Get.offAllNamed(AppRoutes.Authentication));
       }
     } else {
       log("eggjmghhj");
-      Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
+      Future.delayed(Duration(seconds: 2),
+          () => Get.offAllNamed(AppRoutes.Authentication));
     }
   }
 }

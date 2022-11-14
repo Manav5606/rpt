@@ -21,14 +21,17 @@ class AddressModel extends StatefulWidget {
   final bool isHomeScreen;
   final bool isSavedAddress;
 
-  AddressModel({Key? key, this.isHomeScreen = false, this.isSavedAddress = true}) : super(key: key);
+  AddressModel(
+      {Key? key, this.isHomeScreen = false, this.isSavedAddress = true})
+      : super(key: key);
 
   @override
   State<AddressModel> createState() => _AddressModelState();
 }
 
 class _AddressModelState extends State<AddressModel> {
-  final AddLocationController _addLocationController = Get.find()..getUserData();
+  final AddLocationController _addLocationController = Get.find()
+    ..getUserData();
   final HomeController _homeController = Get.put(HomeController());
 
   FocusNode focusNode = FocusNode();
@@ -65,7 +68,10 @@ class _AddressModelState extends State<AddressModel> {
             ),
             Text(
               "Choose address",
-              style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5, color: AppConst.black, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize: SizeUtils.horizontalBlockSize * 5,
+                  color: AppConst.black,
+                  fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -93,7 +99,9 @@ class _AddressModelState extends State<AddressModel> {
                             _addLocationController.predictions.clear();
                           },
                           child: Icon(
-                            _addLocationController.searchText.value.isNotEmpty ? Icons.close : Icons.search,
+                            _addLocationController.searchText.value.isNotEmpty
+                                ? Icons.close
+                                : Icons.search,
                             color: AppConst.black, size: 2.5.h,
                             // _addLocationController.searchText.value.isNotEmpty
                             //     ? kPrimaryColor
@@ -117,7 +125,8 @@ class _AddressModelState extends State<AddressModel> {
                       onChange: (String value) {
                         _addLocationController.searchText.value = value;
                         if (_debounce?.isActive ?? false) _debounce?.cancel();
-                        _debounce = Timer(const Duration(milliseconds: 500), () {
+                        _debounce =
+                            Timer(const Duration(milliseconds: 500), () {
                           if (value.isEmpty) {
                             _addLocationController.predictions.clear();
                           } else {
@@ -129,53 +138,91 @@ class _AddressModelState extends State<AddressModel> {
                     SizedBox(
                       height: 2.h,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 1,
+                          width: 40.w,
+                          color: AppConst.grey,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: Text(
+                            "OR",
+                            style: TextStyle(
+                              color: AppConst.grey,
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          width: 40.w,
+                          color: AppConst.grey,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Get.back();
-                        Get.toNamed(AppRoutes.NewLocationScreen, arguments: {"isFalse": false, "isHome": widget.isHomeScreen});
+                        Get.toNamed(AppRoutes.NewLocationScreen, arguments: {
+                          "isFalse": false,
+                          "isHome": widget.isHomeScreen
+                        });
                         _addLocationController.getCurrentAddress();
                       },
-                      child: Row(
-                        children: [
-                          Icon(
-                            CupertinoIcons.location_fill,
-                            color: AppConst.black,
-                            size: 2.5.h,
-                          ),
-                          Text(
-                            StringContants.useCurrentLocation,
-                            style: TextStyle(
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Spacer(),
-                          // Obx(
-                          //   () => GestureDetector(
-                          //     onTap: () {
-                          //       _addLocationController.searchController.clear();
-                          //       _addLocationController.predictions.clear();
-                          //     },
-                          //     child: Text(
-                          //       StringContants.clearSearch,
-                          //       style: TextStyle(
-                          //         color: _addLocationController
-                          //                 .searchText.value.isNotEmpty
-                          //             ? kPrimaryColor
-                          //             : kIconColor,
-                          //         fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                          //         fontWeight: FontWeight.w500,
-                          //       ),
+                      child: Container(
+                        height: 5.h,
+                        margin: EdgeInsets.only(
+                          bottom: 3.h,
+                        ),
+                        decoration: BoxDecoration(
+                          // shape: BoxShape.circle,
+                          color: AppConst.white,
+                          borderRadius: BorderRadius.circular(12),
+                          // border: Border.all(
+                          //     // color: AppConst.black,
+                          //     // width: SizeUtils.horizontalBlockSize - 2.92
                           //     ),
-                          //   ),
-                          // ),
-                        ],
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppConst.grey,
+                              blurRadius: 3,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Icon(
+                                  Icons.gps_fixed_rounded,
+                                  color: AppConst.kSecondaryTextColor,
+                                  size: SizeUtils.horizontalBlockSize * 6.5,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                "Use current location",
+                                style: TextStyle(
+                                    color: AppConst.black,
+                                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ]),
                       ),
                     ),
-                    Divider(
-                        // height: 2.h,
-                        ),
+                    // Divider(
+                    //     // height: 2.h,
+                    //     ),
                     /*Text(
                       StringContants.recentLocations,
                       style: TextStyle(
@@ -223,7 +270,8 @@ class _AddressModelState extends State<AddressModel> {
                                         StringContants.searchResultsNotFound,
                                       )
                                     : ListView.builder(
-                                        itemCount: _addLocationController.predictions.length,
+                                        itemCount: _addLocationController
+                                            .predictions.length,
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
@@ -232,32 +280,69 @@ class _AddressModelState extends State<AddressModel> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () async {
-                                                  int valueIndex = _addLocationController.recentAddressDetails
-                                                      .indexWhere((element) => element.placeId == _addLocationController.predictions[index].placeId);
+                                                  int valueIndex =
+                                                      _addLocationController
+                                                          .recentAddressDetails
+                                                          .indexWhere((element) =>
+                                                              element.placeId ==
+                                                              _addLocationController
+                                                                  .predictions[
+                                                                      index]
+                                                                  .placeId);
                                                   if (valueIndex < 0) {
                                                     try {
-                                                      _addLocationController.savePredictionsList.clear();
-                                                      _addLocationController.savePredictionsList.add(_addLocationController.predictions[index]);
-                                                      for (var element in _addLocationController.savePredictionsList) {
-                                                        RecentAddressDetails recentAddressDetails =
-                                                            RecentAddressDetails(description: element.description, placeId: element.placeId);
+                                                      _addLocationController
+                                                          .savePredictionsList
+                                                          .clear();
+                                                      _addLocationController
+                                                          .savePredictionsList
+                                                          .add(_addLocationController
+                                                                  .predictions[
+                                                              index]);
+                                                      for (var element
+                                                          in _addLocationController
+                                                              .savePredictionsList) {
+                                                        RecentAddressDetails
+                                                            recentAddressDetails =
+                                                            RecentAddressDetails(
+                                                                description: element
+                                                                    .description,
+                                                                placeId: element
+                                                                    .placeId);
 
-                                                        _addLocationController.recentAddressDetails.add(recentAddressDetails);
+                                                        _addLocationController
+                                                            .recentAddressDetails
+                                                            .add(
+                                                                recentAddressDetails);
                                                       }
-                                                      AppSharedPreference.setRecentAddress(_addLocationController.recentAddressDetails);
-                                                      _addLocationController.getSaveAddress();
+                                                      AppSharedPreference
+                                                          .setRecentAddress(
+                                                              _addLocationController
+                                                                  .recentAddressDetails);
+                                                      _addLocationController
+                                                          .getSaveAddress();
                                                     } catch (e, st) {
                                                       log('data : Error: $e $st');
                                                     }
                                                   }
                                                   await _addLocationController
-                                                      .getLatLngFromRecentAddress(_addLocationController.predictions[index].placeId ?? '');
+                                                      .getLatLngFromRecentAddress(
+                                                          _addLocationController
+                                                                  .predictions[
+                                                                      index]
+                                                                  .placeId ??
+                                                              '');
                                                   widget.isHomeScreen
-                                                      ? Get.toNamed(AppRoutes.NewLocationScreen)?.whenComplete(() => Get.back(result: true))
+                                                      ? Get.toNamed(AppRoutes
+                                                              .NewLocationScreen)
+                                                          ?.whenComplete(() =>
+                                                              Get.back(
+                                                                  result: true))
                                                       : Get.back();
                                                 },
                                                 child: Padding(
-                                                  padding: EdgeInsets.symmetric(vertical: 1.h),
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 1.h),
                                                   child: Row(
                                                     children: [
                                                       Icon(
@@ -265,16 +350,24 @@ class _AddressModelState extends State<AddressModel> {
                                                         // CupertinoIcons
                                                         //     .building_2_fill,
                                                         color: AppConst.black,
-                                                        size: SizeUtils.horizontalBlockSize * 6,
+                                                        size: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            6,
                                                       ),
                                                       SizedBox(
                                                         width: 2.w,
                                                       ),
                                                       Flexible(
                                                         child: Text(
-                                                          _addLocationController.predictions[index].description ?? "",
+                                                          _addLocationController
+                                                                  .predictions[
+                                                                      index]
+                                                                  .description ??
+                                                              "",
                                                           style: TextStyle(
-                                                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                4,
                                                           ),
                                                         ),
                                                       ),
@@ -297,7 +390,8 @@ class _AddressModelState extends State<AddressModel> {
                               children: [
                                 widget.isSavedAddress
                                     ? Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             height: 1.h,
@@ -314,89 +408,171 @@ class _AddressModelState extends State<AddressModel> {
                                           // SizedBox(
                                           //   height: 1.h,
                                           // ),
-                                          (_addLocationController.userModel?.addresses?.isNotEmpty ?? false)
+                                          (_addLocationController.userModel
+                                                      ?.addresses?.isNotEmpty ??
+                                                  false)
                                               ? ListView.separated(
                                                   padding: EdgeInsets.zero,
                                                   shrinkWrap: true,
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  itemCount: _addLocationController.isSeeMoreEnable.value
-                                                      ? _addLocationController.userModel?.addresses?.length ?? 0
-                                                      : (_addLocationController.userModel?.addresses?.length ?? 0) < 3
-                                                          ? _addLocationController.userModel?.addresses?.length ?? 0
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  itemCount: _addLocationController
+                                                          .isSeeMoreEnable.value
+                                                      ? _addLocationController
+                                                              .userModel
+                                                              ?.addresses
+                                                              ?.length ??
+                                                          0
+                                                      : (_addLocationController
+                                                                      .userModel
+                                                                      ?.addresses
+                                                                      ?.length ??
+                                                                  0) <
+                                                              3
+                                                          ? _addLocationController
+                                                                  .userModel
+                                                                  ?.addresses
+                                                                  ?.length ??
+                                                              0
                                                           : 3,
-                                                  itemBuilder: (context, index) {
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     return Obx(
                                                       () => GestureDetector(
                                                         onTap: () async {
-                                                          _addLocationController.currentSelectValue.value = index;
+                                                          _addLocationController
+                                                              .currentSelectValue
+                                                              .value = index;
                                                         },
                                                         child: Column(
                                                           children: [
                                                             ListTile(
-                                                              contentPadding: EdgeInsets.symmetric(vertical: 0.5.h),
+                                                              contentPadding:
+                                                                  EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          0.5.h),
                                                               leading: Column(
-                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
                                                                 children: [
                                                                   IgnorePointer(
-                                                                    child: Radio(
-                                                                      value: true,
-                                                                      groupValue: _addLocationController.currentSelectValue.value == index,
-                                                                      onChanged: (value) {},
+                                                                    child:
+                                                                        Radio(
+                                                                      value:
+                                                                          true,
+                                                                      groupValue: _addLocationController
+                                                                              .currentSelectValue
+                                                                              .value ==
+                                                                          index,
+                                                                      onChanged:
+                                                                          (value) {},
                                                                     ),
                                                                   ),
                                                                 ],
                                                               ),
                                                               title: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
                                                                 children: [
                                                                   Text(
-                                                                    _addLocationController.userModel?.addresses?[index].title ?? '',
+                                                                    _addLocationController
+                                                                            .userModel
+                                                                            ?.addresses?[index]
+                                                                            .title ??
+                                                                        '',
                                                                     style: TextStyle(
-                                                                        fontWeight: FontWeight.bold, fontSize: SizeUtils.horizontalBlockSize * 4.2),
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize:
+                                                                            SizeUtils.horizontalBlockSize *
+                                                                                4.2),
                                                                   ),
                                                                   Text(
                                                                     "${_addLocationController.userModel?.addresses?[index].house ?? ''} ${_addLocationController.userModel?.addresses?[index].address ?? ''}",
                                                                     maxLines: 2,
-                                                                    overflow: TextOverflow.ellipsis,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     style: TextStyle(
-                                                                        color: Colors.grey[600],
-                                                                        fontWeight: FontWeight.w300,
-                                                                        fontSize: SizeUtils.horizontalBlockSize * 3.7),
+                                                                        color: Colors.grey[
+                                                                            600],
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w300,
+                                                                        fontSize:
+                                                                            SizeUtils.horizontalBlockSize *
+                                                                                3.7),
                                                                   ),
                                                                 ],
                                                               ),
-                                                              trailing: PopupMenuButton(
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.only(
-                                                                    bottomLeft: Radius.circular(8.0),
-                                                                    bottomRight: Radius.circular(8.0),
-                                                                    topLeft: Radius.circular(8.0),
-                                                                    topRight: Radius.circular(8.0),
+                                                              trailing:
+                                                                  PopupMenuButton(
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    bottomLeft:
+                                                                        Radius.circular(
+                                                                            8.0),
+                                                                    bottomRight:
+                                                                        Radius.circular(
+                                                                            8.0),
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            8.0),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            8.0),
                                                                   ),
                                                                 ),
-                                                                itemBuilder: (ctx) {
+                                                                itemBuilder:
+                                                                    (ctx) {
                                                                   return [
                                                                     _buildPopupMenuItem(
                                                                       'Edit',
-                                                                      Icons.edit,
+                                                                      Icons
+                                                                          .edit,
                                                                       () async {
-                                                                        await Future.delayed(Duration(milliseconds: 200));
-                                                                        Get.toNamed(AppRoutes.EditAddressScreen, arguments: {
-                                                                          'addresses': _addLocationController.userModel?.addresses?[index]
-                                                                        })?.whenComplete(() => setState(() {}));
+                                                                        await Future.delayed(Duration(
+                                                                            milliseconds:
+                                                                                200));
+                                                                        Get.toNamed(
+                                                                            AppRoutes.EditAddressScreen,
+                                                                            arguments: {
+                                                                              'addresses': _addLocationController.userModel?.addresses?[index]
+                                                                            })?.whenComplete(() =>
+                                                                            setState(() {}));
                                                                       },
                                                                     ),
-                                                                    if ((_addLocationController.userModel?.addresses?.length ?? 0) > 1 &&
+                                                                    if ((_addLocationController.userModel?.addresses?.length ??
+                                                                                0) >
+                                                                            1 &&
                                                                         _homeController.userAddress.value !=
-                                                                            _addLocationController.userModel?.addresses?[index].address)
-                                                                      _buildPopupMenuItem('Delete', Icons.delete, () async {
-                                                                        await _addLocationController.deleteCustomerAddress(
-                                                                            _addLocationController.userModel?.addresses?[index].id ?? '');
+                                                                            _addLocationController
+                                                                                .userModel
+                                                                                ?.addresses?[
+                                                                                    index]
+                                                                                .address)
+                                                                      _buildPopupMenuItem(
+                                                                          'Delete',
+                                                                          Icons
+                                                                              .delete,
+                                                                          () async {
+                                                                        await _addLocationController.deleteCustomerAddress(_addLocationController.userModel?.addresses?[index].id ??
+                                                                            '');
 
-                                                                        _addLocationController.userModel?.addresses
+                                                                        _addLocationController
+                                                                            .userModel
+                                                                            ?.addresses
                                                                             ?.remove(_addLocationController.userModel?.addresses?[index]);
-                                                                        UserViewModel.setUser(_addLocationController.userModel!);
-                                                                        setState(() {});
+                                                                        UserViewModel.setUser(
+                                                                            _addLocationController.userModel!);
+                                                                        setState(
+                                                                            () {});
                                                                       }),
                                                                   ];
                                                                 },
@@ -419,40 +595,90 @@ class _AddressModelState extends State<AddressModel> {
                                                                 )*/
                                                               // EditDeleteButton(),
                                                             ),
-                                                            if (_addLocationController.currentSelectValue.value == index)
+                                                            if (_addLocationController
+                                                                    .currentSelectValue
+                                                                    .value ==
+                                                                index)
                                                               GestureDetector(
-                                                                onTap: () async {
-                                                                  _homeController.isLoading.value = true;
+                                                                onTap:
+                                                                    () async {
+                                                                  _homeController
+                                                                      .isLoading
+                                                                      .value = true;
                                                                   Get.back();
 
-                                                                  _homeController.userAddress.value =
-                                                                      _addLocationController.userModel?.addresses?[index].address ?? '';
-                                                                  _homeController.userAddressTitle.value =
-                                                                      _addLocationController.userModel?.addresses?[index].title ?? '';
+                                                                  _homeController
+                                                                      .userAddress
+                                                                      .value = _addLocationController
+                                                                          .userModel
+                                                                          ?.addresses?[
+                                                                              index]
+                                                                          .address ??
+                                                                      '';
+                                                                  _homeController
+                                                                      .userAddressTitle
+                                                                      .value = _addLocationController
+                                                                          .userModel
+                                                                          ?.addresses?[
+                                                                              index]
+                                                                          .title ??
+                                                                      '';
                                                                   await UserViewModel.setLocation(
-                                                                      LatLng(_addLocationController.userModel?.addresses?[index].location?.lat ?? 0.0,
-                                                                          _addLocationController.userModel?.addresses?[index].location?.lng ?? 0.0),
-                                                                      _addLocationController.userModel?.addresses?[index].id);
-                                                                  _homeController.pageNumber = 1;
-                                                                  _homeController.isPageAvailable = true;
-                                                                  _homeController.isPageLoading.value = false;
-                                                                  _homeController.homePageFavoriteShopsList.clear();
-                                                                  await _homeController.getHomePageFavoriteShops();
-                                                                  await _homeController.getAllCartsData();
-                                                                  _homeController.getHomePageFavoriteShopsModel.refresh();
-                                                                  _homeController.isLoading.value = false;
+                                                                      LatLng(
+                                                                          _addLocationController.userModel?.addresses?[index].location?.lat ??
+                                                                              0.0,
+                                                                          _addLocationController.userModel?.addresses?[index].location?.lng ??
+                                                                              0.0),
+                                                                      _addLocationController
+                                                                          .userModel
+                                                                          ?.addresses?[
+                                                                              index]
+                                                                          .id);
+                                                                  _homeController
+                                                                      .pageNumber = 1;
+                                                                  _homeController
+                                                                          .isPageAvailable =
+                                                                      true;
+                                                                  _homeController
+                                                                      .isPageLoading
+                                                                      .value = false;
+                                                                  _homeController
+                                                                      .homePageFavoriteShopsList
+                                                                      .clear();
+                                                                  await _homeController
+                                                                      .getHomePageFavoriteShops();
+                                                                  await _homeController
+                                                                      .getAllCartsData();
+                                                                  _homeController
+                                                                      .getHomePageFavoriteShopsModel
+                                                                      .refresh();
+                                                                  _homeController
+                                                                      .isLoading
+                                                                      .value = false;
                                                                 },
-                                                                child: Container(
-                                                                  height: SizeUtils.horizontalBlockSize * 12,
-                                                                  decoration: BoxDecoration(
-                                                                    color: AppConst.kSecondaryColor,
-                                                                    borderRadius: BorderRadius.circular(6),
+                                                                child:
+                                                                    Container(
+                                                                  height: SizeUtils
+                                                                          .horizontalBlockSize *
+                                                                      12,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: AppConst
+                                                                        .kSecondaryColor,
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(6),
                                                                   ),
                                                                   child: Center(
-                                                                      child: Text(
+                                                                      child:
+                                                                          Text(
                                                                     "Choose Address",
-                                                                    style:
-                                                                        TextStyle(color: AppConst.white, fontSize: SizeUtils.horizontalBlockSize * 4),
+                                                                    style: TextStyle(
+                                                                        color: AppConst
+                                                                            .white,
+                                                                        fontSize:
+                                                                            SizeUtils.horizontalBlockSize *
+                                                                                4),
                                                                   )),
                                                                 ),
                                                               )
@@ -463,7 +689,8 @@ class _AddressModelState extends State<AddressModel> {
                                                       ),
                                                     );
                                                   },
-                                                  separatorBuilder: (context, index) {
+                                                  separatorBuilder:
+                                                      (context, index) {
                                                     return Divider(height: 0);
                                                   },
                                                 )
@@ -472,46 +699,73 @@ class _AddressModelState extends State<AddressModel> {
                                                     'No Saved Addresses',
                                                   ),
                                                 ),
-                                          if ((_addLocationController.userModel?.addresses?.length ?? 0) > 3)
+                                          if ((_addLocationController.userModel
+                                                      ?.addresses?.length ??
+                                                  0) >
+                                              3)
                                             OutlinedButton(
                                               style: OutlinedButton.styleFrom(
-                                                tapTargetSize: MaterialTapTargetSize.padded,
+                                                tapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .padded,
                                               ),
                                               onPressed: () {
-                                                _addLocationController.isSeeMoreEnable.value = !_addLocationController.isSeeMoreEnable.value;
+                                                _addLocationController
+                                                        .isSeeMoreEnable.value =
+                                                    !_addLocationController
+                                                        .isSeeMoreEnable.value;
                                               },
-                                              child: _addLocationController.isSeeMoreEnable.value
+                                              child: _addLocationController
+                                                      .isSeeMoreEnable.value
                                                   ? Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Text(
-                                                          StringContants.seeLess,
+                                                          StringContants
+                                                              .seeLess,
                                                           style: TextStyle(
-                                                            color: AppConst.black,
-                                                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                                                            color:
+                                                                AppConst.black,
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                4,
                                                           ),
                                                         ),
                                                         Icon(
-                                                          Icons.keyboard_arrow_up,
+                                                          Icons
+                                                              .keyboard_arrow_up,
                                                           color: AppConst.black,
-                                                          size: SizeUtils.horizontalBlockSize * 6,
+                                                          size: SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              6,
                                                         )
                                                       ],
                                                     )
                                                   : Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Text(
-                                                          StringContants.seeMore,
+                                                          StringContants
+                                                              .seeMore,
                                                           style: TextStyle(
-                                                            color: AppConst.black,
-                                                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                                                            color:
+                                                                AppConst.black,
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                4,
                                                           ),
                                                         ),
                                                         Icon(
-                                                          Icons.keyboard_arrow_down_rounded,
+                                                          Icons
+                                                              .keyboard_arrow_down_rounded,
                                                           color: AppConst.black,
-                                                          size: SizeUtils.horizontalBlockSize * 6,
+                                                          size: SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              6,
                                                         )
                                                       ],
                                                     ),
@@ -529,7 +783,8 @@ class _AddressModelState extends State<AddressModel> {
                                 Text(
                                   StringContants.recentAddresses,
                                   style: TextStyle(
-                                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4.5,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -546,25 +801,44 @@ class _AddressModelState extends State<AddressModel> {
                                         onTap: () async {
                                           // _addLocationController.getDetails(_addLocationController.recentAddressDetails[index].placeId ?? '');
                                           await _addLocationController
-                                              .getLatLngFromRecentAddress(_addLocationController.recentAddressDetails[index].placeId ?? '');
+                                              .getLatLngFromRecentAddress(
+                                                  _addLocationController
+                                                          .recentAddressDetails[
+                                                              index]
+                                                          .placeId ??
+                                                      '');
                                           widget.isHomeScreen
-                                              ? Get.toNamed(AppRoutes.NewLocationScreen)?.whenComplete(() => Get.back(result: true))
+                                              ? Get.toNamed(AppRoutes
+                                                      .NewLocationScreen)
+                                                  ?.whenComplete(() =>
+                                                      Get.back(result: true))
                                               : Get.back();
                                         },
                                         child: ListTile(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 0.5.w),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 0.5.w),
                                           leading: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Icon(
                                                 Icons.access_time_rounded,
-                                                size: SizeUtils.horizontalBlockSize * 6,
+                                                size: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    6,
                                               ),
                                             ],
                                           ),
                                           title: Text(
-                                            _addLocationController.recentAddressDetails[index].description ?? "",
-                                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: SizeUtils.horizontalBlockSize * 4.0),
+                                            _addLocationController
+                                                    .recentAddressDetails[index]
+                                                    .description ??
+                                                "",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    4.0),
                                           ),
                                         ),
                                       );
@@ -572,7 +846,8 @@ class _AddressModelState extends State<AddressModel> {
                                     separatorBuilder: (context, index) {
                                       return Divider(height: 0);
                                     },
-                                    itemCount: _addLocationController.recentAddressDetails.length,
+                                    itemCount: _addLocationController
+                                        .recentAddressDetails.length,
                                   ),
                                 ),
                                 SizedBox(
@@ -592,7 +867,8 @@ class _AddressModelState extends State<AddressModel> {
     );
   }
 
-  PopupMenuItem _buildPopupMenuItem(String title, IconData iconData, VoidCallback? onTap) {
+  PopupMenuItem _buildPopupMenuItem(
+      String title, IconData iconData, VoidCallback? onTap) {
     return PopupMenuItem(
       onTap: onTap,
       child: Row(

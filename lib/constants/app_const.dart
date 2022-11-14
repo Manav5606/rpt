@@ -24,6 +24,7 @@ class AppConst {
   static const Color kSecondaryTextColor = Color(0xfffc647b);
   static const Color lightYellow = Color(0xffFFECA7);
   static const Color yellow = Color(0xffFFFC38);
+  static const Color yellowText = Color(0xffB87A00);
   static const Color orange = Color(0xffFF9036);
 
 //grey variant

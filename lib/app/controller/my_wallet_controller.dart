@@ -23,10 +23,10 @@ class MyWalletController extends GetxController {
 
   // final _walletsTransaction = <GetAllWalletTransactionByCustomer>[].obs;
 
-  apicall() async {
-    await getAllWalletByCustomer();
-    await getAllWalletTransactionByCustomer(storeId: storeId.string);
-  }
+  // apicall() async {
+  //   await getAllWalletByCustomer();
+  //   await getAllWalletTransactionByCustomer(storeId: storeId.string);
+  // }
 
   Future<void> getAllWalletByCustomer() async {
     try {

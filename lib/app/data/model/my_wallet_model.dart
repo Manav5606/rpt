@@ -68,7 +68,7 @@ class WalletData {
   String? createdAt;
   String? updatedAt;
   String? storeType;
-  int? distance;
+  num? distance;
   bool? online;
   double? calculatedDistance;
   Null customerWalletAmount;

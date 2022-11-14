@@ -1,5 +1,9 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
+import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
+import 'package:customer_app/widgets/signup_feilds.dart';
+import 'package:customer_app/widgets/textfield_clear_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -7,6 +11,7 @@ import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen_shimmer.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
@@ -74,27 +79,16 @@ class _SignInScreenState extends State<SignInScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Bloyallogo(),
                                 // Container(
-                                //     height: 6.h,
-                                //     width: 12.w,
+                                //     height: 7.h,
+                                //     width: 50.w,
                                 //     child: FittedBox(
-                                //       child: Image.asset(
-                                //         "assets/images/logoIcon.png",
+                                //       child: SvgPicture.asset(
+                                //         "assets/icons/bloyal_logo.svg",
                                 //         fit: BoxFit.fill,
                                 //       ),
                                 //     )),
-                                // SizedBox(
-                                //   width: 6.w,
-                                // ),
-                                Container(
-                                    height: 10.h,
-                                    width: 50.w,
-                                    child: FittedBox(
-                                      child: Image.asset(
-                                        "assets/images/logo10.png",
-                                        fit: BoxFit.fill,
-                                      ),
-                                    )),
                               ],
                             ),
                             SizedBox(
@@ -454,8 +448,8 @@ class BottomWideButton extends StatelessWidget {
               // "LOGIN",
               style: TextStyle(
                 color: AppConst.white,
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w600,
+                fontSize: SizeUtils.horizontalBlockSize * 5.7,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -478,326 +472,240 @@ class EnterNumberScreen extends StatelessWidget {
       _signInController.referralController.text = flag ?? '';
       _signInController.referral.value = flag ?? '';
     }
-    return Material(
-      child: SafeArea(
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Bloyallogo(),
+        centerTitle: true,
+        // actions: [
+        //   Bloyallogo(),
+        // ],
+      ),
+      body: SafeArea(
           child: Padding(
         padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
         child: Obx(
           () => _signInController.isLoading.value
-              ? SignInScreenShimmer()
-              : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  BackButton(
-                    color: AppConst.black,
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Text(
-                    " Sign in ",
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "MuseoSans_700.otf"),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    // height: 9.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppConst.black, width: 1.5)),
-                    child: Column(
+              ? SignInShimmerEffect()
+              : SingleChildScrollView(
+                  child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 2.w, top: 0.5.h, bottom: 0.5.h),
-                          child: Text(
-                            "Mobile",
-                            style: TextStyle(
-                                fontSize: 9.sp, fontWeight: FontWeight.w500),
-                          ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     // BackButton(
+                        //     //   color: AppConst.black,
+                        //     //   onPressed: () {
+                        //     //     Get.back();
+                        //     //   },
+                        //     // ),
+                        //     Bloyallogo(),
+                        //     // SizedBox(
+                        //     //   width: 10.w,
+                        //     // )
+                        //   ],
+                        // ),
+                        SizedBox(
+                          height: 35.h,
                         ),
-                        TextField(
-                          style: TextStyle(fontSize: 14.sp),
-                          textAlign: TextAlign.start,
-                          cursorColor: AppConst.kPrimaryColor,
-                          maxLength: 10,
-                          keyboardType: TextInputType.number,
-                          controller: _signInController.phoneNumberController,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            border: InputBorder.none,
-                            hintText: 'Enter Phone Number',
-                            contentPadding:
-                                EdgeInsets.only(left: 2.w, bottom: 1.h),
-                            hintTextDirection: TextDirection.ltr,
-                            counterText: "",
-                          ),
-                          onChanged: (value) {
-                            _signInController.phoneNumber.value = value;
-                          },
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              " Sign in ",
+                              style: TextStyle(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "MuseoSans_700.otf"),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            SignUpFeilds(
+                              hinttext: "Enter mobile number",
+                              keyboardtype: TextInputType.number,
+                              maxlength: 10,
+                              controller:
+                                  _signInController.phoneNumberController,
+                              onChange: (value) {
+                                _signInController.phoneNumber.value = value;
+                              },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    // height: 9.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppConst.black, width: 1.5)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 2.w, top: 0.5.h, bottom: 0.5.h),
-                          child: Text(
-                            "Referral code",
-                            style: TextStyle(
-                                fontSize: 9.sp, fontWeight: FontWeight.w500),
-                          ),
+                        SizedBox(
+                          height: 27.h,
                         ),
-                        TextField(
-                          style: TextStyle(fontSize: 14.sp),
-                          textAlign: TextAlign.start,
-                          cursorColor: AppConst.kPrimaryColor,
-                          maxLength: 10,
-                          controller: _signInController.referralController,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            border: InputBorder.none,
-                            hintText: 'Enter Referral code',
-                            contentPadding:
-                                EdgeInsets.only(left: 2.w, bottom: 1.h),
-                            hintTextDirection: TextDirection.ltr,
-                            counterText: "",
-                          ),
-                          onChanged: (value) {
-                            _signInController.referral.value = value;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Obx(
-                    () => GestureDetector(
-                        onTap:
-                            (_signInController.phoneNumber.value.length == 10)
-                                ? () {
-                                    log("aavoooo :0");
-                                    try {
-                                      _signInController.submitPhoneNumber();
-                                    } catch (e) {
-                                      print(e);
+                        // Container(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   // height: 9.h,
+                        //   decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //       border: Border.all(color: AppConst.black, width: 1.5)),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //             left: 2.w, top: 0.5.h, bottom: 0.5.h),
+                        //         child: Text(
+                        //           "Mobile",
+                        //           style: TextStyle(
+                        //               fontSize: 9.sp, fontWeight: FontWeight.w500),
+                        //         ),
+                        //       ),
+                        //       TextField(
+                        //         style: TextStyle(fontSize: 14.sp),
+                        //         textAlign: TextAlign.start,
+                        //         cursorColor: AppConst.kPrimaryColor,
+                        //         maxLength: 10,
+                        //         keyboardType: TextInputType.number,
+                        //         controller: _signInController.phoneNumberController,
+                        //         decoration: InputDecoration(
+                        //           isDense: true,
+                        //           border: InputBorder.none,
+                        //           hintText: 'Enter Phone Number',
+                        //           contentPadding:
+                        //               EdgeInsets.only(left: 2.w, bottom: 1.h),
+                        //           hintTextDirection: TextDirection.ltr,
+                        //           counterText: "",
+                        //         ),
+                        // onChanged: (value) {
+                        //   _signInController.phoneNumber.value = value;
+                        // },
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 2.h,
+                        // ),
+                        // Container(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   // height: 9.h,
+                        //   decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //       border: Border.all(color: AppConst.black, width: 1.5)),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //             left: 2.w, top: 0.5.h, bottom: 0.5.h),
+                        //         child: Text(
+                        //           "Referral code",
+                        //           style: TextStyle(
+                        //               fontSize: 9.sp, fontWeight: FontWeight.w500),
+                        //         ),
+                        //       ),
+                        //       TextField(
+                        //         style: TextStyle(fontSize: 14.sp),
+                        //         textAlign: TextAlign.start,
+                        //         cursorColor: AppConst.kPrimaryColor,
+                        //         maxLength: 10,
+                        //         controller: _signInController.referralController,
+                        //         decoration: InputDecoration(
+                        //           isDense: true,
+                        //           border: InputBorder.none,
+                        //           hintText: 'Enter Referral code',
+                        //           contentPadding:
+                        //               EdgeInsets.only(left: 2.w, bottom: 1.h),
+                        //           hintTextDirection: TextDirection.ltr,
+                        //           counterText: "",
+                        //         ),
+                        // onChanged: (value) {
+                        //   _signInController.referral.value = value;
+                        // },
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 2.h,
+                        // ),
+                        Obx(
+                          () => GestureDetector(
+                              onTap: (_signInController
+                                          .phoneNumber.value.length ==
+                                      10)
+                                  ? () {
+                                      log("aavoooo :0");
+                                      try {
+                                        _signInController.submitPhoneNumber();
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                      log("aavoooo :1");
                                     }
-                                    log("aavoooo :1");
-                                  }
-                                : null,
-                        child: BottomWideButton(
-                          color:
-                              _signInController.phoneNumber.value.length == 10
-                                  ? AppConst.kSecondaryColor
-                                  : AppConst.kSecondaryColor.withOpacity(0.60),
-                        )),
-                  ),
-                ]),
+                                  : null,
+                              child: BottomWideButton(
+                                text: "Sign in",
+                                color: _signInController
+                                            .phoneNumber.value.length ==
+                                        10
+                                    ? AppConst.kSecondaryColor
+                                    : AppConst.grey,
+                              )),
+                        ),
+                      ]),
+                ),
         ),
       )),
     );
   }
 }
 
-class SignUpScreen extends StatelessWidget {
+class SignInShimmerEffect extends StatelessWidget {
   final SignInScreenController _signInController = Get.find();
-
-  SignUpScreen({Key? key}) : super(key: key);
-
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController mobileNumberController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-        child: Obx(
-          () => _signInController.isLoading.value
-              ? SignInScreenShimmer()
-              : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  BackButton(
-                    color: AppConst.black,
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Text(
-                    " Sign Up ",
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "MuseoSans_700.otf"),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  SignUpFeilds(
-                    text: "First Name",
-                    hinttext: "Enter your first name ",
-                    controller: firstNameController,
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  SignUpFeilds(
-                    text: "Last Name",
-                    hinttext: "Enter your last name ",
-                    controller: lastNameController,
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  // SignUpFeilds(
-                  //   text: "Mobile",
-                  //   hinttext: "Enter your mobile number ",
-                  //   keyboardtype: TextInputType.phone,
-                  // ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    // height: 9.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppConst.black, width: 1.5)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 2.w, top: 0.5.h, bottom: 0.5.h),
-                          child: Text(
-                            "Email",
-                            style: TextStyle(
-                                fontSize: 9.sp, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        TextField(
-                          style: TextStyle(fontSize: 14.sp),
-                          textAlign: TextAlign.start,
-                          cursorColor: AppConst.kPrimaryColor,
-                          // maxLength: 10,
-                          // keyboardType: TextInputType.number,
-                          controller: mobileNumberController,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            border: InputBorder.none,
-                            hintText: 'Enter Email',
-                            contentPadding:
-                                EdgeInsets.only(left: 2.w, bottom: 1.h),
-                            hintTextDirection: TextDirection.ltr,
-                            counterText: "",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  GestureDetector(
-                      onTap: () async {
-                        _signInController.signUpButton(
-                            firstNameController.text,
-                            lastNameController.text,
-                            mobileNumberController.text);
-                      },
-
-                      // onTap: (_signInController
-                      //             .phoneNumberController.value.text.length ==
-                      //         10)
-                      //     ? () {
-                      //         _signInController.submitPhoneNumber();
-                      //       }
-                      //     : null,
-                      child: BottomWideButton(
-                        text: "SIGNUP",
-                      ))
-                ]),
+    return SingleChildScrollView(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(
+          height: 35.h,
         ),
-      )),
-    );
-  }
-}
-
-class SignUpFeilds extends StatelessWidget {
-  SignUpFeilds({
-    Key? key,
-    this.text,
-    this.hinttext,
-    this.controller,
-    this.keyboardtype,
-  }) : super(key: key);
-  String? text;
-  String? hinttext;
-  TextEditingController? controller;
-  TextInputType? keyboardtype;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      // height: 9.h,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppConst.black, width: 1.5)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 2.w, top: 0.5.h, bottom: 0.5.h),
-            child: Text(
-              text ?? "",
-              style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
-            ),
-          ),
-          Flexible(
-            child: TextField(
-              style: TextStyle(fontSize: 14.sp),
-              textAlign: TextAlign.start,
-              cursorColor: AppConst.kPrimaryColor,
-              maxLength: 30,
-              keyboardType: keyboardtype ?? TextInputType.name,
-              controller: controller,
-              decoration: InputDecoration(
-                isDense: true,
-                border: InputBorder.none,
-                hintText: hinttext ?? '',
-                // hintStyle: TextStyle(color: AppConst.grey),
-                contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
-                hintTextDirection: TextDirection.ltr,
-                counterText: "",
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ShimmerEffect(
+              child: Text(
+                " Sign in ",
+                style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "MuseoSans_700.otf"),
               ),
             ),
+            SizedBox(
+              height: 4.h,
+            ),
+            ShimmerEffect(
+              child: SignUpFeilds(
+                hinttext: "Enter mobile number",
+                keyboardtype: TextInputType.number,
+                maxlength: 10,
+                controller: _signInController.phoneNumberController,
+                onChange: (value) {
+                  _signInController.phoneNumber.value = value;
+                },
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 27.h,
+        ),
+        ShimmerEffect(
+          child: BottomWideButton(
+            text: "Sign in",
+            color: _signInController.phoneNumber.value.length == 10
+                ? AppConst.kSecondaryColor
+                : AppConst.grey,
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 }

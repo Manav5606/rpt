@@ -173,6 +173,7 @@
 // }
 import 'dart:math';
 import 'dart:ui';
+import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -188,7 +189,11 @@ import 'package:customer_app/data/profile_screen_data.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:hive/hive.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../../data/model/user_model.dart';
+import '../../../data/provider/hive/hive_constants.dart';
 
 class MyAccountPage extends GetView<MyAccountController> {
   final freshChatController _freshChat = Get.find();
@@ -516,7 +521,9 @@ void _showLogOutDialog() {
         title: 'Log out',
         content: "Are you sure you want to logout?",
         buttontext: 'Log out',
-        onTap: () {
+        onTap: () async {
+          await Hive.box<UserModel>('user').delete(HiveConstants.USER_KEY);
+          await Hive.box<String>('common').delete(HiveConstants.USER_TOKEN);
           Get.offAllNamed(AppRoutes.Authentication);
         },
       );
