@@ -35,80 +35,74 @@ PODS:
   - DKPhotoGallery/Resource (0.0.17):
     - SDWebImage
     - SwiftyGif
-  - FacebookCore (0.9.0):
-    - FBSDKCoreKit (~> 5.0)
-  - FacebookShare (0.9.0):
-    - FacebookCore (~> 0.9.0)
-    - FBSDKCoreKit (~> 5.0)
-    - FBSDKShareKit (~> 5.0)
-  - FBSDKCoreKit (5.15.1):
-    - FBSDKCoreKit/Basics (= 5.15.1)
-    - FBSDKCoreKit/Core (= 5.15.1)
-  - FBSDKCoreKit/Basics (5.15.1)
-  - FBSDKCoreKit/Core (5.15.1):
-    - FBSDKCoreKit/Basics
-  - FBSDKShareKit (5.15.1):
-    - FBSDKShareKit/Share (= 5.15.1)
-  - FBSDKShareKit/Share (5.15.1):
-    - FBSDKCoreKit (~> 5.0)
+  - FBAEMKit (14.0.0):
+    - FBSDKCoreKit_Basics (= 14.0.0)
+  - FBSDKCoreKit (14.0.0):
+    - FBAEMKit (= 14.0.0)
+    - FBSDKCoreKit_Basics (= 14.0.0)
+  - FBSDKCoreKit_Basics (14.0.0)
+  - FBSDKLoginKit (14.0.0):
+    - FBSDKCoreKit (= 14.0.0)
+  - FBSDKShareKit (14.0.0):
+    - FBSDKCoreKit (= 14.0.0)
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
-  - Firebase/Auth (9.5.0):
+  - Firebase/Auth (9.6.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 9.5.0)
-  - Firebase/CoreOnly (9.5.0):
-    - FirebaseCore (= 9.5.0)
-  - Firebase/Crashlytics (9.5.0):
+    - FirebaseAuth (~> 9.6.0)
+  - Firebase/CoreOnly (9.6.0):
+    - FirebaseCore (= 9.6.0)
+  - Firebase/Crashlytics (9.6.0):
     - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 9.5.0)
-  - Firebase/DynamicLinks (9.5.0):
+    - FirebaseCrashlytics (~> 9.6.0)
+  - Firebase/DynamicLinks (9.6.0):
     - Firebase/CoreOnly
-    - FirebaseDynamicLinks (~> 9.5.0)
-  - Firebase/Messaging (9.5.0):
+    - FirebaseDynamicLinks (~> 9.6.0)
+  - Firebase/Messaging (9.6.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 9.5.0)
-  - Firebase/Performance (9.5.0):
+    - FirebaseMessaging (~> 9.6.0)
+  - Firebase/Performance (9.6.0):
     - Firebase/CoreOnly
-    - FirebasePerformance (~> 9.5.0)
-  - Firebase/RemoteConfig (9.5.0):
+    - FirebasePerformance (~> 9.6.0)
+  - Firebase/RemoteConfig (9.6.0):
     - Firebase/CoreOnly
-    - FirebaseRemoteConfig (~> 9.5.0)
-  - firebase_auth (3.10.0):
-    - Firebase/Auth (= 9.5.0)
+    - FirebaseRemoteConfig (~> 9.6.0)
+  - firebase_auth (3.4.2):
+    - Firebase/Auth (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_core (1.23.0):
-    - Firebase/CoreOnly (= 9.5.0)
+  - firebase_core (1.24.0):
+    - Firebase/CoreOnly (= 9.6.0)
     - Flutter
-  - firebase_crashlytics (2.8.11):
-    - Firebase/Crashlytics (= 9.5.0)
+  - firebase_crashlytics (2.9.0):
+    - Firebase/Crashlytics (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_dynamic_links (4.3.8):
-    - Firebase/DynamicLinks
+  - firebase_dynamic_links (4.3.11):
+    - Firebase/DynamicLinks (= 9.6.0)
     - firebase_core
     - Flutter
   - firebase_messaging (11.4.4):
-    - Firebase/Messaging
+    - Firebase/Messaging (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_performance (0.8.3-1):
-    - Firebase/Performance (= 9.5.0)
+  - firebase_performance (0.8.3-3):
+    - Firebase/Performance (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (2.0.18):
-    - Firebase/RemoteConfig (= 9.5.0)
+  - firebase_remote_config (2.0.20):
+    - Firebase/RemoteConfig (= 9.6.0)
     - firebase_core
     - Flutter
   - FirebaseABTesting (9.6.0):
     - FirebaseCore (~> 9.0)
-  - FirebaseAuth (9.5.0):
+  - FirebaseAuth (9.6.0):
     - FirebaseCore (~> 9.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/Environment (~> 7.7)
     - GTMSessionFetcher/Core (< 3.0, >= 1.7)
-  - FirebaseCore (9.5.0):
+  - FirebaseCore (9.6.0):
     - FirebaseCoreDiagnostics (~> 9.0)
     - FirebaseCoreInternal (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
@@ -120,21 +114,21 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseCoreInternal (9.6.0):
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
-  - FirebaseCrashlytics (9.5.0):
+  - FirebaseCrashlytics (9.6.0):
     - FirebaseCore (~> 9.0)
     - FirebaseInstallations (~> 9.0)
     - GoogleDataTransport (< 10.0.0, >= 9.1.4)
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (~> 2.1)
-  - FirebaseDynamicLinks (9.5.0):
+  - FirebaseDynamicLinks (9.6.0):
     - FirebaseCore (~> 9.0)
   - FirebaseInstallations (9.6.0):
     - FirebaseCore (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (~> 2.1)
-  - FirebaseMessaging (9.5.0):
+  - FirebaseMessaging (9.6.0):
     - FirebaseCore (~> 9.0)
     - FirebaseInstallations (~> 9.0)
     - GoogleDataTransport (< 10.0.0, >= 9.1.4)
@@ -143,7 +137,7 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebasePerformance (9.5.0):
+  - FirebasePerformance (9.6.0):
     - FirebaseCore (~> 9.0)
     - FirebaseInstallations (~> 9.0)
     - FirebaseRemoteConfig (~> 9.0)
@@ -152,7 +146,7 @@ PODS:
     - GoogleUtilities/ISASwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseRemoteConfig (9.5.0):
+  - FirebaseRemoteConfig (9.6.0):
     - FirebaseABTesting (~> 9.0)
     - FirebaseCore (~> 9.0)
     - FirebaseInstallations (~> 9.0)
@@ -162,7 +156,9 @@ PODS:
   - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_share_me (0.0.1):
-    - FacebookShare
+    - FBSDKCoreKit (~> 14.0.0)
+    - FBSDKLoginKit (~> 14.0.0)
+    - FBSDKShareKit (~> 14.0.0)
     - Flutter
   - flutter_statusbarcolor_ns (0.0.1):
     - Flutter
@@ -174,8 +170,8 @@ PODS:
   - FMDB/standard (2.7.5)
   - freshchat_sdk (0.0.1):
     - Flutter
-    - FreshchatSDK (= 5.2.3)
-  - FreshchatSDK (5.2.3)
+    - FreshchatSDK (= 5.3.1)
+  - FreshchatSDK (5.3.1)
   - geocoding (1.0.5):
     - Flutter
   - geolocator_apple (1.2.0):
@@ -192,45 +188,47 @@ PODS:
   - GoogleMaps/Base (5.2.0)
   - GoogleMaps/Maps (5.2.0):
     - GoogleMaps/Base
-  - GoogleUtilities/AppDelegateSwizzler (7.8.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.10.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.8.0):
+  - GoogleUtilities/Environment (7.10.0):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/ISASwizzler (7.8.0)
-  - GoogleUtilities/Logger (7.8.0):
+  - GoogleUtilities/ISASwizzler (7.10.0)
+  - GoogleUtilities/Logger (7.10.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.8.0):
+  - GoogleUtilities/MethodSwizzler (7.10.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.8.0):
+  - GoogleUtilities/Network (7.10.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.8.0)"
-  - GoogleUtilities/Reachability (7.8.0):
+  - "GoogleUtilities/NSData+zlib (7.10.0)"
+  - GoogleUtilities/Reachability (7.10.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.8.0):
+  - GoogleUtilities/UserDefaults (7.10.0):
     - GoogleUtilities/Logger
-  - GTMSessionFetcher/Core (2.1.0)
+  - GTMSessionFetcher/Core (2.3.0)
   - image_gallery_saver (1.5.0):
     - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
-  - libwebp (1.2.3):
-    - libwebp/demux (= 1.2.3)
-    - libwebp/mux (= 1.2.3)
-    - libwebp/webp (= 1.2.3)
-  - libwebp/demux (1.2.3):
+  - libwebp (1.2.4):
+    - libwebp/demux (= 1.2.4)
+    - libwebp/mux (= 1.2.4)
+    - libwebp/webp (= 1.2.4)
+  - libwebp/demux (1.2.4):
     - libwebp/webp
-  - libwebp/mux (1.2.3):
+  - libwebp/mux (1.2.4):
     - libwebp/demux
-  - libwebp/webp (1.2.3)
+  - libwebp/webp (1.2.4)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider_ios (0.0.1):
     - Flutter
   - "permission_handler (5.1.0+2)":
@@ -239,14 +237,14 @@ PODS:
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.1.1)
-  - razorpay-pod (1.2.8)
+  - razorpay-pod (1.3.0)
   - razorpay_flutter (1.1.10):
     - Flutter
     - razorpay-pod
   - ReachabilitySwift (5.0.0)
-  - SDWebImage (5.13.4):
-    - SDWebImage/Core (= 5.13.4)
-  - SDWebImage/Core (5.13.4)
+  - SDWebImage (5.14.2):
+    - SDWebImage/Core (= 5.14.2)
+  - SDWebImage/Core (5.14.2)
   - share_plus (0.0.1):
     - Flutter
   - sqflite (0.0.2):
@@ -290,6 +288,7 @@ DEPENDENCIES:
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
@@ -307,9 +306,10 @@ SPEC REPOS:
   trunk:
     - DKImagePickerController
     - DKPhotoGallery
-    - FacebookCore
-    - FacebookShare
+    - FBAEMKit
     - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
     - FBSDKShareKit
     - Firebase
     - FirebaseABTesting
@@ -381,6 +381,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_gallery_saver/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   permission_handler:
@@ -411,57 +413,59 @@ SPEC CHECKSUMS:
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  FacebookCore: ba86524b66cfa86d0f8e65d08faa8504a9f732dd
-  FacebookShare: 85968ad1b1606c4944fb154924e425fd29184ea5
-  FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
-  FBSDKShareKit: 259737eab3cc807087374553abdf588b3096ba55
+  FBAEMKit: d00064597439e75885c70d9adbcb5f3e9ad84f5d
+  FBSDKCoreKit: e5d3acfffe5063a9d0b967ba2ad1f5afc460cf43
+  FBSDKCoreKit_Basics: 1ff46a12e80f0b66e6c00e1ef32d6a5b5b9008a5
+  FBSDKLoginKit: dbe86ef42ab142f3bd0f1c904a21bb33f31c5569
+  FBSDKShareKit: 2f6a6a1445cc1b8ea0f733e60d02d2f7c4ebf8be
   file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
-  Firebase: 800f16f07af493d98d017446a315c27af0552f41
-  firebase_auth: 29485cbf2b2c5f0710f7c5dc3fa490736d70a675
-  firebase_core: c266297725f66cacd7eac30745cd1a629d3b048b
-  firebase_crashlytics: 3fb36e86a25c6615f00c8eb32837d973c17e8288
-  firebase_dynamic_links: 9e45c8f17ab313ab66562c3d79865601246b16b6
-  firebase_messaging: 66c601ff8db1f344f41eb89b86de626b83f5d4e1
-  firebase_performance: 8ca9c0ef45415eb48cfefcb4b2e121f38dad649f
-  firebase_remote_config: dad679f3e5662d2dddb5d87ace8d2da52849cab5
+  Firebase: 5ae8b7cf8efce559a653aef0ad95bab3f427c351
+  firebase_auth: 74bba52ce9036d764c6f56396d4f3cff71e1293a
+  firebase_core: 7c28ecc1e5dd74e03829ac3e9ff5ba3314e737a9
+  firebase_crashlytics: 520a59314eaaadb34f9be4c2a285d99cfa88ebdb
+  firebase_dynamic_links: 8fc870871acfbbd39172cb430e4a04c0fe2be4c7
+  firebase_messaging: fc1151f90dd4534756fae713d651695acca6f122
+  firebase_performance: 3ae9ae3142d5d0bf8782e1e7a73dde2267bc4415
+  firebase_remote_config: df81462997f4d1582113c543e5a39ef832cebb92
   FirebaseABTesting: 61826730ce9eee8781ba99a2b3420e9bce148dc9
-  FirebaseAuth: 741918f1fa62ed23246a509279f91d42d79a713f
-  FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
+  FirebaseAuth: e4a5d3c36e778e41141b91cc861103a441d80bcc
+  FirebaseCore: 2082fffcd855f95f883c0a1641133eb9bbe76d40
   FirebaseCoreDiagnostics: 99a495094b10a57eeb3ae8efa1665700ad0bdaa6
   FirebaseCoreInternal: bca76517fe1ed381e989f5e7d8abb0da8d85bed3
-  FirebaseCrashlytics: d20fa38bb8c88cb0f1c9211286bc23ab58c1b464
-  FirebaseDynamicLinks: e2805928aefebd742288161f99469ab84d4aa8c8
+  FirebaseCrashlytics: 3210572ddb77801e5a0bd9d7bc890769f2066a0c
+  FirebaseDynamicLinks: 894ee3b4e56a77abee067d371c9a23e7b5a3c686
   FirebaseInstallations: 0a115432c4e223c5ab20b0dbbe4cbefa793a0e8e
-  FirebaseMessaging: 732623518591384f61c287e3d8f65294beb7ffb3
-  FirebasePerformance: 5ec395fd74f35bfa68e969703922a46a8f143053
-  FirebaseRemoteConfig: 97ccd1b58f26d756f86d071330f00856e51022a2
+  FirebaseMessaging: a4d7910e4af663c9cbfc1071c5bef34651690949
+  FirebasePerformance: f1e62598cd98c88ce6c10e0d26223d18b85c26d6
+  FirebaseRemoteConfig: ee09d77a7d7c7e31da6a0d1cf956cd611c85609c
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_share_me: 908cbbb695723a87657fabb166d5ec28737d3ba8
+  flutter_share_me: 1fb559741e0dff56a9d2bdeaf4d966b0b47449ae
   flutter_statusbarcolor_ns: 68a360889d88d7915ae524e422aeab62e4063804
-  fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
+  fluttertoast: 74526702fea2c060ea55dde75895b7e1bde1c86b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  freshchat_sdk: 8b30b367775a50e3d10375f69e91bb96546a1fa0
-  FreshchatSDK: a86a73e07268a66d50eddba3b81e8cbb6bc44e3b
+  freshchat_sdk: c0693281fe346bb1861c0268e8cc134238778b9c
+  FreshchatSDK: 8b2680e0a19b852d2ea23dc877ac6e3557ba6dfe
   geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   google_maps_flutter_ios: 66201f392bf62d500f07670a30488a247b9bb5b9
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleMaps: 025272d5876d3b32604e5c080dc25eaf68764693
-  GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
-  GTMSessionFetcher: ffbb25ec00ebcb5201adab0a56d808f6f1902d9f
+  GoogleUtilities: bad72cb363809015b1f7f19beb1f1cd23c589f95
+  GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
-  libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
+  libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
-  razorpay-pod: 3ec6fe82e7d5927013cfbbef81a880188c86b077
-  razorpay_flutter: c97e6c4ecbd12f07596bcf1d155aad9c1e63d41f
+  razorpay-pod: ebc78907f756ace307e3fa4270ff684ebb9e291b
+  razorpay_flutter: 84b3bfd206ae9c9c2a9ba585524a1b3d8102b6c1
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SDWebImage: e5cc87bf736e60f49592f307bdf9e157189298a3
+  SDWebImage: b9a731e1d6307f44ca703b3976d18c24ca561e84
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
@@ -473,6 +477,6 @@ SPEC CHECKSUMS:
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
-PODFILE CHECKSUM: 1cbcad57c2b3558be5d27de36747839d8ce45f02
+PODFILE CHECKSUM: fb78073962e5b51dcf3ac0e476103229e83a746e
 
 COCOAPODS: 1.11.3

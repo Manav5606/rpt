@@ -41,7 +41,7 @@ class DynamicLinkService {
         // minimumVersion: 0,
       ),
       iosParameters: IOSParameters(
-        bundleId: 'com.recipto.customer_app',
+        bundleId: 'com.recipto.bloyal',
         minimumVersion: '1',
         // appStoreId: '1608481261',
       ),
@@ -62,7 +62,8 @@ class DynamicLinkService {
 
   Future<void> retrieveDynamicLink() async {
     try {
-      final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
+      final PendingDynamicLinkData? data =
+          await FirebaseDynamicLinks.instance.getInitialLink();
       log("data :${data}");
       final Uri? deepLink = data?.link;
       log("deepLink :${deepLink}");
