@@ -14,6 +14,7 @@ class SignUpFeilds extends StatelessWidget {
       this.keyboardtype,
       this.maxlength,
       this.onChange,
+      this.focusNode,
       this.readOnly})
       : super(key: key);
   // String? text;
@@ -22,6 +23,7 @@ class SignUpFeilds extends StatelessWidget {
   TextInputType? keyboardtype;
   int? maxlength;
   bool? readOnly;
+  FocusNode? focusNode;
   final void Function(String)? onChange;
 
   @override
@@ -37,6 +39,7 @@ class SignUpFeilds extends StatelessWidget {
             Flexible(
               child: TextFormField(
                 style: TextStyle(fontSize: 14.sp),
+                focusNode: focusNode,
                 textAlign: TextAlign.start,
                 cursorColor: AppConst.black,
                 maxLength: maxlength,

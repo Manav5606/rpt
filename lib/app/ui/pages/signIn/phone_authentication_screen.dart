@@ -13,6 +13,8 @@ import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen_shi
 import 'package:customer_app/constants/app_const.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:keyboard_actions/keyboard_actions_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
@@ -464,6 +466,40 @@ class EnterNumberScreen extends StatelessWidget {
 
   EnterNumberScreen({Key? key}) : super(key: key);
 
+  final FocusNode _nodeText1 = FocusNode();
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+      keyboardBarColor: Colors.grey[200],
+      nextFocus: false,
+      actions: [
+        KeyboardActionsItem(
+          focusNode: _nodeText1,
+          toolbarButtons: [
+            
+            (node) {
+              return GestureDetector(
+                onTap: () => node.unfocus(),
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4)
+                    ,color: AppConst.grey,
+                  ),
+                  margin: const EdgeInsets.only(right: 4),
+                  child: Text(
+                    "DONE",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              );
+            }
+          ],
+        ),
+        ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final box = Boxes.getCommonBox();
@@ -523,16 +559,30 @@ class EnterNumberScreen extends StatelessWidget {
                             SizedBox(
                               height: 4.h,
                             ),
-                            SignUpFeilds(
-                              hinttext: "Enter mobile number",
-                              keyboardtype: TextInputType.number,
-                              maxlength: 10,
-                              controller:
-                                  _signInController.phoneNumberController,
-                              onChange: (value) {
-                                _signInController.phoneNumber.value = value;
-                              },
-                            ),
+                            Container(
+  height: 50,
+  child:   KeyboardActions(
+        config: _buildConfig(context),
+        autoScroll: false,
+        disableScroll: true,
+        child: Container(
+          height: 50,
+          child: SignUpFeilds(
+            focusNode: _nodeText1,
+            
+                                  hinttext: "Enter mobile number",
+                                  keyboardtype: TextInputType.number,
+                                  maxlength: 10,
+  
+                                  controller:
+                                      _signInController.phoneNumberController,
+                                  onChange: (value) {
+                                    _signInController.phoneNumber.value = value;
+                                  },
+                                ),
+        ),
+  ),
+),
                           ],
                         ),
                         SizedBox(

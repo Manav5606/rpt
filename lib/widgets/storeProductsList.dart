@@ -1,13 +1,9 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
-import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/theme/styles.dart';
-import 'package:customer_app/widgets/addButton.dart';
-import 'package:customer_app/widgets/custom_popupmenu.dart';
 import 'package:get/get.dart';
 
 import '../app/ui/pages/search/models/autoCompleteProductsByStoreModel.dart';

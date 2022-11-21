@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +7,6 @@ import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/app/ui/pages/stores/StoreScreen.dart';
 import 'package:customer_app/constants/app_const.dart';
 
-import 'package:customer_app/routes/app_list.dart';
 import 'package:sizer/sizer.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
