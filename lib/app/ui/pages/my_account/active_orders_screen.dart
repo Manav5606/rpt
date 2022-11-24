@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
 import 'package:customer_app/routes/app_list.dart';
-import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -254,10 +253,9 @@ class ActiveOrderTabView extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      ActiveOrderTrackingScreen(
+                                  builder: (context) => OrderTreckScreen(
                                     // historyTab: false,
-                                    // displayHour: state.displayHour.value,
+                                    displayHour: state.displayHour.value,
                                     activeOrder: (state
                                         .activeOrdersModel.value!.data!
                                         .where((c) => c.orderType == "online")
