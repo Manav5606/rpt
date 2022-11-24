@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
@@ -43,6 +44,14 @@ class YourStores extends StatelessWidget {
       SizedBox(
         height: 1.5.h,
       ),
+      TextButton(onPressed: (){
+        // _moreStoreController.storeId.value = inStoreModel?.id ?? '';
+        // await _moreStoreController.getStoreData(
+        //     id: inStoreModel?.id ?? '',
+        //     businessId: inStoreModel?.businesstype ?? '');
+        Get.toNamed(AppRoutes.NewStoreScreen, arguments: {'isGrocery': false});
+      }, child: 
+      Text("dell")),
       Container(
         height: 16.5.h,
         width: 98.w,

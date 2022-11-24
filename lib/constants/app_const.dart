@@ -28,7 +28,11 @@ class AppConst {
   static const Color orange = Color(0xffFF9036);
 
 //grey variant
+  static const Color grey200 = Color(0xffF5F5F5);
+  static const Color grey100 = Color(0xffCACACA);
   static const Color grey = Color(0xff9E9E9E);
+
+  
   static const Color darkGrey = Color(0xff707070);
   static const Color lightGrey = Color(0xffE7E7F1);
   static const Color veryLightGrey = Color(0xffF4F4F4);
