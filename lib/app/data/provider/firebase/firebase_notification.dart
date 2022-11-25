@@ -80,7 +80,8 @@ class FireBaseNotification {
       }
     }
 
-    fcmToken = await firebaseMessaging.getToken();
+    fcmToken = await firebaseMessaging
+        .getToken(); // handle token value when token is null
     String fcmTok = fcmToken.toString();
 
     firebaseMessaging.onTokenRefresh.listen((event) {
@@ -93,7 +94,11 @@ class FireBaseNotification {
     Constants.client.addDevice(fcmTok, PushProvider.firebase);
 
     if (fcmToken != null && fcmToken!.isNotEmpty) {
-      addFirebaseToken(fcmToken);
+      final box = Boxes.getCommonBoolBox();
+      final isLogin = box.get(HiveConstants.USER_TOKEN);
+      if (isLogin != null) {
+        addFirebaseToken(fcmToken);
+      }
     }
     log('TOKEN to be Registered: $fcmToken');
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/data/provider/firebase/firebase_notification.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -199,6 +200,7 @@ class SignInScreenController extends GetxController {
             isLoading.value = false;
             return Get.to(SignUpScreen());
           }
+          await FireBaseNotification().firebaseCloudMessagingLSetup;
           await checkSession();
           isLoading.value = false;
         } else {
