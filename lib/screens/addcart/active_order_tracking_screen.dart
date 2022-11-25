@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:bubble/bubble.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/ui/pages/chat/chat_controller.dart';
@@ -10,10 +11,12 @@ import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/addcart/my_order_item_page.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -155,15 +158,14 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              (activeOrder?.rider != null)
-                  ? SizedBox()
-                  : Padding(
+              ((activeOrder?.status == "accepted")
+                  ? Padding(
                       padding: EdgeInsets.only(left: 5.w, bottom: 1.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "Rider is Not Assigned yet",
+                            "Please Review the list and approve.",
                             style: TextStyle(
                                 fontSize: SizeUtils.horizontalBlockSize * 4,
                                 fontWeight: FontWeight.w500,
@@ -171,11 +173,28 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
+                    )
+                  : (activeOrder?.rider != null)
+                      ? SizedBox()
+                      : Padding(
+                          padding: EdgeInsets.only(left: 5.w, bottom: 1.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Rider is Not Assigned yet",
+                                style: TextStyle(
+                                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppConst.black),
+                              ),
+                            ],
+                          ),
+                        )),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                 child: Container(
-                  height: 27.h,
+                  height: (activeOrder?.status != "") ? 30.h : 27.h,
                   decoration: BoxDecoration(
                       color: AppConst.ContainerColor,
                       border: Border.all(),
@@ -185,6 +204,38 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
                     child: Column(
                       children: [
+                        InkWell(
+                          onTap: () {
+                            Get.to(MyOrderItems(
+                              activeOrder: activeOrder,
+                              TimeSlot: TimeSlot,
+                            ));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 0.5.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "View Items",
+                                  style: TextStyle(
+                                    color: AppConst.lightGreen,
+                                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 1.w,
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: AppConst.lightGreen,
+                                  size: 2.h,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                         Row(
                           children: [
                             Container(
@@ -233,6 +284,17 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         color: AppConst.white),
                                   ),
+                                  SizedBox(
+                                    height: 0.5.h,
+                                  ),
+                                  Text(
+                                    "Total Amount - \u{20B9} ${activeOrder?.total ?? 0}",
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppConst.white),
+                                  ),
                                 ],
                               ),
                             ),
@@ -242,7 +304,48 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                               child: Container(
                                 height: 15.h,
                                 width: 28.w,
-                                child: SizedBox(),
+                                child: Hero(
+                                  tag: "View Image",
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Get.dialog(Dialog(
+                                        child: Stack(
+                                          children: [
+                                            PhotoView(
+                                              heroAttributes:
+                                                  PhotoViewHeroAttributes(
+                                                tag: "View Image",
+                                              ),
+                                              imageProvider:
+                                                  CachedNetworkImageProvider(
+                                                      activeOrder?.receipt ??
+                                                          ""),
+                                              tightMode: true,
+                                              customSize: Size(98.w, 98.h),
+                                              backgroundDecoration:
+                                                  BoxDecoration(
+                                                      color: AppConst.black),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: CircularCloseButton(),
+                                            )
+                                          ],
+                                        ),
+                                      ));
+                                    },
+                                    child: Container(
+                                        width: double.infinity,
+                                        child: (activeOrder?.receipt) != null
+                                            ? CachedNetworkImage(
+                                                imageUrl:
+                                                    activeOrder?.receipt ?? "",
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Icon(Icons.image)),
+                                  ),
+                                ),
                                 decoration: BoxDecoration(
                                     border: Border.all(),
                                     borderRadius: BorderRadius.circular(16),
@@ -257,27 +360,43 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                         InkWell(
                           highlightColor: AppConst.grey,
                           onTap: (() {
-                            Get.to(MyOrderItems(
-                              activeOrder: activeOrder,
-                              TimeSlot: TimeSlot,
-                            ));
+                            (activeOrder?.status == "picked_up" ||
+                                    activeOrder?.status == "delivered")
+                                ? SizedBox()
+                                : Get.to(MyOrderItems(
+                                    activeOrder: activeOrder,
+                                    TimeSlot: TimeSlot,
+                                  ));
                           }),
                           child: Container(
                             height: 6.h,
                             margin: EdgeInsets.only(top: 1.h),
                             decoration: BoxDecoration(
-                                color: AppConst.lightGreen,
+                                color: (activeOrder?.status == "picked_up" ||
+                                        activeOrder?.status == "delivered")
+                                    ? AppConst.grey
+                                    : AppConst.lightGreen,
                                 border: Border.all(),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Center(
-                              child: Text(
-                                "View Items",
-                                style: TextStyle(
-                                  color: AppConst.ContainerColor,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                              child: (activeOrder?.status == "picked_up" ||
+                                      activeOrder?.status == "delivered")
+                                  ? Text("Order Paid ",
+                                      style: TextStyle(
+                                        color: AppConst.white,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4.5,
+                                        fontWeight: FontWeight.w500,
+                                      ))
+                                  : Text(
+                                      "View Items",
+                                      style: TextStyle(
+                                        color: AppConst.ContainerColor,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4.5,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),

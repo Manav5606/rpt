@@ -1152,6 +1152,7 @@ wallet_amount
         {
           _id
           status
+          receipt
           order_type
           address
           createdAt

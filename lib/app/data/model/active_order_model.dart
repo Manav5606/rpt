@@ -30,6 +30,7 @@ class ActiveOrderModel {
 class ActiveOrderData {
   String? Id;
   String? status;
+  String? receipt;
   String? orderType;
   int? total;
   num? total_cashback;
@@ -44,26 +45,28 @@ class ActiveOrderData {
   List<InventoriesData>? inventories;
   Store? store;
 
-  ActiveOrderData({
-    this.Id,
-    this.status,
-    this.orderType,
-    this.total,
-    this.total_cashback,
-    this.wallet_amount,
-    this.createdAt,
-    this.address,
-    this.location,
-    this.deliverySlot,
-    this.rider,
-    this.products,
-    this.inventories,
-    this.store,
-  });
+  ActiveOrderData(
+      {this.Id,
+      this.status,
+      this.orderType,
+      this.total,
+      this.total_cashback,
+      this.wallet_amount,
+      this.createdAt,
+      this.address,
+      this.location,
+      this.deliverySlot,
+      this.rider,
+      this.products,
+      this.inventories,
+      this.store,
+      this.receipt,
+      this.rawItems});
 
   ActiveOrderData.fromJson(Map<String, dynamic> json) {
     Id = json['_id'];
     status = json['status'];
+    receipt = json['receipt'];
     orderType = json['order_type'];
     total = json['total'];
     total_cashback = json['total_cashback'];
@@ -102,6 +105,7 @@ class ActiveOrderData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.Id;
     data['status'] = this.status;
+    data['receipt'] = this.receipt;
     data['order_type'] = this.orderType;
     data['total'] = this.total;
     data['total_cashback'] = this.total_cashback;

@@ -103,13 +103,20 @@ class MyOrderItems extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 2.w,
-                ),
-                child: StoreChatBubble(
-                  text: "Facing any issues?\nTell us your issue.",
-                  buttonText: "Chat With us",
+              InkWell(
+                highlightColor: AppConst.highLightColor,
+                onTap: () {
+                  _chatController.launchChat(
+                      '${activeOrder?.Id}', "${activeOrder?.store?.name}");
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 2.w,
+                  ),
+                  child: StoreChatBubble(
+                    text: "Facing any issues?\nTell us your issue.",
+                    buttonText: "Chat With us",
+                  ),
                 ),
               ),
               Padding(
