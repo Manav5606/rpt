@@ -14,6 +14,7 @@ class StoreNameCallLogoWidget extends StatelessWidget {
       this.mobile,
       this.storeName,
       this.totalAmount,
+      this.callLogo,
       this.paymentStatus})
       : super(key: key);
 
@@ -22,6 +23,7 @@ class StoreNameCallLogoWidget extends StatelessWidget {
   var mobile;
   int? totalAmount;
   String? paymentStatus;
+  bool? callLogo;
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +103,13 @@ class StoreNameCallLogoWidget extends StatelessWidget {
             ],
           ),
           Spacer(),
-          InkWell(
-              onTap: (() {
-                _launchURL("tel:${mobile ?? '+91'}");
-              }),
-              child: CallLogo())
+          (callLogo ?? true)
+              ? InkWell(
+                  onTap: (() {
+                    _launchURL("tel:${mobile ?? '+91'}");
+                  }),
+                  child: CallLogo())
+              : SizedBox()
         ],
       ),
     );
@@ -190,9 +194,8 @@ class CallLogo extends StatelessWidget {
 }
 
 class CircularCloseButton extends StatelessWidget {
-  const CircularCloseButton({
-    Key? key,
-  }) : super(key: key);
+  IconData? icon;
+  CircularCloseButton({Key? key, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +206,7 @@ class CircularCloseButton extends StatelessWidget {
         // color: Colors.white,
         onTap: (() => Get.back()),
         child: Icon(
-          Icons.close,
+          icon ?? Icons.close,
           size: SizeUtils.horizontalBlockSize * 5.5,
           color: AppConst.black,
         ),
@@ -217,7 +220,7 @@ class CircularCloseButton extends StatelessWidget {
             offset: Offset(0, 2),
           ),
         ],
-        color: Colors.white,
+        color: AppConst.white,
       ),
     );
   }

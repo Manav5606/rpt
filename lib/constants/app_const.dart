@@ -14,8 +14,10 @@ class AppConst {
   static const Color black = Color(0xff131313);
   static const Color white = Color(0xffffffff);
   static const Color green = Color(0xff079B2E);
-  static const Color lightGreen = Color(0xff71CE88);
+  static const Color lightGreen = Color(0xffA2D889);
   static const Color highLightColor = Color(0xffF5F6F7);
+  static const Color ContainerColor = Color(0xff1D3E4A);
+  static const Color lightSkyBlue = Color(0xffE6FAF1);
 
   static const Color kPrimaryColor = Color(0xffDD2863);
   static const Color kSecondaryColor = Color(0xff0A7986); //button color
@@ -25,7 +27,8 @@ class AppConst {
   static const Color lightYellow = Color(0xffFFECA7);
   static const Color yellow = Color(0xffFFFC38);
   static const Color yellowText = Color(0xffB87A00);
-  static const Color orange = Color(0xffFF9036);
+  static const Color orange = Color(0xffEF6400);
+  static const Color red = Color(0xffEEE0000);
 
 //grey variant
   static const Color grey = Color(0xff9E9E9E);

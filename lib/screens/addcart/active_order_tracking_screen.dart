@@ -9,6 +9,7 @@ import 'package:customer_app/app/ui/pages/stores/storedetailscreen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
+import 'package:customer_app/screens/addcart/my_order_item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -39,15 +40,15 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
     var date0 = "${activeOrder?.deliverySlot?.day ?? 0}";
     var DayName = DaySelection(int.parse(date0));
     var date1 =
-        "${((activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 12 ? ((activeOrder?.deliverySlot?.startTime?.hour ?? 0) - 12) : activeOrder?.deliverySlot?.startTime?.hour ?? 0)}:${activeOrder?.deliverySlot?.startTime?.minute ?? 00}";
+        "${((activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 12 ? ((activeOrder?.deliverySlot?.startTime?.hour ?? 0) - 12) : activeOrder?.deliverySlot?.startTime?.hour ?? 0)}${(activeOrder?.deliverySlot?.startTime?.minute == 0) ? "" : (":${activeOrder?.deliverySlot?.startTime?.minute ?? ""}")}";
 
-    var date2 = (activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 1
-        ? "PM - "
-        : "AM - ";
+    var date2 = (activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 12
+        ? "pm - "
+        : "am - ";
     var date3 =
-        "${((activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? ((activeOrder?.deliverySlot?.endTime?.hour ?? 0) - 12) : activeOrder?.deliverySlot?.endTime?.hour ?? 0)}:${activeOrder?.deliverySlot?.endTime?.minute ?? 00}";
+        "${((activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? ((activeOrder?.deliverySlot?.endTime?.hour ?? 0) - 12) : activeOrder?.deliverySlot?.endTime?.hour ?? 0)}${(activeOrder?.deliverySlot?.endTime?.minute == 0) ? "" : (":${activeOrder?.deliverySlot?.endTime?.minute ?? ""}")}";
     var date4 =
-        (activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? "PM" : "AM";
+        (activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? "pm" : "am";
 
     var TimeSlot = DayName + " " + date1 + date2 + date3 + date4;
     return SafeArea(
@@ -97,35 +98,35 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        highlightColor: AppConst.highLightColor,
-                        onTap: () async {
-                          _freshChat.initState();
-                          await _freshChat.showChatConversation(
-                              "Have a problem with order \n${activeOrder?.Id}\n${activeOrder?.status}\n${activeOrder?.createdAt}\n${activeOrder?.address}\n");
-                        },
-                        child: Icon(
+                  InkWell(
+                    highlightColor: AppConst.highLightColor,
+                    onTap: () async {
+                      _freshChat.initState();
+                      await _freshChat.showChatConversation(
+                          "Have a problem with order \n${activeOrder?.Id}\n${activeOrder?.status}\n${activeOrder?.createdAt}\n${activeOrder?.address}\n");
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
                           Icons.help,
                           size: SizeUtils.horizontalBlockSize * 6.5,
                           color: AppConst.black,
                         ),
-                      ),
-                      SizedBox(width: 2.w),
-                      Text("HELP",
-                          style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                              fontWeight: FontWeight.bold,
-                              color: AppConst.black)),
-                    ],
+                        SizedBox(width: 2.w),
+                        Text("HELP",
+                            style: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                                fontWeight: FontWeight.bold,
+                                color: AppConst.black)),
+                      ],
+                    ),
                   ),
                 ],
               ),
               SizedBox(
-                height: 3.h,
+                height: (activeOrder?.rider != null) ? 5.h : 3.h,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 0.5.h),
@@ -254,7 +255,13 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                           height: 1.h,
                         ),
                         InkWell(
-                          onTap: (() {}),
+                          highlightColor: AppConst.grey,
+                          onTap: (() {
+                            Get.to(MyOrderItems(
+                              activeOrder: activeOrder,
+                              TimeSlot: TimeSlot,
+                            ));
+                          }),
                           child: Container(
                             height: 6.h,
                             margin: EdgeInsets.only(top: 1.h),
@@ -325,7 +332,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                     height: 0.5.h,
                                   ),
                                   Text(
-                                    "Information",
+                                    "Delivery Rider",
                                     style: TextStyle(
                                         color: AppConst.grey,
                                         fontSize:

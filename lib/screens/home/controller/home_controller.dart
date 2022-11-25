@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/data/provider/hive/hive.dart';
+import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/model/address_model.dart';
@@ -22,8 +24,10 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../controllers/userViewModel.dart';
 
 class HomeController extends GetxController {
-  Rx<GetHomePageFavoriteShops?> getHomePageFavoriteShopsModel = GetHomePageFavoriteShops().obs;
-  Rx<HomePageRemoteConfigData?> homePageRemoteConfigModel = HomePageRemoteConfigData().obs;
+  Rx<GetHomePageFavoriteShops?> getHomePageFavoriteShopsModel =
+      GetHomePageFavoriteShops().obs;
+  Rx<HomePageRemoteConfigData?> homePageRemoteConfigModel =
+      HomePageRemoteConfigData().obs;
   Rx<GetAllCartsModel?> getAllCartsModel = GetAllCartsModel().obs;
   RxBool isLoading = false.obs;
   RxBool isAllCartLoading = false.obs;
@@ -41,7 +45,8 @@ class HomeController extends GetxController {
   RxList<Data> storeDataList = <Data>[].obs;
   final HiveRepository hiveRepository = HiveRepository();
   UserModel? userModel;
-  final ScrollController homePageFavoriteShopsScrollController = ScrollController();
+  final ScrollController homePageFavoriteShopsScrollController =
+      ScrollController();
   final ScrollController remoteConfigScrollController = ScrollController();
   late CategoryModel keywordValue;
 
@@ -61,8 +66,10 @@ class HomeController extends GetxController {
     }
     try {
       isPageLoading.value = true;
-      getHomePageFavoriteShopsModel.value = await HomeService.getHomePageFavoriteShops(pageNumber: pageNumber);
-      if (getHomePageFavoriteShopsModel.value!.data!.isNotEmpty && !(getHomePageFavoriteShopsModel.value!.data!.length < 10)) {
+      getHomePageFavoriteShopsModel.value =
+          await HomeService.getHomePageFavoriteShops(pageNumber: pageNumber);
+      if (getHomePageFavoriteShopsModel.value!.data!.isNotEmpty &&
+          !(getHomePageFavoriteShopsModel.value!.data!.length < 10)) {
         isPageAvailable = true;
         pageNumber++;
       } else {
@@ -71,7 +78,8 @@ class HomeController extends GetxController {
       isPageLoading.value = false;
       homePageFavoriteShopsList.refresh();
       getHomePageFavoriteShopsModel.refresh();
-      homePageFavoriteShopsList.addAll(getHomePageFavoriteShopsModel.value?.data ?? []);
+      homePageFavoriteShopsList
+          .addAll(getHomePageFavoriteShopsModel.value?.data ?? []);
     } catch (e) {
       print(e);
     } finally {
@@ -90,9 +98,12 @@ class HomeController extends GetxController {
     }
     try {
       isRemoteConfigPageLoading = true;
-      homePageRemoteConfigModel.value = await HomeService.homePageRemoteConfigData(keyword, productFetch, keywordHelper, id, remoteConfigPageNumber);
+      homePageRemoteConfigModel.value =
+          await HomeService.homePageRemoteConfigData(
+              keyword, productFetch, keywordHelper, id, remoteConfigPageNumber);
 
-      if (homePageRemoteConfigModel.value!.data!.isNotEmpty && !(homePageRemoteConfigModel.value!.data!.length < 10)) {
+      if (homePageRemoteConfigModel.value!.data!.isNotEmpty &&
+          !(homePageRemoteConfigModel.value!.data!.length < 10)) {
         isRemoteConfigPageAvailable = true;
         remoteConfigPageNumber++;
       } else {
@@ -124,8 +135,10 @@ class HomeController extends GetxController {
     await getHomePageFavoriteShops();
     await getAllCartsData();
     homePageFavoriteShopsScrollController.addListener(() {
-      double maxScroll = homePageFavoriteShopsScrollController.position.maxScrollExtent;
-      double currentScroll = homePageFavoriteShopsScrollController.position.pixels;
+      double maxScroll =
+          homePageFavoriteShopsScrollController.position.maxScrollExtent;
+      double currentScroll =
+          homePageFavoriteShopsScrollController.position.pixels;
       double delta = MediaQuery.of(Get.context!).size.height * 0.05;
       if (maxScroll - currentScroll <= delta) {
         getHomePageFavoriteShops();
@@ -153,7 +166,8 @@ class HomeController extends GetxController {
         if (addressModal?.status ?? false) {
           userAddress.value = addressModal?.address ?? '';
           userAddressTitle.value = addressModal?.title ?? '';
-          UserViewModel.setLocation(LatLng(addressModal?.location?.lat ?? 0.0, addressModal?.location?.lng ?? 0.0));
+          UserViewModel.setLocation(LatLng(addressModal?.location?.lat ?? 0.0,
+              addressModal?.location?.lng ?? 0.0));
         }
       }
     }
@@ -167,13 +181,20 @@ class HomeController extends GetxController {
 
   Future<bool> checkLocationPermission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    checkPermission.value = serviceEnabled && await Permission.location.isGranted;
+    checkPermission.value =
+        serviceEnabled && await Permission.location.isGranted;
     if (checkPermission.value) {
       Position position = await Geolocator.getCurrentPosition();
-      final List<Placemark> p = await placemarkFromCoordinates(position.latitude, position.longitude);
+      final box = Boxes.getCommonBox();
+      box.put(HiveConstants.LATITUDE, "${position.latitude}");
+      box.put(HiveConstants.LONGITUDE, "${position.longitude}");
+      final List<Placemark> p =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
       log('p :$p');
-      userAddress.value = '${p.first.street ?? ''} ${p.first.name ?? ''}';
-      userAddressTitle.value = '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
+      userAddress.value =
+          '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
+      userAddressTitle.value =
+          '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
       UserViewModel.setLocation(LatLng(position.latitude, position.longitude));
       isPageAvailable = true;
     } else {

@@ -161,39 +161,64 @@ class GraphQLQueries {
     query: r'''
       query($token: String){
         verifyCustomerToken(token: $token){
+          streamChatToken
+          signup
+          bonus
           error
           msg
           data{
-           _id
-          first_name
-          last_name
-          mobile
-          email
-          type
-          status
-          restoreID
-          addresses{
             _id
-            title
-            address
-            house
-            apartment
-            direction_to_reach
-            distance
-            location{
-              lat
-              lng
-            }
+            first_name
+            last_name
+            mobile
+            email
+            type
             status
-          }
-          balance
-          logo
-          date_of_birth
-          male_or_female
-          rank
+            addresses{
+            	_id
+            	title
+            	address
+            	house
+            	apartment
+            	distance
+            	direction_to_reach
+            	location{
+              	lat
+              	lng
+            	}
+            status
+          	}
+            stores{
+            	_id
+            	store{
+             _id
+              name
+              mobile
+              businesstype
+              address{
+                address
+                location{
+                  lat
+                  lng
+                }
+              }
+              
+            }
+            	earned_cashback
+            	welcome_offer
+            	welcome_offer_amount
+              recently_visited
+              visited_at
+              name
+          	}
+            balance
+            logo
+            date_of_birth
+            male_or_female
+            rank
+            }
           }
         }
-      }
     ''',
   );
   static final updateRiderInformation = new GraphQLQuery(
@@ -1156,20 +1181,39 @@ wallet_amount
           }
           products
           {
-            name
-            quantity
-            deleted
-            modified
-            selling_price
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
            inventories
           {
             name
-            quantity
-            mrp
-            status
-            selling_price
-            gst_amount
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
              rawitems{
              logo
@@ -1177,6 +1221,13 @@ wallet_amount
             _id
             quantity 
             modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
           }
         store
           {
@@ -1192,6 +1243,7 @@ wallet_amount
             mobile
             _id
             first_name
+            last_name
             bank_document_photo
           }
         }
@@ -1280,6 +1332,7 @@ wallet_amount
             mobile
             _id
             first_name
+            last_name
             bank_document_photo
           }
         }
