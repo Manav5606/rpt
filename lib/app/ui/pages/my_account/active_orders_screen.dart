@@ -314,6 +314,9 @@ class ActiveOrderTabViewCard extends StatelessWidget {
   final ExploreController _exploreController = Get.find();
   @override
   Widget build(BuildContext context) {
+    int itemsLength = ((order?.products?.length ?? 0) +
+        (order?.rawItems?.length ?? 0) +
+        (order?.inventories?.length ?? 0));
     return Column(
       children: [
         Padding(
@@ -426,7 +429,7 @@ class ActiveOrderTabViewCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '${order?.products?.length ?? 0} items.  Earned cashback \u{20B9} ${order?.total_cashback ?? 0}',
+                          '${itemsLength} items.  Earned cashback \u{20B9} ${order?.total_cashback ?? 0}',
                           style: AppStyles.STORES_SUBTITLE_STYLE,
                         ),
                         // Icon(Icons.monetization_on,

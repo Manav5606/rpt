@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/pages/chat/chat_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -62,6 +63,8 @@ class _HomeScreenState extends State<HomeScreen>
   final HomeController _homeController = Get.put(HomeController());
   final PaymentController _paymentController = Get.put(PaymentController());
   final AddCartController _addCartController = Get.put(AddCartController());
+  final ChatController _chatController = Get.put(ChatController());
+
   final MyAccountController _myAccountController =
       Get.put(MyAccountController(MyAccountRepository(), HiveRepository()));
   final freshChatController _freshChat = Get.put(freshChatController());

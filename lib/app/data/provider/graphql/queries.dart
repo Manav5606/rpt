@@ -1175,11 +1175,7 @@ wallet_amount
           type
           coordinates
         }
-          rawitems
-          {
-            item
-            quantity
-          }
+         
           products
           {
           name
@@ -1264,6 +1260,7 @@ wallet_amount
         {
           _id
           status
+          receipt
           order_type
           address
           createdAt
@@ -1288,42 +1285,62 @@ wallet_amount
           type
           coordinates
         }
-          rawitems
+          
+           products
           {
-            item
-            logo
-            quantity
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
-          products
+           inventories
           {
             name
-            quantity
-            deleted
-            modified
-            selling_price
-          }
-          inventories
-          {
-            name
-            quantity
-            mrp
-            status
-            selling_price
-            gst_amount
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
              rawitems{
+             logo
             item
             _id
-            quantity
-            logo
+            quantity 
             modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
           }
         store
           {
            _id
               mobile
               name
-              logo
               address{
                 address
               }
