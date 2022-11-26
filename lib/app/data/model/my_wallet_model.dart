@@ -238,7 +238,7 @@ class GetAllWalletTransactionByCustomer {
 }
 
 class Transaction {
-  int? amount;
+  num? amount;
   String? debitOrCredit;
   String? comment;
   String? createdAt;
