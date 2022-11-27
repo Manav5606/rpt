@@ -1,19 +1,13 @@
-import 'package:customer_app/app/data/provider/hive/hive.dart';
-import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
-import 'package:customer_app/controllers/userViewModel.dart';
-import 'package:customer_app/widgets/custom_alert_dialog.dart';
-import 'package:flutter/material.dart';
 import 'package:customer_app/app/ui/common/alret.dart';
+import 'package:customer_app/app/ui/pages/search/models/GetStoreDataModel.dart';
 import 'package:customer_app/app/ui/pages/search/models/autoCompleteProductsByStoreModel.dart';
 import 'package:customer_app/app/ui/pages/search/models/getCartId_model.dart';
-import 'package:customer_app/app/ui/pages/search/service/exploreService.dart';
 import 'package:customer_app/models/addcartmodel.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
+import 'package:customer_app/screens/home/models/GetAllCartsModel.dart';
 import 'package:customer_app/screens/more_stores/morestore_service.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-
-import '../../../app/ui/pages/search/models/GetStoreDataModel.dart';
-import '../../home/models/GetAllCartsModel.dart';
 
 class StoreController extends GetxController {
   RxBool isLoadingStoreData = false.obs;

@@ -1,8 +1,8 @@
 import 'package:customer_app/screens/store/binding/store_binding.dart';
 import 'package:customer_app/screens/store/screens/store_cart_screen.dart';
 import 'package:customer_app/screens/store/screens/store_chat_screen.dart';
-import 'package:customer_app/screens/store/store_main_screen.dart';
-import 'package:customer_app/screens/store/store_search_screen.dart';
+import 'package:customer_app/screens/store/screens/store_main_screen.dart';
+import 'package:customer_app/screens/store/screens/store_search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/bindings/cartBindings.dart';
 import 'package:customer_app/app/bindings/home_binding.dart';

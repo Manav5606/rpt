@@ -1,4 +1,3 @@
-import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
@@ -6,12 +5,10 @@ import 'package:customer_app/screens/store/controller/store_controller.dart';
 import 'package:customer_app/screens/store/screens/widget/chat_bubble.dart';
 import 'package:customer_app/screens/store/screens/widget/store_product_list.dart';
 import 'package:customer_app/theme/styles.dart';
-import 'package:customer_app/widgets/search_text_field/search_field.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_button.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 class NewStoreScreen extends GetView<StoreController> {
   // const NewStoreScreen({super.key});
@@ -53,7 +50,7 @@ class NewStoreScreen extends GetView<StoreController> {
                     buttonText: "Chat",
                     text:
                         "Struggling to find items? \nChat with store & place orders instantly.",
-                    onTap: () => Get.toNamed(AppRoutes.NewStoreCartScreen)),
+                    onTap: () => Get.toNamed(AppRoutes.NewStoreChatScreen)),
                 SizedBox(height: 16),
 
                 SearchFieldButton(

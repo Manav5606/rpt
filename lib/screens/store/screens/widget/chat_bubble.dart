@@ -1,4 +1,5 @@
 import 'package:bubble/bubble.dart';
+import 'package:customer_app/constants/app_const.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -42,7 +43,7 @@ class StoreChatBubble extends StatelessWidget {
                   height: 5.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(85),
-                    color: Color(0xff005b41),
+                    color: AppConst.darkGreen,
                   ),
                   child: Center(
                     child: Text(

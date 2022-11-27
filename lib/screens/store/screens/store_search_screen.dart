@@ -1,4 +1,3 @@
-import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/screens/store/controller/store_controller.dart';
@@ -8,7 +7,6 @@ import 'package:customer_app/widgets/search_text_field/search_field.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 class NewStoreSearchScreen extends GetView<StoreController> {
   // const NewStoreScreen({super.key});
