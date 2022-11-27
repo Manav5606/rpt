@@ -1,12 +1,10 @@
 import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
-import 'package:customer_app/screens/store/widget/store_product_list.dart';
 import 'package:customer_app/screens/store/store_controller.dart';
 import 'package:customer_app/screens/store/widget/store_search_item.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:customer_app/widgets/search_text_field/search_field.dart';
-import 'package:customer_app/widgets/search_text_field/search_field_button.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,7 +51,7 @@ class NewStoreSearchScreen extends GetView<StoreController> {
 
                 Obx(
                   () => Column(
-                      children: controller.searchDisplayList.value
+                      children: controller.searchDisplayList
                           .map((element) => StoreSearchItem(product: element))
                           .toList()),
                 )
@@ -122,61 +120,6 @@ class NewStoreSearchScreen extends GetView<StoreController> {
                 ],
               ),
             )),
-    );
-  }
-}
-
-class StoreChatBubble extends StatelessWidget {
-  String? text;
-  String? buttonText;
-  StoreChatBubble({Key? key, this.buttonText, this.text}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
-      child: Bubble(
-        color: Color(0xffE6FAF1),
-        margin: BubbleEdges.only(top: 1.h),
-        stick: true,
-        nip: BubbleNip.no,
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(
-                  text ?? "Facing any issues?\nTell us your issue.",
-                  // "Facing any issues?\nTell us your issue.",
-                  style: TextStyle(
-                    color: Color(0xff003D29),
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              Container(
-                width: 28.w,
-                height: 5.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(85),
-                  color: Color(0xff005b41),
-                ),
-                child: Center(
-                  child: Text(
-                    buttonText ?? "Chat with Us",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

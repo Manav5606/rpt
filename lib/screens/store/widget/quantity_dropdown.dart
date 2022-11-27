@@ -125,7 +125,7 @@ class _QuantityDropdownState extends State<QuantityDropdown> {
     return PopupMenuItem<int>(
       value: value,
       padding: EdgeInsets.zero,
-      onTap: () => update(value),
+      // onTap: () => update(value),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

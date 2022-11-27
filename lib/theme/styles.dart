@@ -81,6 +81,14 @@ mixin AppTextStyle {
           color: color,
           fontStyle: fontStyle);
 
+  static TextStyle h35Bold(
+          {Color? color, FontStyle fontStyle = FontStyle.normal}) =>
+      TextStyle(
+          fontSize: Dimens.h3,
+          fontWeight: FontWeight.w600,
+          color: color,
+          fontStyle: fontStyle);
+
   static TextStyle h4Bold(
           {Color? color, FontStyle fontStyle = FontStyle.normal}) =>
       TextStyle(
@@ -245,7 +253,7 @@ mixin AppTextStyle {
           {Color? color, FontStyle fontStyle = FontStyle.normal}) =>
       TextStyle(
           fontSize: Dimens.h6,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w300,
           color: color,
           fontStyle: fontStyle);
 

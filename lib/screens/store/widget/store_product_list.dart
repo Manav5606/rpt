@@ -11,26 +11,25 @@ import 'package:sizer/sizer.dart';
 class StoreProductList extends StatelessWidget {
   StoreProductList({Key? key}) : super(key: key);
 
-  final StoreController _moreStoreController = Get.find();
+  final StoreController _storeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => (_moreStoreController
-                  .getStoreDataModel.value?.data?.mainProducts?.isNotEmpty ??
+      () => (_storeController.storeDataModel?.data?.mainProducts?.isNotEmpty ??
               false)
           ? ListView.separated(
               // controller: this.controller,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
-              itemCount: _moreStoreController
-                      .getStoreDataModel.value?.data?.mainProducts?.length ??
-                  0,
+              itemCount:
+                  _storeController.storeDataModel?.data?.mainProducts?.length ??
+                      0,
               //data.length,
               itemBuilder: (context, index) {
-                MainProducts? storesWithProductsModel = _moreStoreController
-                    .getStoreDataModel.value?.data?.mainProducts?[index];
+                MainProducts? storesWithProductsModel =
+                    _storeController.storeDataModel?.data?.mainProducts?[index];
                 return Column(
                   children: [
                     Padding(
@@ -81,27 +80,10 @@ class StoreProductList extends StatelessWidget {
                                     storesWithProductsModel.products?.length ??
                                         0,
                                 itemBuilder: (context, index) => ProjectCard(
-                                    storesWithProductsModel.products![index]),
+                                  storesWithProductsModel.products![index],
+                                  storesWithProductsModel.sId,
+                                ),
                               ),
-
-                              // child: ListView.separated(
-                              //   physics: ClampingScrollPhysics(),
-                              //   shrinkWrap: true,
-                              //   scrollDirection: Axis.horizontal,
-                              //   itemCount:
-                              //       storesWithProductsModel.products?.length ??
-                              //           0,
-                              //   itemBuilder: (context, i) {
-                              //     StoreModelProducts product =
-                              //         storesWithProductsModel.products![i];
-                              //     return item();
-                              //   },
-                              //   separatorBuilder: (context, index) {
-                              //     return SizedBox(
-                              //       width: 2.w,
-                              //     );
-                              //   },
-                              // ),
                             ),
                           ),
                           SizedBox(
@@ -130,7 +112,7 @@ class StoreProductList extends StatelessWidget {
     );
   }
 
-  Widget ProjectCard(StoreModelProducts item) {
+  Widget ProjectCard(StoreModelProducts product, String? storeId) {
     return Container(
       // width: 40.w,
       // height: 300,
@@ -139,7 +121,7 @@ class StoreProductList extends StatelessWidget {
         children: [
           Center(
             child: Image.network(
-              item.logo ?? 'https://via.placeholder.com/40x40.png',
+              product.logo ?? 'https://via.placeholder.com/40x40.png',
               fit: BoxFit.cover,
               height: 14.h,
               width: 24.w,
@@ -147,7 +129,7 @@ class StoreProductList extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            "${item.toString()}",
+            "${product.name.toString()}",
             style: AppStyles.NEW_STORE_NAME_STYLE,
           ),
           Spacer(),
@@ -159,11 +141,11 @@ class StoreProductList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Cashback \u20b9${item.cashback.toString()}",
+                    "Cashback \u20b9${product.cashback.toString()}",
                     style: AppStyles.NEW_STORE_TEXT_BOLD,
                   ),
                   Text(
-                    "\u20b9 '2/'${item.quntity}kg",
+                    "\u20b9 '2/'${product.quntity}kg",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppStyles.NEW_STORES_SUBTITLE_STYLE,
@@ -171,38 +153,15 @@ class StoreProductList extends StatelessWidget {
                 ],
               ),
               QuantityDropdown(
-                  defaultSelected: _moreStoreController.totalItemsCount,
+                  defaultSelected: _storeController.getCartItems(product.sId!),
                   onChanged: (value) {
-                    item.quntity!.value = value;
-                    if (item.quntity!.value == 0) {
-                      item.isQunitityAdd?.value = false;
-                    }
-                    _moreStoreController.addToCart(
-                      store_id: item.sId!,
-                      index: 0,
-                      increment: true,
-                      product: item,
-                      cart_id:
-                          _moreStoreController.addToCartModel.value?.sId ?? '',
+                    // _storeController.cartItemsModel.sId;
+                    _storeController.addToCart(
+                      product: product,
+                      count: value,
                     );
                     // totalCalculated();
                   }),
-              //      AddToCart(onAdd: (){
-              //       item.quntity!.value = 2;
-              // if (item.quntity!.value == 0) {
-              //   item.isQunitityAdd?.value = false;
-              // }
-              //       _moreStoreController.addToCart(
-              //   store_id: item.sId!,
-              //   index: 0,
-              //   increment: true,
-              //   product: item,
-              //   cart_id: _moreStoreController.addToCartModel.value?.sId ?? '',
-              // );
-              // // totalCalculated();
-              //      }, onRemove: (){
-              //      }, isAdded: false,
-              //      )
             ],
           ),
           SizedBox(height: 6)

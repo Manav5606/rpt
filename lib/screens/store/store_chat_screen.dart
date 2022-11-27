@@ -1,19 +1,16 @@
 import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
-import 'package:customer_app/routes/app_list.dart';
-import 'package:customer_app/screens/store/widget/chat_bubble.dart';
-import 'package:customer_app/screens/store/widget/store_product_list.dart';
 import 'package:customer_app/screens/store/store_controller.dart';
+import 'package:customer_app/screens/store/widget/store_search_item.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:customer_app/widgets/search_text_field/search_field.dart';
-import 'package:customer_app/widgets/search_text_field/search_field_button.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class NewStoreScreen extends GetView<StoreController> {
+class NewStoreChatScreen extends GetView<StoreController> {
   // const NewStoreScreen({super.key});
 
   @override
@@ -21,50 +18,68 @@ class NewStoreScreen extends GetView<StoreController> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ListView(
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Row(
-                  children: [
+                Container(
+                  padding:
+                      const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                  decoration: BoxDecoration(
+                      border: Border(
+                    bottom: BorderSide(
+                      color: AppConst.grey,
+                      width: 1,
+                    ),
+                  )),
+                  child: Stack(alignment: Alignment.topLeft, children: [
                     InkWell(
                         onTap: () => Get.back(), child: Icon(Icons.arrow_back)),
-                  ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Chat Orders",
+                              style: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 4,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'MuseoSans-700.otf',
+                              ),
+                              // AppStyles.STORE_NAME_STYLE,
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              "Vijetha Super Market",
+                              style:
+                                  AppTextStyle.h6Regular(color: AppConst.grey),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ]),
                 ),
-                SizedBox(height: 20),
-                Text(
-                  "Vijetha Super Market",
-                  style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'MuseoSans-700.otf',
-                  ),
-                  // AppStyles.STORE_NAME_STYLE,
-                ),
-                SizedBox(height: 2),
-                Text(
-                  "Kukatpally",
-                  style: AppTextStyle.h6Regular(color: AppConst.grey),
-                ),
-                SizedBox(height: 12),
+                SizedBox(height: 18),
 
-                StoreChatBubble(
-                    buttonText: "Chat",
-                    text:
-                        "Struggling to find items? \nChat with store & place orders instantly.",
-                    onTap: () => Get.toNamed(AppRoutes.NewStoreCartScreen)),
+                SearchField(
+                  hintText: "Search for Items",
+                  style: SearchFieldStyle.fromTheme(),
+                  onChanged: (String text) => controller.search(text),
+                ),
+
                 SizedBox(height: 16),
 
-                SearchFieldButton(
-                    onTab: () => Get.toNamed(AppRoutes.NewStoreSearchScreen),
-                    style: SearchFieldStyle.fromTheme()),
-                // Obx(() => Text("${controller.totalItemsCount}")),
-
-                SizedBox(height: 16),
-                Obx(() => (!controller.isLoadingStoreData.value)
-                    ? StoreProductList()
-                    : SizedBox())
+                Obx(
+                  () => Column(
+                      children: controller.searchDisplayList
+                          .map((element) => StoreSearchItem(product: element))
+                          .toList()),
+                )
                 // Text(
                 //   "Catalog 1",
                 //   style: TextStyle(
@@ -119,20 +134,13 @@ class NewStoreScreen extends GetView<StoreController> {
                     style: AppTextStyle.h4Regular(color: AppConst.white),
                   ),
                   Spacer(),
-                  InkWell(
-                    onTap: () => Get.toNamed(AppRoutes.NewStoreCartScreen),
-                    child: Row(
-                      children: [
-                        Text(
-                          "View Cart",
-                          style: AppTextStyle.h4Regular(color: AppConst.white),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: AppConst.white,
-                        ),
-                      ],
-                    ),
+                  Text(
+                    "View Cart",
+                    style: AppTextStyle.h4Regular(color: AppConst.white),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: AppConst.white,
                   ),
                 ],
               ),
