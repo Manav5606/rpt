@@ -1,6 +1,6 @@
-import 'package:customer_app/screens/store/store_binding.dart';
-import 'package:customer_app/screens/store/store_cart_screen.dart';
-import 'package:customer_app/screens/store/store_chat_screen.dart';
+import 'package:customer_app/screens/store/binding/store_binding.dart';
+import 'package:customer_app/screens/store/screens/store_cart_screen.dart';
+import 'package:customer_app/screens/store/screens/store_chat_screen.dart';
 import 'package:customer_app/screens/store/store_main_screen.dart';
 import 'package:customer_app/screens/store/store_search_screen.dart';
 import 'package:flutter/material.dart';

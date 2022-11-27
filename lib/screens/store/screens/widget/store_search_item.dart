@@ -1,8 +1,8 @@
 import 'package:customer_app/app/ui/pages/search/models/GetStoreDataModel.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/constants/assets_constants.dart';
-import 'package:customer_app/screens/store/store_controller.dart';
-import 'package:customer_app/screens/store/widget/quantity_dropdown.dart';
+import 'package:customer_app/screens/store/controller/store_controller.dart';
+import 'package:customer_app/screens/store/screens/widget/quantity_dropdown.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

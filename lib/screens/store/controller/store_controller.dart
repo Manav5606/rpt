@@ -12,8 +12,8 @@ import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/screens/more_stores/morestore_service.dart';
 import 'package:get/get.dart';
 
-import '../../app/ui/pages/search/models/GetStoreDataModel.dart';
-import '../home/models/GetAllCartsModel.dart';
+import '../../../app/ui/pages/search/models/GetStoreDataModel.dart';
+import '../../home/models/GetAllCartsModel.dart';
 
 class StoreController extends GetxController {
   RxBool isLoadingStoreData = false.obs;

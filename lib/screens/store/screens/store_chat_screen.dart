@@ -1,8 +1,8 @@
 import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
-import 'package:customer_app/screens/store/store_controller.dart';
-import 'package:customer_app/screens/store/widget/store_search_item.dart';
+import 'package:customer_app/screens/store/controller/store_controller.dart';
+import 'package:customer_app/screens/store/screens/widget/store_search_item.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:customer_app/widgets/search_text_field/search_field.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_style.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class NewStoreSearchScreen extends GetView<StoreController> {
+class NewStoreChatScreen extends GetView<StoreController> {
   // const NewStoreScreen({super.key});
 
   @override
@@ -23,21 +23,46 @@ class NewStoreSearchScreen extends GetView<StoreController> {
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Row(
-                  children: [
+                Container(
+                  padding:
+                      const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                  decoration: BoxDecoration(
+                      border: Border(
+                    bottom: BorderSide(
+                      color: AppConst.grey,
+                      width: 1,
+                    ),
+                  )),
+                  child: Stack(alignment: Alignment.topLeft, children: [
                     InkWell(
                         onTap: () => Get.back(), child: Icon(Icons.arrow_back)),
-                    SizedBox(width: 16),
-                    Text(
-                      "Vijetha Super Market",
-                      style: TextStyle(
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'MuseoSans-700.otf',
-                      ),
-                      // AppStyles.STORE_NAME_STYLE,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Chat Orders",
+                              style: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 4,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'MuseoSans-700.otf',
+                              ),
+                              // AppStyles.STORE_NAME_STYLE,
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              "Vijetha Super Market",
+                              style:
+                                  AppTextStyle.h6Regular(color: AppConst.grey),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
+                  ]),
                 ),
                 SizedBox(height: 18),
 
