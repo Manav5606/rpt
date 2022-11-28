@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:badges/badges.dart';
 import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -54,9 +56,40 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
         (activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? "pm" : "am";
 
     var TimeSlot = DayName + " " + date1 + date2 + date3 + date4;
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
+
+    var modifiedOrReplacedItemCount = ((activeOrder?.products
+                ?.where((c) => c.status == "modified")
+                .toList()
+                .length ??
+            0) +
+        (activeOrder?.rawItems
+                ?.where((c) => c.status == "modified")
+                .toList()
+                .length ??
+            0) +
+        (activeOrder?.inventories
+                ?.where((c) => c.status == "modified")
+                .toList()
+                .length ??
+            0) +
+        (activeOrder?.products
+                ?.where((c) => c.status == "replaced")
+                .toList()
+                .length ??
+            0) +
+        (activeOrder?.rawItems
+                ?.where((c) => c.status == "replaced")
+                .toList()
+                .length ??
+            0) +
+        (activeOrder?.inventories
+                ?.where((c) => c.status == "replaced")
+                .toList()
+                .length ??
+            0));
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
             child: Column(
@@ -82,26 +115,29 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   color: AppConst.black)),
                           SizedBox(height: 0.5.h),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "Delivery Slot: ${TimeSlot} ",
-                                  // "Delivery Slot: 9am - 8pm", var date1 =
-                                  // "${(].startTime?.hour ?? 0) > 12 ? ((..startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.oller.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
+                          (activeOrder?.orderType == "receipt")
+                              ? SizedBox()
+                              : RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Delivery Slot: ${TimeSlot} ",
+                                        // "Delivery Slot: 9am - 8pm", var date1 =
+                                        // "${(].startTime?.hour ?? 0) > 12 ? ((..startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.oller.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
 
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'MuseoSans',
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.7,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'MuseoSans',
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.7,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -272,7 +308,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                           height: 1.5.h,
                                         ),
                                         Text(
-                                          "Order Total- \u{20B9} ${activeOrder?.total ?? 0}",
+                                          "Total Amount- \u{20B9} ${activeOrder?.total ?? 0}",
                                           style: TextStyle(
                                               fontSize: SizeUtils
                                                       .horizontalBlockSize *
@@ -284,7 +320,9 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                           height: 0.5.h,
                                         ),
                                         Text(
-                                          "Cashback- \u{20B9} ${activeOrder?.total_cashback ?? 0}",
+                                          (activeOrder?.orderType == "receipt")
+                                              ? "Cashback - ${activeOrder?.cashback_percentage ?? 0}%"
+                                              : "Cashback- \u{20B9} ${activeOrder?.total_cashback ?? 0}",
                                           style: TextStyle(
                                               fontSize: SizeUtils
                                                       .horizontalBlockSize *
@@ -296,7 +334,9 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                           height: 0.5.h,
                                         ),
                                         Text(
-                                          "Amount Paid- \u{20B9} ${activeOrder?.total ?? 0}",
+                                          (activeOrder?.orderType == "receipt")
+                                              ? "Earned Cashback- \u{20B9} ${activeOrder?.total_cashback ?? 0}"
+                                              : "Amount Paid- \u{20B9} ${activeOrder?.total ?? 0}",
                                           style: TextStyle(
                                               fontSize: SizeUtils
                                                       .horizontalBlockSize *
@@ -307,15 +347,15 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                         SizedBox(
                                           height: 0.5.h,
                                         ),
-                                        Text(
-                                          "Total Amount - \u{20B9} ${activeOrder?.total ?? 0}",
-                                          style: TextStyle(
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  4,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppConst.white),
-                                        ),
+                                        // Text(
+                                        //   "Total Amount - \u{20B9} ${activeOrder?.total ?? 0}",
+                                        //   style: TextStyle(
+                                        //       fontSize: SizeUtils
+                                        //               .horizontalBlockSize *
+                                        //           4,
+                                        //       fontWeight: FontWeight.w500,
+                                        //       color: AppConst.white),
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -389,39 +429,52 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                               InkWell(
                                 highlightColor: AppConst.grey,
                                 onTap: (() {
-                                  (activeOrder?.status == "picked_up" ||
-                                          activeOrder?.status == "delivered")
-                                      ? SizedBox()
-                                      : Get.to(MyOrderItems(
-                                          activeOrder: activeOrder,
-                                          TimeSlot: TimeSlot,
-                                        ));
+                                  if (activeOrder?.status == "pending" ||
+                                      (activeOrder?.orderType == "receipt")) {
+                                    Get.to(MyOrderItems(
+                                      activeOrder: activeOrder,
+                                      TimeSlot: TimeSlot,
+                                    ));
+                                  } else if ((activeOrder?.status ==
+                                          "picked_up" ||
+                                      (activeOrder?.status == "accepted") ||
+                                      (activeOrder?.status == "ready") &&
+                                          (activeOrder?.total ?? 0) > 0)) {
+                                    log("payment method ontap");
+                                  } else {
+                                    log("order paid ");
+                                  }
+                                  ;
                                 }),
                                 child: Container(
                                   height: 6.h,
                                   margin: EdgeInsets.only(top: 1.h),
                                   decoration: BoxDecoration(
-                                      color:
-                                          (activeOrder?.status == "picked_up" ||
-                                                  activeOrder?.status ==
-                                                      "delivered")
-                                              ? AppConst.grey
-                                              : AppConst.lightGreen,
+                                      color: (activeOrder?.status ==
+                                                  "pending" ||
+                                              (activeOrder?.orderType ==
+                                                  "receipt"))
+                                          ? AppConst.lightGreen
+                                          : ((activeOrder?.status ==
+                                                          "picked_up" ||
+                                                      (activeOrder?.status ==
+                                                          "accepted") ||
+                                                      (activeOrder?.status ==
+                                                              "ready") &&
+                                                          (activeOrder?.total ??
+                                                                  0) >
+                                                              0) &&
+                                                  (activeOrder?.orderType !=
+                                                      "receipt")
+                                              ? AppConst.lightGreen
+                                              : AppConst.grey),
                                       border: Border.all(),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Center(
-                                    child: (activeOrder?.status ==
-                                                "picked_up" ||
-                                            activeOrder?.status == "delivered")
-                                        ? Text("Order Paid ",
-                                            style: TextStyle(
-                                              color: AppConst.white,
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  4.5,
-                                              fontWeight: FontWeight.w500,
-                                            ))
-                                        : Text(
+                                    child: (activeOrder?.status == "pending" ||
+                                            (activeOrder?.orderType ==
+                                                "receipt"))
+                                        ? Text(
                                             "View Items",
                                             style: TextStyle(
                                               color: AppConst.ContainerColor,
@@ -430,7 +483,58 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                                   4.5,
                                               fontWeight: FontWeight.w500,
                                             ),
-                                          ),
+                                          )
+                                        : ((activeOrder?.status ==
+                                                        "picked_up" ||
+                                                    (activeOrder?.status ==
+                                                        "accepted") ||
+                                                    (activeOrder?.status ==
+                                                            "ready") &&
+                                                        (activeOrder?.total ??
+                                                                0) >
+                                                            0) &&
+                                                (activeOrder?.orderType !=
+                                                    "receipt")
+                                            ? Text(
+                                                (modifiedOrReplacedItemCount >
+                                                        0)
+                                                    ? "Verify Items and Pay \u{20B9} ${activeOrder?.total ?? 0}"
+                                                    : "Pay \u{20B9} ${activeOrder?.total ?? 0}",
+                                                style: TextStyle(
+                                                  color:
+                                                      AppConst.ContainerColor,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      4.5,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            : Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.check,
+                                                    size: 3.h,
+                                                    color: AppConst.white,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 1.w,
+                                                  ),
+                                                  Text("Order Paid ",
+                                                      style: TextStyle(
+                                                        color: AppConst.white,
+                                                        fontSize: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            4.5,
+                                                        fontFamily: 'MuseoSans',
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
+                                                ],
+                                              )),
                                   ),
                                 ),
                               ),

@@ -1154,6 +1154,7 @@ wallet_amount
           status
           receipt
           order_type
+          cashback_percentage
           address
           createdAt
           delivery_slot
@@ -1265,6 +1266,7 @@ wallet_amount
           address
           createdAt
           total_cashback
+          cashback_percentage
           wallet_amount
           delivery_slot
           {

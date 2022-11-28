@@ -155,9 +155,10 @@ class ActiveReciptTabView extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => OrderTreckScreen(
+                                  builder: (context) =>
+                                      ActiveOrderTrackingScreen(
                                     // historyTab: false,
-                                    displayHour: state.displayHour.value,
+                                    // displayHour: state.displayHour.value,
                                     activeOrder: (state
                                         .activeOrdersModel.value!.data!
                                         .where((c) => c.orderType == "receipt")

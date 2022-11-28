@@ -271,7 +271,7 @@ class RefundTabView extends StatelessWidget {
                         _.selectIndex.value = index;
                         _.formatDate();
                         Get.to(
-                          () => OrderTreckScreen(
+                          () => HistoryOrderTrackingScreen(
                             order:
                                 // _.allOrdersModel.value!.data!
                                 //     .where((c) => c.orderType == "redeem_cash")
@@ -285,8 +285,8 @@ class RefundTabView extends StatelessWidget {
                                         .length)! -
                                     1 -
                                     index],
-                            displayHour: _.displayHour.value,
-                            historyTab: true,
+                            // displayHour: _.displayHour.value,
+                            // historyTab: true,
                           ),
                         );
                       },
@@ -361,7 +361,7 @@ class ReciptTabView extends StatelessWidget {
                         _.selectIndex.value = index;
                         _.formatDate();
                         Get.to(
-                          () => OrderTreckScreen(
+                          () => HistoryOrderTrackingScreen(
                             order:
                                 // _.allOrdersModel.value!.data!
                                 //     .where((c) => c.orderType == "receipt")
@@ -374,8 +374,8 @@ class ReciptTabView extends StatelessWidget {
                                         .length)! -
                                     1 -
                                     index],
-                            displayHour: _.displayHour.value,
-                            historyTab: true,
+                            // displayHour: _.displayHour.value,
+                            // historyTab: true,
                           ),
                         );
                         // Navigator.push(

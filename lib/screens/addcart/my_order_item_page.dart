@@ -20,128 +20,126 @@ class MyOrderItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularCloseButton(
-                icon: Icons.arrow_back,
-              ),
-              Spacer(),
-              Container(
-                width: 60.w,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularCloseButton(
+              icon: Icons.arrow_back,
+            ),
+            Spacer(),
+            Container(
+              width: 60.w,
 
-                // height: 7.h,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("My Items",
-                        style: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
-                            fontWeight: FontWeight.bold,
-                            color: AppConst.black)),
-                    SizedBox(height: 0.5.h),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text:
-                                "Delivery Slot: ${TimeSlot ?? ''} ", // remove the minutes if min == 0
-                            // "Delivery Slot: 9am - 8pm", var date1 =
-                            // "${(].startTime?.hour ?? 0) > 12 ? ((..startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.oller.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
+              // height: 7.h,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("My Items",
+                      style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 4,
+                          fontWeight: FontWeight.bold,
+                          color: AppConst.black)),
+                  SizedBox(height: 0.5.h),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text:
+                              "Delivery Slot: ${TimeSlot ?? ''} ", // remove the minutes if min == 0
+                          // "Delivery Slot: 9am - 8pm", var date1 =
+                          // "${(].startTime?.hour ?? 0) > 12 ? ((..startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.oller.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
 
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 2.w),
-              child: InkWell(
-                highlightColor: AppConst.highLightColor,
-                onTap: () async {
-                  _freshChat.initState();
-                  await _freshChat.showChatConversation(
-                      "Have a problem with order \n${activeOrder?.Id}\n${activeOrder?.status}\n${activeOrder?.createdAt}\n${activeOrder?.address}\n");
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.help,
-                      size: SizeUtils.horizontalBlockSize * 6.5,
-                      color: AppConst.black,
-                    ),
-                    SizedBox(width: 2.w),
-                    Text("HELP",
-                        style: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                            fontWeight: FontWeight.bold,
-                            color: AppConst.black)),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              InkWell(
-                highlightColor: AppConst.highLightColor,
-                onTap: () {
-                  _chatController.launchChat(
-                      '${activeOrder?.Id}', "${activeOrder?.store?.name}");
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 2.w,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 2.w),
+            child: InkWell(
+              highlightColor: AppConst.highLightColor,
+              onTap: () async {
+                _freshChat.initState();
+                await _freshChat.showChatConversation(
+                    "Have a problem with order \n${activeOrder?.Id}\n${activeOrder?.status}\n${activeOrder?.createdAt}\n${activeOrder?.address}\n");
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.help,
+                    size: SizeUtils.horizontalBlockSize * 6.5,
+                    color: AppConst.black,
                   ),
-                  child: StoreChatBubble(
-                    text: "Facing any issues?\nTell us your issue.",
-                    buttonText: "Chat With us",
-                  ),
-                ),
+                  SizedBox(width: 2.w),
+                  Text("HELP",
+                      style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                          fontWeight: FontWeight.bold,
+                          color: AppConst.black)),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 2.w, right: 2.w, bottom: 2.h),
-                child: StoreNameCallLogoWidget(
-                  logoLetter: activeOrder?.store?.name?.substring(0, 1),
-                  storeName: activeOrder?.store?.name,
-                  totalAmount: activeOrder?.total,
-                  paymentStatus: "Paid", // updated the status to Dynamic
-                  mobile: activeOrder?.store?.mobile,
-                  callLogo: false,
-                ),
-              ),
-              Container(
-                height: 1.4.h,
-                color: AppConst.veryLightGrey,
-              ),
-              YetToReviewItems(
-                activeOrder: activeOrder,
-              ),
-              AllFoundedItems(activeOrder: activeOrder),
-              AllReplacedItems(activeOrder: activeOrder),
-              AllModifiedItems(activeOrder: activeOrder),
-            ],
+            ),
           ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            InkWell(
+              highlightColor: AppConst.highLightColor,
+              onTap: () {
+                _chatController.launchChat(
+                    '${activeOrder?.Id}', "${activeOrder?.store?.name}");
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 2.w,
+                ),
+                child: StoreChatBubble(
+                  text: "Facing any issues?\nTell us your issue.",
+                  buttonText: "Chat With us",
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 2.w, right: 2.w, bottom: 2.h),
+              child: StoreNameCallLogoWidget(
+                logoLetter: activeOrder?.store?.name?.substring(0, 1),
+                storeName: activeOrder?.store?.name,
+                totalAmount: activeOrder?.total,
+                paymentStatus: "Paid", // updated the status to Dynamic
+                mobile: activeOrder?.store?.mobile,
+                callLogo: false,
+              ),
+            ),
+            Container(
+              height: 1.4.h,
+              color: AppConst.veryLightGrey,
+            ),
+            YetToReviewItems(
+              activeOrder: activeOrder,
+            ),
+            AllFoundedItems(activeOrder: activeOrder),
+            AllReplacedItems(activeOrder: activeOrder),
+            AllModifiedItems(activeOrder: activeOrder),
+          ],
         ),
       ),
     );
