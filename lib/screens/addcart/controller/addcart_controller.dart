@@ -17,6 +17,7 @@ import '../models/review_cart_model.dart';
 import '../services/addcart_service.dart';
 
 class AddCartController extends GetxController {
+  RxBool pickedup = false.obs;
   RxBool onTabChange = false.obs;
   RxString selectAddress = ''.obs;
   RxString selectAddressHouse = ''.obs;
@@ -54,17 +55,31 @@ class AddCartController extends GetxController {
   RxString selectWalletMode = 'yes'.obs;
   RxString totalCount = '0'.obs;
   Rx<Carts?> cart = Carts().obs;
-  List<String> quntityList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  List<String> quntityList = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10'
+  ];
 
-  Rx<GetCartPageInformation?> getCartPageInformationModel = GetCartPageInformation().obs;
+  Rx<GetCartPageInformation?> getCartPageInformationModel =
+      GetCartPageInformation().obs;
   Rx<CartLocationModel?> cartLocationModel = CartLocationModel().obs;
   Rx<order_model.OrderData?> orderModel = order_model.OrderData().obs;
   Rx<Store?> store = Store().obs;
   Rx<TimeSlots?> timeSlots = TimeSlots().obs;
   Rx<DayTimeSlots?> dayTimeSlots = DayTimeSlots().obs;
-  Rx<CreateRazorpayResponse?> createRazorpayResponseModel = CreateRazorpayResponse().obs;
+  Rx<CreateRazorpayResponse?> createRazorpayResponseModel =
+      CreateRazorpayResponse().obs;
   Rx<Addresses?> selectAddressIndex = Addresses().obs;
-  Rx<GetOrderConfirmPageData?> getOrderConfirmPageDataModel = GetOrderConfirmPageData().obs;
+  Rx<GetOrderConfirmPageData?> getOrderConfirmPageDataModel =
+      GetOrderConfirmPageData().obs;
   RxList<DeliverySlot?> deliverySlots = <DeliverySlot>[].obs;
 
   void getUserData() {
@@ -82,8 +97,11 @@ class AddCartController extends GetxController {
       if (currentDay.value == "7") {
         currentDay.value = "0";
       }
-      getCartPageInformationModel.value?.data?.deliverySlots?[int.parse(currentDay.value)].slots?.forEach((element) {
-        if ((element.startTime?.hour ?? 0) > int.parse(currentHour.value.toString())) {
+      getCartPageInformationModel
+          .value?.data?.deliverySlots?[int.parse(currentDay.value)].slots
+          ?.forEach((element) {
+        if ((element.startTime?.hour ?? 0) >
+            int.parse(currentHour.value.toString())) {
           displayHour.value = element.startTime?.hour.toString() ?? "";
           if (int.parse(displayHour.value) >= 12) {
             displayHour.value = 'By ${int.parse(displayHour.value) - 12} PM';
@@ -97,9 +115,11 @@ class AddCartController extends GetxController {
           }
           log('currentDay.value :${currentDay.value}');
           log('date.weekday.value :${date.weekday}');
-          var timeData = getCartPageInformationModel.value?.data?.deliverySlots?[int.parse(currentDay.value)].slots?.first;
+          var timeData = getCartPageInformationModel.value?.data
+              ?.deliverySlots?[int.parse(currentDay.value)].slots?.first;
 
-          displayHour.value = "Tomorrow, ${timeType(timeData?.startTime?.hour.toString())}  -  ${timeType(timeData?.endTime?.hour.toString())}";
+          displayHour.value =
+              "Tomorrow, ${timeType(timeData?.startTime?.hour.toString())}  -  ${timeType(timeData?.endTime?.hour.toString())}";
         }
       });
 
@@ -123,7 +143,8 @@ class AddCartController extends GetxController {
     try {
       isLoading.value = true;
       reviewCart.value = await AddCartService.getReviewCartData(cartId);
-      totalCount.value = reviewCart.value?.data?.totalItemsCount.toString() ?? '';
+      totalCount.value =
+          reviewCart.value?.data?.totalItemsCount.toString() ?? '';
       log('totalCount.value:${totalCount.value}');
       isLoading.value = false;
     } catch (e, st) {
@@ -134,8 +155,10 @@ class AddCartController extends GetxController {
   Future<void> getCartPageInformation({required String storeId}) async {
     try {
       isLoading.value = true;
-      getCartPageInformationModel.value = await AddCartService.getCartPageInformation(storeId);
-      deliverySlots.addAll(getCartPageInformationModel.value?.data?.deliverySlots ?? []);
+      getCartPageInformationModel.value =
+          await AddCartService.getCartPageInformation(storeId);
+      deliverySlots
+          .addAll(getCartPageInformationModel.value?.data?.deliverySlots ?? []);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -150,7 +173,11 @@ class AddCartController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
-      cart.value = await ChatOrderService.addToCartRaw(rawItem: rawItem, cartId: cartId, isEdit: isEdit, newValueItem: newValueItem);
+      cart.value = await ChatOrderService.addToCartRaw(
+          rawItem: rawItem,
+          cartId: cartId,
+          isEdit: isEdit,
+          newValueItem: newValueItem);
       reviewCart.value?.data?.rawItems = cart.value?.rawItems;
       totalCount.value = cart.value?.totalItemsCount?.value.toString() ?? '';
       log('totalCount.value :${totalCount.value}');
@@ -161,17 +188,20 @@ class AddCartController extends GetxController {
     }
   }
 
-  Future<void> getCartLocation({required String storeId, required String cartId}) async {
+  Future<void> getCartLocation(
+      {required String storeId, required String cartId}) async {
     try {
       isLoading.value = true;
-      cartLocationModel.value = await AddCartService.getCartLocation(storeId, cartId);
+      cartLocationModel.value =
+          await AddCartService.getCartLocation(storeId, cartId);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
     }
   }
 
-  Future<void> selectCartLocation({required String cardId, required Addresses? addresses}) async {
+  Future<void> selectCartLocation(
+      {required String cardId, required Addresses? addresses}) async {
     try {
       isLoading.value = true;
       await AddCartService.selectCartLocation(cardId, addresses!);
@@ -181,10 +211,13 @@ class AddCartController extends GetxController {
     }
   }
 
-  Future<void> createRazorPayOrder({required String storeId, required double amount}) async {
+  Future<void> createRazorPayOrder(
+      {required String storeId, required double amount}) async {
     try {
       isLoading.value = true;
-      createRazorpayResponseModel.value = await AddCartService.createRazorPayOrder(storeId: storeId, amount: amount);
+      createRazorpayResponseModel.value =
+          await AddCartService.createRazorPayOrder(
+              storeId: storeId, amount: amount);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -208,6 +241,7 @@ class AddCartController extends GetxController {
     required double lng,
     required int packagingFee,
     required int deliveryFee,
+    required bool pickedup,
     required var deliveryTimeSlot,
   }) async {
     try {
@@ -229,7 +263,8 @@ class AddCartController extends GetxController {
           lng: lng,
           packagingFee: packagingFee,
           deliveryFee: deliveryFee,
-          deliveryTimeSlot: deliveryTimeSlot);
+          deliveryTimeSlot: deliveryTimeSlot,
+          pickedup: pickedup);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -260,11 +295,20 @@ class AddCartController extends GetxController {
   }
 
   Future<void> getOrderConfirmPageData(
-      {required String storeId, required double distance, required double walletAmount, var products, var inventories}) async {
+      {required String storeId,
+      required double distance,
+      required double walletAmount,
+      var products,
+      var inventories}) async {
     try {
       isLoading.value = true;
-      getOrderConfirmPageDataModel.value = await AddCartService.getOrderConfirmPageData(
-          storeId: storeId, distance: distance, walletAmount: walletAmount, products: products, inventories: inventories);
+      getOrderConfirmPageDataModel.value =
+          await AddCartService.getOrderConfirmPageData(
+              storeId: storeId,
+              distance: distance,
+              walletAmount: walletAmount,
+              products: products,
+              inventories: inventories);
 
       // deliverySlots.addAll(getOrderConfirmPageDataModel.value?.data?.deliverySlots ?? []);
       isLoading.value = false;
@@ -283,7 +327,8 @@ class AddCartController extends GetxController {
         WeekDay(
             day: dayNameFormatter.format(date),
             date: dayFormatter.format(date),
-            value: (dayNameFormatter.format(date) == 'Sunday') ? 0 : date.weekday),
+            value:
+                (dayNameFormatter.format(date) == 'Sunday') ? 0 : date.weekday),
       );
     }
     selectDay.value = weekDayList[selectedDayIndex.value].day ?? '';
