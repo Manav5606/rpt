@@ -31,14 +31,10 @@ class HomeAppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // Icon(
-          //   Icons.location_on_rounded,
-          //   color: AppConst.black,
-          //   size: SizeUtils.horizontalBlockSize * 7.5,
-          // ),
           Icon(
-            Icons.keyboard_arrow_down_outlined,
-            size: 6.w,
+            Icons.location_on_rounded,
+            color: AppConst.black,
+            size: SizeUtils.horizontalBlockSize * 7.5,
           ),
           SizedBox(
             width: 1.w,
@@ -46,7 +42,7 @@ class HomeAppBar extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 50.w,
+                width: 40.w,
                 child: Text(
                   address,
                   // maxLines: 1,
@@ -64,10 +60,10 @@ class HomeAppBar extends StatelessWidget {
               // SizedBox(
               //   width: 1.w,
               // ),
-              // Icon(
-              //   Icons.keyboard_arrow_down_outlined,
-              //   size: 6.w,
-              // ),
+              Icon(
+                Icons.keyboard_arrow_down_outlined,
+                size: 6.w,
+              ),
             ],
           ),
           Spacer(),

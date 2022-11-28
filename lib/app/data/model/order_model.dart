@@ -69,6 +69,7 @@ class OrderData {
     Id = json['_id'];
     status = json['status'];
     receipt = json['receipt'];
+
     orderType = json['order_type'];
     total = json['total'];
     cashback_percentage = json['cashback_percentage'];
@@ -143,43 +144,15 @@ class RawItems {
   String? item;
   int? quantity;
   String? sId;
-  String? logo;
   bool? modified;
-  bool? deleted;
-  String? status;
-  String? updatelogo;
-  String? updatename;
-  num? updatemrp;
-  num? updateselling_price;
-  int? updatequantity;
 
-  RawItems(
-      {this.item,
-      this.quantity,
-      this.sId,
-      this.modified,
-      this.logo,
-      this.deleted,
-      this.status,
-      this.updatelogo,
-      this.updatemrp,
-      this.updatename,
-      this.updatequantity,
-      this.updateselling_price});
+  RawItems({this.item, this.quantity, this.sId, this.modified});
 
   RawItems.fromJson(Map<String, dynamic> json) {
     item = json['item'];
     quantity = json['quantity'];
     sId = json['_id'];
     modified = json['modified'];
-    logo = json['logo'];
-    deleted = json['deleted'];
-    status = json['status'];
-    updatelogo = json['updatelogo'];
-    updatemrp = json['updatemrp'];
-    updatename = json['updatename'];
-    updatequantity = json['updatequantity'];
-    updateselling_price = json['updateselling_price'];
   }
 
   Map<String, dynamic> toJson() {
@@ -188,15 +161,6 @@ class RawItems {
     data['quantity'] = this.quantity;
     data['_id'] = this.sId;
     data['modified'] = this.modified;
-    data['logo'] = this.logo;
-    data['deleted'] = this.deleted;
-    data['status'] = this.status;
-    data['updatelogo'] = this.updatelogo;
-    data['updatemrp'] = this.updatemrp;
-    data['updatename'] = this.updatename;
-    data['updatequantity'] = this.updatequantity;
-    data['updateselling_price'] = this.updateselling_price;
-
     return data;
   }
 }
@@ -205,21 +169,14 @@ class Rider {
   String? mobile;
   String? sId;
   String? firstName;
-  String? last_name;
   String? bankDocumentPhoto;
 
-  Rider(
-      {this.mobile,
-      this.sId,
-      this.firstName,
-      this.bankDocumentPhoto,
-      this.last_name});
+  Rider({this.mobile, this.sId, this.firstName, this.bankDocumentPhoto});
 
   Rider.fromJson(Map<String, dynamic> json) {
     mobile = json['mobile'];
     sId = json['_id'];
     firstName = json['first_name'];
-    last_name = json['last_name'];
     bankDocumentPhoto = json['bank_document_photo'];
   }
 
@@ -228,7 +185,6 @@ class Rider {
     data['mobile'] = this.mobile;
     data['_id'] = this.sId;
     data['first_name'] = this.firstName;
-    data['last_name'] = this.last_name;
     data['bank_document_photo'] = this.bankDocumentPhoto;
     return data;
   }
@@ -284,38 +240,18 @@ class StartTime {
 }
 
 class Products {
-  String? id;
   String? name;
-  num? mrp;
-  num? cashback;
-  num? gst_amount;
   int? quantity;
   bool? deleted;
   bool? modified;
   int? sellingPrice;
-  String? status;
-  String? updatelogo;
-  String? updatename;
-  num? updatemrp;
-  num? updateselling_price;
-  int? updatequantity;
 
   Products(
       {this.name,
       this.quantity,
       this.deleted,
       this.modified,
-      this.sellingPrice,
-      this.id,
-      this.cashback,
-      this.gst_amount,
-      this.mrp,
-      this.status,
-      this.updatelogo,
-      this.updatemrp,
-      this.updatename,
-      this.updatequantity,
-      this.updateselling_price});
+      this.sellingPrice});
 
   Products.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -323,16 +259,6 @@ class Products {
     deleted = json['deleted'];
     modified = json['modified'];
     sellingPrice = json['selling_price'];
-    id = json['_id'];
-    mrp = json['mrp'];
-    cashback = json['cashback'];
-    status = json['status'];
-    updatelogo = json['updatelogo'];
-    updatename = json['updatename'];
-    updatemrp = json['updatemrp'];
-    updateselling_price = json['updateselling_price'];
-    updatequantity = json['updatequantity'];
-    gst_amount = json['gst_amount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -342,69 +268,32 @@ class Products {
     data['deleted'] = this.deleted;
     data['modified'] = this.modified;
     data['selling_price'] = this.sellingPrice;
-    data['_id'] = this.id;
-    data['mrp'] = this.mrp;
-    data['cashback'] = this.cashback;
-    data['status'] = this.status;
-    data['updatelogo'] = this.updatelogo;
-    data['updatename'] = this.updatename;
-    data['updatemrp'] = this.updatemrp;
-    data['updateselling_price'] = this.updateselling_price;
-    data['updatequantity'] = this.updatequantity;
-    data['gst_amount'] = this.gst_amount;
     return data;
   }
 }
 
 class InventoriesData {
-  String? id;
   String? name;
-  num? mrp;
-  num? cashback;
-  num? gst_amount;
   int? quantity;
-  bool? deleted;
-  bool? modified;
-  int? sellingPrice;
   String? status;
-  String? updatelogo;
-  String? updatename;
-  num? updatemrp;
-  num? updateselling_price;
-  int? updatequantity;
+  num? sellingPrice;
+  num? mrp;
+  num? gst_amount;
 
   InventoriesData(
       {this.name,
       this.quantity,
-      this.deleted,
-      this.modified,
-      this.sellingPrice,
-      this.id,
-      this.cashback,
-      this.gst_amount,
-      this.mrp,
       this.status,
-      this.updatelogo,
-      this.updatemrp,
-      this.updatename,
-      this.updatequantity,
-      this.updateselling_price});
+      this.sellingPrice,
+      this.mrp,
+      this.gst_amount});
 
   InventoriesData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     quantity = json['quantity'];
-    deleted = json['deleted'];
-    modified = json['modified'];
-    sellingPrice = json['selling_price'];
-    id = json['_id'];
-    mrp = json['mrp'];
-    cashback = json['cashback'];
     status = json['status'];
-    updatelogo = json['updatelogo'];
-    updatename = json['updatename'];
-    updatemrp = json['updatemrp'];
-    updateselling_price = json['updateselling_price'];
-    updatequantity = json['updatequantity'];
+    sellingPrice = json['selling_price'];
+    mrp = json['mrp'];
     gst_amount = json['gst_amount'];
   }
 
@@ -412,18 +301,9 @@ class InventoriesData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['quantity'] = this.quantity;
-    data['deleted'] = this.deleted;
-    data['modified'] = this.modified;
-    data['selling_price'] = this.sellingPrice;
-    data['_id'] = this.id;
-    data['mrp'] = this.mrp;
-    data['cashback'] = this.cashback;
     data['status'] = this.status;
-    data['updatelogo'] = this.updatelogo;
-    data['updatename'] = this.updatename;
-    data['updatemrp'] = this.updatemrp;
-    data['updateselling_price'] = this.updateselling_price;
-    data['updatequantity'] = this.updatequantity;
+    data['selling_price'] = this.sellingPrice;
+    data['mrp'] = this.mrp;
     data['gst_amount'] = this.gst_amount;
     return data;
   }
