@@ -145,7 +145,7 @@ class StoreChatBubble extends StatelessWidget {
                 // "Facing any issues?\nTell us your issue.",
                 style: TextStyle(
                   color: Color(0xff003d29),
-                  fontSize: 14,
+                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
                 ),
               ),
               Container(
@@ -160,7 +160,7 @@ class StoreChatBubble extends StatelessWidget {
                     buttonText ?? "Chat with Us",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: SizeUtils.horizontalBlockSize * 3.7,
                         fontWeight: FontWeight.bold),
                   ),
                 ),

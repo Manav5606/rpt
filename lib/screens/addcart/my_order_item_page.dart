@@ -57,7 +57,10 @@ class MyOrderItems extends StatelessWidget {
 
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 14,
+                            fontFamily: 'MuseoSans',
+                            fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
                           ),
                         ),
                       ],

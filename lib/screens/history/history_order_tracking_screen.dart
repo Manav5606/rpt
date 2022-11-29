@@ -899,53 +899,63 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                     )),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 1.h),
+                                horizontal: 2.w, vertical: 0.5.h),
                             child: Container(
-                              height: (order?.status != "") ? 30.h : 27.h,
+                              height: (order?.status != "pending" &&
+                                      order?.orderType != "receipt")
+                                  ? 31.h
+                                  : 28.h,
                               decoration: BoxDecoration(
                                   color: AppConst.ContainerColor,
                                   border: Border.all(),
                                   borderRadius: BorderRadius.circular(12)),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 3.w, vertical: 1.h),
+                                padding: EdgeInsets.only(
+                                    left: 3.w, right: 3.w, top: 1.h),
                                 child: Column(
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(HistoryOrderItems(
-                                          order: order,
-                                          TimeSlot: TimeSlot,
-                                        ));
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.only(bottom: 0.5.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              "View Items",
-                                              style: TextStyle(
-                                                color: AppConst.lightGreen,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4,
-                                                fontWeight: FontWeight.w500,
+                                    (order?.status != "pending" &&
+                                            order?.orderType != "receipt")
+                                        ? InkWell(
+                                            onTap: () {
+                                              Get.to(HistoryOrderItems(
+                                                order: order,
+                                                TimeSlot: TimeSlot,
+                                              ));
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 0.5.h),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    "View Items",
+                                                    style: TextStyle(
+                                                      color:
+                                                          AppConst.lightGreen,
+                                                      fontSize: SizeUtils
+                                                              .horizontalBlockSize *
+                                                          4,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 1.w,
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .arrow_forward_ios_rounded,
+                                                    color: AppConst.lightGreen,
+                                                    size: 2.h,
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            SizedBox(
-                                              width: 1.w,
-                                            ),
-                                            Icon(
-                                              Icons.arrow_forward_ios_rounded,
-                                              color: AppConst.lightGreen,
-                                              size: 2.h,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                          )
+                                        : SizedBox(),
                                     Row(
                                       children: [
                                         Container(
