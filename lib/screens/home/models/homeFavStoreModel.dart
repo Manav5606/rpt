@@ -27,16 +27,18 @@ class GetHomePageFavoriteShops {
 }
 
 class HomeFavModel {
-  HomeFavModel({
-    this.id,
-    this.name,
-    this.logo,
-    this.defaultCashback,
-    this.businesstype,
-    this.calculateDistance,
-    this.storeType,
-    this.premium,
-  });
+  HomeFavModel(
+      {this.id,
+      this.name,
+      this.logo,
+      this.defaultCashback,
+      this.businesstype,
+      this.calculateDistance,
+      this.storeType,
+      this.premium,
+      this.bill_discount_offer_amount,
+      this.bill_discount_offer_status,
+      this.bill_discount_offer_target});
 
   String? id;
   String? name;
@@ -46,17 +48,22 @@ class HomeFavModel {
   int? defaultCashback;
   num? calculateDistance;
   bool? premium;
+  bool? bill_discount_offer_status;
+  int? bill_discount_offer_target;
+  int? bill_discount_offer_amount;
 
   factory HomeFavModel.fromJson(Map<String, dynamic> json) => HomeFavModel(
-        id: json["_id"],
-        name: json["name"],
-    businesstype: json["businesstype"],
-        storeType: json["store_type"],
-        logo: json["logo"],
-        defaultCashback: json["default_cashback"],
-        calculateDistance: json["calculated_distance"],
-        premium: json["premium"],
-      );
+      id: json["_id"],
+      name: json["name"],
+      businesstype: json["businesstype"],
+      storeType: json["store_type"],
+      logo: json["logo"],
+      defaultCashback: json["default_cashback"],
+      calculateDistance: json["calculated_distance"],
+      premium: json["premium"],
+      bill_discount_offer_status: json["bill_discount_offer_status"],
+      bill_discount_offer_target: json["bill_discount_offer_target"],
+      bill_discount_offer_amount: json["bill_discount_offer_amount"]);
 
   Map<String, dynamic> toJson() => {
         "_id": id,
@@ -67,5 +74,8 @@ class HomeFavModel {
         "default_cashback": defaultCashback,
         "calculated_distance": calculateDistance,
         "premium": premium,
+        "bill_discount_offer_amount": bill_discount_offer_amount,
+        "bill_discount_offer_target": bill_discount_offer_target,
+        "bill_discount_offer_status": bill_discount_offer_status
       };
 }

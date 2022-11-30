@@ -25,6 +25,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   final HomeController _homeController = Get.find();
   late Razorpay _razorpay;
   int selectExpandeIndex = 0;
+  // bool pickedup = false;
 
   @override
   void initState() {
@@ -47,32 +48,32 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
   void finalPlaceOrder({PaymentSuccessResponse? response}) async {
     await _addCartController.finalPlaceOrder(
-      order_type: "online",
-      total: double.parse(_addCartController
-              .getOrderConfirmPageDataModel.value?.data?.total
-              ?.toStringAsFixed(2) ??
-          ''),
-      store: _addCartController.store.value,
-      cartId: _addCartController.cartId.value,
-      products: _addCartController.reviewCart.value?.data?.products,
-      rawItem: _addCartController.reviewCart.value?.data?.rawItems,
-      inventories: _addCartController.reviewCart.value?.data?.inventories,
-      deliveryTimeSlot: _addCartController.dayTimeSlots.value,
-      walletAmount:
-          _addCartController.reviewCart.value?.data?.walletAmount ?? 0,
-      deliveryFee: _addCartController
-              .getOrderConfirmPageDataModel.value?.data?.deliveryFee ??
-          0,
-      packagingFee: _addCartController
-              .getOrderConfirmPageDataModel.value?.data?.packagingFee ??
-          0,
-      razorPayPaymentId: response?.paymentId ?? '',
-      razorPayOrderId: response?.orderId ?? '',
-      razorPaySignature: response?.signature ?? '',
-      lat: _addCartController.selectAddressIndex.value?.location?.lat ?? 0,
-      lng: _addCartController.selectAddressIndex.value?.location?.lng ?? 0,
-      address: _addCartController.selectAddressIndex.value?.address ?? '',
-    );
+        order_type: "online",
+        total: double.parse(_addCartController
+                .getOrderConfirmPageDataModel.value?.data?.total
+                ?.toStringAsFixed(2) ??
+            ''),
+        store: _addCartController.store.value,
+        cartId: _addCartController.cartId.value,
+        products: _addCartController.reviewCart.value?.data?.products,
+        rawItem: _addCartController.reviewCart.value?.data?.rawItems,
+        inventories: _addCartController.reviewCart.value?.data?.inventories,
+        deliveryTimeSlot: _addCartController.dayTimeSlots.value,
+        walletAmount:
+            _addCartController.reviewCart.value?.data?.walletAmount ?? 0,
+        deliveryFee: _addCartController
+                .getOrderConfirmPageDataModel.value?.data?.deliveryFee ??
+            0,
+        packagingFee: _addCartController
+                .getOrderConfirmPageDataModel.value?.data?.packagingFee ??
+            0,
+        razorPayPaymentId: response?.paymentId ?? '',
+        razorPayOrderId: response?.orderId ?? '',
+        razorPaySignature: response?.signature ?? '',
+        lat: _addCartController.selectAddressIndex.value?.location?.lat ?? 0,
+        lng: _addCartController.selectAddressIndex.value?.location?.lng ?? 0,
+        address: _addCartController.selectAddressIndex.value?.address ?? '',
+        pickedup: _addCartController.pickedup.value);
     if (_addCartController.orderModel.value != null) {
       _addCartController.formatDate();
       await Navigator.pushAndRemoveUntil(
@@ -362,6 +363,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                             onTap: () {
                               selectAddress(_addCartController
                                   .cartLocationModel.value?.addresses?[index]);
+                              _addCartController.pickedup.value = false;
                             },
                             text: "Choose Address")
                       else
@@ -427,6 +429,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                 onTap: () {
                                   selectAddress(_addCartController
                                       .cartLocationModel.value?.storeAddress);
+                                  _addCartController.pickedup.value = true;
                                 },
                                 text: "Choose Address")
                           else

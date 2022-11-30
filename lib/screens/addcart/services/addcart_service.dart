@@ -155,6 +155,7 @@ class AddCartService {
     required int packagingFee,
     required int deliveryFee,
     required var deliveryTimeSlot,
+    required bool pickedup,
   }) async {
     try {
       final variables = {
@@ -177,6 +178,7 @@ class AddCartService {
         'lat': lat,
         'lng': lng,
         'cartID': cartId,
+        'pickedup': pickedup
       };
       final result = await GraphQLRequest.query(
           query: GraphQLQueries.finalPlaceOrder, variables: variables);

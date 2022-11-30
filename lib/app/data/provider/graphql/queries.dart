@@ -1124,8 +1124,10 @@ wallet_amount
           _id
           status
           order_type
+          cashback_percentage
           address
           createdAt
+          receipt
           delivery_slot
           {
           day
@@ -1145,27 +1147,41 @@ wallet_amount
           type
           coordinates
         }
-          rawitems
+        products
           {
-            item
-            quantity
-          }
-          products
-          {
-            name
-            quantity
-            deleted
-            modified
-            selling_price
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
            inventories
           {
             name
-            quantity
-            mrp
-            status
-            selling_price
-            gst_amount
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
              rawitems{
              logo
@@ -1173,6 +1189,13 @@ wallet_amount
             _id
             quantity 
             modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
           }
         store
           {
@@ -1188,6 +1211,7 @@ wallet_amount
             mobile
             _id
             first_name
+            last_name
             bank_document_photo
           }
         }
@@ -1210,7 +1234,9 @@ wallet_amount
           order_type
           address
           createdAt
+          receipt
           total_cashback
+          cashback_percentage
           wallet_amount
           delivery_slot
           {
@@ -1231,42 +1257,61 @@ wallet_amount
           type
           coordinates
         }
-          rawitems
+         products
           {
-            item
-            logo
-            quantity
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
-          products
+           inventories
           {
             name
-            quantity
-            deleted
-            modified
-            selling_price
-          }
-          inventories
-          {
-            name
-            quantity
-            mrp
-            status
-            selling_price
-            gst_amount
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
              rawitems{
+             logo
             item
             _id
-            quantity
-            logo
+            quantity 
             modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
           }
         store
           {
            _id
               mobile
               name
-              logo
               address{
                 address
               }
@@ -1276,6 +1321,7 @@ wallet_amount
             mobile
             _id
             first_name
+            last_name
             bank_document_photo
           }
         }

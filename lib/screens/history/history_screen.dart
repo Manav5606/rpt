@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
+import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -178,9 +179,9 @@ class OrderTabView extends StatelessWidget {
                               _.selectIndex.value = index;
                               _.formatDate();
                               await Get.to(
-                                () => OrderTreckScreen(
-                                  historyTab: true,
-                                  displayHour: _.displayHour.value,
+                                () => HistoryOrderTrackingScreen(
+                                  // historyTab: true,
+                                  // displayHour: _.displayHour.value,
                                   order:
                                       // _.allOrdersModel.value!.data!
                                       //     .where((c) => c.orderType == "online")
@@ -270,7 +271,7 @@ class RefundTabView extends StatelessWidget {
                         _.selectIndex.value = index;
                         _.formatDate();
                         Get.to(
-                          () => OrderTreckScreen(
+                          () => HistoryOrderTrackingScreen(
                             order:
                                 // _.allOrdersModel.value!.data!
                                 //     .where((c) => c.orderType == "redeem_cash")
@@ -284,8 +285,8 @@ class RefundTabView extends StatelessWidget {
                                         .length)! -
                                     1 -
                                     index],
-                            displayHour: _.displayHour.value,
-                            historyTab: true,
+                            // displayHour: _.displayHour.value,
+                            // historyTab: true,
                           ),
                         );
                       },
@@ -360,7 +361,7 @@ class ReciptTabView extends StatelessWidget {
                         _.selectIndex.value = index;
                         _.formatDate();
                         Get.to(
-                          () => OrderTreckScreen(
+                          () => HistoryOrderTrackingScreen(
                             order:
                                 // _.allOrdersModel.value!.data!
                                 //     .where((c) => c.orderType == "receipt")
@@ -373,8 +374,8 @@ class ReciptTabView extends StatelessWidget {
                                         .length)! -
                                     1 -
                                     index],
-                            displayHour: _.displayHour.value,
-                            historyTab: true,
+                            // displayHour: _.displayHour.value,
+                            // historyTab: true,
                           ),
                         );
                         // Navigator.push(
@@ -428,6 +429,9 @@ class OrderTabViewCard extends StatelessWidget {
   final ExploreController _exploreController = Get.find();
   @override
   Widget build(BuildContext context) {
+    int itemsLength = ((order?.products?.length ?? 0) +
+        (order?.rawItems?.length ?? 0) +
+        (order?.inventories?.length ?? 0));
     return Column(
       children: [
         Container(
@@ -543,7 +547,7 @@ class OrderTabViewCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '${order?.products?.length ?? 0} items.  Earned cashback \u{20B9} ${order?.total_cashback ?? 0}',
+                          '${itemsLength} items.  Earned cashback \u{20B9} ${order?.total_cashback ?? 0}',
                           style: AppStyles.STORES_SUBTITLE_STYLE,
                         ),
                         // Icon(Icons.monetization_on,

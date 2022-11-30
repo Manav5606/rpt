@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
 import 'package:customer_app/routes/app_list.dart';
+import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,9 +155,10 @@ class ActiveReciptTabView extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => OrderTreckScreen(
+                                  builder: (context) =>
+                                      ActiveOrderTrackingScreen(
                                     // historyTab: false,
-                                    displayHour: state.displayHour.value,
+                                    // displayHour: state.displayHour.value,
                                     activeOrder: (state
                                         .activeOrdersModel.value!.data!
                                         .where((c) => c.orderType == "receipt")
@@ -253,9 +255,10 @@ class ActiveOrderTabView extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => OrderTreckScreen(
+                                  builder: (context) =>
+                                      ActiveOrderTrackingScreen(
                                     // historyTab: false,
-                                    displayHour: state.displayHour.value,
+                                    // displayHour: state.displayHour.value,
                                     activeOrder: (state
                                         .activeOrdersModel.value!.data!
                                         .where((c) => c.orderType == "online")
@@ -312,6 +315,9 @@ class ActiveOrderTabViewCard extends StatelessWidget {
   final ExploreController _exploreController = Get.find();
   @override
   Widget build(BuildContext context) {
+    int itemsLength = ((order?.products?.length ?? 0) +
+        (order?.rawItems?.length ?? 0) +
+        (order?.inventories?.length ?? 0));
     return Column(
       children: [
         Padding(
@@ -424,7 +430,7 @@ class ActiveOrderTabViewCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '${order?.products?.length ?? 0} items.  Earned cashback \u{20B9} ${order?.total_cashback ?? 0}',
+                          '${itemsLength} items.  Earned cashback \u{20B9} ${order?.total_cashback ?? 0}',
                           style: AppStyles.STORES_SUBTITLE_STYLE,
                         ),
                         // Icon(Icons.monetization_on,
