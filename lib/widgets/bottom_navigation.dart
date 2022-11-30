@@ -41,51 +41,82 @@ class BottomNavigation extends StatelessWidget {
               onTap: _onItemTapped,
               unselectedItemColor: AppConst.grey,
               iconSize: 22,
-              selectedItemColor: AppConst.kSecondaryColor,
+              selectedItemColor: Color(0xff005b41),
               elevation: 0,
               items: [
                 BottomNavigationBarItem(
                   label: StringContants.orders,
-                  icon: Icon(
-                    Icons.home,
-                    size: 3.5.h,
-                  ),
+                  icon: (value == 0)
+                      ? Icon(
+                          Icons.home,
+                          size: 3.5.h,
+                        )
+                      : Icon(
+                          Icons.home_outlined,
+                          size: 3.5.h,
+                        ),
                 ),
                 BottomNavigationBarItem(
-                    label: StringContants.chats,
-                    icon: ((UserViewModel.unreadCount.value != 0 &&
-                            value != 1 &&
-                            value != 2 &&
-                            value != 3)
-                        ? Badge(
-                            badgeContent:
-                                Text("${UserViewModel.unreadCount.value}"),
-                            child: Icon(
-                              CupertinoIcons.chat_bubble_fill,
-                              size: 3.5.h,
-                            ),
+                  label: StringContants.chats,
+                  icon:
+                      // ((UserViewModel.unreadCount.value != 0 &&
+                      //         value != 1 &&
+                      //         value != 2 &&
+                      //         value != 3)
+                      //     ? Badge(
+                      //         badgeColor: AppConst.blue,
+                      //         badgeContent:
+                      //             Text("${UserViewModel.unreadCount.value}"),
+                      //         child: (value == 1)
+                      //             ? Icon(
+                      //                 CupertinoIcons.chat_bubble_2_fill,
+                      //                 size: 3.5.h,
+                      //               )
+                      //             : Icon(
+                      //                 CupertinoIcons.chat_bubble_2,
+                      //                 size: 3.5.h,
+                      //               ),
+                      //       )
+                      //     :
+                      Badge(
+                    position: BadgePosition.topEnd(top: -8, end: -6),
+                    badgeColor: AppConst.orange,
+                    //  Color(0xff5764da),
+                    badgeContent: Text(""),
+                    child: (value == 1)
+                        ? Icon(
+                            CupertinoIcons.chat_bubble_fill,
+                            size: 3.5.h,
                           )
-                        : Badge(
-                            badgeContent: Text(""),
-                            child: Icon(
-                              CupertinoIcons.chat_bubble_fill,
-                              size: 3.5.h,
-                            ),
-                          ))),
-                BottomNavigationBarItem(
-                  label: StringContants.explore,
-                  icon: Icon(
-                    Icons.search,
-                    size: 3.5.h,
+                        : Icon(
+                            CupertinoIcons.chat_bubble,
+                            size: 3.5.h,
+                          ),
+                    // )
                   ),
                 ),
                 BottomNavigationBarItem(
-                  label: StringContants.myAccount,
-                  icon: Icon(
-                    CupertinoIcons.person_fill,
-                    size: 3.5.h,
-                  ),
-                ),
+                    label: StringContants.explore,
+                    icon: (value == 2)
+                        ? Icon(
+                            Icons.search,
+                            size: 3.5.h,
+                          )
+                        : Icon(
+                            Icons.search,
+                            size: 3.5.h,
+                          )),
+                BottomNavigationBarItem(
+                    label: StringContants.myAccount,
+                    icon: (value == 3)
+                        ? Icon(
+                            CupertinoIcons.person_fill,
+                            size: 3.5.h,
+                          )
+                        : Icon(
+                            CupertinoIcons.person,
+                            size: 3.5.h,
+                          )),
               ],
             ),
           );
