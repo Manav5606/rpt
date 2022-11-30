@@ -14,6 +14,7 @@ import 'package:customer_app/screens/wallet/controller/paymentController.dart';
 import 'package:customer_app/widgets/backButton.dart';
 import 'package:customer_app/widgets/homescreen_appbar.dart';
 import 'package:customer_app/widgets/permission_raw.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
@@ -49,7 +50,14 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Color(0xff005b41),
+              statusBarIconBrightness: Brightness.light),
+          iconTheme: IconThemeData(
+            color: AppConst.white,
+          ),
           elevation: 0,
+          backgroundColor: Color(0xff005b41),
           title: Obx(
             () => HomeAppBar(
               onTap: () async {

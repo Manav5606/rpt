@@ -1,4 +1,5 @@
 import 'package:customer_app/app/controller/account_controller.dart';
+import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
@@ -14,6 +15,7 @@ import 'package:customer_app/theme/styles.dart';
 import 'package:customer_app/widgets/backButton.dart';
 import 'package:customer_app/widgets/homescreen_appbar.dart';
 import 'package:customer_app/widgets/permission_raw.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -46,6 +48,13 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff005b41),
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Color(0xff005b41),
+            statusBarIconBrightness: Brightness.light),
+        iconTheme: IconThemeData(
+          color: AppConst.white,
+        ),
         elevation: 0,
         title: Obx(
           () => HomeAppBar(
