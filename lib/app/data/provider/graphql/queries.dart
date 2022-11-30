@@ -852,6 +852,9 @@ query($lat: Float, $lng: Float) {
         calculated_distance
         store_type
         premium
+        bill_discount_offer_status
+        bill_discount_offer_target
+        bill_discount_offer_amount
         businesstype
       }
       keywords{
