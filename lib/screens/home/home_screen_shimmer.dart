@@ -281,6 +281,7 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
                                         : Get.to(() => StoreListScreen());
                                   },
                                   child: CategoryCard(
+                                      index: index,
                                       category: _homeController
                                           .getHomePageFavoriteShopsModel
                                           .value!
@@ -334,35 +335,35 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
             ),
           ),
         ),
-        floatingActionButton: FadeTransition(
-          opacity: _hideFabAnimController,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // SizedBox(
-              //   height: 50,
-              //   width: 50,
-              //   child: FloatingActionButton(
-              //     heroTag: '1',
-              //     elevation: 1,
-              //     onPressed: () {
-              //       Get.to(() => LocationPickerScreen());
-              //     },
-              //     backgroundColor: kSecondaryColor,
-              //   child: SvgPicture.asset(AssetsContants.cartLogo,
-              //       color: Colors.white, semanticsLabel: 'Acme Logo'),
-              // ),
-              // ),
-              FloatingActionButton(
-                heroTag: '2',
-                elevation: 1,
-                backgroundColor: AppConst.kPrimaryColor,
-                onPressed: () {},
-                child: Icon(Icons.camera_alt_outlined),
-              ),
-            ],
-          ),
-        ),
+        // floatingActionButton: FadeTransition(
+        //   opacity: _hideFabAnimController,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.end,
+        //     children: [
+        //       // SizedBox(
+        //       //   height: 50,
+        //       //   width: 50,
+        //       //   child: FloatingActionButton(
+        //       //     heroTag: '1',
+        //       //     elevation: 1,
+        //       //     onPressed: () {
+        //       //       Get.to(() => LocationPickerScreen());
+        //       //     },
+        //       //     backgroundColor: kSecondaryColor,
+        //       //   child: SvgPicture.asset(AssetsContants.cartLogo,
+        //       //       color: Colors.white, semanticsLabel: 'Acme Logo'),
+        //       // ),
+        //       // ),
+        //       FloatingActionButton(
+        //         heroTag: '2',
+        //         elevation: 1,
+        //         backgroundColor: AppConst.kPrimaryColor,
+        //         onPressed: () {},
+        //         child: Icon(Icons.camera_alt_outlined),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ),
     );
   }
