@@ -33,13 +33,18 @@ class MoreStoreController extends GetxController {
   // Rx<GetCartIDModel?> getCartIDModel = GetCartIDModel().obs;
   Rx<AddToCartModel?> addToCartModel = AddToCartModel().obs;
   final HomeController homeController = Get.find();
-  Rx<AutoCompleteProductsByStoreModel?> autoCompleteProductsByStoreModel = AutoCompleteProductsByStoreModel().obs;
+  Rx<AutoCompleteProductsByStoreModel?> autoCompleteProductsByStoreModel =
+      AutoCompleteProductsByStoreModel().obs;
   TextEditingController storeSearchController = TextEditingController();
   RxString storeSearchText = ''.obs;
   RxList<RawItems> rawItemsList = <RawItems>[].obs;
   RxInt totalItemsCount = 0.obs;
 
-  Future<void> getStoreData({required String id, bool isScanFunction = false, String businessId = '', bool isNeedToNevigate = true}) async {
+  Future<void> getStoreData(
+      {required String id,
+      bool isScanFunction = false,
+      String businessId = '',
+      bool isNeedToNevigate = true}) async {
     try {
       addToCartModel.value?.sId = '';
       isLoadingStoreData.value = true;
@@ -61,13 +66,20 @@ class MoreStoreController extends GetxController {
         // }
         if (getCartIDModel.value?.sId != null) {
           addToCartModel.value?.sId = getCartIDModel.value?.sId;
-          for (GetCartIdProducts allCartProducts in getCartIDModel.value?.products ?? []) {
-            for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
-              int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
+          for (GetCartIdProducts allCartProducts
+              in getCartIDModel.value?.products ?? []) {
+            for (MainProducts mainProducts
+                in getStoreDataModel.value?.data?.mainProducts ?? []) {
+              int index = (mainProducts.products ?? []).indexWhere(
+                  (mainProductsElement) =>
+                      mainProductsElement.sId == allCartProducts.sId);
               if (index != -1) {
-                addToCartModel.value?.totalItemsCount = getCartIDModel.value?.totalItemsCount ?? 0;
-                totalItemsCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
-                mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
+                addToCartModel.value?.totalItemsCount =
+                    getCartIDModel.value?.totalItemsCount ?? 0;
+                totalItemsCount.value =
+                    getCartIDModel.value?.totalItemsCount ?? 0;
+                mainProducts.products?[index].quntity!.value =
+                    allCartProducts.quantity ?? 0;
                 mainProducts.products?[index].isQunitityAdd!.value = true;
                 rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
               }
@@ -99,14 +111,16 @@ class MoreStoreController extends GetxController {
           //   }
           // }
         } else {
-          addToCartModel.value?.totalItemsCount = getCartIDModel.value?.totalItemsCount ?? 0;
+          addToCartModel.value?.totalItemsCount =
+              getCartIDModel.value?.totalItemsCount ?? 0;
           totalItemsCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
         }
       }
       getStoreDataModel.refresh();
       if (isNeedToNevigate) {
         bool isGrocery = Constants.grocery == businessId;
-        await Get.toNamed(AppRoutes.MoreStoreProductScreen, arguments: {'isGrocery': isGrocery});
+        await Get.toNamed(AppRoutes.MoreStoreProductScreen,
+            arguments: {'isGrocery': isGrocery});
         if (Constants.isAbleToCallApi) await homeController.getAllCartsData();
       }
       isLoadingStoreData.value = false;
@@ -126,21 +140,31 @@ class MoreStoreController extends GetxController {
     try {
       isLoading.value = true;
       log("_moreStoreController.cart_id $cart_id");
-      addToCartModel.value =
-          await MoreStoreService.addToCart(product: product, store_id: store_id, increment: increment, index: index, cart_id: cart_id);
-      for (GetCartIdProducts allCartProducts in addToCartModel.value?.products ?? []) {
-        for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
-          int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
-          if (index != -1) {
-            getCartIDModel.value?.totalItemsCount = addToCartModel.value?.totalItemsCount;
-            totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
+      addToCartModel.value = await MoreStoreService.addToCart(
+          product: product,
+          store_id: store_id,
+          increment: increment,
+          index: index,
+          cart_id: cart_id);
+      // for (GetCartIdProducts allCartProducts
+      //     in addToCartModel.value?.products ?? []) {
+      //   for (MainProducts mainProducts
+      //       in getStoreDataModel.value?.data?.mainProducts ?? []) {
+      //     int index = (mainProducts.products ?? []).indexWhere(
+      //         (mainProductsElement) =>
+      //             mainProductsElement.sId == allCartProducts.sId);
+      //     if (index != -1) {
+      //       getCartIDModel.value?.totalItemsCount =
+      //           addToCartModel.value?.totalItemsCount;
+      //       totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
 
-            mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
-            mainProducts.products?[index].isQunitityAdd!.value = true;
-            rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
-          }
-        }
-      }
+      //       mainProducts.products?[index].quntity!.value =
+      //           allCartProducts.quantity ?? 0;
+      //       mainProducts.products?[index].isQunitityAdd!.value = true;
+      //       rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
+      //     }
+      //   }
+      // }
 
       log("_moreStoreController.addToCartModel ${addToCartModel.toJson()}");
       isLoading.value = false;
@@ -149,28 +173,38 @@ class MoreStoreController extends GetxController {
     }
   }
 
-  Future<void> getAutoCompleteProductsByStore({required String name, required String storeId}) async {
+  Future<void> getAutoCompleteProductsByStore(
+      {required String name, required String storeId}) async {
     try {
       isLoadingGetProducts.value = true;
       getCartIDModel.value = await MoreStoreService.getcartID(storeId);
       log('getCartIDModel.value :${getCartIDModel.value?.toJson()}');
-      autoCompleteProductsByStoreModel.value = await ExploreService.getAutoCompleteProductsByStore(name: name, storeId: storeId);
+      autoCompleteProductsByStoreModel.value =
+          await ExploreService.getAutoCompleteProductsByStore(
+              name: name, storeId: storeId);
       if (autoCompleteProductsByStoreModel.value != null) {
-        for (Products inventories in autoCompleteProductsByStoreModel.value?.data?.inventories ?? []) {
-          int index = (getCartIDModel.value?.inventories ?? []).indexWhere((mainProductsElement) {
+        for (Products inventories
+            in autoCompleteProductsByStoreModel.value?.data?.inventories ??
+                []) {
+          int index = (getCartIDModel.value?.inventories ?? [])
+              .indexWhere((mainProductsElement) {
             return mainProductsElement.sId == inventories.sId;
           });
           if (index != -1) {
-            inventories.quntity?.value = getCartIDModel.value?.inventories?[index].quantity ?? 0;
+            inventories.quntity?.value =
+                getCartIDModel.value?.inventories?[index].quantity ?? 0;
             inventories.isQunitityAdd!.value = true;
           }
         }
-        for (Products products in autoCompleteProductsByStoreModel.value?.data?.products ?? []) {
-          int index = (getCartIDModel.value?.products ?? []).indexWhere((mainProductsElement) {
+        for (Products products
+            in autoCompleteProductsByStoreModel.value?.data?.products ?? []) {
+          int index = (getCartIDModel.value?.products ?? [])
+              .indexWhere((mainProductsElement) {
             return mainProductsElement.sId == products.sId;
           });
           if (index != -1) {
-            products.quntity?.value = getCartIDModel.value?.products?[index].quantity ?? 0;
+            products.quntity?.value =
+                getCartIDModel.value?.products?[index].quantity ?? 0;
             products.isQunitityAdd!.value = true;
           }
         }
@@ -200,14 +234,20 @@ class MoreStoreController extends GetxController {
         store_id: store_id,
         cart_id: cart_id,
       );
-      for (GetCartIdProducts allCartProducts in addToCartModel.value?.products ?? []) {
-        for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
-          int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
+      for (GetCartIdProducts allCartProducts
+          in addToCartModel.value?.products ?? []) {
+        for (MainProducts mainProducts
+            in getStoreDataModel.value?.data?.mainProducts ?? []) {
+          int index = (mainProducts.products ?? []).indexWhere(
+              (mainProductsElement) =>
+                  mainProductsElement.sId == allCartProducts.sId);
           if (index != -1) {
-            getCartIDModel.value?.totalItemsCount = addToCartModel.value?.totalItemsCount;
+            getCartIDModel.value?.totalItemsCount =
+                addToCartModel.value?.totalItemsCount;
             totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
 
-            mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
+            mainProducts.products?[index].quntity!.value =
+                allCartProducts.quantity ?? 0;
             mainProducts.products?[index].isQunitityAdd!.value = true;
             rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
           }
@@ -221,7 +261,18 @@ class MoreStoreController extends GetxController {
     }
   }
 
-  List<String> quntityList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  List<String> quntityList = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10'
+  ];
 
   Widget dropDown(inventory, String sId, bool isProduct) {
     return Obx(
@@ -236,7 +287,8 @@ class MoreStoreController extends GetxController {
               shape: BoxShape.circle,
               color: AppConst.grey,
             ),
-            child: inventory.isQunitityAdd?.value == true && inventory.quntity!.value != 0
+            child: inventory.isQunitityAdd?.value == true &&
+                    inventory.quntity!.value != 0
                 ? Center(
                     child: Text("${inventory.quntity!.value}",
                         style: TextStyle(
@@ -266,7 +318,11 @@ class MoreStoreController extends GetxController {
             );
           } else {
             await addToCart(
-                store_id: inventory.store?.sId ?? '', index: 0, increment: true, cart_id: addToCartModel.value?.sId ?? '', product: inventory);
+                store_id: inventory.store?.sId ?? '',
+                index: 0,
+                increment: true,
+                cart_id: addToCartModel.value?.sId ?? '',
+                product: inventory);
             // await getStoreData(id: inventory.store?.sId ?? '', isNeedToNevigate: false);
           }
 
@@ -283,7 +339,8 @@ class MoreStoreController extends GetxController {
         color: AppConst.grey,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
+        padding:
+            EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
         child: Obx(
           () => Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -291,7 +348,10 @@ class MoreStoreController extends GetxController {
               _decrementButton(inventory),
               Text(
                 '${inventory.quntity!.value}',
-                style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5, fontWeight: FontWeight.bold, color: Colors.black54),
+                style: TextStyle(
+                    fontSize: SizeUtils.horizontalBlockSize * 5,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54),
               ),
               _incrementButton(inventory),
             ],
@@ -316,7 +376,8 @@ class MoreStoreController extends GetxController {
       onTap: () async {
         inventory.isQunitityAdd?.value = false;
         inventory.quntity!.value++;
-        await Future.delayed(Duration(seconds: 2)).whenComplete(() => inventory.isQunitityAdd?.value = true);
+        await Future.delayed(Duration(seconds: 2))
+            .whenComplete(() => inventory.isQunitityAdd?.value = true);
         // addItem(products);
       },
     );
@@ -327,7 +388,8 @@ class MoreStoreController extends GetxController {
       onTap: () async {
         inventory.isQunitityAdd?.value = false;
         inventory.quntity!.value--;
-        await Future.delayed(Duration(seconds: 2)).whenComplete(() => inventory.isQunitityAdd?.value = true);
+        await Future.delayed(Duration(seconds: 2))
+            .whenComplete(() => inventory.isQunitityAdd?.value = true);
         // addItem(products);
       },
       child: Container(

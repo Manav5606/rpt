@@ -46,7 +46,8 @@ class StoreController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    storeId = "62ecd65432b98125b880da75";
+    // storeId = "62ecd65432b98125b880da75";
+    storeId = "62ecf96708669e5cdd1846b1";
     await getStoreData(id: storeId, businessId: '');
     await getAllProducts();
   }
@@ -110,12 +111,11 @@ class StoreController extends GetxController {
             if (index != -1) {
               cartItemsModel?.totalItemsCount =
                   getCartIDModel.value?.totalItemsCount ?? 0;
-              totalItemsCount = cartItemsModel?.products?.length;
 
-              // mainProducts.products?[index].quntity!.value =
-              //     allCartProducts.quantity ?? 0;
-              // mainProducts.products?[index].isQunitityAdd!.value = true;
-              // rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
+              mainProducts.products?[index].quntity!.value =
+                  allCartProducts.quantity ?? 0;
+              mainProducts.products?[index].isQunitityAdd!.value = true;
+              rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
             }
           }
         }
@@ -124,6 +124,7 @@ class StoreController extends GetxController {
             getCartIDModel.value?.totalItemsCount ?? 0;
         totalItemsCount = cartItemsModel?.products?.length;
       }
+      totalItemsCount = getCartIDModel.value?.totalItemsCount;
 
       refresh();
       isLoadingStoreData.value = false;
@@ -152,12 +153,9 @@ class StoreController extends GetxController {
           index: 0,
           cart_id: cartItemsModel?.sId ?? '');
 
-      totalItemsCount = cartItemsModel?.products?.length;
-      print("cccc ==== ${cartItemsModel?.products?.length}");
+      totalItemsCount = cartItemsModel?.totalItemsCount;
       isLoading.value = false;
     } catch (e, st) {
-      print(":::>>> $e");
-      print("cccc ===e= ${cartItemsModel?.products?.length}");
       isLoading.value = false;
       isLoading.value = false;
     }
@@ -205,51 +203,51 @@ class StoreController extends GetxController {
   //   }
   // }
 
-  // Future<void> addToCartInventory({
-  //   required String store_id,
-  //   required String cart_id,
-  //   required String name,
-  //   required String sId,
-  //   required int quntity,
-  // }) async {
-  //   try {
-  //     Products products = Products(
-  //       name: name,
-  //       sId: sId,
-  //       quntity: quntity.obs,
-  //     );
-  //     isLoading.value = true;
-  //     cartItemsModel = await MoreStoreService.addToCartInventory(
-  //       inventory: products,
-  //       store_id: store_id,
-  //       cart_id: cart_id,
-  //     );
-  //     for (GetCartIdProducts allCartProducts
-  //         in cartItemsModel?.products ?? []) {
-  //       for (MainProducts mainProducts
-  //           in storeDataModel?.data?.mainProducts ?? []) {
-  //         int index = (mainProducts.products ?? []).indexWhere(
-  //             (mainProductsElement) =>
-  //                 mainProductsElement.sId == allCartProducts.sId);
-  //         if (index != -1) {
-  //           getCartIDModel.value?.totalItemsCount =
-  //               cartItemsModel?.totalItemsCount;
-  //           totalItemsCount = cartItemsModel?.totalItemsCount ?? 0;
+  Future<void> addToCartInventory({
+    required String store_id,
+    required String cart_id,
+    required String name,
+    required String sId,
+    required int quntity,
+  }) async {
+    try {
+      Products products = Products(
+        name: name,
+        sId: sId,
+        quntity: quntity.obs,
+      );
+      isLoading.value = true;
+      cartItemsModel = await MoreStoreService.addToCartInventory(
+        inventory: products,
+        store_id: store_id,
+        cart_id: cart_id,
+      );
+      for (GetCartIdProducts allCartProducts
+          in cartItemsModel?.products ?? []) {
+        for (MainProducts mainProducts
+            in storeDataModel?.data?.mainProducts ?? []) {
+          int index = (mainProducts.products ?? []).indexWhere(
+              (mainProductsElement) =>
+                  mainProductsElement.sId == allCartProducts.sId);
+          if (index != -1) {
+            getCartIDModel.value?.totalItemsCount =
+                cartItemsModel?.totalItemsCount;
+            totalItemsCount = cartItemsModel?.totalItemsCount ?? 0;
 
-  //           mainProducts.products?[index].quntity!.value =
-  //               allCartProducts.quantity ?? 0;
-  //           mainProducts.products?[index].isQunitityAdd!.value = true;
-  //           rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
-  //         }
-  //       }
-  //     }
-  //     refresh();
-  //     // log("addToCartInventory.addToCartModel ${cartItemsModel?.toJson()}");
-  //     isLoading.value = false;
-  //   } catch (e, st) {
-  //     isLoading.value = false;
-  //   }
-  // }
+            mainProducts.products?[index].quntity!.value =
+                allCartProducts.quantity ?? 0;
+            mainProducts.products?[index].isQunitityAdd!.value = true;
+            rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
+          }
+        }
+      }
+      refresh();
+      // log("addToCartInventory.addToCartModel ${cartItemsModel?.toJson()}");
+      isLoading.value = false;
+    } catch (e, st) {
+      isLoading.value = false;
+    }
+  }
 
   // Future<void> getAndSetData() async {
   //   await Future.delayed(Duration(seconds: 1));

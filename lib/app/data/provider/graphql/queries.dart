@@ -1034,16 +1034,13 @@ wallet_amount
   static final getcartID = new GraphQLQuery(
     name: 'getcartID',
     query: r'''query($store: ID){
-  getcartID(store_id:$store)
-    {
-       error
-    msg
-  data
-      {
+    getcartID(store_id:$store) {
+      error
+      msg
+      data {
         _id
         total_items_count
-        products
-        {
+        products {
           mrp
           _id
           name
@@ -1053,23 +1050,22 @@ wallet_amount
           mrp
           gst_amount
         }
-        inventories
-      {
-        mrp
-        name
-        _id
-        quantity
+        inventories {
+          mrp
+          name
+          _id
+          quantity
+        }
+        rawitems {
+          logo
+          item
+          quantity
+          _id
+          unit
+        }
       }
-            rawitems{
-            logo
-        item
-        quantity
-        _id
-        unit
-      }
-      }
-}
-}''',
+    }
+  }''',
   );
   static final getAutoCompleteProductsByStore = new GraphQLQuery(
     name: 'getAutoCompleteProductsByStore',

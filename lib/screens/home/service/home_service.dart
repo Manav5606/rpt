@@ -12,10 +12,12 @@ import '../../../controllers/userViewModel.dart';
 class HomeService {
   static Future<GetAllCartsModel?> getAllCartsData() async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getAllCartData, variables: {});
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getAllCartData, variables: {});
       if (result['error'] == false) {
         Constants.isAbleToCallApi = false;
-        final GetAllCartsModel _getAllCartsModel = GetAllCartsModel.fromJson(result);
+        final GetAllCartsModel _getAllCartsModel =
+            GetAllCartsModel.fromJson(result);
         return _getAllCartsModel;
       }
     } catch (e, st) {
@@ -24,15 +26,19 @@ class HomeService {
     }
   }
 
-  static Future<GetHomePageFavoriteShops?> getHomePageFavoriteShops({required int pageNumber}) async {
+  static Future<GetHomePageFavoriteShops?> getHomePageFavoriteShops(
+      {required int pageNumber}) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getHomePageFavoriteShops, variables: {
-        'lat': UserViewModel.currentLocation.value.latitude,
-        'lng': UserViewModel.currentLocation.value.longitude,
-        'pageNumber': pageNumber,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getHomePageFavoriteShops,
+          variables: {
+            'lat': UserViewModel.currentLocation.value.latitude,
+            'lng': UserViewModel.currentLocation.value.longitude,
+            'pageNumber': pageNumber,
+          });
       if (result['error'] == false) {
-        final GetHomePageFavoriteShops _getHomePageFavoriteShops = GetHomePageFavoriteShops.fromJson(result);
+        final GetHomePageFavoriteShops _getHomePageFavoriteShops =
+            GetHomePageFavoriteShops.fromJson(result);
         return _getHomePageFavoriteShops;
       }
     } catch (e, st) {
@@ -42,19 +48,26 @@ class HomeService {
   }
 
   static Future<HomePageRemoteConfigData?> homePageRemoteConfigData(
-      String keyword, bool productFetch, String keywordHelper, String id, int pageNumber) async {
+      String keyword,
+      bool productFetch,
+      String keywordHelper,
+      String id,
+      int pageNumber) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.homePageRemoteConfigData, variables: {
-        '_id': id,
-        'keyword': keyword,
-        'product_fetch': productFetch,
-        'lat': UserViewModel.currentLocation.value.latitude,
-        'lng': UserViewModel.currentLocation.value.longitude,
-        'pageNumber': pageNumber,
-      });
-      log('result : $result');
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.homePageRemoteConfigData,
+          variables: {
+            '_id': id,
+            'keyword': keyword,
+            'product_fetch': productFetch,
+            'lat': UserViewModel.currentLocation.value.latitude,
+            'lng': UserViewModel.currentLocation.value.longitude,
+            'pageNumber': pageNumber,
+          });
+      // log('result : $result');
       if (result['error'] == false) {
-        final HomePageRemoteConfigData _homePageRemoteConfigModel = HomePageRemoteConfigData.fromJson(result);
+        final HomePageRemoteConfigData _homePageRemoteConfigModel =
+            HomePageRemoteConfigData.fromJson(result);
         return _homePageRemoteConfigModel;
       }
     } catch (e, st) {

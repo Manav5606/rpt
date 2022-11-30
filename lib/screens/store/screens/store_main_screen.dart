@@ -47,10 +47,11 @@ class NewStoreScreen extends GetView<StoreController> {
                 SizedBox(height: 12),
 
                 StoreChatBubble(
-                    buttonText: "Chat",
-                    text:
-                        "Struggling to find items? \nChat with store & place orders instantly.",
-                    onTap: () => Get.toNamed(AppRoutes.NewStoreChatScreen)),
+                  buttonText: "Chat",
+                  text:
+                      "Struggling to find items? \nChat with store & place orders instantly.",
+                  onTap: () => Get.toNamed(AppRoutes.NewStoreChatScreen),
+                ),
                 SizedBox(height: 16),
 
                 SearchFieldButton(

@@ -44,14 +44,12 @@ class YourStores extends StatelessWidget {
       SizedBox(
         height: 1.5.h,
       ),
-      TextButton(onPressed: (){
-        // _moreStoreController.storeId.value = inStoreModel?.id ?? '';
-        // await _moreStoreController.getStoreData(
-        //     id: inStoreModel?.id ?? '',
-        //     businessId: inStoreModel?.businesstype ?? '');
-        Get.toNamed(AppRoutes.NewStoreScreen, arguments: {'isGrocery': false});
-      }, child: 
-      Text("dell")),
+      TextButton(
+          onPressed: () {
+            Get.toNamed(AppRoutes.NewStoreScreen,
+                arguments: {'isGrocery': false});
+          },
+          child: Text("new store")),
       Container(
         height: 16.5.h,
         width: 98.w,
@@ -68,7 +66,8 @@ class YourStores extends StatelessWidget {
                 right: 2.w,
               ),
               child: ListViewChild(
-                yourStores: _homeController.getAllCartsModel.value!.carts![index],
+                yourStores:
+                    _homeController.getAllCartsModel.value!.carts![index],
               ),
             );
           },
@@ -96,7 +95,8 @@ class ListViewChild extends StatelessWidget {
           vertical: 1.5.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 3.82),
+          borderRadius:
+              BorderRadius.circular(SizeUtils.horizontalBlockSize * 3.82),
           color: AppConst.white,
           // border: Border.all(color: AppConst.darkGrey, width: 0.1),
           boxShadow: [
@@ -112,8 +112,11 @@ class ListViewChild extends StatelessWidget {
           onTap: () async {
             _exploreController.cartIndex.value = yourStores;
             _moreStoreController.storeId.value = yourStores.store?.sId ?? '';
-            await _moreStoreController.getStoreData(id: yourStores.store?.sId ?? '', businessId: yourStores.store?.businesstype ?? '');
-            _exploreController.totalItemCount.value = _exploreController.cartIndex.value?.totalItemsCount?.value ?? 0;
+            await _moreStoreController.getStoreData(
+                id: yourStores.store?.sId ?? '',
+                businessId: yourStores.store?.businesstype ?? '');
+            _exploreController.totalItemCount.value =
+                _exploreController.cartIndex.value?.totalItemsCount?.value ?? 0;
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -123,12 +126,17 @@ class ListViewChild extends StatelessWidget {
                   ? Padding(
                       padding: EdgeInsets.only(bottom: 0.h, left: 1.w),
                       child: Container(
-                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AppConst.grey)),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppConst.grey)),
                         child: ClipOval(
                           child: ClipRRect(
                             child: CircleAvatar(
-                              child:
-                                  Text(yourStores.store?.name?.substring(0, 1) ?? "", style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 6)),
+                              child: Text(
+                                  yourStores.store?.name?.substring(0, 1) ?? "",
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 6)),
                               backgroundColor: AppConst.kPrimaryColor,
                               radius: SizeUtils.horizontalBlockSize * 6.5,
                             ),
@@ -137,7 +145,8 @@ class ListViewChild extends StatelessWidget {
                       ),
                     )
                   : CircleAvatar(
-                      backgroundImage: NetworkImage(yourStores.store?.logo ?? ''),
+                      backgroundImage:
+                          NetworkImage(yourStores.store?.logo ?? ''),
                       backgroundColor: AppConst.white,
                       radius: SizeUtils.horizontalBlockSize * 6.5,
                     ),
@@ -197,7 +206,8 @@ class ListViewChild extends StatelessWidget {
                           ],
                         )
                       else
-                        Text(StringContants.pickUp, style: AppStyles.BOLD_STYLE),
+                        Text(StringContants.pickUp,
+                            style: AppStyles.BOLD_STYLE),
                     // Container(
                     //   margin: EdgeInsets.only(top: 1.h),
                     //   padding: EdgeInsets.all(1.w),
