@@ -1,3 +1,5 @@
+import 'package:customer_app/data/models/category_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/stores/storeswithproductslist.dart';
@@ -11,6 +13,11 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class StoreListScreen extends StatefulWidget {
+  final CategoryModel? category;
+  StoreListScreen({
+    Key? key,
+    this.category,
+  }) : super(key: key);
   @override
   State<StoreListScreen> createState() => _StoreListScreenState();
 }
@@ -22,12 +29,13 @@ class _StoreListScreenState extends State<StoreListScreen>
 
   @override
   Widget build(BuildContext context) {
+    var category = widget.category;
     return Scaffold(
       body: NestedScrollView(
         physics: BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          var category =
-              _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
+          // var category =
+          //     _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
           return <Widget>[
             SliverAppBar(
               systemOverlayStyle: SystemUiOverlayStyle(
@@ -54,7 +62,7 @@ class _StoreListScreenState extends State<StoreListScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          category.last.name.toString(),
+                          "${category?.name.toString() ?? ""}",
                           // "Pickup",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
@@ -132,7 +140,7 @@ class _StoreListScreenState extends State<StoreListScreen>
                             height: 18.h,
                             color: Colors.yellow,
                             child: Image.network(
-                              category.first.image,
+                              category?.image ?? "",
                               fit: BoxFit.fill,
                               height: SizeUtils.verticalBlockSize * 12,
                               width: SizeUtils.horizontalBlockSize * 24,
@@ -151,7 +159,7 @@ class _StoreListScreenState extends State<StoreListScreen>
                           bottom: 15,
                           left: 10,
                           child: Text(
-                            category.last.name.toString(),
+                            "${category?.name.toString() ?? ""}",
                             // "Pickup",
                             style: TextStyle(
                                 fontWeight: FontWeight.w700,

@@ -1,3 +1,4 @@
+import 'package:customer_app/data/models/category_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -15,6 +16,11 @@ import 'package:sizer/sizer.dart';
 class InStoreScreen extends StatelessWidget {
   final HomeController _homeController = Get.find();
   final AddCartController _addCartController = Get.find();
+  final CategoryModel? category;
+  InStoreScreen({
+    Key? key,
+    this.category,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +30,8 @@ class InStoreScreen extends StatelessWidget {
         body: NestedScrollView(
           physics: BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            var category =
-                _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
+            // var category =
+            //     _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
             return <Widget>[
               SliverAppBar(
                 expandedHeight: 18.h,
@@ -45,7 +51,7 @@ class InStoreScreen extends StatelessWidget {
                         children: [
                           Text(
                             // "Pickup",
-                            category.first.name.toString(),
+                            "${category?.name.toString() ?? ""}",
                             style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontFamily: 'MuseoSans',
@@ -132,7 +138,7 @@ class InStoreScreen extends StatelessWidget {
                               height: 18.h,
                               color: Colors.yellow,
                               child: Image.network(
-                                category.first.image,
+                                category?.image ?? "",
                                 fit: BoxFit.fill,
                                 height: SizeUtils.verticalBlockSize * 12,
                                 width: SizeUtils.horizontalBlockSize * 24,
@@ -151,7 +157,7 @@ class InStoreScreen extends StatelessWidget {
                             bottom: 15,
                             left: 10,
                             child: Text(
-                              category.first.name.toString(),
+                              "${category?.name.toString() ?? ""}",
                               // "Pickup",
                               style: TextStyle(
                                   fontWeight: FontWeight.w700,
