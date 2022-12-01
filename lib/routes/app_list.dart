@@ -54,4 +54,8 @@ class AppRoutes {
   static const String ProductRawItemScreen = '/ProductRawItemScreen';
   static const String ShopItemsScreen = '/ShopItemsScreen';
   static const String TheBossCameraScreen = '/TheBossCameraScreen';
+  static const String NewStoreScreen = '/StoreScreen';
+  static const String NewStoreSearchScreen = '/StoreSearchScreen';
+  static const String NewStoreChatScreen = '/StoreChatScreen';
+  static const String NewStoreCartScreen = '/StoreCartScreen';
 }

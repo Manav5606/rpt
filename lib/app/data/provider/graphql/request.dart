@@ -20,14 +20,15 @@ class GraphQLRequest {
     final box = Boxes.getCommonBox();
     final token = box.get(HiveConstants.USER_TOKEN);
     log('token :$token');
-    var client = GraphqlConfig.getClient(token);
+    GraphQLClient client = GraphqlConfig.getClient(token);
+    print("==> ${query.name}");
     final QueryOptions options = QueryOptions(
       document: gql(query.query),
       variables: variables,
     );
     final QueryResult result = await client.query(options);
     log("variables : $variables");
-    if (!isLogOff) log("result : $result");
+    // if (!isLogOff) log("result : $result");
     if (result.hasException) {
       return {
         'error': true,

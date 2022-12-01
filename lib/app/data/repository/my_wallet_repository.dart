@@ -40,7 +40,7 @@ class MyWalletRepository {
             'store': storeId
             // '611e3008b745524a64428a31'
           });
-      log("_getAllWalletTransactionByCustomer result : ${result}");
+      // log("_getAllWalletTransactionByCustomer result : ${result}");
       if (result['error'] == false) {
         final GetAllWalletTransactionByCustomer
             _getAllWalletTransactionByCustomer =

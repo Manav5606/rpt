@@ -1,3 +1,8 @@
+import 'package:customer_app/screens/store/binding/store_binding.dart';
+import 'package:customer_app/screens/store/screens/store_cart_screen.dart';
+import 'package:customer_app/screens/store/screens/store_chat_screen.dart';
+import 'package:customer_app/screens/store/screens/store_main_screen.dart';
+import 'package:customer_app/screens/store/screens/store_search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/bindings/cartBindings.dart';
 import 'package:customer_app/app/bindings/home_binding.dart';
@@ -80,8 +85,14 @@ class AppPages {
       page: () => AddressModel(),
       binding: NewLocationScreenBindings(),
     ),
-    GetPage(name: AppRoutes.BaseScreen, page: () => BaseScreen(), binding: HomeControllerBindings()),
-    GetPage(name: AppRoutes.MyAccount, page: () => MyAccountPage(), binding: MyAccountBinding()),
+    GetPage(
+        name: AppRoutes.BaseScreen,
+        page: () => BaseScreen(),
+        binding: HomeControllerBindings()),
+    GetPage(
+        name: AppRoutes.MyAccount,
+        page: () => MyAccountPage(),
+        binding: MyAccountBinding()),
     GetPage(name: AppRoutes.Search, page: () => SearchScreen()),
     GetPage(name: AppRoutes.SearchResult, page: () => SearchResultScreen()),
     GetPage(name: AppRoutes.Stores, page: () => StoresScreen()),
@@ -93,39 +104,57 @@ class AppPages {
     GetPage(name: AppRoutes.ReferNEarn, page: () => ReferNEarnScreen()),
     GetPage(name: AppRoutes.History, page: () => HistoryScreen()),
     GetPage(name: AppRoutes.ReferAndEarn, page: () => ReferAndEarnScreen()),
-    GetPage(name: AppRoutes.Wallet, page: () => WalletScreen(), binding: MyWalletBinding()),
-    GetPage(name: AppRoutes.WalletDetails, page: () => WalletDetailsScreen(), binding: MyWalletBinding()),
+    GetPage(
+        name: AppRoutes.Wallet,
+        page: () => WalletScreen(),
+        binding: MyWalletBinding()),
+    GetPage(
+        name: AppRoutes.WalletDetails,
+        page: () => WalletDetailsScreen(),
+        binding: MyWalletBinding()),
     GetPage(name: AppRoutes.WalletOffer, page: () => WalletOfferScreen()),
     GetPage(name: AppRoutes.MyAddresses, page: () => MyAddressesScreen()),
-    GetPage(name: AppRoutes.LocationPickerScreen, page: () => LocationPickerScreen()),
-    GetPage(name: AppRoutes.ConfirmLocation, page: () => ConfirmLocationScreen()),
+    GetPage(
+        name: AppRoutes.LocationPickerScreen,
+        page: () => LocationPickerScreen()),
+    GetPage(
+        name: AppRoutes.ConfirmLocation, page: () => ConfirmLocationScreen()),
     GetPage(name: AppRoutes.EditProfile, page: () => EditProfileScreen()),
-    GetPage(name: AppRoutes.ScanStoreViewScreen, page: () => ScanStoreViewScreen()),
-    GetPage(name: AppRoutes.TheBossCameraScreen, page: () => TheBossCameraScreen()),
+    GetPage(
+        name: AppRoutes.ScanStoreViewScreen, page: () => ScanStoreViewScreen()),
+    GetPage(
+        name: AppRoutes.TheBossCameraScreen, page: () => TheBossCameraScreen()),
     GetPage(
       name: AppRoutes.CheckOutScreen,
       page: () => CheckOutScreen(),
       binding: CartBinding(),
     ),
     GetPage(name: AppRoutes.StoreScreen, page: () => StoreScreen()),
-    GetPage(name: AppRoutes.MoreStoreProductScreen, page: () => MoreStoreProductScreen()),
-    GetPage(name: AppRoutes.SearchStoresScreen, page: () => SearchStoresScreen()),
+    GetPage(
+        name: AppRoutes.MoreStoreProductScreen,
+        page: () => MoreStoreProductScreen()),
+    GetPage(
+        name: AppRoutes.SearchStoresScreen, page: () => SearchStoresScreen()),
     GetPage(name: AppRoutes.InStoreSearch, page: () => InstoreSearch()),
     GetPage(name: AppRoutes.ExploreScreen, page: () => ExploreScreen()),
-    GetPage(name: AppRoutes.PopularSearchScreen, page: () => PopularSearchScreen()),
+    GetPage(
+        name: AppRoutes.PopularSearchScreen, page: () => PopularSearchScreen()),
     GetPage(name: AppRoutes.InStoreScreen, page: () => InStoreScreen()),
     GetPage(name: AppRoutes.StoreListScreen, page: () => StoreListScreen()),
     GetPage(name: AppRoutes.ChatView, page: () => ChatView()),
     GetPage(name: AppRoutes.HelpSupport, page: () => HelpSupport()),
     GetPage(name: AppRoutes.OrderInformation, page: () => OrderInformation()),
-    GetPage(name: AppRoutes.QuestionsAndAnswers, page: () => QuestionsAndAnswers()),
+    GetPage(
+        name: AppRoutes.QuestionsAndAnswers, page: () => QuestionsAndAnswers()),
     GetPage(name: AppRoutes.OrderListpage, page: () => OrdersListPage()),
     GetPage(name: AppRoutes.OrderQueriespage, page: () => OrderQueriesPage()),
     GetPage(name: AppRoutes.LoyaltyCardScreen, page: () => LoyaltyCardScreen()),
-    GetPage(name: AppRoutes.ScheduleTimeScreen, page: () => ScheduleTimeScreen()),
+    GetPage(
+        name: AppRoutes.ScheduleTimeScreen, page: () => ScheduleTimeScreen()),
     GetPage(name: AppRoutes.AddCartListScreen, page: () => AddCartListScreen()),
     GetPage(name: AppRoutes.CartReviewScreen, page: () => CartReviewScreen()),
-    GetPage(name: AppRoutes.orderCheckOutScreen, page: () => OrderCheckOutScreen()),
+    GetPage(
+        name: AppRoutes.orderCheckOutScreen, page: () => OrderCheckOutScreen()),
     GetPage(name: AppRoutes.EditAddressScreen, page: () => EditAddressScreen()),
     GetPage(name: AppRoutes.ScanRecipetSearch, page: () => ScanRecipetSearch()),
     GetPage(
@@ -133,10 +162,23 @@ class AppPages {
       page: () => EnterNumberScreen(),
       binding: SignInScreenBindings(),
     ),
-    GetPage(name: AppRoutes.SearchRecipeScreen, page: () => SearchRecipeScreen()),
+    GetPage(
+        name: AppRoutes.SearchRecipeScreen, page: () => SearchRecipeScreen()),
     GetPage(name: AppRoutes.paymentList, page: () => PaymentModeScreen()),
     GetPage(name: AppRoutes.PayView, page: () => PayView()),
     GetPage(name: AppRoutes.MyCartScreen, page: () => MyCartScreen()),
+    GetPage(
+        name: AppRoutes.NewStoreScreen,
+        page: () => NewStoreScreen(),
+        binding: StoreBinding()),
+    GetPage(
+        name: AppRoutes.NewStoreSearchScreen,
+        page: () => NewStoreSearchScreen()),
+    GetPage(
+        name: AppRoutes.NewStoreCartScreen, page: () => NewStoreCartScreen()),
+    GetPage(
+        name: AppRoutes.NewStoreChatScreen, page: () => NewStoreChatScreen()),
+
     // GetPage(name: AppRoutes.OrderTreckScreen, page: () => OrderTreckScreen()),
     // GetPage(name: AppRoutes.ProductRawItemScreen, page: () => ProductRawItemScreen()),
     // GetPage(name: AppRoutes.ShopItemsScreen, page: () => ShopItemsScreen()),

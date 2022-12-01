@@ -10,11 +10,14 @@ import 'package:customer_app/models/addcartmodel.dart';
 class MoreStoreService {
   static Future<GetStoreDataModel?> getStoreData(String id) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getOrderOnlinePageProductsData, variables: {
-        'store': id,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getOrderOnlinePageProductsData,
+          variables: {
+            'store': id,
+          });
       if (result['error'] == false) {
-        final GetStoreDataModel _getStoreDataModel = GetStoreDataModel.fromJson(result);
+        final GetStoreDataModel _getStoreDataModel =
+            GetStoreDataModel.fromJson(result);
         return _getStoreDataModel;
       }
     } catch (e, st) {
@@ -24,11 +27,14 @@ class MoreStoreService {
   }
 
   static Future<GetCartIDModel?> getcartID(String id) async {
-    final result = await GraphQLRequest.query(query: GraphQLQueries.getcartID, variables: {
+    final result =
+        await GraphQLRequest.query(query: GraphQLQueries.getcartID, variables: {
       'store': id,
     });
-    log('getCartIDModel result :$result');
-    final GetCartIDModel getCartIDModel = GetCartIDModel.fromJson(result['data']);
+    // log('getCartIDModel result :$result');
+    final GetCartIDModel getCartIDModel =
+        GetCartIDModel.fromJson(result['data']);
+    print(getCartIDModel.totalItemsCount);
     return getCartIDModel;
   }
 
@@ -52,19 +58,30 @@ class MoreStoreService {
       if (cart_id.isEmpty) {
         Constants.isAbleToCallApi = true;
       }
-      final result =
-          await GraphQLRequest.query(query: cart_id.isNotEmpty ? GraphQLQueries.addToCartWithId : GraphQLQueries.addToCart, variables: variables);
+      final result = await GraphQLRequest.query(
+          query: cart_id.isNotEmpty
+              ? GraphQLQueries.addToCartWithId
+              : GraphQLQueries.addToCart,
+          variables: variables);
+
       log("result: ${result}");
       if (result['error'] == false) {
-        final AddToCartModel addToCartModel = AddToCartModel.fromJson(result['data']);
+        print("::rest :: false");
+
+        final AddToCartModel addToCartModel =
+            AddToCartModel.fromJson(result['data']);
+
+        print(">> tot: ${addToCartModel.totalItemsCount}");
+
         return addToCartModel;
+      } else {
+        print("::rest :: true");
       }
     } catch (e, st) {
       log("addToCart $e , $st");
       rethrow;
     }
   }
-
 
   static Future<AddToCartModel?> addToCartInventory({
     var inventory,
@@ -79,11 +96,15 @@ class MoreStoreService {
         'inventory': inventory,
         if (cart_id.isNotEmpty) 'cart_id': cart_id,
       };
-      final result =
-          await GraphQLRequest.query(query: cart_id.isNotEmpty ? GraphQLQueries.addToCartInventoryWithCartID : GraphQLQueries.addToCartInventory, variables: variables);
+      final result = await GraphQLRequest.query(
+          query: cart_id.isNotEmpty
+              ? GraphQLQueries.addToCartInventoryWithCartID
+              : GraphQLQueries.addToCartInventory,
+          variables: variables);
       log("result: ${result}");
       if (result['error'] == false) {
-        final AddToCartModel addToCartModel = AddToCartModel.fromJson(result['data']);
+        final AddToCartModel addToCartModel =
+            AddToCartModel.fromJson(result['data']);
         return addToCartModel;
       }
     } catch (e, st) {
