@@ -36,16 +36,20 @@ class RedeemCashInStorePageData {
   int? distance;
   String? logo;
   String? businesstype;
+  bool? premium;
+  num? actual_cashback;
 
   RedeemCashInStorePageData(
       {this.name,
-        this.sId,
-        this.storeType,
-        this.earnedCashback,
-        this.updatedAt,
-        this.distance,
-        this.logo,
-        this.businesstype});
+      this.sId,
+      this.storeType,
+      this.earnedCashback,
+      this.updatedAt,
+      this.distance,
+      this.logo,
+      this.businesstype,
+      this.actual_cashback,
+      this.premium});
 
   RedeemCashInStorePageData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -56,9 +60,8 @@ class RedeemCashInStorePageData {
     distance = json['distance'];
     logo = json['logo'];
     businesstype = json['businesstype'];
-    // businesstype = json['businesstype'] != null
-    //     ? new Businesstype.fromJson(json['businesstype'])
-    //     : null;
+    actual_cashback = json['actual_cashback'];
+    premium = json['premium'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,9 +74,8 @@ class RedeemCashInStorePageData {
     data['distance'] = this.distance;
     data['logo'] = this.logo;
     data['businesstype'] = this.businesstype;
-    // if (this.businesstype != null) {
-    //   data['businesstype'] = this.businesstype!.toJson();
-    // }
+    data['actual_cashback'] = this.actual_cashback;
+    data['premium'] = this.premium;
     return data;
   }
 }

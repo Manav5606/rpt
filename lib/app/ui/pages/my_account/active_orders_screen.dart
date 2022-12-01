@@ -15,6 +15,7 @@ import 'package:customer_app/constants/app_const.dart';
 
 import 'package:customer_app/screens/addcart/checkorder_status_screen.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -30,82 +31,87 @@ class ActiveOrdersScreen extends StatefulWidget {
 class _ActiveOrdersScreenState extends State<ActiveOrdersScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppConst.white,
-      body: SafeArea(
-        minimum: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
-        top: true,
-        child: DefaultTabController(
-          length: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BackButtonAppbar(
-                text: "Active Orders",
-              ),
-
-              ButtonsTabBar(
-                buttonMargin:
-                    EdgeInsets.only(left: 2.w, top: 1.4.h, bottom: 1.h),
-                backgroundColor: AppConst.lightGrey,
-                unselectedBackgroundColor: AppConst.veryLightGrey,
-                unselectedBorderColor: AppConst.lightGrey,
-                unselectedLabelStyle: TextStyle(color: AppConst.black),
-                radius: 2.h,
-                borderColor: AppConst.black,
-                contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                borderWidth: 1,
-                labelStyle: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                    color: AppConst.black,
-                    fontWeight: FontWeight.w500),
-                tabs: [
-                  Tab(
-                    text: 'Orders',
-                  ),
-                  Tab(
-                    text: 'Receipt',
-                  ),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: [ActiveOrderTabView(), ActiveReciptTabView()],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: AppConst.white,
+          statusBarIconBrightness: Brightness.dark),
+      child: Scaffold(
+        backgroundColor: AppConst.white,
+        body: SafeArea(
+          minimum: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
+          top: true,
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BackButtonAppbar(
+                  text: "Active Orders",
                 ),
-              ),
 
-              // Container(
-              //   color: AppConst.white,
-              //   width: double.infinity,
-              //   padding: EdgeInsets.only(
-              //     top: 10,
-              //     bottom: 5,
-              //   ),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Padding(
-              //         padding: const EdgeInsets.symmetric(
-              //             horizontal: 8.0, vertical: 10),
-              //         child: Row(
-              //           children: [
-              //             GestureDetector(
-              //                 onTap: () => Navigator.pop(context),
-              //                 child: Icon(Icons.arrow_back_ios_new_rounded)),
-              //             Text(
-              //               " Active Orders",
-              //               style: TextStyle(
-              //                 fontWeight: FontWeight.w700,
-              //                 fontSize: SizeUtils.horizontalBlockSize * 4.5,
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            ],
+                ButtonsTabBar(
+                  buttonMargin:
+                      EdgeInsets.only(left: 2.w, top: 1.4.h, bottom: 1.h),
+                  backgroundColor: AppConst.lightGrey,
+                  unselectedBackgroundColor: AppConst.veryLightGrey,
+                  unselectedBorderColor: AppConst.lightGrey,
+                  unselectedLabelStyle: TextStyle(color: AppConst.black),
+                  radius: 2.h,
+                  borderColor: AppConst.black,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                  borderWidth: 1,
+                  labelStyle: TextStyle(
+                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                      color: AppConst.black,
+                      fontWeight: FontWeight.w500),
+                  tabs: [
+                    Tab(
+                      text: 'Orders',
+                    ),
+                    Tab(
+                      text: 'Receipt',
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [ActiveOrderTabView(), ActiveReciptTabView()],
+                  ),
+                ),
+
+                // Container(
+                //   color: AppConst.white,
+                //   width: double.infinity,
+                //   padding: EdgeInsets.only(
+                //     top: 10,
+                //     bottom: 5,
+                //   ),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.symmetric(
+                //             horizontal: 8.0, vertical: 10),
+                //         child: Row(
+                //           children: [
+                //             GestureDetector(
+                //                 onTap: () => Navigator.pop(context),
+                //                 child: Icon(Icons.arrow_back_ios_new_rounded)),
+                //             Text(
+                //               " Active Orders",
+                //               style: TextStyle(
+                //                 fontWeight: FontWeight.w700,
+                //                 fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ),
       ),

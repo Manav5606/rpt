@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/widgets/all_offers_listview_shimmer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/stores/searchedStoresWihProductsShimmer.dart';
@@ -70,38 +72,38 @@ class ListViewChild extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 2.w),
             child: Row(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppConst.grey)),
-                  child: ClipOval(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: CachedNetworkImage(
-                        width: 12.w,
-                        height: 6.h,
-                        fit: BoxFit.contain,
-                        imageUrl: storeSearchModel.logo ??
-                            'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => Center(
-                                child: CircularProgressIndicator(
-                                    value: downloadProgress.progress)),
-                        errorWidget: (context, url, error) => Container(
-                          color: Colors.primaries[
-                              Random().nextInt(Colors.primaries.length)],
-                          child: Center(
-                            child: Text(
-                                storeSearchModel.name?.substring(0, 1) ?? "",
-                                style: TextStyle(
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 6)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //       shape: BoxShape.circle,
+                //       border: Border.all(color: AppConst.grey)),
+                //   child: ClipOval(
+                //     child: ClipRRect(
+                //       borderRadius: BorderRadius.circular(100),
+                //       child: CachedNetworkImage(
+                //         width: 12.w,
+                //         height: 6.h,
+                //         fit: BoxFit.contain,
+                //         imageUrl: storeSearchModel.logo ??
+                //             'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
+                //         progressIndicatorBuilder:
+                //             (context, url, downloadProgress) => Center(
+                //                 child: CircularProgressIndicator(
+                //                     value: downloadProgress.progress)),
+                //         errorWidget: (context, url, error) => Container(
+                //           color: Colors.primaries[
+                //               Random().nextInt(Colors.primaries.length)],
+                //           child: Center(
+                //             child: Text(
+                //                 storeSearchModel.name?.substring(0, 1) ?? "",
+                //                 style: TextStyle(
+                //                     fontSize:
+                //                         SizeUtils.horizontalBlockSize * 6)),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 // (storeSearchModel.logo!.isEmpty)
                 //     ? CircleAvatar(
                 //         child: Text(storeSearchModel.name?.substring(0, 1) ?? "",
@@ -117,111 +119,331 @@ class ListViewChild extends StatelessWidget {
                 //         backgroundColor: AppConst.white,
                 //         radius: SizeUtils.horizontalBlockSize * 6.5,
                 //       ),
+                storeSearchModel.logo!.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.only(bottom: 3.h),
+                        child: Container(
+                          padding: const EdgeInsets.all(12.0),
+                          height: 7.h,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppConst.lightGrey,
+                              border: Border.all(
+                                width: 0.1,
+                                color: AppConst.lightGrey,
+                              )),
+                          child: Image(
+                            image: AssetImage(
+                              'assets/images/Store.png',
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(bottom: 3.h),
+                        child: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(storeSearchModel.logo ?? ''),
+                          backgroundColor: AppConst.white,
+                          radius: SizeUtils.horizontalBlockSize * 6.5,
+                        ),
+                      ),
                 SizedBox(
-                  width: 4.w,
+                  width: 3.w,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 70.w,
-                      child: Text(
-                        storeSearchModel.name ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppStyles.BOLD_STYLE,
-                      ),
+                      width: 68.w,
+                      child: Text(storeSearchModel.name ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.black,
+                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
                     ),
                     SizedBox(
                       height: 0.5.h,
                     ),
-                    if (storeSearchModel.storeType?.isNotEmpty ?? false)
-                      if ((storeSearchModel.storeType ?? '') == 'online')
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text("Pickup/", style: AppStyles.BOLD_STYLE),
-                                Text(
-                                  "Delivery",
-                                  style: AppStyles.BOLD_STYLE_GREEN,
+                    Row(
+                      children: [
+                        (storeSearchModel.distance != null)
+                            ? Container(
+                                // margin: EdgeInsets.only(top: 1.h),
+                                padding: EdgeInsets.all(1.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  // border: Border.all(color: AppConst.grey),
                                 ),
-                                SizedBox(
-                                  width: 2.w,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 0.5.h,
-                            ),
-                            (storeSearchModel.distance != null)
-                                ? Container(
-                                    margin: EdgeInsets.only(),
-                                    padding: EdgeInsets.all(1.w),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      border: Border.all(color: AppConst.grey),
-                                    ),
-                                    child: Text(
-                                        "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km away",
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: 'Stag',
-                                            color: AppConst.darkGrey,
-                                            letterSpacing: 0.5)),
-                                  )
-                                : SizedBox(),
-                          ],
-                        )
-                      else
-                        Column(
-                          children: [
-                            Text(StringContants.pickUp,
-                                style: AppStyles.BOLD_STYLE),
-                            SizedBox(
-                              width: 2.w,
-                            ),
-                            (storeSearchModel.distance != null)
-                                ? Container(
-                                    margin: EdgeInsets.only(),
-                                    padding: EdgeInsets.all(1.w),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      border: Border.all(color: AppConst.grey),
-                                    ),
-                                    child: Text(
-                                        "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km away",
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: 'Stag',
-                                            color: AppConst.darkGrey,
-                                            letterSpacing: 0.5)),
-                                  )
-                                : SizedBox(),
-                          ],
+                                child: Text(
+                                    "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km",
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Stag',
+                                        color: AppConst.darkGrey,
+                                        letterSpacing: 0.5)),
+                              )
+                            : SizedBox(),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 1.w, right: 2.w, top: 0.5.h),
+                          child: Icon(
+                            Icons.circle,
+                            color: AppConst.grey,
+                            size: 0.8.h,
+                          ),
                         ),
+                        if (storeSearchModel.storeType?.isNotEmpty ?? false)
+                          if ((storeSearchModel.storeType ?? '') == 'online')
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Pickup",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.grey,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 2.w, right: 2.w, top: 1.h),
+                                  child: Icon(
+                                    Icons.circle,
+                                    color: AppConst.grey,
+                                    size: 0.8.h,
+                                  ),
+                                ),
+                                Text("Delivery",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.grey,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ],
+                            )
+                          else
+                            Text("Only Pickup",
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.grey,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 0.5.h,
+                    ),
+                    Row(
+                      children: [
+                        (storeSearchModel.businesstype == Constants.fresh)
+                            ? Container(
+                                width: 18.w,
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Color(0xfffff0e9)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(Icons.star,
+                                        size: 1.8.h, color: Color(0xfffc763b)),
+                                    Text("Meat",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: Color(0xff462f03),
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.2,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
+                        (storeSearchModel.businesstype == Constants.fresh)
+                            ? SizedBox(
+                                width: 3.w,
+                              )
+                            : SizedBox(),
+                        (storeSearchModel.earnedCashback != null)
+                            ? Container(
+                                width: 18.w,
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Color(0xffe1f7ff)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(Icons.account_balance_wallet_rounded,
+                                        size: 1.8.h, color: Color(0xff009ed1)),
+                                    Text("Wallet",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: Color(0xff003d51),
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.2,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
+                        (storeSearchModel.businesstype == Constants.fresh)
+                            ? SizedBox(
+                                width: 3.w,
+                              )
+                            : SizedBox(),
+                        (storeSearchModel.actual_cashback != null)
+                            ? Container(
+                                width: 32.w,
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Color(0xffebf7f3)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xff00d18f)),
+                                      child: Icon(Icons.currency_rupee_rounded,
+                                          size: 1.8.h,
+                                          color: Color(0xffebf7f3)),
+                                    ),
+                                    Text(
+                                        "${storeSearchModel.actual_cashback ?? 0}% Cashback",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: Color(0xff053e2a),
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.2,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ],
+                                ),
+                              )
+                            : SizedBox(width: 1.w),
+                      ],
+                    ),
+
+                    // if (storeSearchModel.storeType?.isNotEmpty ?? false)
+                    //   if ((storeSearchModel.storeType ?? '') == 'online')
+                    //     Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         Row(
+                    //           children: [
+                    //             Text("Pickup/", style: AppStyles.BOLD_STYLE),
+                    //             Text(
+                    //               "Delivery",
+                    //               style: AppStyles.BOLD_STYLE_GREEN,
+                    //             ),
+                    //             SizedBox(
+                    //               width: 2.w,
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         SizedBox(
+                    //           height: 0.5.h,
+                    //         ),
+                    //             (storeSearchModel.distance != null)
+                    //                 ? Container(
+                    //                     margin: EdgeInsets.only(),
+                    //                     padding: EdgeInsets.all(1.w),
+                    //                     decoration: BoxDecoration(
+                    //                       borderRadius: BorderRadius.circular(4),
+                    //                       border: Border.all(color: AppConst.grey),
+                    //                     ),
+                    //                     child: Text(
+                    //                         "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km away",
+                    //                         style: TextStyle(
+                    //                             fontSize:
+                    //                                 SizeUtils.horizontalBlockSize *
+                    //                                     3,
+                    //                             fontWeight: FontWeight.w500,
+                    //                             fontFamily: 'Stag',
+                    //                             color: AppConst.darkGrey,
+                    //                             letterSpacing: 0.5)),
+                    //                   )
+                    //                 : SizedBox(),
+                    //           ],
+                    //         )
+                    //       else
+                    //         Column(
+                    //           children: [
+                    //             Text(StringContants.pickUp,
+                    //                 style: AppStyles.BOLD_STYLE),
+                    //             SizedBox(
+                    //               width: 2.w,
+                    //             ),
+                    //             (storeSearchModel.distance != null)
+                    //                 ? Container(
+                    //                     margin: EdgeInsets.only(),
+                    //                     padding: EdgeInsets.all(1.w),
+                    //                     decoration: BoxDecoration(
+                    //                       borderRadius: BorderRadius.circular(4),
+                    //                       border: Border.all(color: AppConst.grey),
+                    //                     ),
+                    //                     child: Text(
+                    //                         "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km away",
+                    //                         style: TextStyle(
+                    //                             fontSize:
+                    //                                 SizeUtils.horizontalBlockSize *
+                    //                                     3,
+                    //                             fontWeight: FontWeight.w500,
+                    //                             fontFamily: 'Stag',
+                    //                             color: AppConst.darkGrey,
+                    //                             letterSpacing: 0.5)),
+                    //                   )
+                    //                 : SizedBox(),
+                    //           ],
+                    //         ),
                   ],
                 ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(right: 2.w),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Text("${storeSearchModel.earnedCashback ?? 0}",
-                        style: AppStyles.BOLD_STYLE_GREEN),
-                  ),
-                ),
+                // Spacer(),
+                // Padding(
+                //   padding: EdgeInsets.only(right: 2.w),
+                //   child: GestureDetector(
+                //     onTap: () {},
+                //     child: Text("${storeSearchModel.earnedCashback ?? 0}",
+                //         style: AppStyles.BOLD_STYLE_GREEN),
+                //   ),
+                // ),
               ],
             ),
           ),
         ),
+        Container(
+          height: 1,
+          width: 90.w,
+          color: AppConst.grey,
+        )
       ],
     );
   }

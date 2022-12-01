@@ -1384,6 +1384,8 @@ getAllcarts{
       name
       _id
       store_type
+      premium
+      actual_cashback
       earned_cashback
       updatedAt
       distance
@@ -1405,6 +1407,8 @@ getAllcarts{
       name
       _id
       store_type
+      premium
+      actual_cashback
       earned_cashback
       updatedAt
       distance
