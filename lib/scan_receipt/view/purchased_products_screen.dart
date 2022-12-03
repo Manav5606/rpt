@@ -81,24 +81,67 @@ class _PurchasedProductsScreenState extends State<PurchasedProductsScreen> {
         () => IsScreenLoading(
             screenLoading: isLoading.value,
             child: Scaffold(
-              backgroundColor: AppConst.black,
+              // backgroundColor: AppConst.black,
               // extendBodyBehindAppBar: true,
               appBar: AppBar(
-                title: Text(
-                  'Add your bill',
-                  style: TextStyle(
-                      color: AppConst.black,
-                      fontSize: SizeUtils.horizontalBlockSize * 5),
+                centerTitle: true,
+                elevation: 0,
+                title: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Enter bill Amoumt    ",
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                        color: AppConst.black,
+                        fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                      ),
+                    ),
+                    Container(
+                      width: 70.w,
+                      child: Center(
+                        child: Text(
+                          "Store not selected for this Receipt",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
+                            color: AppConst.grey,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               body: ListView.builder(
                 itemCount: images!.length,
+                physics: PageScrollPhysics(),
+                scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemBuilder: (_, index) => Image.file(images![index]),
+                itemBuilder: (_, index) => Padding(
+                  padding: EdgeInsets.only(bottom: 1.h),
+                  child: Image.file(images![index]),
+                ),
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: _buildBottomDrawer(),
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerDocked,
+              // floatingActionButton: _buildBottomDrawer(),
+              bottomSheet: Container(
+                width: double.infinity,
+                height: 8.h,
+                decoration: BoxDecoration(
+                  color: AppConst.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(width: 0.1, color: AppConst.grey),
+                ),
+                child: EnterAmount(),
+              ),
             )),
       ),
     );
@@ -107,37 +150,41 @@ class _PurchasedProductsScreenState extends State<PurchasedProductsScreen> {
   Widget EnterAmount() {
     return Padding(
       padding:
-          EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 3),
+          EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 4),
       child: Row(
         children: [
-          Text(
-            "₹ ",
-            style: TextStyle(
-                fontSize: SizeUtils.horizontalBlockSize * 6,
-                fontWeight: FontWeight.w500),
+          Padding(
+            padding: EdgeInsets.only(top: 1.h),
+            child: Text(
+              "\u{20B9}",
+              style: TextStyle(
+                  fontSize: SizeUtils.horizontalBlockSize * 6,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
           Expanded(
-            child: TextFormField(
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5),
-              cursorColor: AppConst.themePurple,
-              // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              onChanged: (value) {
-                amount.value = value;
-              },
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
+            child: Padding(
+              padding: EdgeInsets.only(top: 1.h),
+              child: TextFormField(
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 4),
+                cursorColor: AppConst.black,
+                // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                onChanged: (value) {
+                  amount.value = value;
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  enabledBorder: InputBorder.none,
+                  hintText: ' Enter bill amount',
+                  hintStyle: TextStyle(
+                    fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                    color: AppConst.grey,
+                  ),
+                  // labelStyle: AppConst.body,
                 ),
-                hintText: ' Enter bill amount',
-                hintStyle: TextStyle(
-                  fontSize: SizeUtils.horizontalBlockSize * 5,
-                  color: AppConst.grey,
-                ),
-                labelStyle: AppConst.body,
               ),
             ),
           ),
@@ -168,20 +215,38 @@ class _PurchasedProductsScreenState extends State<PurchasedProductsScreen> {
             },
             child: Obx(
               () {
-                return Container(
-                  color: amount.value.isNotEmpty
-                      ? AppConst.themePurple
-                      : AppConst.themePurple.withOpacity(0.5),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontWeight: FontWeight.w500,
-                        color: AppConst.white,
-                        fontFamily: 'Stag',
+                return Padding(
+                  padding: EdgeInsets.only(top: 1.h),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: amount.value.isNotEmpty
+                          ? Color(0xff005b41)
+                          : Color(0xff005b41).withOpacity(0.5),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Submit',
+                            style: TextStyle(
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                              fontWeight: FontWeight.w500,
+                              color: AppConst.white,
+                              fontFamily: 'Stag',
+                            ),
+                          ),
+                          // SizedBox(
+                          //   width: 2.w,
+                          // ),
+                          Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            size: 2.h,
+                            color: AppConst.white,
+                          )
+                        ],
                       ),
                     ),
                   ),

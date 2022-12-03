@@ -56,7 +56,7 @@ class HomeAppBar extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: isHomeScreen ? 65.w : 40.w,
+                  width: isHomeScreen ? 60.w : 40.w,
                   child: Text(
                     address,
                     // maxLines: 1,

@@ -517,7 +517,7 @@ class ScanListViewChildShimmer extends StatelessWidget {
                       child: Container(
                         color: AppConst.black,
                         height: 2.h,
-                        width: 70.w,
+                        width: 60.w,
                       ),
                     ),
                     SizedBox(
@@ -542,17 +542,17 @@ class ScanListViewChildShimmer extends StatelessWidget {
                     ),
                   ],
                 ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(right: 2.w),
-                  child: ShimmerEffect(
-                    child: Container(
-                      color: AppConst.black,
-                      height: 2.h,
-                      width: 5.w,
-                    ),
-                  ),
-                ),
+                // Spacer(),
+                // Padding(
+                //   padding: EdgeInsets.only(right: 2.w),
+                //   child: ShimmerEffect(
+                //     child: Container(
+                //       color: AppConst.black,
+                //       height: 2.h,
+                //       width: 5.w,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

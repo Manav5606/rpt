@@ -1,6 +1,10 @@
 import 'dart:developer';
+import 'dart:ffi';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
+import 'package:customer_app/widgets/imagePicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,126 +17,155 @@ import 'package:customer_app/widgets/copied/confirm_dialog.dart';
 import 'package:customer_app/widgets/screenLoader.dart';
 import 'package:customer_app/widgets/snack.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../app/constants/responsive.dart';
 import '../../constants/app_const.dart';
 import '../../theme/styles.dart';
 
-class MyCartScreen extends StatelessWidget {
+class MyCartScreen extends StatefulWidget {
   MyCartScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MyCartScreen> createState() => _MyCartScreenState();
+}
+
+class _MyCartScreenState extends State<MyCartScreen> {
   final TextEditingController amountController = TextEditingController();
+
   final ExploreController _exploreController = Get.find();
+
   final PaymentController _paymentController = Get.find();
+  List<File>? images;
+
+  @override
+  void initState() {
+    images = Get.arguments;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Obx(
-        () => IsScreenLoading(
-          screenLoading: _exploreController.isLoadingSubmit.value,
-          child: Scaffold(
-            floatingActionButton: Container(
-              width: double.infinity,
-              height: 10.h,
+    return Obx(
+      () => IsScreenLoading(
+        screenLoading: _exploreController.isLoadingSubmit.value,
+        child: Scaffold(
+          bottomSheet: Container(
+            width: double.infinity,
+            height: 8.h,
+            decoration: BoxDecoration(
               color: AppConst.white,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "₹ ",
-                          style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 6,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: amountController,
-                            keyboardType: TextInputType.number,
-                            style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 5),
-                            cursorColor: AppConst.themePurple,
-                            // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                            onChanged: (value) {
-                              _exploreController.amountText.value = value;
-                            },
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(width: 0.1, color: AppConst.grey),
+              boxShadow: [
+                BoxShadow(
+                    color: _exploreController.addCartProduct.isEmpty
+                        ? AppConst.transparent
+                        : AppConst.veryLightGrey,
+                    offset: Offset(0, -4),
+                    blurRadius: 10,
+                    spreadRadius: 1)
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 1.h),
+                    child: Text(
+                      "\u{20B9}",
+                      style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 6,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: TextFormField(
+                        controller: amountController,
 
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 12.0),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: AppConst.transparent),
-                              ),
-                              hintText: ' Enter bill amount',
-                              hintStyle: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 5,
-                                color: AppConst.grey,
-                              ),
-                              labelStyle: AppConst.body,
-                            ),
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                            fontSize: SizeUtils.horizontalBlockSize * 4),
+                        cursorColor: AppConst.black,
+                        // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        onChanged: (value) {
+                          _exploreController.amountText.value = value;
+                        },
+
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 12.0),
+                          enabledBorder: InputBorder.none,
+                          // UnderlineInputBorder(
+                          //   borderSide:
+                          //       BorderSide(color: AppConst.transparent),
+                          // ),
+                          hintText: ' Enter bill amount',
+                          hintStyle: TextStyle(
+                            fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                            color: AppConst.grey,
                           ),
+                          // labelStyle: AppConst.body,
                         ),
-                        Obx(
-                          () => GestureDetector(
-                            onTap: () async {
-                              try {
-                                if (_exploreController
-                                    .amountText.value.isNotEmpty) {
-                                  _exploreController.isLoadingSubmit.value =
-                                      true;
-                                  bool error =
-                                      await ScanRecipetService.placeOrder(
-                                    images: Get.arguments,
-                                    total: double.parse(amountController.text),
-                                    storeId: _exploreController
-                                        .getStoreDataModel
-                                        .value
-                                        ?.data
-                                        ?.store
-                                        ?.sId,
-                                    //  _paymentController
-                                    //     .redeemCashInStorePageDataIndex.value,
-                                    products: _exploreController.addCartProduct,
-                                    latLng: _paymentController.latLng,
-                                  );
-                                  if (error) {
-                                    Snack.bottom(
-                                        'Error', 'Failed to send receipt');
-                                    _exploreController.isLoadingSubmit.value =
-                                        false;
-                                  } else {
-                                    clearList();
-                                    _exploreController.addCartProduct.clear();
-                                    total();
-                                    Get.toNamed(AppRoutes.BaseScreen);
-                                    Snack.top(
-                                        'Success', 'Receipt Sent Successfully');
-                                    _exploreController.isLoadingSubmit.value =
-                                        false;
-                                  }
-                                }
-                              } catch (e) {
-                                _exploreController.isLoadingSubmit.value =
-                                    false;
-                                print(e);
-                              }
-                            },
-                            child: Container(
-                              color:
-                                  _exploreController.amountText.value.isNotEmpty
-                                      ? AppConst.themePurple
-                                      : AppConst.themePurple.withOpacity(0.5),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 3.w, vertical: 1.h),
-                                child: Text(
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => GestureDetector(
+                      onTap: () async {
+                        try {
+                          if (_exploreController.amountText.value.isNotEmpty) {
+                            _exploreController.isLoadingSubmit.value = true;
+                            bool error = await ScanRecipetService.placeOrder(
+                              images: Get.arguments,
+                              total: double.parse(amountController.text),
+                              storeId: _exploreController
+                                  .getStoreDataModel.value?.data?.store?.sId,
+                              //  _paymentController
+                              //     .redeemCashInStorePageDataIndex.value,
+                              products: _exploreController.addCartProduct,
+                              latLng: _paymentController.latLng,
+                            );
+                            if (error) {
+                              Snack.bottom('Error', 'Failed to send receipt');
+                              _exploreController.isLoadingSubmit.value = false;
+                            } else {
+                              clearList();
+                              _exploreController.addCartProduct.clear();
+                              total();
+                              Get.toNamed(AppRoutes.BaseScreen);
+                              Snack.top('Success', 'Receipt Sent Successfully');
+                              _exploreController.isLoadingSubmit.value = false;
+                            }
+                          }
+                        } catch (e) {
+                          _exploreController.isLoadingSubmit.value = false;
+                          print(e);
+                        }
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 1.h),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color:
+                                _exploreController.amountText.value.isNotEmpty
+                                    ? Color(0xff005b41)
+                                    : Color(0xff005b41).withOpacity(0.5),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 3.w, vertical: 1.h),
+                            child: Row(
+                              children: [
+                                Text(
                                   'Submit',
                                   style: TextStyle(
                                     fontSize: SizeUtils.horizontalBlockSize * 4,
@@ -141,354 +174,639 @@ class MyCartScreen extends StatelessWidget {
                                     fontFamily: 'Stag',
                                   ),
                                 ),
-                              ),
+                                // SizedBox(
+                                //   width: 2.w,
+                                // ),
+                                Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 2.h,
+                                  color: AppConst.white,
+                                )
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    Text(
-                      "Apply coupon?",
-                      style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4,
-                          fontWeight: FontWeight.w500,
-                          color: AppConst.themePurple),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              // leading: GestureDetector(
-              //   onTap: () {
-              //     clearList();
-              //     _exploreController.addCartProduct.clear();
-              //     Get.toNamed(AppRoutes.ScanStoreViewScreen);
-              //   },
-              //   child: Icon(Icons.arrow_back),
-              // ),
-              actions: [
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 3.w),
-                    child: Text(
-                      "My Carts",
-                      style: TextStyle(
-                        color: AppConst.grey,
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
                       ),
-                    ),
-                  ),
-                ),
-              ],
-              title: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Personal FoodsCo ",
-                    style: TextStyle(
-                      color: AppConst.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: SizeUtils.horizontalBlockSize * 5,
-                    ),
-                  ),
-                  Text(
-                    "Shopping in 94103",
-                    style: TextStyle(
-                      color: AppConst.black,
-                      fontSize: SizeUtils.horizontalBlockSize * 4,
                     ),
                   ),
                 ],
               ),
             ),
-            body: WillPopScope(
-              onWillPop: handleBackPressed,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+          ),
+          appBar: AppBar(
+            // automaticallyImplyLeading: false,
+            // leading: GestureDetector(
+            //   onTap: () {
+            //     clearList();
+            //     _exploreController.addCartProduct.clear();
+            //     Get.toNamed(AppRoutes.ScanStoreViewScreen);
+            //   },
+            //   child: Icon(Icons.arrow_back),
+            // ),
+            centerTitle: true,
+            elevation: 0,
+            // actions: [
+            //   Center(
+            //     child: Padding(
+            //       padding: EdgeInsets.only(right: 3.w),
+            //       child: Text(
+            //         "My Carts",
+            //         style: TextStyle(
+            //           color: AppConst.grey,
+            //           fontSize: SizeUtils.horizontalBlockSize * 4,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ],
+            title: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Scan Receipt    ",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                    color: AppConst.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                  ),
+                ),
+                Container(
+                  width: 70.w,
+                  child: Center(
+                    child: Text(
+                      _exploreController
+                              .getStoreDataModel.value?.data?.store?.name ??
+                          "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                        color: AppConst.grey,
+                        fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          body: WillPopScope(
+            onWillPop: handleBackPressed,
+            child: SingleChildScrollView(
+              child: Obx(
+                () => _exploreController.addCartProduct.isEmpty
+                    ? ListView.builder(
+                        itemCount: images!.length,
+                        physics: PageScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (_, index) => Padding(
+                          padding: EdgeInsets.only(bottom: 1.h),
+                          child: Image.file(images![index]),
+                        ),
+                      )
+                    : Column(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: CachedNetworkImage(
-                              width: 12.w,
-                              height: 6.h,
-                              fit: BoxFit.contain,
-                              imageUrl:
-                                  'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) => Center(
-                                      child: CircularProgressIndicator(
-                                          value: downloadProgress.progress)),
-                              errorWidget: (context, url, error) => Image.network(
-                                  'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+                          Container(
+                            decoration: BoxDecoration(color: Color(0xfff0e6fa)),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 4.w, vertical: 1.2.h),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "\u20b9${_exploreController.totalValue.value} Extra Cashback earned",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: AppConst.black,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    4,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                      SizedBox(
+                                        height: 0.5.h,
+                                      ),
+                                      Text(
+                                          "Enter the bill amount to get more Cashback",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: Color(0xff2b0064),
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    3.7,
+                                            fontWeight: FontWeight.w500,
+                                            fontStyle: FontStyle.normal,
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+
                           Container(
-                            width: 65.w,
+                            height: 22.h,
+                            width: 100.w,
+                            decoration: BoxDecoration(color: Color(0xfff5f5f5)),
                             child: Padding(
-                              padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 4.w, vertical: 1.h),
                               child: Column(
-                                mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    _exploreController.getStoreDataModel.value
-                                            ?.data?.store?.name ??
-                                        '',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppStyles.BOLD_STYLE,
+                                  Text("Scanned Reciepts",
+                                      style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4.2,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                                  SizedBox(
+                                    height: 1.h,
                                   ),
-                                  Text(
-                                    "",
-                                    style: AppStyles.STORES_SUBTITLE_STYLE,
+                                  Expanded(
+                                    child: ListView.builder(
+                                        itemCount: images!.length,
+                                        shrinkWrap: true,
+                                        physics: PageScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        itemExtent:
+                                            SizeUtils.horizontalBlockSize * 30,
+                                        itemBuilder: (_, index) {
+                                          return Container(
+                                            // height: 16.h,
+                                            // width: 28.w,
+                                            child: Hero(
+                                              tag: "View Image",
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Get.dialog(Dialog(
+                                                    child: Stack(
+                                                      children: [
+                                                        // Image.file(
+                                                        //   images![index],
+                                                        //   fit: BoxFit.fill,
+                                                        // ),
+                                                        // SizedBox(
+                                                        //   height: 1.h,
+                                                        // ),
+                                                        PhotoView(
+                                                          heroAttributes:
+                                                              PhotoViewHeroAttributes(
+                                                            tag: "View Image",
+                                                          ),
+                                                          imageProvider:
+                                                              FileImage(File(
+                                                                  "${images![index].path}")),
+                                                          tightMode: true,
+                                                          customSize:
+                                                              Size(98.w, 100.h),
+                                                          backgroundDecoration:
+                                                              BoxDecoration(
+                                                                  color: AppConst
+                                                                      .black),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child:
+                                                              CircularCloseButton(),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ));
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 2.w),
+                                                  height: 16.h,
+                                                  width: 33.w,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8)),
+                                                  child: Image.file(
+                                                    images![index],
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          Spacer(),
-                          Obx(
-                            () => Text(
-                              '\u20b9 ${_exploreController.totalValue.value} ',
-                              style: AppStyles.BOLD_STYLE,
+                          // Row(
+                          //   crossAxisAlignment: CrossAxisAlignment.center,
+                          //   children: [
+                          //     ClipRRect(
+                          //       borderRadius: BorderRadius.circular(100),
+                          //       child: CachedNetworkImage(
+                          //         width: 12.w,
+                          //         height: 6.h,
+                          //         fit: BoxFit.contain,
+                          //         imageUrl:
+                          //             'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
+                          //         progressIndicatorBuilder:
+                          //             (context, url, downloadProgress) => Center(
+                          //                 child: CircularProgressIndicator(
+                          //                     value: downloadProgress.progress)),
+                          //         errorWidget: (context, url, error) => Image.network(
+                          //             'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+                          //       ),
+                          //     ),
+                          //     Container(
+                          //       width: 65.w,
+                          //       child: Padding(
+                          //         padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                          //         child: Column(
+                          //           mainAxisSize: MainAxisSize.min,
+                          //           crossAxisAlignment: CrossAxisAlignment.start,
+                          //           children: [
+                          //             Text(
+                          //               _exploreController.getStoreDataModel.value
+                          //                       ?.data?.store?.name ??
+                          //                   '',
+                          //               overflow: TextOverflow.ellipsis,
+                          //               style: AppStyles.BOLD_STYLE,
+                          //             ),
+                          //             Text(
+                          //               "",
+                          //               style: AppStyles.STORES_SUBTITLE_STYLE,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     Spacer(),
+                          //     Obx(
+                          //       () => Text(
+                          //         '\u20b9 ${_exploreController.totalValue.value} ',
+                          //         style: AppStyles.BOLD_STYLE,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          // Divider(
+                          //   thickness: 2,
+                          //   height: 1,
+                          // ),
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4.w, vertical: 1.2.h),
+                            child: Row(
+                              children: [
+                                Text("Products you selected",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.black,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4.2,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ],
                             ),
+                          ),
+                          Obx(
+                            () => _exploreController.addCartProduct.isEmpty
+                                ? SizedBox()
+                                // Column(
+                                //     crossAxisAlignment: CrossAxisAlignment.center,
+                                //     children: [
+                                //       SizedBox(
+                                //         height: SizeUtils.verticalBlockSize * 25,
+                                //       ),
+                                //       Center(
+                                //         child: Padding(
+                                //           padding: EdgeInsets.all(2.h),
+                                //           child: Text(
+                                //             'Card is Empty',
+                                //             style: TextStyle(
+                                //               fontSize:
+                                //                   SizeUtils.horizontalBlockSize * 4,
+                                //               fontWeight: FontWeight.w500,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       Container(
+                                //         decoration: BoxDecoration(
+                                //           color: AppConst.kSecondaryColor,
+                                //         ),
+                                //         child: GestureDetector(
+                                //           onTap: () async {
+                                //             clearList();
+                                //             await addCartBottomSheet(context);
+                                //           },
+                                //           child: Padding(
+                                //             padding: EdgeInsets.all(2.h),
+                                //             child: Text(
+                                //               'Add to Cart',
+                                //               style: TextStyle(
+                                //                 color: AppConst.white,
+                                //                 fontWeight: FontWeight.w600,
+                                //                 fontSize:
+                                //                     SizeUtils.horizontalBlockSize * 4,
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       )
+                                //     ],
+                                //   )
+                                : Obx(
+                                    () => ListView.separated(
+                                      itemCount: _exploreController
+                                          .addCartProduct.length,
+                                      separatorBuilder: (context, index) {
+                                        return SizedBox();
+                                      },
+                                      shrinkWrap: true,
+                                      primary: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, i) {
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 3.w, vertical: 1.h),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Center(
+                                                    child: (_exploreController
+                                                                    .addCartProduct[
+                                                                        i]
+                                                                    .logo !=
+                                                                null &&
+                                                            _exploreController
+                                                                    .addCartProduct[
+                                                                        i]
+                                                                    .logo !=
+                                                                "")
+                                                        ? Image.network(
+                                                            _exploreController
+                                                                .addCartProduct[
+                                                                    i]
+                                                                .logo!,
+                                                            fit: BoxFit.cover,
+                                                            height: 7.h,
+                                                            width: 14.w,
+                                                          )
+                                                        : Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: AppConst
+                                                                  .veryLightGrey,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              // border: Border.all(
+                                                              //     width: 0.1,
+                                                              //     color:
+                                                              //         AppConst.grey)
+                                                            ),
+                                                            height: 7.h,
+                                                            width: 14.w,
+                                                            child: Center(
+                                                                child: Image.asset(
+                                                                    "assets/images/noimage.png")),
+                                                          ),
+                                                  ),
+                                                  // ClipRRect(
+                                                  //   borderRadius:
+                                                  //       BorderRadius.circular(100),
+                                                  //   child: CachedNetworkImage(
+                                                  //     width: 12.w,
+                                                  //     height: 6.h,
+                                                  //     fit: BoxFit.contain,
+                                                  //     imageUrl: _exploreController
+                                                  //             .addCartProduct[i]
+                                                  //             .logo ??
+                                                  //         'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
+                                                  //     progressIndicatorBuilder: (context,
+                                                  //             url,
+                                                  //             downloadProgress) =>
+                                                  //         Center(
+                                                  //             child: CircularProgressIndicator(
+                                                  //                 value:
+                                                  //                     downloadProgress
+                                                  //                         .progress)),
+                                                  //     errorWidget: (context, url,
+                                                  //             error) =>
+                                                  //         Image.network(
+                                                  //             'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+                                                  //   ),
+                                                  // ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 2.w),
+                                                    child: Container(
+                                                      width: 60.w,
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                              _exploreController
+                                                                      .addCartProduct[
+                                                                          i]
+                                                                      .name ??
+                                                                  '',
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'MuseoSans',
+                                                                color: AppConst
+                                                                    .black,
+                                                                fontSize: SizeUtils
+                                                                        .horizontalBlockSize *
+                                                                    4,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                              )),
+                                                          Text(
+                                                            // _exploreController
+                                                            //         .addCartProduct[i]
+                                                            //         .name ??
+                                                            //     '',
+                                                            "₹95 / 60g",
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'MuseoSans',
+                                                              color:
+                                                                  AppConst.grey,
+                                                              fontSize: SizeUtils
+                                                                      .horizontalBlockSize *
+                                                                  3.7,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                            ),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Obx(
+                                                    () => Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 2.h),
+                                                      child: Container(
+                                                        width: 10.w,
+                                                        height: 5.h,
+                                                        child: Center(
+                                                          child: Text(
+                                                            _exploreController
+                                                                    .addCartProduct[
+                                                                        i]
+                                                                    .quntity
+                                                                    ?.value
+                                                                    .toString() ??
+                                                                '',
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: AppStyles
+                                                                .BOLD_STYLE,
+                                                          ),
+                                                        ),
+                                                        decoration: BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            border: Border.all(
+                                                                color: AppConst
+                                                                    .grey)),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      _exploreController
+                                                          .addCartProduct
+                                                          .removeAt(i);
+                                                      _exploreController
+                                                          .addCartProduct
+                                                          .refresh();
+                                                      total();
+                                                    },
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 2.w,
+                                                          bottom: 2.h),
+                                                      child: FaIcon(
+                                                        FontAwesomeIcons.trash,
+                                                        size: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            4.5,
+                                                        color:
+                                                            Color(0xff666666),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  // Spacer(),
+                                                  // Obx(
+                                                  //   () => _exploreController
+                                                  //               .addCartProduct[i]
+                                                  //               .quntity!
+                                                  //               .value >
+                                                  //           0
+                                                  //       ? Text(
+                                                  //           " \u20b9 ${(_exploreController.addCartProduct[i].cashback! * _exploreController.addCartProduct[i].quntity!.value).toString()}",
+                                                  //           style: AppStyles
+                                                  //               .STORE_NAME_STYLE,
+                                                  //         )
+                                                  //       : Text(
+                                                  //           " \u20b9 ${_exploreController.addCartProduct[i].cashback.toString()}",
+                                                  //           style: AppStyles
+                                                  //               .STORE_NAME_STYLE,
+                                                  //         ),
+                                                  // )
+                                                ],
+                                              ),
+                                              // GestureDetector(
+                                              //   onTap: () {
+                                              //     _exploreController.addCartProduct
+                                              //         .removeAt(i);
+                                              //     _exploreController.addCartProduct
+                                              //         .refresh();
+                                              //     total();
+                                              //   },
+                                              //   child: Row(
+                                              //     mainAxisAlignment:
+                                              //         MainAxisAlignment.center,
+                                              //     children: [
+                                              //       FaIcon(
+                                              //         FontAwesomeIcons.trash,
+                                              //         size: SizeUtils
+                                              //                 .horizontalBlockSize *
+                                              //             4,
+                                              //         color: Color(0xff666666),
+                                              //       ),
+                                              //       // SizedBox(
+                                              //       //   width: 3.w,
+                                              //       // ),
+                                              //       // Text(
+                                              //       //   "Remove",
+                                              //       //   style: TextStyle(
+                                              //       //       fontSize: SizeUtils
+                                              //       //               .horizontalBlockSize *
+                                              //       //           4,
+                                              //       //       fontWeight:
+                                              //       //           FontWeight.w500),
+                                              //       // ),
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
                           ),
                         ],
                       ),
-                    ),
-                    Divider(
-                      thickness: 2,
-                      height: 1,
-                    ),
-                    Obx(
-                      () => _exploreController.addCartProduct.isEmpty
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: SizeUtils.verticalBlockSize * 25,
-                                ),
-                                Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(2.h),
-                                    child: Text(
-                                      'Card is Empty',
-                                      style: TextStyle(
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 4,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: AppConst.kSecondaryColor,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      clearList();
-                                      await addCartBottomSheet(context);
-                                    },
-                                    child: Padding(
-                                      padding: EdgeInsets.all(2.h),
-                                      child: Text(
-                                        'Add to Cart',
-                                        style: TextStyle(
-                                          color: AppConst.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize * 4,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          : Obx(
-                              () => ListView.separated(
-                                itemCount:
-                                    _exploreController.addCartProduct.length,
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(
-                                    height: 1.h,
-                                  );
-                                },
-                                shrinkWrap: true,
-                                primary: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, i) {
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 3.w, vertical: 2.h),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              child: CachedNetworkImage(
-                                                width: 12.w,
-                                                height: 6.h,
-                                                fit: BoxFit.contain,
-                                                imageUrl: _exploreController
-                                                        .addCartProduct[i]
-                                                        .logo ??
-                                                    'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
-                                                progressIndicatorBuilder: (context,
-                                                        url,
-                                                        downloadProgress) =>
-                                                    Center(
-                                                        child: CircularProgressIndicator(
-                                                            value:
-                                                                downloadProgress
-                                                                    .progress)),
-                                                errorWidget: (context, url,
-                                                        error) =>
-                                                    Image.network(
-                                                        'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 2.w),
-                                              child: Container(
-                                                width: 50.w,
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      _exploreController
-                                                              .addCartProduct[i]
-                                                              .name ??
-                                                          '',
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style:
-                                                          AppStyles.BOLD_STYLE,
-                                                    ),
-                                                    Text(
-                                                      _exploreController
-                                                              .addCartProduct[i]
-                                                              .name ??
-                                                          '',
-                                                      style: AppStyles
-                                                          .STORES_SUBTITLE_STYLE,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Obx(
-                                              () => Container(
-                                                width: 12.w,
-                                                height: 5.h,
-                                                child: Center(
-                                                  child: Text(
-                                                    _exploreController
-                                                            .addCartProduct[i]
-                                                            .quntity
-                                                            ?.value
-                                                            .toString() ??
-                                                        '',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: AppStyles.BOLD_STYLE,
-                                                  ),
-                                                ),
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.rectangle,
-                                                    border: Border.all(
-                                                        color: AppConst.grey)),
-                                              ),
-                                            ),
-                                            // Spacer(),
-                                            Obx(
-                                              () => _exploreController
-                                                          .addCartProduct[i]
-                                                          .quntity!
-                                                          .value >
-                                                      0
-                                                  ? Text(
-                                                      " \u20b9 ${(_exploreController.addCartProduct[i].cashback! * _exploreController.addCartProduct[i].quntity!.value).toString()}",
-                                                      style: AppStyles
-                                                          .STORE_NAME_STYLE,
-                                                    )
-                                                  : Text(
-                                                      " \u20b9 ${_exploreController.addCartProduct[i].cashback.toString()}",
-                                                      style: AppStyles
-                                                          .STORE_NAME_STYLE,
-                                                    ),
-                                            )
-                                          ],
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            _exploreController.addCartProduct
-                                                .removeAt(i);
-                                            _exploreController.addCartProduct
-                                                .refresh();
-                                            total();
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.trash,
-                                                size: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4,
-                                                color: AppConst.green,
-                                              ),
-                                              SizedBox(
-                                                width: 3.w,
-                                              ),
-                                              Text(
-                                                "Remove",
-                                                style: TextStyle(
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        4,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                  ],
-                ),
               ),
             ),
           ),
