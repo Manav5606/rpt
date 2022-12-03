@@ -20,13 +20,16 @@ class PaymentController extends GetxController {
   RxBool isLoadingStoreData = false.obs;
   RxString searchText = ''.obs;
   Rx<GetNearMePageData?> getNearMePageDataModel = GetNearMePageData().obs;
-  Rx<GetRedeemCashInStorePageData?> getRedeemCashInStorePageData = GetRedeemCashInStorePageData().obs;
-  Rx<RedeemCashInStorePageData> redeemCashInStorePageDataIndex = RedeemCashInStorePageData().obs;
+  Rx<GetRedeemCashInStorePageData?> getRedeemCashInStorePageData =
+      GetRedeemCashInStorePageData().obs;
+  Rx<RedeemCashInStorePageData> redeemCashInStorePageDataIndex =
+      RedeemCashInStorePageData().obs;
   TextEditingController searchController = TextEditingController();
   Rx<RedeemBalanceModel?> redeemBalanceModel = RedeemBalanceModel().obs;
-  final TextEditingController amountController = TextEditingController();
+  // final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   RxString amountText = ''.obs;
   LatLng latLng = LatLng(0.0, 0.0);
   Rx<GetStoreDataModel?> getStoreDataModel = GetStoreDataModel().obs;
@@ -35,7 +38,8 @@ class PaymentController extends GetxController {
   Future<void> getRedeemCashInStorePage() async {
     try {
       isLoading.value = true;
-      getRedeemCashInStorePageData.value = await WalletService.getRedeemCashInStorePageData(latLng);
+      getRedeemCashInStorePageData.value =
+          await WalletService.getRedeemCashInStorePageData(latLng);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -45,7 +49,8 @@ class PaymentController extends GetxController {
   Future<void> getScanReceiptPageNearMeStoresData() async {
     try {
       isLoading.value = true;
-      getRedeemCashInStorePageData.value = await WalletService.getScanReceiptPageNearMeStoresData(latLng);
+      getRedeemCashInStorePageData.value =
+          await WalletService.getScanReceiptPageNearMeStoresData(latLng);
       getRedeemCashInStorePageData.refresh();
       isLoading.value = false;
     } catch (e, st) {
@@ -56,17 +61,20 @@ class PaymentController extends GetxController {
   Future<void> getNearMePageData({required String searchText}) async {
     try {
       isLoading.value = true;
-      getNearMePageDataModel.value = await ExploreService.getNearMePageData(searchText);
+      getNearMePageDataModel.value =
+          await ExploreService.getNearMePageData(searchText);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
     }
   }
 
-  Future<void> redeemBalance({required String storeId, required double amount}) async {
+  Future<void> redeemBalance(
+      {required String storeId, required double amount}) async {
     try {
       isLoading.value = true;
-      redeemBalanceModel.value = await WalletService.redeemBalance(storeId: storeId, amount: amount);
+      redeemBalanceModel.value =
+          await WalletService.redeemBalance(storeId: storeId, amount: amount);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
