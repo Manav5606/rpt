@@ -3,6 +3,10 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/colors.dart';
+import 'package:customer_app/app/data/model/order_model.dart';
+import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
+import 'package:customer_app/screens/home/controller/home_controller.dart';
+import 'package:customer_app/widgets/snack.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -20,7 +24,10 @@ class PayView extends StatefulWidget {
 
 class _PayViewState extends State<PayView> {
   final PaymentController paycontroller = Get.find();
+  final HomeController _homeController = Get.find();
   final TextEditingController amountController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -71,7 +78,7 @@ class _PayViewState extends State<PayView> {
       ),
       body: Obx(
         () => Form(
-          key: paycontroller.formKey,
+          key: _formKey,
           child: paycontroller.isLoading.value
               ? Center(child: CircularProgressIndicator())
               : Column(
@@ -516,29 +523,41 @@ class _PayViewState extends State<PayView> {
                       child: Obx(
                         () => InkWell(
                           onTap: () async {
-                            final form = paycontroller.formKey.currentState!;
+                            final form = _formKey.currentState!;
                             if (form.validate()) {
                               var temp =
                                   double.parse(paycontroller.amountText.value);
-
-                              await paycontroller.redeemBalance(
-                                  storeId: (paycontroller
-                                          .redeemCashInStorePageDataIndex
-                                          .value
-                                          .sId ??
-                                      ''),
-                                  amount: temp);
-                              if (paycontroller
-                                      .redeemBalanceModel.value?.error ??
-                                  true) {
-                                await _errorDailog(context);
+                              if (temp > 0) {
+                                await paycontroller.redeemBalance(
+                                    storeId: (paycontroller
+                                            .redeemCashInStorePageDataIndex
+                                            .value
+                                            .sId ??
+                                        ''),
+                                    amount: temp);
+                                if (paycontroller.orderModel.value != null) {
+                                  await Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            HistoryOrderTrackingScreen(
+                                          // displayHour: _addCartController.displayHour.value,
+                                          order: paycontroller.orderModel.value,
+                                        ),
+                                      ),
+                                      (Route<dynamic> route) => route.isFirst);
+                                  _homeController.apiCall();
+                                  amountController.clear();
+                                  paycontroller.isLoading.value = false;
+                                } else {
+                                  Snack.bottom(
+                                      'Error', 'Failed to Redeem the Cash');
+                                  paycontroller.isLoading.value = false;
+                                }
                               } else {
-                                // Position position = await Geolocator.getCurrentPosition();
-                                // LatLng latLng = LatLng(position.latitude, position.longitude);
-                                // await paycontroller.getRedeemCashInStorePage(latLng);
-                                await _sucessDailog(context);
+                                Get.snackbar(
+                                    "", "Please Enter Amount greater than 0");
                               }
-                              amountController.clear();
                             }
 
                             // Get.toNamed(AppRoutes.paymentList);
@@ -659,44 +678,44 @@ class _PayViewState extends State<PayView> {
     );
   }
 
-  _sucessDailog(BuildContext context) {
-    AwesomeDialog(
-      context: context,
-      animType: AnimType.LEFTSLIDE,
-      headerAnimationLoop: false,
-      dialogType: DialogType.SUCCES,
-      // showCloseIcon: true,
-      title: 'Success',
-      desc: 'Payment Successfully',
-      btnOkOnPress: () {
-        Get.toNamed(AppRoutes.BaseScreen);
-        debugPrint('OnClcik');
-      },
-      btnOkIcon: Icons.check_circle,
-      onDissmissCallback: (type) {
-        debugPrint('Dialog Dismiss from callback $type');
-      },
-    ).show();
-  }
+  // _sucessDailog(BuildContext context) {
+  //   AwesomeDialog(
+  //     context: context,
+  //     animType: AnimType.LEFTSLIDE,
+  //     headerAnimationLoop: false,
+  //     dialogType: DialogType.SUCCES,
+  //     // showCloseIcon: true,
+  //     title: 'Success',
+  //     desc: 'Payment Successfully',
+  //     btnOkOnPress: () {
+  //       Get.toNamed(AppRoutes.BaseScreen);
+  //       debugPrint('OnClcik');
+  //     },
+  //     btnOkIcon: Icons.check_circle,
+  //     onDissmissCallback: (type) {
+  //       debugPrint('Dialog Dismiss from callback $type');
+  //     },
+  //   ).show();
+  // }
 
-  _errorDailog(BuildContext context) {
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.ERROR,
-      animType: AnimType.RIGHSLIDE,
-      headerAnimationLoop: true,
-      title: 'Error',
-      desc: 'Payment Failed',
-      btnOkOnPress: () {
-        paycontroller.isLoading.value = true;
-        paycontroller.redeemCashInStorePageDataIndex.value.earnedCashback =
-            paycontroller.redeemBalanceModel.value?.actBalance;
-        paycontroller.redeemCashInStorePageDataIndex.refresh();
-        Future.delayed(Duration(seconds: 1))
-            .then((value) => paycontroller.isLoading.value = false);
-      },
-      btnOkIcon: Icons.cancel,
-      btnOkColor: AppConst.kPrimaryColor,
-    ).show();
-  }
+  // _errorDailog(BuildContext context) {
+  //   AwesomeDialog(
+  //     context: context,
+  //     dialogType: DialogType.ERROR,
+  //     animType: AnimType.RIGHSLIDE,
+  //     headerAnimationLoop: true,
+  //     title: 'Error',
+  //     desc: 'Payment Failed',
+  //     btnOkOnPress: () {
+  //       paycontroller.isLoading.value = true;
+  //       // paycontroller.redeemCashInStorePageDataIndex.value.earnedCashback =
+  //       //     paycontroller.redeemBalanceModel.value?.actBalance;
+  //       paycontroller.redeemCashInStorePageDataIndex.refresh();
+  //       Future.delayed(Duration(seconds: 1))
+  //           .then((value) => paycontroller.isLoading.value = false);
+  //     },
+  //     btnOkIcon: Icons.cancel,
+  //     btnOkColor: AppConst.kPrimaryColor,
+  //   ).show();
+  // }
 }

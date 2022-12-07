@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
@@ -9,7 +10,7 @@ import 'package:customer_app/widgets/imagePicker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ScanRecipetService {
-  static Future<bool> placeOrderWithoutStore(
+  static Future<OrderData?> placeOrderWithoutStore(
       {required List<File>? images,
       required double total,
       required LatLng latLng}) async {
@@ -27,15 +28,18 @@ class ScanRecipetService {
       };
       final result = await GraphQLRequest.query(
           query: GraphQLQueries.placeOrder, variables: variables);
-      return result['error'];
+      if (result['error'] == false) {
+        final OrderData _getAllReceipts = OrderData.fromJson(result['data']);
+        return _getAllReceipts;
+      }
     } catch (e, st) {
       log('st : $st');
-      print(e.toString());
-      return true;
+
+      rethrow;
     }
   }
 
-  static Future<bool> placeOrder(
+  static Future<OrderData?> placeOrder(
       {required List<File>? images,
       required String? storeId,
       var products,
@@ -57,10 +61,13 @@ class ScanRecipetService {
       };
       final result = await GraphQLRequest.query(
           query: GraphQLQueries.placeOrderWithStore, variables: variables);
-      return result['error'];
+      if (result['error'] == false) {
+        final OrderData _getAllReceipts = OrderData.fromJson(result['data']);
+        return _getAllReceipts;
+      }
     } catch (e, st) {
       log('e  : $e ,stt $st');
-      return true;
+      rethrow;
     }
   }
 }

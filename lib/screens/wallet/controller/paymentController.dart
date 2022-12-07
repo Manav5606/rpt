@@ -1,3 +1,4 @@
+import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/ui/pages/search/models/get_near_me_page_data.dart';
@@ -25,10 +26,11 @@ class PaymentController extends GetxController {
   Rx<RedeemCashInStorePageData> redeemCashInStorePageDataIndex =
       RedeemCashInStorePageData().obs;
   TextEditingController searchController = TextEditingController();
-  Rx<RedeemBalanceModel?> redeemBalanceModel = RedeemBalanceModel().obs;
+  // Rx<RedeemBalanceModel?> redeemBalanceModel = RedeemBalanceModel().obs;
   // final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  // final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Rx<OrderData?> orderModel = OrderData().obs;
 
   RxString amountText = ''.obs;
   LatLng latLng = LatLng(0.0, 0.0);
@@ -69,11 +71,11 @@ class PaymentController extends GetxController {
     }
   }
 
-  Future<void> redeemBalance(
+  Future<OrderData?> redeemBalance(
       {required String storeId, required double amount}) async {
     try {
       isLoading.value = true;
-      redeemBalanceModel.value =
+      orderModel.value =
           await WalletService.redeemBalance(storeId: storeId, amount: amount);
       isLoading.value = false;
     } catch (e, st) {

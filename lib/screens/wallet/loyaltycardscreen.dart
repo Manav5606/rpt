@@ -125,62 +125,60 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
         //   ),
         // ),
       ),
-      body: SafeArea(
-        child: Obx(
-          () => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _homeController.checkPermission.value
-                    ? SizedBox()
-                    : PermissionRaw(
-                        onTap: () async {
-                          bool isEnable =
-                              await _homeController.getCurrentLocation();
-                          if (isEnable) {
-                            _paymentController.latLng = LatLng(
-                                UserViewModel.currentLocation.value.latitude,
-                                UserViewModel.currentLocation.value.longitude);
-                            await _paymentController.getRedeemCashInStorePage();
-                          }
-                        },
-                      ),
+      body: Obx(
+        () => Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _homeController.checkPermission.value
+                  ? SizedBox()
+                  : PermissionRaw(
+                      onTap: () async {
+                        bool isEnable =
+                            await _homeController.getCurrentLocation();
+                        if (isEnable) {
+                          _paymentController.latLng = LatLng(
+                              UserViewModel.currentLocation.value.latitude,
+                              UserViewModel.currentLocation.value.longitude);
+                          await _paymentController.getRedeemCashInStorePage();
+                        }
+                      },
+                    ),
 
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
-                  child: Text(
-                      "The cashback you have earned from each stores are shown below. ",
-                      style: TextStyle(
-                        fontFamily: 'MuseoSans',
-                        color: AppConst.black,
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontWeight: FontWeight.w300,
-                        fontStyle: FontStyle.normal,
-                      )),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+                child: Text(
+                    "The cashback you have earned from each stores are shown below. ",
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: AppConst.black,
+                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.normal,
+                    )),
+              ),
+              // Container(
+              //     height: SizeUtils.horizontalBlockSize * 10,
+              //     width: SizeUtils.horizontalBlockSize * 65,
+              //     alignment: Alignment.topLeft,
+              //     child: FittedBox(
+              //       child: Text(
+              //         "Loyalty Cards",
+              //         style: TextStyle(
+              //             fontSize: SizeUtils.horizontalBlockSize * 8,
+              //             fontWeight: FontWeight.bold),
+              //       ),
+              //     )),
+              // SizedBox(
+              //   height: SizeUtils.horizontalBlockSize * 5,
+              // ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: loyaltyCardList(),
                 ),
-                // Container(
-                //     height: SizeUtils.horizontalBlockSize * 10,
-                //     width: SizeUtils.horizontalBlockSize * 65,
-                //     alignment: Alignment.topLeft,
-                //     child: FittedBox(
-                //       child: Text(
-                //         "Loyalty Cards",
-                //         style: TextStyle(
-                //             fontSize: SizeUtils.horizontalBlockSize * 8,
-                //             fontWeight: FontWeight.bold),
-                //       ),
-                //     )),
-                // SizedBox(
-                //   height: SizeUtils.horizontalBlockSize * 5,
-                // ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: loyaltyCardList(),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -21,7 +21,7 @@ class StoreNameCallLogoWidget extends StatelessWidget {
   String? logoLetter;
   String? storeName;
   var mobile;
-  int? totalAmount;
+  num? totalAmount;
   String? paymentStatus;
   bool? callLogo;
 
@@ -76,7 +76,7 @@ class StoreNameCallLogoWidget extends StatelessWidget {
                   Container(
                     width: 60.w,
                     child: Text(
-                      storeName ?? "Store Name",
+                      storeName ?? "Store not assigned yet",
                       // "${activeOrder?.store?.name ?? "Store Name"}",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -90,7 +90,7 @@ class StoreNameCallLogoWidget extends StatelessWidget {
                     height: 0.5.h,
                   ),
                   Text(
-                    "${totalAmount ?? 0} ${paymentStatus ?? ""}",
+                    "\u{20B9} ${totalAmount ?? 0} ${paymentStatus ?? ""}",
                     // "${activeOrder?.total ?? 0} Paid", //updated the payment status
                     // "100 Paid",
                     style: TextStyle(

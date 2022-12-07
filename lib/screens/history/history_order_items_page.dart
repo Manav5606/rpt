@@ -826,14 +826,17 @@ class AllFoundedItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var foundItemCount = ((order?.products
-            ?.where((c) => c.status == "found")
-            .toList()
-            .length)! +
-        (order?.rawItems?.where((c) => c.status == "found").toList().length)! +
+                ?.where((c) => c.status == "found")
+                .toList()
+                .length ??
+            0) +
+        (order?.rawItems?.where((c) => c.status == "found").toList().length ??
+            0) +
         (order?.inventories
-            ?.where((c) => c.status == "found")
-            .toList()
-            .length)!);
+                ?.where((c) => c.status == "found")
+                .toList()
+                .length ??
+            0));
     return foundItemCount != 0
         ? Column(
             children: [

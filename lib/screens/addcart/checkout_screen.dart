@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/location_picker/address_model.dart';
@@ -79,8 +80,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => OrderTreckScreen(
-              displayHour: _addCartController.displayHour.value,
+            builder: (BuildContext context) => HistoryOrderTrackingScreen(
+              // displayHour: _addCartController.displayHour.value,
               order: _addCartController.orderModel.value!,
             ),
           ),
