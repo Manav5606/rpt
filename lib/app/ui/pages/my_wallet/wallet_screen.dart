@@ -41,7 +41,7 @@ class WalletScreen extends GetView<MyWalletController> {
           title: Row(
             children: [
               SizedBox(
-                width: 5.w,
+                width: 15.w,
               ),
               SizedBox(
                 height: 3.5.h,

@@ -76,28 +76,47 @@ class MyAccountController extends GetxController {
   }
 
   formatDate() {
-    if (activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day != null) {
+    if (activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day !=
+        null) {
       DateTime date = DateTime.now();
       currentDay.value = date.weekday.toString();
       currentHour.value = date.hour.toString();
       if (currentDay.value == "7") {
         currentDay.value = "0";
       }
-      if (currentDay.value == activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day.toString()) {
-        displayHour.value = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.startTime?.hour.toString() ?? "";
-        var endtime = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.endTime?.hour.toString() ?? "";
+      if (currentDay.value ==
+          activeOrdersModel.value?.data?[selectIndex.value].deliverySlot?.day
+              .toString()) {
+        displayHour.value = activeOrdersModel
+                .value!.data?[selectIndex.value].deliverySlot?.startTime?.hour
+                .toString() ??
+            "";
+        var endtime = activeOrdersModel
+                .value!.data?[selectIndex.value].deliverySlot?.endTime?.hour
+                .toString() ??
+            "";
         if (int.parse(displayHour.value) >= 12) {
-          displayHour.value = 'Today ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
+          displayHour.value =
+              'Today ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
         } else {
-          displayHour.value = 'Today ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
+          displayHour.value =
+              'Today ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
         }
       } else {
-        displayHour.value = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.startTime?.hour.toString() ?? "";
-        var endtime = activeOrdersModel.value!.data?[selectIndex.value].deliverySlot?.endTime?.hour.toString() ?? "";
+        displayHour.value = activeOrdersModel
+                .value!.data?[selectIndex.value].deliverySlot?.startTime?.hour
+                .toString() ??
+            "";
+        var endtime = activeOrdersModel
+                .value!.data?[selectIndex.value].deliverySlot?.endTime?.hour
+                .toString() ??
+            "";
         if (int.parse(displayHour.value) >= 12) {
-          displayHour.value = '${orderStatus(currentDay.value)} ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
+          displayHour.value =
+              '${orderStatus(currentDay.value)} ${int.parse(displayHour.value) - 12} PM - ${int.parse(endtime) - 12} PM ';
         } else {
-          displayHour.value = '${orderStatus(currentDay.value)} ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
+          displayHour.value =
+              '${orderStatus(currentDay.value)} ${int.parse(displayHour.value)} AM - ${int.parse(endtime) - 12} AM';
         }
       }
     } else {
@@ -131,12 +150,17 @@ class MyAccountController extends GetxController {
     final link = await DynamicLinkService().createDynamicLink(referCode.value);
     final image = await getImageFileFromAssets("images/account_banner.png");
     print("getImageFileFromAssets | asset path: ${image.path}");
-    flutterShareMe.shareToWhatsApp(msg: "My earned balance is 300. You can join and earn also \n $link", imagePath: image.path);
+    flutterShareMe.shareToWhatsApp(
+        msg:
+            "My earned balance is ${_user.value.balance}. You can join and earn also \n $link",
+        imagePath: image.path);
   }
 
   shareToSystem() async {
     final link = await DynamicLinkService().createDynamicLink(referCode.value);
-    flutterShareMe.shareToSystem(msg: "My earned balance is 300. You can join and earn also \n $link");
+    flutterShareMe.shareToSystem(
+        msg:
+            "My earned balane is ${_user.value.balance}. You can join and earn also \n $link");
   }
 
   getActiveOrders() async {

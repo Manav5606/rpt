@@ -24,6 +24,7 @@ class AppConst {
   static const Color kSecondaryColor = Color(0xff0A7986); //button color
   static const Color kGreyColor = Color(0xffF6F7FA);
   static const Color kIconColor = Color(0xff616161);
+  static const Color kSettingsIconColor = Color(0xff888888);
   static const Color kSecondaryTextColor = Color(0xfffc647b);
   static const Color lightYellow = Color(0xffFFECA7);
   static const Color yellow = Color(0xffFFFC38);
