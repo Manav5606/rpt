@@ -41,7 +41,7 @@ class Data {
       this.totalItemsCount,
       this.walletAmount,
       this.products,
-        this.storeDoc,
+      this.storeDoc,
       this.inventories});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -276,18 +276,21 @@ class StoreDoc {
   int? actualCashback;
   bool? billDiscountOfferStatus;
   int? billDiscountOfferAmount;
+  int? billDiscountTargetAmount;
 
   StoreDoc(
       {this.actualWelcomeOffer,
-        this.actualCashback,
-        this.billDiscountOfferStatus,
-        this.billDiscountOfferAmount});
+      this.actualCashback,
+      this.billDiscountOfferStatus,
+      this.billDiscountOfferAmount,
+      this.billDiscountTargetAmount});
 
   StoreDoc.fromJson(Map<String, dynamic> json) {
     actualWelcomeOffer = json['actual_welcome_offer'];
     actualCashback = json['actual_cashback'];
     billDiscountOfferStatus = json['bill_discount_offer_status'];
     billDiscountOfferAmount = json['bill_discount_offer_amount'];
+    billDiscountTargetAmount = json['bill_discount_offer_target'];
   }
 
   Map<String, dynamic> toJson() {
@@ -296,6 +299,7 @@ class StoreDoc {
     data['actual_cashback'] = this.actualCashback;
     data['bill_discount_offer_status'] = this.billDiscountOfferStatus;
     data['bill_discount_offer_amount'] = this.billDiscountOfferAmount;
+    data['bill_discount_offer_target'] = this.billDiscountTargetAmount;
     return data;
   }
 }
