@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/app/ui/common/alret.dart';
@@ -9,14 +10,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class WalletService {
-  static Future<GetRedeemCashInStorePageData?> getRedeemCashInStorePageData(LatLng latLng) async {
+  static Future<GetRedeemCashInStorePageData?> getRedeemCashInStorePageData(
+      LatLng latLng) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getRedeemCashInStorePageData, variables: {
-        'lat': latLng.latitude, //UserViewModel.currentLocation.value.latitude,
-        'lng': latLng.longitude, //UserViewModel.currentLocation.value.longitude
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getRedeemCashInStorePageData,
+          variables: {
+            'lat':
+                latLng.latitude, //UserViewModel.currentLocation.value.latitude,
+            'lng': latLng
+                .longitude, //UserViewModel.currentLocation.value.longitude
+          });
       if (result['error'] == false) {
-        final GetRedeemCashInStorePageData _getRedeemCashInStorePageData = GetRedeemCashInStorePageData.fromJson(result);
+        final GetRedeemCashInStorePageData _getRedeemCashInStorePageData =
+            GetRedeemCashInStorePageData.fromJson(result);
         return _getRedeemCashInStorePageData;
       }
     } catch (e, st) {
@@ -25,14 +32,20 @@ class WalletService {
     }
   }
 
-  static Future<GetRedeemCashInStorePageData?> getScanReceiptPageNearMeStoresData(LatLng latLng) async {
+  static Future<GetRedeemCashInStorePageData?>
+      getScanReceiptPageNearMeStoresData(LatLng latLng) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getScanReceiptPageNearMeStoresData, variables: {
-        'lat': latLng.latitude, //UserViewModel.currentLocation.value.latitude,
-        'lng': latLng.longitude, //UserViewModel.currentLocation.value.longitude
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getScanReceiptPageNearMeStoresData,
+          variables: {
+            'lat':
+                latLng.latitude, //UserViewModel.currentLocation.value.latitude,
+            'lng': latLng
+                .longitude, //UserViewModel.currentLocation.value.longitude
+          });
       if (result['error'] == false) {
-        final GetRedeemCashInStorePageData _getRedeemCashInStorePageData = GetRedeemCashInStorePageData.fromJson(result);
+        final GetRedeemCashInStorePageData _getRedeemCashInStorePageData =
+            GetRedeemCashInStorePageData.fromJson(result);
         return _getRedeemCashInStorePageData;
       }
     } catch (e, st) {
@@ -41,14 +54,19 @@ class WalletService {
     }
   }
 
-  static Future<RedeemBalanceModel?> redeemBalance({required String storeId, required double amount}) async {
+  static Future<OrderData?> redeemBalance(
+      {required String storeId, required double amount}) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.redeemBalance, variables: {
-        'store': storeId,
-        'amount': amount,
-      });
-        final RedeemBalanceModel _redeemBalanceModel = RedeemBalanceModel.fromJson(result);
-        return _redeemBalanceModel;
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.redeemBalance,
+          variables: {
+            'store': storeId,
+            'amount': amount,
+          });
+      if (result['error'] == false) {
+        final OrderData _getAllRefunds = OrderData.fromJson(result['data']);
+        return _getAllRefunds;
+      }
     } catch (e, st) {
       log("$e , $st");
       rethrow;

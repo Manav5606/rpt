@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/bottom_confim_location.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
@@ -32,18 +33,21 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     log("_addLocationController.isRecentAddress.value :${_addLocationController.isRecentAddress.value}");
     _addLocationController.initLocation();
     return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   elevation: 0,
-      //   title: Text(
-      //     "Choose address",
-      //     textAlign: TextAlign.center,
-      //     style: TextStyle(
-      //         fontSize: SizeUtils.horizontalBlockSize * 5,
-      //         color: AppConst.black,
-      //         fontWeight: FontWeight.bold),
-      //   ),
-      // ),
+      appBar: AppBar(
+        // automaticallyImplyLeading: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: AppConst.white,
+            statusBarIconBrightness: Brightness.dark),
+        elevation: 0.5,
+        title: Text(
+          "Confirm Delivery Location",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: SizeUtils.horizontalBlockSize * 5,
+              color: AppConst.black,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Stack(
         children: [
           GoogleMap(
@@ -64,54 +68,54 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
               child: Image.asset('assets/icons/pinsmall.png'),
             ),
           ),
-          Positioned(
-              top: 30,
-              right: 10,
-              child: InkWell(
-                onTap: () async {
-                  await _addLocationController.addCustomerAddress(
-                    lng: _addLocationController
-                            .middlePointOfScreenOnMap?.longitude ??
-                        0,
-                    lat: _addLocationController
-                            .middlePointOfScreenOnMap?.latitude ??
-                        0,
-                    address:
-                        _addLocationController.currentAddress.value.toString(),
-                    title: '',
-                    house: '',
-                    apartment: '',
-                    directionToReach: '',
-                  );
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                  child: Container(
-                    width: 18.w,
-                    height: 4.h,
-                    decoration: BoxDecoration(
-                        color: AppConst.lightYellow,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppConst.grey,
-                            blurRadius: 3,
-                            offset: Offset(1, 1),
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Center(
-                      child: Text(
-                        "Skip",
-                        style: TextStyle(
-                          color: AppConst.black,
-                          fontSize: SizeUtils.horizontalBlockSize * 4,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )),
+          // Positioned(
+          //     top: 30,
+          //     right: 10,
+          //     child: InkWell(
+          //       onTap: () async {
+          //         await _addLocationController.addCustomerAddress(
+          //           lng: _addLocationController
+          //                   .middlePointOfScreenOnMap?.longitude ??
+          //               0,
+          //           lat: _addLocationController
+          //                   .middlePointOfScreenOnMap?.latitude ??
+          //               0,
+          //           address:
+          //               _addLocationController.currentAddress.value.toString(),
+          //           title: '',
+          //           house: '',
+          //           apartment: '',
+          //           directionToReach: '',
+          //         );
+          //       },
+          //       child: Padding(
+          //         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+          //         child: Container(
+          //           width: 18.w,
+          //           height: 4.h,
+          //           decoration: BoxDecoration(
+          //               color: AppConst.lightYellow,
+          //               boxShadow: [
+          //                 BoxShadow(
+          //                   color: AppConst.grey,
+          //                   blurRadius: 3,
+          //                   offset: Offset(1, 1),
+          //                 ),
+          //               ],
+          //               borderRadius: BorderRadius.circular(12)),
+          //           child: Center(
+          //             child: Text(
+          //               "Skip",
+          //               style: TextStyle(
+          //                 color: AppConst.black,
+          //                 fontSize: SizeUtils.horizontalBlockSize * 4,
+          //                 fontWeight: FontWeight.w500,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     )),
           // Positioned(
           //   top: 30,
           //   left: 10,

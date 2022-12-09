@@ -1421,9 +1421,106 @@ getAllcarts{
     redeemBalance(store:$store,amount:$amount){
       error
     msg
-    expBalance
-    actBalance
+     data
+        {
+          _id
+          status
+          order_type
+          cashback_percentage
+          address
+          createdAt
+          receipt
+          delivery_slot
+          {
+          day
+            start_time
+            {
+              hour
+              minute
+            }
+            end_time{
+              hour
+              minute
 }
+}
+          wallet_amount
+           total
+           previous_total
+          
+        location
+           {
+          type
+          coordinates
+        }
+        products
+          {
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+           inventories
+          {
+            name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+             rawitems{
+             logo
+            item
+            _id
+            quantity 
+            modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
+          }
+        store
+          {
+           _id
+              mobile
+              name
+              address{
+                address
+              }
+          }
+          rider
+          {
+            mobile
+            _id
+            first_name
+            last_name
+            bank_document_photo
+          }
+        }
+      }
 }''',
   );
 
@@ -1441,8 +1538,104 @@ getAllcarts{
       }){
         error
         msg
+      data
+        {
+          _id
+          status
+          order_type
+          cashback_percentage
+          address
+          createdAt
+          receipt
+          delivery_slot
+          {
+          day
+            start_time
+            {
+              hour
+              minute
+            }
+            end_time{
+              hour
+              minute
+}
+}
+          total
+        location
+           {
+          type
+          coordinates
+        }
+        products
+          {
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+           inventories
+          {
+            name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+             rawitems{
+             logo
+            item
+            _id
+            quantity 
+            modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
+          }
+        store
+          {
+           _id
+              mobile
+              name
+              address{
+                address
+              }
+          }
+          rider
+          {
+            mobile
+            _id
+            first_name
+            last_name
+            bank_document_photo
+          }
+        }
       }
-    }
+}
     ''',
   );
   static final placeOrderWithStore = new GraphQLQuery(
@@ -1461,8 +1654,104 @@ getAllcarts{
       }){
         error
         msg
+       data
+        {
+          _id
+          status
+          order_type
+          cashback_percentage
+          address
+          createdAt
+          receipt
+          delivery_slot
+          {
+          day
+            start_time
+            {
+              hour
+              minute
+            }
+            end_time{
+              hour
+              minute
+}
+}
+          total
+        location
+           {
+          type
+          coordinates
+        }
+        products
+          {
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+           inventories
+          {
+            name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+             rawitems{
+             logo
+            item
+            _id
+            quantity 
+            modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
+          }
+        store
+          {
+           _id
+              mobile
+              name
+              address{
+                address
+              }
+          }
+          rider
+          {
+            mobile
+            _id
+            first_name
+            last_name
+            bank_document_photo
+          }
+        }
       }
-    }
+}
     ''',
   );
   static final changeCustomerAddress = new GraphQLQuery(

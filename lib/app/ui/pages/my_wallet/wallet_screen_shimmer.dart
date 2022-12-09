@@ -15,7 +15,7 @@ class WalletScreenShimmer extends StatefulWidget {
 }
 
 class _WalletScreenShimmerState extends State<WalletScreenShimmer> {
-  final MyWalletController _myWalletController = Get.find();
+  // final MyWalletController _myWalletController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -24,29 +24,6 @@ class _WalletScreenShimmerState extends State<WalletScreenShimmer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ShimmerEffect(child: BackButtonWidget()),
-            SizedBox(
-              height: 1.h,
-            ),
-            ShimmerEffect(
-              child: Container(
-                  // color: Colors.red,
-                  height: 5.h,
-                  width: 65.w,
-                  alignment: Alignment.topLeft,
-                  child: FittedBox(
-                    child: Text(
-                      "Wallet",
-                      style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 7,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )),
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-
             // ShimmerEffect(
             //   child: Container(
             //     color: AppConst.black,
@@ -54,75 +31,101 @@ class _WalletScreenShimmerState extends State<WalletScreenShimmer> {
             //     width: 40.w,
             //   ),
             // ),
-            Container(
-              height: MediaQuery.of(context).size.height - 20.h,
-              // color: AppConst.black,
-              width: MediaQuery.of(context).size.width,
+            Expanded(
               child: ShimmerEffect(
                   child: ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 5.w,
-                          backgroundColor: AppConst.white,
-                          foregroundImage: NetworkImage(
-                              "https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg"),
-                        ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+                      child: Column(children: [
                         SizedBox(
-                          width: 3.w,
+                          height: 2.h,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
                             ShimmerEffect(
                               child: Container(
-                                color: AppConst.black,
-                                height: 2.5.h,
-                                width: 50.w,
-                                child: Text(
-                                  _myWalletController.myWalletModel.value
-                                          ?.data?[index].name ??
-                                      'Store Name',
+                                height: 12.h,
+                                width: 35.w,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: AppConst.black,
+                                    // circleColors[new Random().nextInt(7)],
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: AppConst.grey)),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 2.w, vertical: 1.h),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 12.w,
+                                        height: 5.h,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color:
+                                              AppConst.white.withOpacity(0.1),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      ShimmerEffect(
+                                        child: Container(
+                                          color: AppConst.black,
+                                          height: 2.h,
+                                          width: 30.w,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 1.h,
+                              width: 4.w,
                             ),
-                            ShimmerEffect(
-                              child: Container(
-                                color: AppConst.black,
-                                height: 2.h,
-                                width: 60.w,
-                              ),
-                            )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ShimmerEffect(
+                                  child: Container(
+                                    width: 50.w,
+                                    height: 4.5.h,
+                                    color: AppConst.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 0.5.h,
+                                ),
+                                ShimmerEffect(
+                                  child: Container(
+                                    width: 30.w,
+                                    height: 2.h,
+                                    color: AppConst.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                ShimmerEffect(
+                                  child: Container(
+                                    color: AppConst.black,
+                                    height: 2.h,
+                                    width: 50.w,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                        Spacer(),
-                        Column(
-                          children: [
-                            ShimmerEffect(
-                              child: Container(
-                                color: AppConst.black,
-                                height: 2.h,
-                                width: 8.w,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
+                      ]));
                 },
-                itemCount:
-                    //  8,
-                    _myWalletController.myWalletModel.value?.data?.length ?? 0,
+                itemCount: 6,
+                // _myWalletController.myWalletModel.value?.data?.length ?? 0,
                 separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
+                  return SizedBox();
                 },
               )),
             ),

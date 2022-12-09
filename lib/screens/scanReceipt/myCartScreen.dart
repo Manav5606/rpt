@@ -3,7 +3,10 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
+import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
+import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/widgets/imagePicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +39,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   final TextEditingController amountController = TextEditingController();
 
   final ExploreController _exploreController = Get.find();
-
+  final HomeController _homeController = Get.find();
   final PaymentController _paymentController = Get.find();
   List<File>? images;
 
@@ -123,7 +126,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
                         try {
                           if (_exploreController.amountText.value.isNotEmpty) {
                             _exploreController.isLoadingSubmit.value = true;
-                            bool error = await ScanRecipetService.placeOrder(
+                            OrderData? order =
+                                await ScanRecipetService.placeOrder(
                               images: Get.arguments,
                               total: double.parse(amountController.text),
                               storeId: _exploreController
@@ -133,15 +137,24 @@ class _MyCartScreenState extends State<MyCartScreen> {
                               products: _exploreController.addCartProduct,
                               latLng: _paymentController.latLng,
                             );
-                            if (error) {
-                              Snack.bottom('Error', 'Failed to send receipt');
+                            clearList();
+                            _exploreController.addCartProduct.clear();
+                            total();
+                            if (order != null) {
+                              await Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        HistoryOrderTrackingScreen(
+                                      // displayHour: _addCartController.displayHour.value,
+                                      order: order,
+                                    ),
+                                  ),
+                                  (Route<dynamic> route) => route.isFirst);
+                              _homeController.apiCall();
                               _exploreController.isLoadingSubmit.value = false;
                             } else {
-                              clearList();
-                              _exploreController.addCartProduct.clear();
-                              total();
-                              Get.toNamed(AppRoutes.BaseScreen);
-                              Snack.top('Success', 'Receipt Sent Successfully');
+                              Snack.bottom('Error', 'Failed to send receipt');
                               _exploreController.isLoadingSubmit.value = false;
                             }
                           }

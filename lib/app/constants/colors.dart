@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ColorConstants {
@@ -15,6 +17,19 @@ class ColorConstants {
   static Color kGreyColor = Color(0xffF6F7FA);
   static Color kIconColor = Color(0xff616161);
   static Color kSecondaryTextColor = Color(0xfffc647b);
+}
+
+final List<Color> circleColors = [
+  Color(0xff003f6d),
+  Color(0xff3d006d),
+  Color(0xff006d60),
+  Color(0xff6d5500),
+  Color(0xff6d0000),
+  Color(0xff4A6D00),
+  Color(0xff6D0055)
+];
+Color randomGenerator() {
+  return circleColors[new Random().nextInt(7)];
 }
 
 Color hexToColor(String hex) {

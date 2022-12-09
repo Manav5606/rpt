@@ -1,6 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:customer_app/app/data/model/order_model.dart';
+import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
+import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/cartModel.dart';
@@ -47,6 +50,7 @@ class _PurchasedProductsScreenState extends State<PurchasedProductsScreen> {
   toggleFetchCashbackProductState() =>
       setState(() => isFetchingCashbackProducts = !isFetchingCashbackProducts);
   final PaymentController _paymentController = Get.find();
+  final HomeController _homeController = Get.find();
 
   // toggleBillSubmitState() => setState(() => isBillSubmitInProgress = !isBillSubmitInProgress);
 
@@ -192,23 +196,33 @@ class _PurchasedProductsScreenState extends State<PurchasedProductsScreen> {
             onTap: () async {
               FocusScope.of(context).unfocus();
               if (amount.value.isNotEmpty) {
-                if (widget.storeModel == null) {
-                  isLoading.value = true;
-                  bool error = await ScanRecipetService.placeOrderWithoutStore(
-                    images: images,
-                    total: double.parse(amountController.text),
-                    latLng: _paymentController.latLng,
-                  );
+                // if (widget.storeModel == null) {
+                isLoading.value = true;
+                OrderData? order =
+                    await ScanRecipetService.placeOrderWithoutStore(
+                  images: images,
+                  total: double.parse(amountController.text),
+                  latLng: _paymentController.latLng,
+                );
 
-                  log('error : $error');
-                  if (error) {
-                    Snack.bottom('Error', 'Failed to send receipt');
-                  } else {
-                    Get.toNamed(AppRoutes.BaseScreen);
-                    isLoading.value = false;
-                    Snack.top('Success', 'Receipt Sent Successfully');
-                  }
+                if (order != null) {
+                  await Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            HistoryOrderTrackingScreen(
+                          // displayHour: _addCartController.displayHour.value,
+                          order: order,
+                        ),
+                      ),
+                      (Route<dynamic> route) => route.isFirst);
+                  _homeController.apiCall();
+                  isLoading.value = false;
+                } else {
+                  Snack.bottom('Error', 'Failed to send receipt');
+                  isLoading.value = false;
                 }
+                // }
               } else {
                 Snack.top('Wait', 'Please Enter amount');
               }

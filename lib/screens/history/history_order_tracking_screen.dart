@@ -359,9 +359,9 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                           StoreNameCallLogoWidget(
                             logoLetter: order?.store?.name?.substring(0, 1),
                             storeName: order?.store?.name,
-                            totalAmount: order?.total,
+                            totalAmount: order?.wallet_amount,
                             paymentStatus:
-                                "Paid", // updated the status to Dynamic
+                                "Redeem", // updated the status to Dynamic
                             mobile: order?.store?.mobile,
                             callLogo: false,
                           ),
@@ -634,7 +634,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               (order?.orderType == "redeem_cash" &&
                                       order?.status == "completed")
                                   ? ViewOrderDetailsTextfeilds(
-                                      "Previous Amount", "\u{20B9}${123}")
+                                      "Previous Amount",
+                                      "\u{20B9}${order?.previous_total ?? 0}")
                                   : (order?.orderType == "receipt" &&
                                           order?.status == "completed")
                                       ? ViewOrderDetailsTextfeilds(
@@ -664,8 +665,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               ),
                               (order?.orderType == "redeem_cash" &&
                                       order?.status == "completed")
-                                  ? ViewOrderDetailsTextfeilds(
-                                      "Current Amount", "\u{20B9}${123}")
+                                  ? ViewOrderDetailsTextfeilds("Current Amount",
+                                      "\u{20B9}${order?.total ?? 0}")
                                   : (order?.orderType == "receipt" &&
                                           order?.status == "completed")
                                       ? ViewOrderDetailsTextfeilds(

@@ -9,6 +9,7 @@ import 'package:customer_app/app/data/repository/hive_repository.dart';
 import 'package:customer_app/app/ui/pages/chat/ChatView.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/data/models/user_model.dart';
+import 'package:customer_app/widgets/snack.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -114,7 +115,7 @@ class FireBaseNotification {
     // Fired when app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       _showLocalNotification(message);
-      notificationToNavigat();
+      // notificationToNavigat(); local
       debugPrint(
           'Got a message, app is in the foreground! ${message.notification}');
     });
@@ -242,35 +243,37 @@ class FireBaseNotification {
         0, notification!.title, notification.body, platformChannelSpecifics,
         payload: notification.title);
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-      backgroundColor: AppConst.transparent,
-      behavior: SnackBarBehavior.floating,
-      duration: Duration(seconds: 3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
-      // margin: EdgeInsets.only(bottom: 75.h, right: 2.w, left: 2.w),
-      content: Container(
-          height: 12.h,
-          decoration: BoxDecoration(
-              color: AppConst.lightYellow,
-              borderRadius: BorderRadius.circular(8)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  notification.title ?? '',
-                  style: TextStyle(color: AppConst.black),
-                ),
-                Text(
-                  notification.body ?? '',
-                  style: TextStyle(color: AppConst.black),
-                ),
-              ],
-            ),
-          )),
-    ));
+        backgroundColor: AppConst.transparent,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        // margin: EdgeInsets.only(bottom: 75.h, right: 2.w, left: 2.w),
+        content: Snack.bottom('', 'Order Placed Successfully')
+
+        // Container(
+        //     height: 12.h,
+        //     decoration: BoxDecoration(
+        //         color: AppConst.lightYellow,
+        //         borderRadius: BorderRadius.circular(8)),
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Text(
+        //             notification.title ?? '',
+        //             style: TextStyle(color: AppConst.black),
+        //           ),
+        //           Text(
+        //             notification.body ?? '',
+        //             style: TextStyle(color: AppConst.black),
+        //           ),
+        //         ],
+        //       ),
+        //     )),
+        ));
   }
 
   void localNotificationRequestPermissions() {

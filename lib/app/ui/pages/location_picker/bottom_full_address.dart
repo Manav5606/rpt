@@ -134,74 +134,74 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                          iconSize: SizeUtils.horizontalBlockSize * 6.33,
-                          padding: EdgeInsets.zero,
-                          splashRadius: 25,
-                          visualDensity: VisualDensity(horizontal: -4),
-                          onPressed: () {
-                            widget.notifyParent();
-                          },
-                          icon: Icon(Icons.arrow_back)),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      Text(
-                        "Confirm Location",
-                        style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 5,
-                          fontWeight: FontWeight.bold,
-                          // color: Colors.green
-                        ),
-                      ),
-                      // Spacer(),
-                      // InkWell(
-                      //   onTap: () {
-                      //     widget.notifyParent();
-                      //   },
-                      //   child: Container(
-                      //     padding: EdgeInsets.all(1.w),
-                      //     margin: EdgeInsets.only(
-                      //       bottom: 1.5.h,
-                      //     ),
-                      //     decoration: BoxDecoration(
-                      //         shape: BoxShape.circle,
-                      //         color: AppConst.white,
-                      //         border: Border.all(
-                      //             color: kPrimaryColor,
-                      //             width: SizeUtils.horizontalBlockSize - 2.92),
-                      //         boxShadow: [AppConst.shadowBasic]),
-                      //     child: Icon(
-                      //       Icons.close,
-                      //       color: kSecondaryTextColor,
-                      //       size: SizeUtils.horizontalBlockSize * 6.5,
-                      //     ),
-                      //   ),
-                      // ),
-                      // IconButton(
-                      //     iconSize: SizeUtils.horizontalBlockSize * 6.33,
-                      //     padding: EdgeInsets.zero,
-                      //     splashRadius: 25,
-                      //     visualDensity: VisualDensity(horizontal: -4),
-                      //     onPressed: () {
-                      //       widget.notifyParent();
-                      //     },
-                      //     icon: Icon(Icons.close)),
-                      // SizedBox(
-                      //   width: 2.w,
-                      // )
-                    ],
-                  ),
+                  // SizedBox(
+                  //   height: 2.h,
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: [
+                  //     IconButton(
+                  //         iconSize: SizeUtils.horizontalBlockSize * 6.33,
+                  //         padding: EdgeInsets.zero,
+                  //         splashRadius: 25,
+                  //         visualDensity: VisualDensity(horizontal: -4),
+                  //         onPressed: () {
+                  //           widget.notifyParent();
+                  //         },
+                  //         icon: Icon(Icons.arrow_back)),
+                  //     SizedBox(
+                  //       width: 3.w,
+                  //     ),
+                  //     Text(
+                  //       "Confirm Location",
+                  //       style: TextStyle(
+                  //         fontSize: SizeUtils.horizontalBlockSize * 5,
+                  //         fontWeight: FontWeight.bold,
+                  //         // color: Colors.green
+                  //       ),
+                  //     ),
+                  // Spacer(),
+                  // InkWell(
+                  //   onTap: () {
+                  //     widget.notifyParent();
+                  //   },
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(1.w),
+                  //     margin: EdgeInsets.only(
+                  //       bottom: 1.5.h,
+                  //     ),
+                  //     decoration: BoxDecoration(
+                  //         shape: BoxShape.circle,
+                  //         color: AppConst.white,
+                  //         border: Border.all(
+                  //             color: kPrimaryColor,
+                  //             width: SizeUtils.horizontalBlockSize - 2.92),
+                  //         boxShadow: [AppConst.shadowBasic]),
+                  //     child: Icon(
+                  //       Icons.close,
+                  //       color: kSecondaryTextColor,
+                  //       size: SizeUtils.horizontalBlockSize * 6.5,
+                  //     ),
+                  //   ),
+                  // ),
+                  // IconButton(
+                  //     iconSize: SizeUtils.horizontalBlockSize * 6.33,
+                  //     padding: EdgeInsets.zero,
+                  //     splashRadius: 25,
+                  //     visualDensity: VisualDensity(horizontal: -4),
+                  //     onPressed: () {
+                  //       widget.notifyParent();
+                  //     },
+                  //     icon: Icon(Icons.close)),
+                  // SizedBox(
+                  //   width: 2.w,
+                  // )
+                  //   ],
+                  // ),
 
-                  SizedBox(
-                    height: 1.h,
-                  ),
+                  // SizedBox(
+                  //   height: 1.h,
+                  // ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2.w),
                     child: InkWell(
@@ -885,6 +885,9 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                    height: 1.h,
                   ),
                 ],
               ),

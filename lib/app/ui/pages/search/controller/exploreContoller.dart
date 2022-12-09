@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
@@ -41,6 +42,7 @@ class ExploreController extends GetxController {
   TextEditingController storeSearchController = TextEditingController();
   TextEditingController dummySearchController = TextEditingController();
   Rx<GetCartIDModel?> getCartIDModel = GetCartIDModel().obs;
+  Rx<OrderData?> orderModel = OrderData().obs;
   RxString searchText = ''.obs;
   RxString storeSearchText = ''.obs;
   RxString currentDay = ''.obs;
@@ -56,7 +58,8 @@ class ExploreController extends GetxController {
   Future<void> getNearMePageData({required String searchText}) async {
     try {
       isLoading.value = true;
-      getNearMePageDataModel.value = await ExploreService.getNearMePageData(searchText);
+      getNearMePageDataModel.value =
+          await ExploreService.getNearMePageData(searchText);
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -72,7 +75,12 @@ class ExploreController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
-      addToCartModel.value = await ExploreService.addToCart(product: product, store_id: store_id, increment: increment, index: index, cart_id: cart_id);
+      addToCartModel.value = await ExploreService.addToCart(
+          product: product,
+          store_id: store_id,
+          increment: increment,
+          index: index,
+          cart_id: cart_id);
       totalItemCount.value = addToCartModel.value?.totalItemsCount ?? 0;
       cartIndex.value?.totalItemsCount?.value = totalItemCount.value;
       cartIndex.refresh();
@@ -82,7 +90,8 @@ class ExploreController extends GetxController {
     }
   }
 
-  final RecentProductsDataModel recentProductsDataModel = RecentProductsDataModel();
+  final RecentProductsDataModel recentProductsDataModel =
+      RecentProductsDataModel();
 
   Future<void> setNearDataProduct(RecentProductsData data) async {
     final userBox = Hive.box(HiveConstants.GET_NEAR_PAGE_DATA_PRODUCT);
@@ -98,14 +107,18 @@ class ExploreController extends GetxController {
   Future<void> getProductsByName({required String name}) async {
     try {
       isLoadingGetProducts.value = true;
-      getProductsByNameModel.value = await ExploreService.getProductsByName(name);
+      getProductsByNameModel.value =
+          await ExploreService.getProductsByName(name);
       isLoadingGetProducts.value = false;
     } catch (e, st) {
       isLoadingGetProducts.value = false;
     }
   }
 
-  Future<void> getStoreData({required String id, bool isScanFunction = false, String businessId = ''}) async {
+  Future<void> getStoreData(
+      {required String id,
+      bool isScanFunction = false,
+      String businessId = ''}) async {
     try {
       isLoadingStoreData.value = true;
       getStoreDataModel.value = await ExploreService.getStoreData(id);
@@ -115,13 +128,19 @@ class ExploreController extends GetxController {
         print(e);
       }
       if (getCartIDModel.value?.sId != null) {
-        for (GetCartIdProducts allCartProducts in getCartIDModel.value?.products ?? []) {
-          for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
-            int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
+        for (GetCartIdProducts allCartProducts
+            in getCartIDModel.value?.products ?? []) {
+          for (MainProducts mainProducts
+              in getStoreDataModel.value?.data?.mainProducts ?? []) {
+            int index = (mainProducts.products ?? []).indexWhere(
+                (mainProductsElement) =>
+                    mainProductsElement.sId == allCartProducts.sId);
             if (index != -1) {
-              cartIndex.value?.totalItemsCount?.value = getCartIDModel.value?.totalItemsCount ?? 0;
+              cartIndex.value?.totalItemsCount?.value =
+                  getCartIDModel.value?.totalItemsCount ?? 0;
               totalItemCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
-              mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
+              mainProducts.products?[index].quntity!.value =
+                  allCartProducts.quantity ?? 0;
               mainProducts.products?[index].isQunitityAdd!.value = true;
             }
           }
@@ -161,7 +180,8 @@ class ExploreController extends GetxController {
         // }
       } else {
         log('getCartIDModel.value?.sId 03 :');
-        addToCartModel.value?.totalItemsCount = getCartIDModel.value?.totalItemsCount ?? 0;
+        addToCartModel.value?.totalItemsCount =
+            getCartIDModel.value?.totalItemsCount ?? 0;
       }
       // for (AllCartProducts allCartProducts in cartIndex.value?.products ?? []) {
       //   for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
@@ -180,7 +200,8 @@ class ExploreController extends GetxController {
       } else {
         final HomeController _homeController = Get.find();
         bool isGrocery = Constants.grocery == businessId;
-        await Get.toNamed(AppRoutes.StoreScreen, arguments: {'isGrocery': isGrocery});
+        await Get.toNamed(AppRoutes.StoreScreen,
+            arguments: {'isGrocery': isGrocery});
         if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
       }
     } catch (e, st) {
@@ -197,8 +218,11 @@ class ExploreController extends GetxController {
     if (currentDay.value == "7") {
       currentDay.value = "0";
     }
-    getStoreDataModel.value?.data?.store?.deliverySlots?[int.parse(currentDay.value)].slots?.forEach((element) {
-      if ((element.startTime?.hour ?? 0) > int.parse(currentHour.value.toString())) {
+    getStoreDataModel
+        .value?.data?.store?.deliverySlots?[int.parse(currentDay.value)].slots
+        ?.forEach((element) {
+      if ((element.startTime?.hour ?? 0) >
+          int.parse(currentHour.value.toString())) {
         displayHour.value = element.startTime?.hour.toString() ?? "";
         if (int.parse(displayHour.value) >= 12) {
           displayHour.value = '${int.parse(displayHour.value) - 12} PM';
@@ -248,7 +272,8 @@ class ExploreController extends GetxController {
     log('addCartProduct :${addCartProduct.length}');
     addCartProduct.forEach((element) {
       log('addCartProduct element):${element.toJson()}');
-      totalValue.value = totalValue.value + (element.cashback! * element.quntity!.value).toInt();
+      totalValue.value = totalValue.value +
+          (element.cashback! * element.quntity!.value).toInt();
       log('addCartProduct totalValue.value):${totalValue.value}');
     });
   }
