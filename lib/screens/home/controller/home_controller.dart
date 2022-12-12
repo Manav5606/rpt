@@ -202,4 +202,50 @@ class HomeController extends GetxController {
     }
     return checkPermission.value;
   }
+
+// testing of categories on given data
+  List<CategoryModel> category = [
+    CategoryModel(
+        id: "61f960000a984e3d1c8f9ecb",
+        name: "Fruits and Veg",
+        subtitle: "new",
+        keywordHelper: "business_type",
+        image: "assets/images/Fresh.png",
+        isProductAvailable: true),
+    CategoryModel(
+        id: "61f95fcd0a984e3d1c8f9ec9",
+        name: "Grocery",
+        subtitle: "new",
+        keywordHelper: "business_type",
+        image: "assets/images/groceryImage.png",
+        isProductAvailable: true),
+    CategoryModel(
+        id: "625cc6c0c30c356c00c6a9bb",
+        name: "Meat and Eggs",
+        subtitle: "new",
+        keywordHelper: "business_type",
+        image: "assets/images/Nonveg.png",
+        isProductAvailable: true),
+    CategoryModel(
+        id: "",
+        name: "30 mins",
+        subtitle: "new",
+        keywordHelper: "",
+        image: "assets/images/Pickup.png",
+        isProductAvailable: false),
+    CategoryModel(
+        id: "",
+        name: "Premium",
+        subtitle: "",
+        keywordHelper: "",
+        image: "assets/images/Premium.png",
+        isProductAvailable: false),
+    CategoryModel(
+        id: "",
+        name: "30 mins",
+        subtitle: "new",
+        keywordHelper: "",
+        image: "assets/images/Medics.png",
+        isProductAvailable: false),
+  ];
 }

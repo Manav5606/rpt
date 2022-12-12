@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
+import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/widgets/custom_alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/screens/more_stores/morestore_service.dart';
 import 'package:customer_app/widgets/custom_popupmenu.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../app/ui/pages/search/models/GetStoreDataModel.dart';
 import '../home/models/GetAllCartsModel.dart';
@@ -30,15 +32,17 @@ class MoreStoreController extends GetxController {
   Rx<GetStoreDataModel?> getStoreDataModel = GetStoreDataModel().obs;
   Rx<GetCartIDModel?> getCartIDModel = GetCartIDModel().obs;
 
-  // Rx<GetCartIDModel?> getCartIDModel = GetCartIDModel().obs;
-  Rx<AddToCartModel?> addToCartModel = AddToCartModel().obs;
+  // Rx<AddToCartModel?> addToCartModel = AddToCartModel().obs;
   final HomeController homeController = Get.find();
   Rx<AutoCompleteProductsByStoreModel?> autoCompleteProductsByStoreModel =
       AutoCompleteProductsByStoreModel().obs;
   TextEditingController storeSearchController = TextEditingController();
   RxString storeSearchText = ''.obs;
-  RxList<RawItems> rawItemsList = <RawItems>[].obs;
-  RxInt totalItemsCount = 0.obs;
+  RxString currentDay = ''.obs;
+  RxString currentHour = ''.obs;
+  RxString displayHour = ''.obs;
+  // RxList<RawItems> rawItemsList = <RawItems>[].obs;
+  // RxInt totalItemsCount = 0.obs;
 
   Future<void> getStoreData(
       {required String id,
@@ -46,83 +50,55 @@ class MoreStoreController extends GetxController {
       String businessId = '',
       bool isNeedToNevigate = true}) async {
     try {
-      addToCartModel.value?.sId = '';
+      // addToCartModel.value?.sId = '';
       isLoadingStoreData.value = true;
-      // await homeController.getAllCartsData();
-      getStoreDataModel.value = await MoreStoreService.getStoreData(id);
+
       try {
         getCartIDModel.value = await MoreStoreService.getcartID(id);
       } catch (e) {
         print(e);
       }
+      getStoreDataModel.value = await MoreStoreService.getStoreData(id);
+
       String? cartId = '';
-      for (Carts item in homeController.getAllCartsModel.value?.carts ?? []) {
-        // int indexCartId = 0;
-        // indexCartId = (homeController.getAllCartsModel.value?.carts ?? [])
-        //     .indexWhere((element) => element.store?.sId == getStoreDataModel.value?.data?.store?.sId);
-        // if (indexCartId != -1) {
-        //   cartId = homeController.getAllCartsModel.value?.carts?[indexCartId].sId; //56
-        //   rawItemsList.value = homeController.getAllCartsModel.value?.carts?[indexCartId].rawItems ?? []; //56
-        // }
-        if (getCartIDModel.value?.sId != null) {
-          addToCartModel.value?.sId = getCartIDModel.value?.sId;
-          for (GetCartIdProducts allCartProducts
-              in getCartIDModel.value?.products ?? []) {
-            for (MainProducts mainProducts
-                in getStoreDataModel.value?.data?.mainProducts ?? []) {
-              int index = (mainProducts.products ?? []).indexWhere(
-                  (mainProductsElement) =>
-                      mainProductsElement.sId == allCartProducts.sId);
-              if (index != -1) {
-                addToCartModel.value?.totalItemsCount =
-                    getCartIDModel.value?.totalItemsCount ?? 0;
-                totalItemsCount.value =
-                    getCartIDModel.value?.totalItemsCount ?? 0;
-                mainProducts.products?[index].quntity!.value =
-                    allCartProducts.quantity ?? 0;
-                mainProducts.products?[index].isQunitityAdd!.value = true;
-                rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
-              }
+      // for (Carts item in homeController.getAllCartsModel.value?.carts ?? []) {
+
+      if (getCartIDModel.value?.sId != null) {
+        // addToCartModel.value?.sId = getCartIDModel.value?.sId;
+        for (GetCartIdProducts allCartProducts
+            in getCartIDModel.value?.products ?? []) {
+          for (MainProducts mainProducts
+              in getStoreDataModel.value?.data?.mainProducts ?? []) {
+            int index = (mainProducts.products ?? []).indexWhere(
+                (mainProductsElement) =>
+                    mainProductsElement.sId == allCartProducts.sId);
+            if (index != -1) {
+              // addToCartModel.value?.totalItemsCount =
+              //     getCartIDModel.value?.totalItemsCount ?? 0;
+              // totalItemsCount.value =
+              // getCartIDModel.value?.totalItemsCount ?? 0;
+              mainProducts.products?[index].quntity!.value =
+                  allCartProducts.quantity ?? 0;
+              mainProducts.products?[index].isQunitityAdd!.value = true;
+              // rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
             }
           }
-          // if (getCartIDModel.value?.sId == cartId) {
-          //   addToCartModel.value?.sId = cartId;
-          //   for (AllCartProducts allCartProducts in item.products ?? []) {
-          //     for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
-          //       int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
-          //       if (index != -1) {
-          //         addToCartModel.value?.totalItemsCount = getCartIDModel.value?.totalItemsCount ?? 0;
-          //         mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
-          //         mainProducts.products?[index].isQunitityAdd!.value = true;
-          //       }
-          //     }
-          //   }
-          // } else if (getCartIDModel.value?.sId != cartId) {
-          //   addToCartModel.value?.sId = getCartIDModel.value?.sId;
-          //   for (GetCartIdProducts allCartProducts in getCartIDModel.value?.products ?? []) {
-          //     for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
-          //       int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
-          //       if (index != -1) {
-          //         addToCartModel.value?.totalItemsCount = getCartIDModel.value?.totalItemsCount ?? 0;
-          //         mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
-          //         mainProducts.products?[index].isQunitityAdd!.value = true;
-          //       }
-          //     }
-          //   }
-          // }
-        } else {
-          addToCartModel.value?.totalItemsCount =
-              getCartIDModel.value?.totalItemsCount ?? 0;
-          totalItemsCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
         }
+      } else {
+        // addToCartModel.value?.totalItemsCount =
+        //     getCartIDModel.value?.totalItemsCount ?? 0;
+        // totalItemsCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
       }
+      // }
+      formatDate();
       getStoreDataModel.refresh();
-      if (isNeedToNevigate) {
-        bool isGrocery = Constants.grocery == businessId;
-        await Get.toNamed(AppRoutes.MoreStoreProductScreen,
-            arguments: {'isGrocery': isGrocery});
-        if (Constants.isAbleToCallApi) await homeController.getAllCartsData();
-      }
+      await Get.toNamed(AppRoutes.MoreStoreProductView);
+      // if (isNeedToNevigate) {
+      //   bool isGrocery = Constants.grocery == businessId;
+      //   await Get.toNamed(AppRoutes.MoreStoreProductScreen,
+      //       arguments: {'isGrocery': isGrocery});
+      //   if (Constants.isAbleToCallApi) await homeController.getAllCartsData();
+      // }
       isLoadingStoreData.value = false;
     } catch (e, st) {
       Alert.error('product not available try different product');
@@ -140,7 +116,7 @@ class MoreStoreController extends GetxController {
     try {
       isLoading.value = true;
       log("_moreStoreController.cart_id $cart_id");
-      addToCartModel.value = await MoreStoreService.addToCart(
+      getCartIDModel.value = await MoreStoreService.addToCart(
           product: product,
           store_id: store_id,
           increment: increment,
@@ -166,7 +142,8 @@ class MoreStoreController extends GetxController {
       //   }
       // }
 
-      log("_moreStoreController.addToCartModel ${addToCartModel.toJson()}");
+      log("_moreStoreController.addToCartModel ${getCartIDModel.toJson()}");
+      getCartIDModel.refresh();
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -229,36 +206,61 @@ class MoreStoreController extends GetxController {
         quntity: quntity.obs,
       );
       isLoading.value = true;
-      addToCartModel.value = await MoreStoreService.addToCartInventory(
+      getCartIDModel.value = await MoreStoreService.addToCartInventory(
         inventory: products,
         store_id: store_id,
         cart_id: cart_id,
       );
       for (GetCartIdProducts allCartProducts
-          in addToCartModel.value?.products ?? []) {
+          in getCartIDModel.value?.products ?? []) {
         for (MainProducts mainProducts
             in getStoreDataModel.value?.data?.mainProducts ?? []) {
           int index = (mainProducts.products ?? []).indexWhere(
               (mainProductsElement) =>
                   mainProductsElement.sId == allCartProducts.sId);
           if (index != -1) {
-            getCartIDModel.value?.totalItemsCount =
-                addToCartModel.value?.totalItemsCount;
-            totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
+            // getCartIDModel.value?.totalItemsCount =
+            //     addToCartModel.value?.totalItemsCount;
+            // totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
 
             mainProducts.products?[index].quntity!.value =
                 allCartProducts.quantity ?? 0;
             mainProducts.products?[index].isQunitityAdd!.value = true;
-            rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
+            // rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
           }
         }
       }
-      addToCartModel.refresh();
-      log("addToCartInventory.addToCartModel ${addToCartModel.toJson()}");
+      getCartIDModel.refresh();
+      log("addToCartInventory.addToCartModel ${getCartIDModel.toJson()}");
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
     }
+  }
+
+  String formatDate() {
+    DateTime date = DateTime.now();
+
+    currentDay.value = date.weekday.toString();
+    currentHour.value = date.hour.toString();
+    if (currentDay.value == "7") {
+      currentDay.value = "0";
+    }
+    getStoreDataModel
+        .value?.data?.store?.deliverySlots?[int.parse(currentDay.value)].slots
+        ?.forEach((element) {
+      if ((element.startTime?.hour ?? 0) >
+          int.parse(currentHour.value.toString())) {
+        displayHour.value = element.startTime?.hour.toString() ?? "";
+        if (int.parse(displayHour.value) >= 12) {
+          displayHour.value = '${int.parse(displayHour.value) - 12} PM';
+        } else {
+          displayHour.value = '${int.parse(displayHour.value)} AM';
+        }
+      }
+    });
+
+    return DateFormat('H').format(date).toString();
   }
 
   List<String> quntityList = [
@@ -278,30 +280,33 @@ class MoreStoreController extends GetxController {
     return Obx(
       () => CustomPopMenu(
         title: 'Quantity',
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            height: SizeUtils.horizontalBlockSize * 8,
-            width: SizeUtils.horizontalBlockSize * 8,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppConst.grey,
-            ),
-            child: inventory.isQunitityAdd?.value == true &&
-                    inventory.quntity!.value != 0
-                ? Center(
-                    child: Text("${inventory.quntity!.value}",
-                        style: TextStyle(
-                          color: AppConst.white,
-                          fontSize: SizeUtils.horizontalBlockSize * 4,
-                        )),
-                  )
-                : Icon(
-                    Icons.add,
-                    color: AppConst.white,
-                  ),
-          ),
+        child: DisplayProductCount(
+          count: inventory.quntity!.value,
         ),
+        //  Align(
+        //   alignment: Alignment.topRight,
+        //   child: Container(
+        //     height: SizeUtils.horizontalBlockSize * 8,
+        //     width: SizeUtils.horizontalBlockSize * 8,
+        //     decoration: BoxDecoration(
+        //       shape: BoxShape.circle,
+        //       color: AppConst.grey,
+        //     ),
+        //     child: inventory.isQunitityAdd?.value == true &&
+        //             inventory.quntity!.value != 0
+        //         ? Center(
+        //             child: Text("${inventory.quntity!.value}",
+        //                 style: TextStyle(
+        //                   color: AppConst.white,
+        //                   fontSize: SizeUtils.horizontalBlockSize * 4,
+        //                 )),
+        //           )
+        //         : Icon(
+        //             Icons.add,
+        //             color: AppConst.white,
+        //           ),
+        //   ),
+        // ),
         list: quntityList,
         onSelected: (value) async {
           inventory.quntity!.value = value;
@@ -310,7 +315,7 @@ class MoreStoreController extends GetxController {
           }
           if (!isProduct) {
             await addToCartInventory(
-              cart_id: addToCartModel.value?.sId ?? '',
+              cart_id: getCartIDModel.value?.sId ?? '',
               store_id: inventory.store?.sId ?? '',
               name: inventory.name ?? '',
               sId: inventory.sId ?? '',
@@ -321,7 +326,7 @@ class MoreStoreController extends GetxController {
                 store_id: inventory.store?.sId ?? '',
                 index: 0,
                 increment: true,
-                cart_id: addToCartModel.value?.sId ?? '',
+                cart_id: getCartIDModel.value?.sId ?? '',
                 product: inventory);
             // await getStoreData(id: inventory.store?.sId ?? '', isNeedToNevigate: false);
           }
@@ -333,32 +338,38 @@ class MoreStoreController extends GetxController {
   }
 
   Widget shoppingItem(inventory) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 5),
-        color: AppConst.grey,
-      ),
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
-        child: Obx(
-          () => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _decrementButton(inventory),
-              Text(
-                '${inventory.quntity!.value}',
-                style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 5,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54),
-              ),
-              _incrementButton(inventory),
-            ],
-          ),
-        ),
+    return Obx(
+      () => DisplayProductCount(
+        count: inventory.quntity!.value,
       ),
     );
+
+    // Container(
+    //   decoration: BoxDecoration(
+    //     borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 5),
+    //     color: AppConst.grey,
+    //   ),
+    //   child: Padding(
+    //     padding:
+    //         EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
+    //     child: Obx(
+    //       () => Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //         children: <Widget>[
+    //           _decrementButton(inventory),
+    //           Text(
+    //             '${inventory.quntity!.value}',
+    //             style: TextStyle(
+    //                 fontSize: SizeUtils.horizontalBlockSize * 5,
+    //                 fontWeight: FontWeight.bold,
+    //                 color: Colors.black54),
+    //           ),
+    //           _incrementButton(inventory),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _incrementButton(inventory) {

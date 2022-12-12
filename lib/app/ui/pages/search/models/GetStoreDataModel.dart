@@ -62,6 +62,7 @@ class Store {
   String? sId;
   int? defaultCashback;
   int? defaultWelcomeOffer;
+  num? actual_cashback;
   int? promotionCashback;
   String? logo;
   List<DeliverySlots>? deliverySlots;
@@ -73,6 +74,7 @@ class Store {
       this.defaultCashback,
       this.defaultWelcomeOffer,
       this.promotionCashback,
+      this.actual_cashback,
       this.logo,
       this.deliverySlots,
       this.sId});
@@ -85,6 +87,7 @@ class Store {
     defaultCashback = json['default_cashback'];
     defaultWelcomeOffer = json['default_welcome_offer'];
     promotionCashback = json['promotion_cashback'];
+    actual_cashback = json['actual_cashback'];
     logo = json['logo'];
     if (json['delivery_slots'] != null) {
       deliverySlots = <DeliverySlots>[];
@@ -100,6 +103,7 @@ class Store {
     data['_id'] = this.sId;
     data['color'] = this.color;
     data['store_type'] = this.storeType;
+    data['actual_cashback'] = this.actual_cashback;
     data['default_cashback'] = this.defaultCashback;
     data['default_welcome_offer'] = this.defaultWelcomeOffer;
     data['promotion_cashback'] = this.promotionCashback;

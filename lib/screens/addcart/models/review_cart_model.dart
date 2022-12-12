@@ -200,6 +200,7 @@ class Products {
   RxInt? quantity = 0.obs;
   num? cashback;
   num? gstAmount;
+  String? logo;
 
   Products(
       {this.sId,
@@ -209,12 +210,14 @@ class Products {
       this.sellingPrice,
       this.quantity,
       this.cashback,
-      this.gstAmount});
+      this.gstAmount,
+      this.logo});
 
   Products.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     status = json['status'];
     name = json['name'];
+    logo = json['logo'];
     mrp = json['mrp'];
     sellingPrice = json['selling_price'];
     quantity?.value = json['quantity'];
@@ -227,6 +230,7 @@ class Products {
     data['_id'] = this.sId;
     // data['status'] = this.status;
     data['name'] = this.name;
+    data['logo'] = this.logo;
     data['mrp'] = this.mrp;
     data['selling_price'] = this.sellingPrice;
     data['quantity'] = this.quantity?.value;
@@ -277,17 +281,20 @@ class StoreDoc {
   bool? billDiscountOfferStatus;
   int? billDiscountOfferAmount;
   int? billDiscountTargetAmount;
+  String? store_type;
 
   StoreDoc(
       {this.actualWelcomeOffer,
       this.actualCashback,
       this.billDiscountOfferStatus,
       this.billDiscountOfferAmount,
-      this.billDiscountTargetAmount});
+      this.billDiscountTargetAmount,
+      this.store_type});
 
   StoreDoc.fromJson(Map<String, dynamic> json) {
     actualWelcomeOffer = json['actual_welcome_offer'];
     actualCashback = json['actual_cashback'];
+    store_type = json['store_type'];
     billDiscountOfferStatus = json['bill_discount_offer_status'];
     billDiscountOfferAmount = json['bill_discount_offer_amount'];
     billDiscountTargetAmount = json['bill_discount_offer_target'];
@@ -297,6 +304,7 @@ class StoreDoc {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['actual_welcome_offer'] = this.actualWelcomeOffer;
     data['actual_cashback'] = this.actualCashback;
+    data['store_type'] = this.store_type;
     data['bill_discount_offer_status'] = this.billDiscountOfferStatus;
     data['bill_discount_offer_amount'] = this.billDiscountOfferAmount;
     data['bill_discount_offer_target'] = this.billDiscountTargetAmount;

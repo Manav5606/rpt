@@ -32,3 +32,48 @@ class CategoryModel {
         "_id": id,
       };
 }
+
+List<CategoryModel> category = [
+  CategoryModel(
+      id: "",
+      name: "Fruits and Veg",
+      subtitle: "new",
+      keywordHelper: "business_type",
+      image: "assets/images/Fresh.png",
+      isProductAvailable: true),
+  CategoryModel(
+      id: "",
+      name: "Grocery",
+      subtitle: "new",
+      keywordHelper: "business_type",
+      image: "assets/images/groceryImage.png",
+      isProductAvailable: true),
+  CategoryModel(
+      id: "",
+      name: "Meat and Eggs",
+      subtitle: "new",
+      keywordHelper: "business_type",
+      image: "assets/images/Nonveg.png",
+      isProductAvailable: true),
+  CategoryModel(
+      id: "",
+      name: "30 mins",
+      subtitle: "new",
+      keywordHelper: "",
+      image: "assets/images/Pickup.png",
+      isProductAvailable: false),
+  CategoryModel(
+      id: "",
+      name: "Premium",
+      subtitle: "",
+      keywordHelper: "",
+      image: "assets/images/Premium.png",
+      isProductAvailable: false),
+  CategoryModel(
+      id: "",
+      name: "30 mins",
+      subtitle: "new",
+      keywordHelper: "",
+      image: "assets/images/Medics.png",
+      isProductAvailable: false),
+];

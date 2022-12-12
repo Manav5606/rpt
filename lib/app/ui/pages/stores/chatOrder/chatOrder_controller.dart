@@ -6,6 +6,7 @@ import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dar
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatorder_service.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/screens/home/models/GetAllCartsModel.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -23,7 +24,18 @@ class ChatOrderController extends GetxController {
   final TextEditingController itemController = TextEditingController();
   RxBool isLoading = false.obs;
   RxBool isEdit = false.obs;
-  List<String> quntityList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  List<String> quntityList = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10'
+  ];
   List<String> unitList = ['kg', 'ml'];
   final ExploreController _exploreController = Get.find();
   final MoreStoreController _moreStoreController = Get.find();
@@ -43,10 +55,12 @@ class ChatOrderController extends GetxController {
     isNewStore = _isNewStore;
     if (!isNewStore) {
       cartIndex.value = _exploreController.cartIndex.value;
-      cartIndex.value?.totalItemsCount?.value = _exploreController.totalItemCount.value;
+      cartIndex.value?.totalItemsCount?.value =
+          _exploreController.totalItemCount.value;
     } else {
       if (cartIndex.value == null) {
-        cartIndex.value = Carts(store: Store(), totalItemsCount: 0.obs, sId: '');
+        cartIndex.value =
+            Carts(store: Store(), totalItemsCount: 0.obs, sId: '');
       }
       if (cartIndex.value?.store == null) {
         cartIndex.value?.store = Store();
@@ -60,14 +74,21 @@ class ChatOrderController extends GetxController {
       if (cartIndex.value?.rawItems == null) {
         cartIndex.value?.rawItems = [];
       }
-      cartIndex.value?.store?.name = _moreStoreController.getStoreDataModel.value?.data?.store?.name ?? '';
-      cartIndex.value?.store?.logo = _moreStoreController.getStoreDataModel.value?.data?.store?.logo ?? '';
-      cartIndex.value?.store?.sId = _moreStoreController.getStoreDataModel.value?.data?.store?.sId ?? '';
-      cartIndex.value?.store?.storeType = _moreStoreController.getStoreDataModel.value?.data?.store?.storeType ?? '';
-      cartIndex.value?.totalItemsCount?.value = _moreStoreController.addToCartModel.value?.totalItemsCount ?? 0;
+      cartIndex.value?.store?.name =
+          _moreStoreController.getStoreDataModel.value?.data?.store?.name ?? '';
+      cartIndex.value?.store?.logo =
+          _moreStoreController.getStoreDataModel.value?.data?.store?.logo ?? '';
+      cartIndex.value?.store?.sId =
+          _moreStoreController.getStoreDataModel.value?.data?.store?.sId ?? '';
+      cartIndex.value?.store?.storeType = _moreStoreController
+              .getStoreDataModel.value?.data?.store?.storeType ??
+          '';
+      cartIndex.value?.totalItemsCount?.value =
+          _moreStoreController.getCartIDModel.value?.totalItemsCount ?? 0;
       log('cartIndex.value?.totalItemsCount?.value : ${cartIndex.value?.totalItemsCount?.value}');
-      cartIndex.value?.sId = _moreStoreController.addToCartModel.value?.sId;
-      cartIndex.value?.rawItems = _moreStoreController.rawItemsList;
+      cartIndex.value?.sId = _moreStoreController.getCartIDModel.value?.sId;
+      cartIndex.value?.rawItems =
+          _moreStoreController.getCartIDModel.value?.rawitems;
     }
   }
 
@@ -79,16 +100,24 @@ class ChatOrderController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
-      cart.value = await ChatOrderService.addToCartRaw(rawItem: rawItem, cartId: cartId, isEdit: isEdit, newValueItem: newValueItem);
+      cart.value = await ChatOrderService.addToCartRaw(
+          rawItem: rawItem,
+          cartId: cartId,
+          isEdit: isEdit,
+          newValueItem: newValueItem);
       print('cart.value :${cart.value?.toJson()}');
-      cartIndex.value?.totalItemsCount?.value = cart.value?.totalItemsCount?.value ?? 0;
+      cartIndex.value?.totalItemsCount?.value =
+          cart.value?.totalItemsCount?.value ?? 0;
       cartIndex.value?.rawItems = cart.value?.rawItems;
       print('cartIndex.value?.rawItems :${cartIndex.value?.toJson()}');
       if (!isNewStore) {
-        _exploreController.totalItemCount.value = cart.value?.totalItemsCount?.value ?? 0;
+        _exploreController.totalItemCount.value =
+            cart.value?.totalItemsCount?.value ?? 0;
       } else {
-        _moreStoreController.addToCartModel.value?.totalItemsCount = cart.value?.totalItemsCount?.value ?? 0;
-        _moreStoreController.totalItemsCount.value = cart.value?.totalItemsCount?.value ?? 0;
+        _moreStoreController.getCartIDModel.value?.totalItemsCount =
+            cart.value?.totalItemsCount?.value ?? 0;
+        _moreStoreController.getCartIDModel.value?.totalItemsCount =
+            cart.value?.totalItemsCount?.value ?? 0;
       }
       cartIndex.refresh();
       cart.refresh();

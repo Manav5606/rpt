@@ -1,8 +1,3 @@
-import 'package:customer_app/screens/store/binding/store_binding.dart';
-import 'package:customer_app/screens/store/screens/store_cart_screen.dart';
-import 'package:customer_app/screens/store/screens/store_chat_screen.dart';
-import 'package:customer_app/screens/store/screens/store_main_screen.dart';
-import 'package:customer_app/screens/store/screens/store_search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/bindings/cartBindings.dart';
 import 'package:customer_app/app/bindings/home_binding.dart';
@@ -131,8 +126,8 @@ class AppPages {
     ),
     GetPage(name: AppRoutes.StoreScreen, page: () => StoreScreen()),
     GetPage(
-        name: AppRoutes.MoreStoreProductScreen,
-        page: () => MoreStoreProductScreen()),
+        name: AppRoutes.MoreStoreProductView,
+        page: () => MoreStoreProductView()),
     GetPage(
         name: AppRoutes.SearchStoresScreen, page: () => SearchStoresScreen()),
     GetPage(name: AppRoutes.InStoreSearch, page: () => InstoreSearch()),
@@ -167,17 +162,6 @@ class AppPages {
     GetPage(name: AppRoutes.paymentList, page: () => PaymentModeScreen()),
     GetPage(name: AppRoutes.PayView, page: () => PayView()),
     GetPage(name: AppRoutes.MyCartScreen, page: () => MyCartScreen()),
-    GetPage(
-        name: AppRoutes.NewStoreScreen,
-        page: () => NewStoreScreen(),
-        binding: StoreBinding()),
-    GetPage(
-        name: AppRoutes.NewStoreSearchScreen,
-        page: () => NewStoreSearchScreen()),
-    GetPage(
-        name: AppRoutes.NewStoreCartScreen, page: () => NewStoreCartScreen()),
-    GetPage(
-        name: AppRoutes.NewStoreChatScreen, page: () => NewStoreChatScreen()),
 
     // GetPage(name: AppRoutes.OrderTreckScreen, page: () => OrderTreckScreen()),
     // GetPage(name: AppRoutes.ProductRawItemScreen, page: () => ProductRawItemScreen()),

@@ -26,7 +26,7 @@ class AppRoutes {
   static const String orderCheckOutScreen = '/CheckOutScreen';
   static const String EditAddressScreen = '/EditAddressScreen';
   static const String StoreScreen = '/storescreen';
-  static const String MoreStoreProductScreen = '/MoreStoreProductScreen';
+  static const String MoreStoreProductView = '/MoreStoreProductView';
   static const String SearchStoresScreen = '/SearchStoresScreen';
   static const String InStoreSearch = '/instoresearch';
   static const String ExploreScreen = '/explorescreen';

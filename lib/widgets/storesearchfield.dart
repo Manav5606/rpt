@@ -9,42 +9,31 @@ class StoreSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(10),
-      elevation: 2,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: Color(0xffE7EFF4),
-            )),
-        child: Row(
-          children: [
-            Expanded(
-              child: Center(
-                child: Text(
-                  "Search market",
-                  overflow: TextOverflow.clip,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontFamily: 'MuseoSans',
-                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                    color: AppConst.black,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.w),
-              child: Icon(
-                Icons.search,
-                color: AppConst.black,
-                size: SizeUtils.horizontalBlockSize * 6,
-              ),
-            ),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+      decoration: BoxDecoration(color: AppConst.veryLightGrey),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.search,
+            color: AppConst.grey,
+            size: SizeUtils.horizontalBlockSize * 6,
+          ),
+          SizedBox(
+            width: 3.w,
+          ),
+          Text("Search for items",
+              overflow: TextOverflow.clip,
+              maxLines: 1,
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: AppConst.grey,
+                fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              )),
+        ],
       ),
     );
   }

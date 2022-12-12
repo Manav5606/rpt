@@ -43,7 +43,8 @@ class Carts {
 
   Carts.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    totalItemsCount?.value = json['total_items_count'] != null ? json['total_items_count'] : 0;
+    totalItemsCount?.value =
+        json['total_items_count'] != null ? json['total_items_count'] : 0;
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
     if (json['products'] != null) {
       products = <AllCartProducts>[];
@@ -84,7 +85,8 @@ class Store {
   String? businesstype;
   int? earnedCashback;
 
-  Store({this.sId, this.name, this.logo, this.earnedCashback, this.businesstype});
+  Store(
+      {this.sId, this.name, this.logo, this.earnedCashback, this.businesstype});
 
   Store.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -133,22 +135,22 @@ class RawItems {
   RxInt? quantity = 0.obs;
   String? sId;
 
-  RawItems({this.item, this.quantity, this.sId ,this.unit , this.logo});
+  RawItems({this.item, this.quantity, this.sId, this.unit, this.logo});
 
   RawItems.fromJson(Map<String, dynamic> json) {
-    item = json['item'];
+    item = json['item'] ?? "";
     unit = json['unit'];
     logo = json['logo'];
-    quantity?.value = json['quantity'];
+    quantity?.value = json['quantity'] ?? 0;
     sId = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['item'] = this.item;
+    data['item'] = this.item ?? "";
     data['unit'] = this.unit;
     data['logo'] = this.logo;
-    data['quantity'] = this.quantity?.value;
+    data['quantity'] = this.quantity?.value ?? 0;
     // data['_id'] = this.sId;
     return data;
   }

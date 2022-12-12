@@ -7,11 +7,15 @@ class GetCartIDModel {
   List<GetCartIdProducts>? inventories;
   List<RawItems>? rawitems;
   GetCartIDModel(
-      {this.sId, this.totalItemsCount, this.products, this.inventories ,this.rawitems});
+      {this.sId,
+      this.totalItemsCount,
+      this.products,
+      this.inventories,
+      this.rawitems});
 
   GetCartIDModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    totalItemsCount = json['total_items_count'];
+    totalItemsCount = json['total_items_count'] ?? 0;
     if (json['products'] != null) {
       products = <GetCartIdProducts>[];
       json['products'].forEach((v) {
@@ -23,7 +27,8 @@ class GetCartIDModel {
       json['inventories'].forEach((v) {
         inventories!.add(new GetCartIdProducts.fromJson(v));
       });
-    }  if (json['rawitems'] != null) {
+    }
+    if (json['rawitems'] != null) {
       rawitems = <RawItems>[];
       json['rawitems'].forEach((v) {
         rawitems!.add(new RawItems.fromJson(v));

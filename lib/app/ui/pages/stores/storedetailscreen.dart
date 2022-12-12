@@ -38,42 +38,38 @@ class _StoreListScreenState extends State<StoreListScreen>
           //     _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
           return <Widget>[
             SliverAppBar(
+              expandedHeight: 10.h,
               systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.lightBlue, // <-- SEE HERE
-                statusBarIconBrightness:
-                    Brightness.light, //<-- For Android SEE HERE (dark icons)
-                statusBarBrightness:
-                    Brightness.light, //<-- For iOS SEE HERE (dark icons)
-              ),
-              expandedHeight: 18.h,
+                  statusBarColor: Color(0xffaeebff),
+                  statusBarIconBrightness: Brightness.dark),
               centerTitle: true,
               pinned: true,
               stretch: true,
               floating: true,
-              automaticallyImplyLeading: false,
-              backgroundColor: AppConst.white,
-              title: (innerBoxIsScrolled)
-                  ? CircleAvatar(
-                      backgroundColor: AppConst.white,
-                      radius: SizeUtils.horizontalBlockSize * 3.82,
-                      child: Image.asset("assets/images/image4.png"),
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${category?.name.toString() ?? ""}",
-                          // "Pickup",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'MuseoSans',
-                              fontSize: SizeUtils.horizontalBlockSize * 5,
-                              color: AppConst.black),
-                        ),
-                        // ),
-                      ],
-                    ),
-              leading: BackButtonCircle(),
+              // automaticallyImplyLeading: false,
+              backgroundColor: Color(0xffaeebff),
+              // title: (innerBoxIsScrolled)
+              //     ? CircleAvatar(
+              //         backgroundColor: AppConst.white,
+              //         radius: SizeUtils.horizontalBlockSize * 3.82,
+              //         child: Image.asset("assets/images/image4.png"),
+              //       )
+              //     : Row(
+              //         mainAxisAlignment: MainAxisAlignment.start,
+              //         children: [
+              //           Text(
+              //             "${category?.name.toString() ?? ""}",
+              //             // "Pickup",
+              //             style: TextStyle(
+              //                 fontWeight: FontWeight.w700,
+              //                 fontFamily: 'MuseoSans',
+              //                 fontSize: SizeUtils.horizontalBlockSize * 5,
+              //                 color: AppConst.black),
+              //           ),
+              //           // ),
+              //         ],
+              //       ),
+              // leading: BackButtonCircle(),
               //  SizedBox(),
 
               // actions: [
@@ -130,49 +126,64 @@ class _StoreListScreenState extends State<StoreListScreen>
                 centerTitle: true,
                 collapseMode: CollapseMode.parallax,
                 background: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Stack(
-                      children: [
-                        Positioned(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 18.h,
-                            color: Colors.yellow,
-                            child: Image.network(
-                              category?.image ?? "",
-                              fit: BoxFit.fill,
-                              height: SizeUtils.verticalBlockSize * 12,
-                              width: SizeUtils.horizontalBlockSize * 24,
-                            ),
-                          ),
-                        ),
-                        // Positioned(
-                        //   top: 20,
-                        //   left: 10,
-                        //   child: CircleAvatar(
-                        // radius: 2.4.h,
-                        // backgroundColor: AppConst.lightGrey,
-                        //       child: const SizedBox()),
-                        // ),
-                        Positioned(
-                          bottom: 15,
-                          left: 10,
-                          child: Text(
-                            "${category?.name.toString() ?? ""}",
-                            // "Pickup",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'MuseoSans',
-                                fontSize: SizeUtils.horizontalBlockSize * 6,
-                                color: AppConst.black),
-                          ),
-                        ),
-                      ],
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 1.h, left: 5.w),
+                      child: Text(
+                        "Fresh Store near you",
+                        // "${category?.name.toString() ?? ""}",
+                        // "Pickup",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'MuseoSans',
+                            fontStyle: FontStyle.normal,
+                            fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                            color: AppConst.black),
+                      ),
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
+                    // Stack(
+                    //   children: [
+                    //     Positioned(
+                    //       child: Container(
+                    //         width: MediaQuery.of(context).size.width,
+                    //         height: 18.h,
+                    //         color: Colors.yellow,
+                    //         child: Image.network(
+                    //           category?.image ?? "",
+                    //           fit: BoxFit.fill,
+                    //           height: SizeUtils.verticalBlockSize * 12,
+                    //           width: SizeUtils.horizontalBlockSize * 24,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     // Positioned(
+                    //     //   top: 20,
+                    //     //   left: 10,
+                    //     //   child: CircleAvatar(
+                    //     // radius: 2.4.h,
+                    //     // backgroundColor: AppConst.lightGrey,
+                    //     //       child: const SizedBox()),
+                    //     // ),
+                    //     Positioned(
+                    //       bottom: 15,
+                    //       left: 10,
+                    //       child: Text(
+                    //         "${category?.name.toString() ?? ""}",
+                    //         // "Pickup",
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.w700,
+                    //             fontFamily: 'MuseoSans',
+                    //             fontSize: SizeUtils.horizontalBlockSize * 6,
+                    //             color: AppConst.black),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // SizedBox(
+                    //   height: 2.h,
+                    // ),
                   ],
                 ),
               ),

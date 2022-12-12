@@ -999,6 +999,7 @@ query($lat: Float, $lng: Float) {
         color
         default_cashback
         default_welcome_offer
+        actual_cashback
         promotion_cashback
         logo
         delivery_slots
@@ -1781,6 +1782,8 @@ data{
         actual_cashback
         bill_discount_offer_status
         bill_discount_offer_amount
+        bill_discount_offer_target
+        store_type
       }
       products{
         _id
@@ -1790,6 +1793,7 @@ data{
         selling_price
         quantity
         cashback
+        logo
       }
     rawitems
       {
@@ -1804,6 +1808,7 @@ data{
         _id
         quantity
         status
+        logo
       }
     }
   }

@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/screens/more_stores/morestore_productlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -254,66 +256,67 @@ class StoreViewProductsList extends StatelessWidget {
                                                                 storesWithProductsModel
                                                                         .sId ??
                                                                     '')
-                                                            : Container(
-                                                                height: 3.5.h,
-                                                                width: product.isQunitityAdd?.value ==
-                                                                            true &&
-                                                                        product.quntity!.value !=
-                                                                            0
-                                                                    ? 8.w
-                                                                    : 15.w,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: AppConst
-                                                                          .green,
-                                                                      width:
-                                                                          0.8),
-                                                                  borderRadius: BorderRadius.circular(
-                                                                      product.isQunitityAdd?.value == true &&
-                                                                              product.quntity!.value != 0
-                                                                          ? 25
-                                                                          : 8),
-                                                                  color: AppConst
-                                                                      .white,
-                                                                ),
-                                                                child: product.isQunitityAdd?.value ==
-                                                                            true &&
-                                                                        product.quntity!.value !=
-                                                                            0
-                                                                    ? Center(
-                                                                        child: Text(
-                                                                            "${product.quntity?.value ?? "0"}",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontFamily: 'MuseoSans',
-                                                                              color: AppConst.green,
-                                                                              fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                                                                              fontWeight: FontWeight.w500,
-                                                                              fontStyle: FontStyle.normal,
-                                                                            )),
-                                                                      )
-                                                                    : Center(
-                                                                        child:
-                                                                            Text(
-                                                                          " Add +",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontFamily:
-                                                                                'MuseoSans',
-                                                                            color:
-                                                                                AppConst.green,
-                                                                            fontSize:
-                                                                                SizeUtils.horizontalBlockSize * 3.8,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                            fontStyle:
-                                                                                FontStyle.normal,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                              ),
-                                                      ),
+                                                            : DisplayAddPlus()
+                                                        //  Container(
+                                                        //     height: 3.5.h,
+                                                        //     width: product.isQunitityAdd?.value ==
+                                                        //                 true &&
+                                                        //             product.quntity!.value !=
+                                                        //                 0
+                                                        //         ? 8.w
+                                                        //         : 15.w,
+                                                        //     decoration:
+                                                        //         BoxDecoration(
+                                                        //       border: Border.all(
+                                                        //           color: AppConst
+                                                        //               .green,
+                                                        //           width:
+                                                        //               0.8),
+                                                        //       borderRadius: BorderRadius.circular(
+                                                        //           product.isQunitityAdd?.value == true &&
+                                                        //                   product.quntity!.value != 0
+                                                        //               ? 25
+                                                        //               : 8),
+                                                        //       color: AppConst
+                                                        //           .white,
+                                                        //     ),
+                                                        //     child: product.isQunitityAdd?.value ==
+                                                        //                 true &&
+                                                        //             product.quntity!.value !=
+                                                        //                 0
+                                                        //         ? Center(
+                                                        //             child: Text(
+                                                        //                 "${product.quntity?.value ?? "0"}",
+                                                        //                 style:
+                                                        //                     TextStyle(
+                                                        //                   fontFamily: 'MuseoSans',
+                                                        //                   color: AppConst.green,
+                                                        //                   fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                                                        //                   fontWeight: FontWeight.w500,
+                                                        //                   fontStyle: FontStyle.normal,
+                                                        //                 )),
+                                                        //           )
+                                                        //         : Center(
+                                                        //             child:
+                                                        //                 Text(
+                                                        //               " Add +",
+                                                        //               style:
+                                                        //                   TextStyle(
+                                                        //                 fontFamily:
+                                                        //                     'MuseoSans',
+                                                        //                 color:
+                                                        //                     AppConst.green,
+                                                        //                 fontSize:
+                                                        //                     SizeUtils.horizontalBlockSize * 3.8,
+                                                        //                 fontWeight:
+                                                        //                     FontWeight.w500,
+                                                        //                 fontStyle:
+                                                        //                     FontStyle.normal,
+                                                        //               ),
+                                                        //             ),
+                                                        //           ),
+                                                        //   ),
+                                                        ),
                                               ),
 
                                               SizedBox(
@@ -582,38 +585,41 @@ class StoreViewProductsList extends StatelessWidget {
     return Obx(
       () => CustomPopMenu(
         title: 'Quantity',
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            height: 4.h,
-            width: 8.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppConst.green,
-              ),
-              color: AppConst.white,
-            ),
-            child: product.isQunitityAdd?.value == true &&
-                    product.quntity!.value != 0
-                ? Center(
-                    child: Text(
-                      "${product.quntity!.value}",
-                      style: TextStyle(
-                        fontFamily: 'MuseoSans',
-                        color: AppConst.green,
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
-                  )
-                : Icon(
-                    Icons.add,
-                    color: AppConst.white,
-                  ),
-          ),
+        child: DisplayProductCount(
+          count: product.quntity!.value,
         ),
+        // Align(
+        //   alignment: Alignment.topRight,
+        //   child: Container(
+        //     height: 4.h,
+        //     width: 8.w,
+        //     decoration: BoxDecoration(
+        //       shape: BoxShape.circle,
+        //       border: Border.all(
+        //         color: AppConst.green,
+        //       ),
+        //       color: AppConst.white,
+        //     ),
+        //     child: product.isQunitityAdd?.value == true &&
+        //             product.quntity!.value != 0
+        //         ? Center(
+        //             child: Text(
+        //               "${product.quntity!.value}",
+        //               style: TextStyle(
+        //                 fontFamily: 'MuseoSans',
+        //                 color: AppConst.green,
+        //                 fontSize: SizeUtils.horizontalBlockSize * 4,
+        //                 fontWeight: FontWeight.w500,
+        //                 fontStyle: FontStyle.normal,
+        //               ),
+        //             ),
+        //           )
+        //         : Icon(
+        //             Icons.add,
+        //             color: AppConst.white,
+        //           ),
+        //   ),
+        // ),
         list: quntityList,
         onSelected: (value) async {
           product.quntity!.value = value;
@@ -633,31 +639,38 @@ class StoreViewProductsList extends StatelessWidget {
   }
 
   Widget _shoppingItem(product) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        color: AppConst.white,
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 0.h),
-        child: Obx(
-          () => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              // _decrementButton(product),
-              Text(
-                '${product.quntity!.value}',
-                style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                    fontWeight: FontWeight.w500,
-                    color: AppConst.green),
-              ),
-              // _incrementButton(product),
-            ],
-          ),
-        ),
+    return Obx(
+      () => DisplayProductCount(
+        count: product.quntity!.value,
       ),
     );
+
+    // Container(
+    //   decoration: BoxDecoration(
+    //     borderRadius: BorderRadius.circular(25),
+    //     color: AppConst.white,
+    //   ),
+    //   child: Padding(
+    //     padding: EdgeInsets.symmetric(vertical: 0.h),
+    //     child: Obx(
+
+    //       () => Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //         children: <Widget>[
+    //           // _decrementButton(product),
+    //           Text(
+    //             '${product.quntity!.value}',
+    //             style: TextStyle(
+    //                 fontSize: SizeUtils.horizontalBlockSize * 4,
+    //                 fontWeight: FontWeight.w500,
+    //                 color: AppConst.green),
+    //           ),
+    //           // _incrementButton(product),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _incrementButton(product) {

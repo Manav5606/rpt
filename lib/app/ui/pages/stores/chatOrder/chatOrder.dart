@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:customer_app/widgets/imagePicker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder_controller.dart';
@@ -27,14 +28,14 @@ class ChatOrderScreen extends StatefulWidget {
 }
 
 class _ChatOrderScreenState extends State<ChatOrderScreen> {
-  final ChatOrderController _chatOrderController =
+  final ChatOrderController chatOrderController =
       Get.put(ChatOrderController());
 
   final AddCartController _addCartController = Get.find();
 
   @override
   void initState() {
-    _chatOrderController.setValue(widget.isNewStore);
+    chatOrderController.setValue(widget.isNewStore);
     super.initState();
   }
 
@@ -45,6 +46,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
         Scaffold(
           appBar: AppBar(
             centerTitle: true,
+            elevation: 0,
             // leading: Padding(
             //   padding: EdgeInsets.only(left: SizeUtils.horizontalBlockSize * 1.8),
             //   child: GestureDetector(
@@ -58,80 +60,101 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
             //     ),
             //   ),
             // ),
-            actions: [
-              Obx(
-                () {
-                  return CartWidget(
-                    onTap: () async {
-                      Get.toNamed(
-                        AppRoutes.CartReviewScreen,
-                        arguments: {
-                          'logo':
-                              _chatOrderController.cartIndex.value?.store?.logo,
-                          'storeName':
-                              _chatOrderController.cartIndex.value?.store?.name,
-                          'totalCount': _chatOrderController
-                              .cartIndex.value?.totalItemsCount?.value
-                              .toString()
-                        },
-                      );
-                      await _addCartController.getReviewCartData(
-                          cartId:
-                              _chatOrderController.cartIndex.value?.sId ?? "");
-                      // await _addCartController.getCartPageInformation(storeId: _chatOrderController.cartIndex.value?.store?.sId ?? "");
-                      await _addCartController.getCartLocation(
-                          storeId: _chatOrderController
-                                  .cartIndex.value?.store?.sId ??
-                              "",
-                          cartId:
-                              _chatOrderController.cartIndex.value?.sId ?? "");
-                      _addCartController.store.value =
-                          _chatOrderController.cartIndex.value?.store;
-                      _addCartController.cartId.value =
-                          _chatOrderController.cartIndex.value?.sId ?? "";
-                    },
-                    count:
-                        '${_chatOrderController.cartIndex.value?.totalItemsCount?.value}',
-                  );
-                },
-              ),
-            ],
+            // actions: [
+            //   Obx(
+            //     () {
+            //       return CartWidget(
+            //         onTap: () async {
+            //           Get.toNamed(
+            //             AppRoutes.CartReviewScreen,
+            //             arguments: {
+            //               'logo':
+            //                   chatOrderController.cartIndex.value?.store?.logo,
+            //               'storeName':
+            //                   chatOrderController.cartIndex.value?.store?.name,
+            //               'totalCount': chatOrderController
+            //                   .cartIndex.value?.totalItemsCount?.value
+            //                   .toString()
+            //             },
+            //           );
+            //           await _addCartController.getReviewCartData(
+            //               cartId:
+            //                   chatOrderController.cartIndex.value?.sId ?? "");
+            //           // await _addCartController.getCartPageInformation(storeId: chatOrderController.cartIndex.value?.store?.sId ?? "");
+            //           await _addCartController.getCartLocation(
+            //               storeId: chatOrderController
+            //                       .cartIndex.value?.store?.sId ??
+            //                   "",
+            //               cartId:
+            //                   chatOrderController.cartIndex.value?.sId ?? "");
+            //           _addCartController.store.value =
+            //               chatOrderController.cartIndex.value?.store;
+            //           _addCartController.cartId.value =
+            //               chatOrderController.cartIndex.value?.sId ?? "";
+            //         },
+            //         count:
+            //             '${chatOrderController.cartIndex.value?.totalItemsCount?.value}',
+            //       );
+            //     },
+            //   ),
+            // ],
             title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                (_chatOrderController.cartIndex.value?.store?.logo != null)
-                    ? Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppConst.grey)),
-                        child: ClipOval(
-                          child: ClipRRect(
-                            child: CircleAvatar(
-                              child: Text(
-                                  _chatOrderController
-                                          .cartIndex.value?.store?.name
-                                          ?.substring(0, 1) ??
-                                      "",
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 2)),
-                              backgroundColor: AppConst.kPrimaryColor,
-                              radius: SizeUtils.horizontalBlockSize * 2.5,
-                            ),
-                          ),
-                        ),
-                      )
-                    : CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            _chatOrderController.cartIndex.value?.store?.logo ??
-                                ''),
-                        backgroundColor: AppConst.white,
-                        radius: SizeUtils.horizontalBlockSize * 2.5,
-                      ),
+                // (chatOrderController.cartIndex.value?.store?.logo != null)
+                //     ? Container(
+                //         decoration: BoxDecoration(
+                //             shape: BoxShape.circle,
+                //             border: Border.all(color: AppConst.grey)),
+                //         child: ClipOval(
+                //           child: ClipRRect(
+                //             child: CircleAvatar(
+                //               child: Text(
+                //                   chatOrderController
+                //                           .cartIndex.value?.store?.name
+                //                           ?.substring(0, 1) ??
+                //                       "",
+                //                   style: TextStyle(
+                //                       fontSize:
+                //                           SizeUtils.horizontalBlockSize * 2)),
+                //               backgroundColor: AppConst.kPrimaryColor,
+                //               radius: SizeUtils.horizontalBlockSize * 2.5,
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //     : CircleAvatar(
+                //         backgroundImage: NetworkImage(
+                //             chatOrderController.cartIndex.value?.store?.logo ??
+                //                 ''),
+                //         backgroundColor: AppConst.white,
+                //         radius: SizeUtils.horizontalBlockSize * 2.5,
+                //       ),
+                // Container(
+                //   width: 60.w,
+                //   child: Center(
+                //     child: Text(
+                //       "Chat Orders",
+                // style: TextStyle(
+                //   color: AppConst.black,
+                //   fontFamily: 'MuseoSans',
+                //   fontWeight: FontWeight.w700,
+                //   fontStyle: FontStyle.normal,
+                //   fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                // ),
+                //     ),
+                //   ),
+                // ),
                 Text(
-                  _chatOrderController.cartIndex.value?.store?.name ?? '',
+                  chatOrderController.cartIndex.value?.store?.name ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: TextStyle(
                     color: AppConst.black,
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                    fontSize: SizeUtils.horizontalBlockSize * 4.2,
                   ),
                 ),
               ],
@@ -139,241 +162,194 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
           ),
           body: Column(
             children: [
+              Obx(
+                () => GestureDetector(
+                  onTap: () async {
+                    Get.toNamed(
+                      AppRoutes.CartReviewScreen,
+                      arguments: {
+                        'logo':
+                            chatOrderController.cartIndex.value?.store?.logo,
+                        'storeName':
+                            chatOrderController.cartIndex.value?.store?.name,
+                        'totalCount': chatOrderController
+                            .cartIndex.value?.totalItemsCount?.value
+                            .toString()
+                      },
+                    );
+                    await _addCartController.getReviewCartData(
+                        cartId: chatOrderController.cartIndex.value?.sId ?? "");
+                    // await _addCartController.getCartPageInformation(storeId: chatOrderController.cartIndex.value?.store?.sId ?? "");
+                    await _addCartController.getCartLocation(
+                        storeId:
+                            chatOrderController.cartIndex.value?.store?.sId ??
+                                "",
+                        cartId: chatOrderController.cartIndex.value?.sId ?? "");
+                    _addCartController.store.value =
+                        chatOrderController.cartIndex.value?.store;
+                    _addCartController.cartId.value =
+                        chatOrderController.cartIndex.value?.sId ?? "";
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 4.w, right: 3.w),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.shopping_cart,
+                          color: AppConst.green,
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Text(
+                            "${chatOrderController.cartIndex.value?.totalItemsCount?.value ?? 0} Item",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.black,
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            )),
+                        Spacer(),
+                        Text("View Cart",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.green,
+                              fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                            )),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          color: AppConst.green,
+                          size: 2.2.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 1.h),
+                child: Container(
+                  height: 1,
+                  color: AppConst.grey,
+                ),
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      // Obx(
+                      //   () => GestureDetector(
+                      //     onTap: () async {
+                      //       Get.toNamed(
+                      //         AppRoutes.CartReviewScreen,
+                      //         arguments: {
+                      //           'logo': chatOrderController
+                      //               .cartIndex.value?.store?.logo,
+                      //           'storeName': chatOrderController
+                      //               .cartIndex.value?.store?.name,
+                      //           'totalCount': chatOrderController
+                      //               .cartIndex.value?.totalItemsCount?.value
+                      //               .toString()
+                      //         },
+                      //       );
+                      //       await _addCartController.getReviewCartData(
+                      //           cartId:
+                      //               chatOrderController.cartIndex.value?.sId ??
+                      //                   "");
+                      //       // await _addCartController.getCartPageInformation(storeId: chatOrderController.cartIndex.value?.store?.sId ?? "");
+                      //       await _addCartController.getCartLocation(
+                      //           storeId: chatOrderController
+                      //                   .cartIndex.value?.store?.sId ??
+                      //               "",
+                      //           cartId:
+                      //               chatOrderController.cartIndex.value?.sId ??
+                      //                   "");
+                      //       _addCartController.store.value =
+                      //           chatOrderController.cartIndex.value?.store;
+                      //       _addCartController.cartId.value =
+                      //           chatOrderController.cartIndex.value?.sId ?? "";
+                      //     },
+                      //     child: Padding(
+                      //       padding: EdgeInsets.only(left: 4.w, right: 2.w),
+                      //       child: Row(
+                      //         children: [
+                      //           Icon(
+                      //             Icons.shopping_cart,
+                      //             color: AppConst.green,
+                      //           ),
+                      //           SizedBox(
+                      //             width: 3.w,
+                      //           ),
+                      //           Text(
+                      //               "${chatOrderController.cartIndex.value?.totalItemsCount?.value ?? 0} Item",
+                      //               style: TextStyle(
+                      //                 fontFamily: 'MuseoSans',
+                      //                 color: AppConst.black,
+                      //                 fontSize:
+                      //                     SizeUtils.horizontalBlockSize * 4,
+                      //                 fontWeight: FontWeight.w500,
+                      //                 fontStyle: FontStyle.normal,
+                      //               )),
+                      //           Spacer(),
+                      //           Text("View Cart",
+                      //               style: TextStyle(
+                      //                 fontFamily: 'MuseoSans',
+                      //                 color: AppConst.green,
+                      //                 fontSize:
+                      //                     SizeUtils.horizontalBlockSize * 3.7,
+                      //                 fontWeight: FontWeight.w600,
+                      //                 fontStyle: FontStyle.normal,
+                      //               )),
+                      //           Icon(
+                      //             Icons.arrow_forward_ios_outlined,
+                      //             color: AppConst.green,
+                      //             size: 2.2.h,
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.w, vertical: 1.h),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.whatsapp,
+                              size: 3.2.h,
+                            ),
+                            SizedBox(
+                              width: 3.w,
+                            ),
+                            Text(
+                              "Chat Orders",
+                              style: TextStyle(
+                                color: AppConst.black,
+                                fontFamily: 'MuseoSans',
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       Obx(
                         () => ListView.builder(
-                            itemCount: _chatOrderController
+                            itemCount: chatOrderController
                                     .cartIndex.value?.rawItems?.length ??
                                 0,
                             shrinkWrap: true,
                             primary: false,
                             itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.all(
-                                    SizeUtils.horizontalBlockSize * 5),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.network(
-                                          _chatOrderController.cartIndex.value
-                                                  ?.rawItems?[index].logo ??
-                                              'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg',
-                                          height: 40,
-                                          width: 40,
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              SizeUtils.horizontalBlockSize * 1,
-                                        ),
-                                        Expanded(
-                                            child: Text(_chatOrderController
-                                                    .cartIndex
-                                                    .value
-                                                    ?.rawItems?[index]
-                                                    .item ??
-                                                '')),
-                                        Obx(
-                                          () {
-                                            return CustomPopMenu(
-                                              title: 'Quantity',
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.rectangle,
-                                                    border: Border.all(
-                                                        color: AppConst.grey)),
-                                                child: Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      "${_chatOrderController.cartIndex.value?.rawItems?[index].quantity?.value ?? 0}",
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style:
-                                                          AppStyles.BOLD_STYLE,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              onSelected: (value) async {
-                                                _chatOrderController
-                                                    .cartIndex
-                                                    .value
-                                                    ?.rawItems?[index]
-                                                    .quantity
-                                                    ?.value = value;
-                                                RawItems rawItems = RawItems(
-                                                    item: _chatOrderController
-                                                            .cartIndex
-                                                            .value
-                                                            ?.rawItems?[index]
-                                                            .item ??
-                                                        '',
-                                                    quantity:
-                                                        _chatOrderController
-                                                            .cartIndex
-                                                            .value
-                                                            ?.rawItems?[index]
-                                                            .quantity,
-                                                    unit: _chatOrderController
-                                                            .cartIndex
-                                                            .value
-                                                            ?.rawItems?[index]
-                                                            .unit ??
-                                                        '');
-                                                await _chatOrderController
-                                                    .addToCart(
-                                                        newValueItem:
-                                                            _chatOrderController
-                                                                    .cartIndex
-                                                                    .value
-                                                                    ?.rawItems?[
-                                                                        index]
-                                                                    .item ??
-                                                                '',
-                                                        cartId:
-                                                            _chatOrderController
-                                                                    .cartIndex
-                                                                    .value
-                                                                    ?.sId ??
-                                                                '',
-                                                        rawItem: rawItems,
-                                                        isEdit: true);
-                                              },
-                                              list: _chatOrderController
-                                                  .quntityList,
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    Text(_chatOrderController.cartIndex.value
-                                            ?.rawItems?[index].unit ??
-                                        ''),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            _chatOrderController.itemController
-                                                .text = _chatOrderController
-                                                    .cartIndex
-                                                    .value
-                                                    ?.rawItems?[index]
-                                                    .item ??
-                                                '';
-                                            _chatOrderController.oldItem.value =
-                                                _chatOrderController
-                                                        .cartIndex
-                                                        .value
-                                                        ?.rawItems?[index]
-                                                        .item ??
-                                                    '';
-                                            _chatOrderController.oldQuntity
-                                                .value = _chatOrderController
-                                                    .cartIndex
-                                                    .value
-                                                    ?.rawItems?[index]
-                                                    .quantity
-                                                    ?.value ??
-                                                0;
-
-                                            _chatOrderController.isEdit.value =
-                                                true;
-                                          },
-                                          child: Row(
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.edit,
-                                                size: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4,
-                                                color: AppConst.green,
-                                              ),
-                                              SizedBox(
-                                                width: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4,
-                                              ),
-                                              Text(
-                                                "Edit",
-                                                style: TextStyle(
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        4,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            RawItems rawItems = RawItems(
-                                                item: _chatOrderController
-                                                        .cartIndex
-                                                        .value
-                                                        ?.rawItems?[index]
-                                                        .item ??
-                                                    '',
-                                                quantity: 0.obs,
-                                                unit: _chatOrderController
-                                                        .cartIndex
-                                                        .value
-                                                        ?.rawItems?[index]
-                                                        .unit ??
-                                                    '');
-                                            _chatOrderController.addToCart(
-                                                cartId: _chatOrderController
-                                                        .cartIndex.value?.sId ??
-                                                    '',
-                                                rawItem: rawItems,
-                                                isEdit: false,
-                                                newValueItem: '');
-                                            _chatOrderController.cartIndex
-                                                .refresh();
-                                          },
-                                          child: Row(
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.trash,
-                                                size: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4,
-                                                color: AppConst.green,
-                                              ),
-                                              SizedBox(
-                                                width: 3.w,
-                                              ),
-                                              Text(
-                                                "Remove",
-                                                style: TextStyle(
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        4,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
+                              return StoreChatRawItem(
+                                  index: index,
+                                  chatOrderController: chatOrderController);
                             }),
                       ),
                     ],
@@ -386,7 +362,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
         ),
         Obx(() {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            _chatOrderController.setValue(widget.isNewStore);
+            chatOrderController.setValue(widget.isNewStore);
           });
 
           return _addCartController.onTabChange.value
@@ -400,19 +376,18 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
 //bottom textformfield and add button
   Widget _enterItem() {
     return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: SizeUtils.horizontalBlockSize * 3),
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
       child: Row(
         children: [
           Obx(
-            () => (_chatOrderController.imagePath.value.isNotEmpty)
+            () => (chatOrderController.imagePath.value.isNotEmpty)
                 ? Stack(
                     alignment: Alignment.topRight,
                     children: [
                       Image.file(
-                        File(_chatOrderController.imagePath.value),
-                        height: 50,
-                        width: 50,
+                        File(chatOrderController.imagePath.value),
+                        height: 8.h,
+                        width: 16.w,
                         fit: BoxFit.cover,
                       ),
                       Container(
@@ -420,12 +395,12 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                             color: Colors.white, shape: BoxShape.circle),
                         child: GestureDetector(
                           onTap: () {
-                            _chatOrderController.imagePath.value = '';
-                            _chatOrderController.file = null;
+                            chatOrderController.imagePath.value = '';
+                            chatOrderController.file = null;
                           },
                           child: Icon(
                             Icons.close,
-                            size: 18,
+                            size: 2.2.h,
                           ),
                         ),
                       ),
@@ -433,93 +408,454 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                   )
                 : GestureDetector(
                     onTap: () {
-                      _chatOrderController.imagePicker();
+                      chatOrderController.imagePicker();
                     },
                     child: Icon(
-                      Icons.camera_enhance_rounded,
-                      size: 26,
+                      Icons.camera_alt_rounded,
+                      color: AppConst.darkGreen,
+                      size: 4.h,
                     ),
                   ),
           ),
-          Expanded(
-            child: TextFormField(
-              controller: _chatOrderController.itemController,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5),
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                ),
-                hintText: 'say something',
-              ),
-            ),
+          SizedBox(
+            width: 1.w,
           ),
-          Obx(
-            () => CustomPopMenu(
-              title: 'Unit',
-              child: Container(
-                decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    border: Border.all(color: AppConst.grey)),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "${_chatOrderController.unitList[_chatOrderController.selectUnitIndex.value]}",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppStyles.BOLD_STYLE,
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: AppConst.grey),
+                borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                Obx(
+                  () => SizedBox(
+                    width: (chatOrderController.imagePath.value.isNotEmpty)
+                        ? 56.w
+                        : 65.w,
+                    child: TextFormField(
+                      inputFormatters: [
+                        NoLeadingSpaceFormatter(),
+                      ],
+                      controller: chatOrderController.itemController,
+                      keyboardType: TextInputType.multiline,
+                      cursorColor: AppConst.black,
+                      maxLines: null,
+                      style: TextStyle(
+                          fontSize: SizeUtils.horizontalBlockSize * 4),
+                      onChanged: (value) {},
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 2.w),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
+                        hintText: 'Type your Order Here',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              onSelected: (value) async {
-                _chatOrderController.selectUnitIndex.value = value;
-              },
-              list: _chatOrderController.unitList,
-              isQunitity: false,
+                Obx(
+                  () => CustomPopMenu(
+                    title: 'Select Unit',
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: AppConst.darkGreen,
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: AppConst.darkGreen)),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 1.w, top: 0.7.h, bottom: 0.7.h),
+                          child: Row(
+                            children: [
+                              Text(
+                                  "${chatOrderController.unitList[chatOrderController.selectUnitIndex.value]}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.white,
+                                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                              Icon(
+                                Icons.arrow_drop_down_sharp,
+                                color: AppConst.white,
+                                size: 2.5.h,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    onSelected: (value) async {
+                      chatOrderController.selectUnitIndex.value = value;
+                    },
+                    list: chatOrderController.unitList,
+                    isQunitity: false,
+                  ),
+                ),
+                SizedBox(
+                  width: 2.w,
+                )
+              ],
             ),
           ),
           GestureDetector(
             onTap: () async {
-              log("_chatOrderController.file:${_chatOrderController.file}");
-              if (_chatOrderController.file != null) {
-                _chatOrderController.logo.value =
-                    await ImageHelper.uploadImage(_chatOrderController.file!);
+              log("chatOrderController.file:${chatOrderController.file}");
+              if (chatOrderController.file != null) {
+                chatOrderController.logo.value =
+                    await ImageHelper.uploadImage(chatOrderController.file!);
               }
-              log("_chatOrderController.logo.value:${_chatOrderController.logo.value}");
-              RawItems rawItems = RawItems(
-                item: _chatOrderController.isEdit.value
-                    ? _chatOrderController.oldItem.value
-                    : _chatOrderController.itemController.text,
-                quantity: _chatOrderController.isEdit.value
-                    ? _chatOrderController.oldQuntity
-                    : 1.obs,
-                unit: _chatOrderController
-                    .unitList[_chatOrderController.selectUnitIndex.value],
-                logo: _chatOrderController.logo.value,
-              );
-              await _chatOrderController.addToCart(
-                  newValueItem: _chatOrderController.itemController.text,
-                  cartId: _chatOrderController.cartIndex.value?.sId ?? '',
-                  rawItem: rawItems,
-                  isEdit: _chatOrderController.isEdit.value);
-              _chatOrderController.imagePath.value = '';
-              _chatOrderController.file = null;
-              _chatOrderController.isEdit.value = false;
-              _chatOrderController.itemController.clear();
-              _chatOrderController.oldItem.isEmpty;
+              log("chatOrderController.logo.value:${chatOrderController.logo.value}");
+              if (chatOrderController.itemController.text != null &&
+                  chatOrderController.itemController.text != "") {
+                RawItems rawItems = RawItems(
+                  item: chatOrderController.isEdit.value
+                      ? chatOrderController.oldItem.value
+                      : chatOrderController.itemController.text,
+                  quantity: chatOrderController.isEdit.value
+                      ? chatOrderController.oldQuntity
+                      : 1.obs,
+                  unit: chatOrderController
+                      .unitList[chatOrderController.selectUnitIndex.value],
+                  logo: chatOrderController.logo.value,
+                );
+                await chatOrderController.addToCart(
+                    newValueItem: chatOrderController.itemController.text,
+                    cartId: chatOrderController.cartIndex.value?.sId ?? '',
+                    rawItem: rawItems,
+                    isEdit: chatOrderController.isEdit.value);
+                chatOrderController.imagePath.value = '';
+                chatOrderController.file = null;
+                chatOrderController.isEdit.value = false;
+                chatOrderController.itemController.clear();
+                chatOrderController.oldItem.isEmpty;
+              }
+              // else {
+              //   Get.snackbar("", "",
+              //       titleText: Text("Please Enter your order details",
+              //           style: TextStyle(
+              //             fontFamily: 'MuseoSans',
+              //             color: AppConst.black,
+              //             fontSize: SizeUtils.horizontalBlockSize * 3.7,
+              //             fontWeight: FontWeight.w500,
+              //             fontStyle: FontStyle.normal,
+              //           )),
+              //       snackPosition: SnackPosition.BOTTOM,
+              //       duration: Duration(seconds: 1));
+              // }
             },
             child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                child: Icon(Icons.send)),
+                padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 1.h),
+                child: Icon(
+                  Icons.send,
+                  color: AppConst.green,
+                  size: 3.h,
+                )),
           ),
         ],
       ),
     );
+  }
+}
+
+class StoreChatRawItem extends StatelessWidget {
+  StoreChatRawItem(
+      {Key? key, required this.chatOrderController, required this.index})
+      : super(key: key);
+
+  final ChatOrderController chatOrderController;
+  int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+      child: Container(
+        // color: AppConst.yellow,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                DisplayProductImage(
+                  logo: chatOrderController
+                      .cartIndex.value?.rawItems?[index].logo,
+                ),
+                SizedBox(width: 2.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        chatOrderController.itemController.text =
+                            chatOrderController
+                                    .cartIndex.value?.rawItems?[index].item ??
+                                '';
+                        chatOrderController.oldItem.value = chatOrderController
+                                .cartIndex.value?.rawItems?[index].item ??
+                            '';
+                        chatOrderController.oldQuntity.value =
+                            chatOrderController.cartIndex.value
+                                    ?.rawItems?[index].quantity?.value ??
+                                0;
+
+                        chatOrderController.isEdit.value = true;
+                      },
+                      child: DisplayProductName(
+                          name: chatOrderController
+                              .cartIndex.value?.rawItems?[index].item),
+                    ),
+
+                    Text(
+                      "₹95 / 60g",
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: AppConst.grey,
+                        fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    // Text(chatOrderController
+                    //         .cartIndex.value?.rawItems?[index].unit ??
+                    //     ''),
+                  ],
+                ),
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 3.h),
+                  child: Obx(
+                    () {
+                      return CustomPopMenu(
+                        title: 'Quantity',
+                        child: DisplayProductCount(
+                          count: chatOrderController.cartIndex.value
+                              ?.rawItems?[index].quantity?.value,
+                        ),
+                        onSelected: (value) async {
+                          chatOrderController.cartIndex.value?.rawItems?[index]
+                              .quantity?.value = value;
+                          RawItems rawItems = RawItems(
+                              item: chatOrderController
+                                      .cartIndex.value?.rawItems?[index].item ??
+                                  '',
+                              quantity: chatOrderController
+                                  .cartIndex.value?.rawItems?[index].quantity,
+                              unit: chatOrderController
+                                      .cartIndex.value?.rawItems?[index].unit ??
+                                  '');
+                          await chatOrderController.addToCart(
+                              newValueItem: chatOrderController
+                                      .cartIndex.value?.rawItems?[index].item ??
+                                  '',
+                              cartId:
+                                  chatOrderController.cartIndex.value?.sId ??
+                                      '',
+                              rawItem: rawItems,
+                              isEdit: true);
+                        },
+                        list: chatOrderController.quntityList,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            // GestureDetector(
+            //   onTap: () {
+            //     chatOrderController.itemController.text =
+            //         chatOrderController
+            //                 .cartIndex.value?.rawItems?[index].item ??
+            //             '';
+            //     chatOrderController.oldItem.value = chatOrderController
+            //             .cartIndex.value?.rawItems?[index].item ??
+            //         '';
+            //     chatOrderController.oldQuntity.value = chatOrderController
+            //             .cartIndex
+            //             .value
+            //             ?.rawItems?[index]
+            //             .quantity
+            //             ?.value ??
+            //         0;
+
+            //     chatOrderController.isEdit.value = true;
+            //   },
+            //   child: Row(
+            //     children: [
+            //       FaIcon(
+            //         FontAwesomeIcons.edit,
+            //         size: SizeUtils.horizontalBlockSize * 4,
+            //         color: AppConst.green,
+            //       ),
+            //       SizedBox(
+            //         width: SizeUtils.horizontalBlockSize * 4,
+            //       ),
+            //       Text(
+            //         "Edit",
+            //         style: TextStyle(
+            //             fontSize: SizeUtils.horizontalBlockSize * 4,
+            //             fontWeight: FontWeight.w500),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(
+            //   width: 3.w,
+            // ),
+            // GestureDetector(
+            //   onTap: () {
+            //     RawItems rawItems = RawItems(
+            //         item: chatOrderController
+            //                 .cartIndex.value?.rawItems?[index].item ??
+            //             '',
+            //         quantity: 0.obs,
+            //         unit: chatOrderController
+            //                 .cartIndex.value?.rawItems?[index].unit ??
+            //             '');
+            //     chatOrderController.addToCart(
+            //         cartId: chatOrderController.cartIndex.value?.sId ?? '',
+            //         rawItem: rawItems,
+            //         isEdit: false,
+            //         newValueItem: '');
+            //     chatOrderController.cartIndex.refresh();
+            //   },
+            //   child: Row(
+            //     children: [
+            //       FaIcon(
+            //         FontAwesomeIcons.trash,
+            //         size: SizeUtils.horizontalBlockSize * 4,
+            //         color: AppConst.green,
+            //       ),
+            //       SizedBox(
+            //         width: 3.w,
+            //       ),
+            //       Text(
+            //         "Remove",
+            //         style: TextStyle(
+            //             fontSize: SizeUtils.horizontalBlockSize * 4,
+            //             fontWeight: FontWeight.w500),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            //   ],
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DisplayProductCount extends StatelessWidget {
+  DisplayProductCount({Key? key, this.count}) : super(key: key);
+
+  int? count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 3.5.h,
+      width: 18.w,
+      decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Color(0xff005b41),
+          borderRadius: BorderRadius.circular(4)),
+      child: Center(
+        child: Text(
+          " -   ${count ?? 0}   + ",
+          style: TextStyle(
+            fontFamily: 'MuseoSans',
+            color: AppConst.white,
+            fontSize: SizeUtils.horizontalBlockSize * 3.8,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DisplayProductName extends StatelessWidget {
+  DisplayProductName({Key? key, this.name}) : super(key: key);
+
+  String? name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 55.w,
+      // height: 4.8.h,
+      // color: AppConst.red,
+      child: Text(
+          name
+              // chatOrderController
+              // .cartIndex.value?.rawItems?[index].item
+              ??
+              '',
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontFamily: 'MuseoSans',
+            color: AppConst.black,
+            fontSize: SizeUtils.horizontalBlockSize * 4,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          )),
+    );
+  }
+}
+
+class DisplayProductImage extends StatelessWidget {
+  DisplayProductImage({Key? key, this.logo}) : super(key: key);
+
+  String? logo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 8.h,
+      width: 16.w,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+      child: (logo == null || logo == "")
+          ? Image.asset("assets/images/noproducts.png")
+          : Image.network(
+              logo
+                  // chatOrderController.cartIndex.value?.rawItems?[index].logo
+                  ??
+                  'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg',
+            ),
+    );
+  }
+}
+
+class NoLeadingSpaceFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.startsWith(' ')) {
+      final String trimedText = newValue.text.trimLeft();
+
+      return TextEditingValue(
+        text: trimedText,
+        selection: TextSelection(
+          baseOffset: trimedText.length,
+          extentOffset: trimedText.length,
+        ),
+      );
+    }
+
+    return newValue;
   }
 }

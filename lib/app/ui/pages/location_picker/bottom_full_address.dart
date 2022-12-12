@@ -44,7 +44,7 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
   @override
   void initState() {
     if (widget.storesCount == 0) {
-      isDisabled.value = true;
+      isDisabled.value = false;
     }
     super.initState();
   }
@@ -821,7 +821,7 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                         .bottomFullAddressLoading.value = true;
 
                                     try {
-                                      if (!isDisabled.value &&
+                                      if (widget.storesCount != 0 &&
                                           (_key.currentState?.validate() ??
                                               false)) {
                                         if (_addLocationController
@@ -837,9 +837,32 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                           print("====> No Changes");
 
                                           /// No Changes
+
                                           await _addLocationController
                                               .addMultipleStoreToWallet();
                                         }
+                                        await _addLocationController
+                                            .addCustomerAddress(
+                                          lng: _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.longitude ??
+                                              0,
+                                          lat: _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.latitude ??
+                                              0,
+                                          address:
+                                              _completeAddressController.text,
+                                          title: _tags[_selectedTag],
+                                          house: _floorController.text,
+                                          apartment: '',
+                                          directionToReach:
+                                              _howToReachController.text,
+                                        );
+                                        _addLocationController
+                                            .bottomFullAddressLoading
+                                            .value = false;
+                                      } else {
                                         await _addLocationController
                                             .addCustomerAddress(
                                           lng: _addLocationController

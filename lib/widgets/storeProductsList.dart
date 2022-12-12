@@ -1,10 +1,13 @@
-
+import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
+import 'package:customer_app/screens/more_stores/morestore_productlist.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 
 import '../app/ui/pages/search/models/autoCompleteProductsByStoreModel.dart';
 
@@ -12,7 +15,9 @@ class StoreProductSearchList extends StatelessWidget {
   List<Products>? foundedStores;
   final ScrollController? controller;
 
-  StoreProductSearchList({Key? key, this.controller, required this.foundedStores}) : super(key: key);
+  StoreProductSearchList(
+      {Key? key, this.controller, required this.foundedStores})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,20 +61,25 @@ class ListViewChild extends StatelessWidget {
           onTap: () => {},
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(storeSearchModel.logo!),
-                backgroundColor: AppConst.white,
-                radius: SizeUtils.horizontalBlockSize * 5.3,
-              ),
+              DisplayProductImage(logo: storeSearchModel.logo),
+              // CircleAvatar(
+              //   backgroundImage: NetworkImage(storeSearchModel.logo!),
+              //   backgroundColor: AppConst.white,
+              //   radius: SizeUtils.horizontalBlockSize * 5.3,
+              // ),
               SizedBox(
-                width: SizeUtils.horizontalBlockSize * 2.55,
+                width: 2.w,
               ),
-              Expanded(
-                child: Text(
-                  storeSearchModel.name!,
-                  style: AppStyles.BOLD_STYLE,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DisplayProductName(name: storeSearchModel.name),
+                  DisplayCashback(
+                    cashback: storeSearchModel.cashback,
+                  )
+                ],
               ),
+
               // AddButtonWidget(
               //   onTap: () async {
               //     storeSearchModel.quntity?.value++;
@@ -88,7 +98,8 @@ class ListViewChild extends StatelessWidget {
               //   },
               // ),
               Obx(
-                () => (storeSearchModel.quntity?.value ?? 0) > 0 && storeSearchModel.isQunitityAdd?.value == false
+                () => (storeSearchModel.quntity?.value ?? 0) > 0 &&
+                        storeSearchModel.isQunitityAdd?.value == false
                     ? _moreStoreController.shoppingItem(storeSearchModel)
                     : GestureDetector(
                         onTap: () async {
@@ -98,44 +109,59 @@ class ListViewChild extends StatelessWidget {
                                 store_id: storeSearchModel.store?.sId ?? '',
                                 index: 0,
                                 increment: true,
-                                cart_id: _moreStoreController.addToCartModel.value?.sId ?? '',
+                                cart_id: _moreStoreController
+                                        .getCartIDModel.value?.sId ??
+                                    '',
                                 product: storeSearchModel);
                             // await _moreStoreController.getStoreData(
                             //   id: storeSearchModel.store?.sId ?? '',
                             // );
                           }
-                          if (storeSearchModel.quntity!.value != 0 && storeSearchModel.isQunitityAdd?.value == false) {
+                          if (storeSearchModel.quntity!.value != 0 &&
+                              storeSearchModel.isQunitityAdd?.value == false) {
                             storeSearchModel.isQunitityAdd?.value = false;
-                            await Future.delayed(Duration(milliseconds: 500)).whenComplete(() => storeSearchModel.isQunitityAdd?.value = true);
+                            await Future.delayed(Duration(milliseconds: 500))
+                                .whenComplete(() => storeSearchModel
+                                    .isQunitityAdd?.value = true);
                           }
                           // addItem(product);
                         },
-                        child: storeSearchModel.isQunitityAdd?.value == true && storeSearchModel.quntity!.value != 0
-                            ? _moreStoreController.dropDown(storeSearchModel, storeSearchModel.store?.sId ?? '', true)
-                            : Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: SizeUtils.horizontalBlockSize * 8,
-                                  width: SizeUtils.horizontalBlockSize * 8,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppConst.grey,
-                                  ),
-                                  child: storeSearchModel.isQunitityAdd?.value == true && storeSearchModel.quntity!.value != 0
-                                      ? Center(
-                                          child: Text("${storeSearchModel.quntity!.value}",
-                                              style: TextStyle(
-                                                color: AppConst.white,
-                                                fontSize: SizeUtils.horizontalBlockSize * 4,
-                                              )),
-                                        )
-                                      : Icon(
-                                          Icons.add,
-                                          color: AppConst.white,
-                                        ),
-                                ),
-                              ),
-                      ),
+                        child: storeSearchModel.isQunitityAdd?.value == true &&
+                                storeSearchModel.quntity!.value != 0
+                            ? _moreStoreController.dropDown(storeSearchModel,
+                                storeSearchModel.store?.sId ?? '', true)
+                            : DisplayAddPlus()
+
+                        // Align(
+                        //     alignment: Alignment.topRight,
+                        //     child: Container(
+                        //       height: SizeUtils.horizontalBlockSize * 8,
+                        //       width: SizeUtils.horizontalBlockSize * 8,
+                        //       decoration: BoxDecoration(
+                        //         shape: BoxShape.circle,
+                        //         color: AppConst.grey,
+                        //       ),
+                        //       child: storeSearchModel
+                        //                       .isQunitityAdd?.value ==
+                        //                   true &&
+                        //               storeSearchModel.quntity!.value != 0
+                        //           ? Center(
+                        //               child: Text(
+                        //                   "${storeSearchModel.quntity!.value}",
+                        //                   style: TextStyle(
+                        //                     color: AppConst.white,
+                        //                     fontSize: SizeUtils
+                        //                             .horizontalBlockSize *
+                        //                         4,
+                        //                   )),
+                        //             )
+                        //           : Icon(
+                        //               Icons.add,
+                        //               color: AppConst.white,
+                        //             ),
+                        //     ),
+                        //   ),
+                        ),
               ),
             ],
           ),
@@ -167,15 +193,21 @@ class Inventories extends StatelessWidget {
               onTap: () => {},
               child: Row(
                 children: [
+                  DisplayProductImage(
+                    logo: inventoriesModel?[index].logo,
+                  ),
                   SizedBox(
-                    width: SizeUtils.horizontalBlockSize * 2.55,
+                    width: 2.w,
                   ),
-                  Expanded(
-                    child: Text(
-                      inventoriesModel?[index].name ?? '',
-                      style: AppStyles.BOLD_STYLE,
-                    ),
+                  DisplayProductName(
+                    name: inventoriesModel?[index].name,
                   ),
+                  // Expanded(
+                  //   child: Text(
+                  //     inventoriesModel?[index].name ?? '',
+                  //     style: AppStyles.BOLD_STYLE,
+                  //   ),
+                  // ),
                   // AddButtonWidget(
                   //   onTap: () async {
                   //     inventoriesModel?[index].quntity?.value++;
@@ -193,54 +225,89 @@ class Inventories extends StatelessWidget {
                   //   },
                   // ),
                   Obx(
-                    () => (inventoriesModel?[index].quntity?.value ?? 0) > 0 && inventoriesModel?[index].isQunitityAdd?.value == false
-                        ? _moreStoreController.shoppingItem(inventoriesModel?[index])
+                    () => (inventoriesModel?[index].quntity?.value ?? 0) > 0 &&
+                            inventoriesModel?[index].isQunitityAdd?.value ==
+                                false
+                        ? _moreStoreController
+                            .shoppingItem(inventoriesModel?[index])
                         : GestureDetector(
                             onTap: () async {
-                              if (inventoriesModel?[index].quntity!.value == 0) {
+                              if (inventoriesModel?[index].quntity!.value ==
+                                  0) {
                                 inventoriesModel?[index].quntity!.value++;
                                 await _moreStoreController.addToCartInventory(
-                                    cart_id: _moreStoreController.addToCartModel.value?.sId ?? '',
-                                    store_id: inventoriesModel?[index].store?.sId ?? '',
+                                  cart_id: _moreStoreController
+                                          .getCartIDModel.value?.sId ??
+                                      '',
+                                  store_id:
+                                      inventoriesModel?[index].store?.sId ?? '',
                                   name: inventoriesModel?[index].name ?? '',
                                   sId: inventoriesModel?[index].sId ?? '',
-                                  quntity: inventoriesModel?[index].quntity?.value ?? 0,
-
+                                  quntity:
+                                      inventoriesModel?[index].quntity?.value ??
+                                          0,
                                 );
                               }
-                              if (inventoriesModel?[index].quntity!.value != 0 && inventoriesModel?[index].isQunitityAdd?.value == false) {
-                                inventoriesModel?[index].isQunitityAdd?.value = false;
-                                await Future.delayed(Duration(milliseconds: 500))
-                                    .whenComplete(() => inventoriesModel?[index].isQunitityAdd?.value = true);
+                              if (inventoriesModel?[index].quntity!.value !=
+                                      0 &&
+                                  inventoriesModel?[index]
+                                          .isQunitityAdd
+                                          ?.value ==
+                                      false) {
+                                inventoriesModel?[index].isQunitityAdd?.value =
+                                    false;
+                                await Future.delayed(
+                                        Duration(milliseconds: 500))
+                                    .whenComplete(() => inventoriesModel?[index]
+                                        .isQunitityAdd
+                                        ?.value = true);
                               }
                               // addItem(product);
                             },
-                            child: inventoriesModel?[index].isQunitityAdd?.value == true && inventoriesModel?[index].quntity!.value != 0
-                                ? _moreStoreController.dropDown(inventoriesModel?[index], inventoriesModel?[index].store?.sId ?? '', false)
-                                : Align(
-                                    alignment: Alignment.topRight,
-                                    child: Container(
-                                      height: SizeUtils.horizontalBlockSize * 8,
-                                      width: SizeUtils.horizontalBlockSize * 8,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppConst.grey,
-                                      ),
-                                      child: inventoriesModel?[index].isQunitityAdd?.value == true && inventoriesModel?[index].quntity!.value != 0
-                                          ? Center(
-                                              child: Text("${inventoriesModel?[index].quntity!.value}",
-                                                  style: TextStyle(
-                                                    color: AppConst.white,
-                                                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                                                  )),
-                                            )
-                                          : Icon(
-                                              Icons.add,
-                                              color: AppConst.white,
-                                            ),
-                                    ),
-                                  ),
-                          ),
+                            child: inventoriesModel?[index]
+                                            .isQunitityAdd
+                                            ?.value ==
+                                        true &&
+                                    inventoriesModel?[index].quntity!.value != 0
+                                ? _moreStoreController.dropDown(
+                                    inventoriesModel?[index],
+                                    inventoriesModel?[index].store?.sId ?? '',
+                                    false)
+                                : DisplayAddPlus()
+                            // Align(
+                            //     alignment: Alignment.topRight,
+                            //     child: Container(
+                            //       height: SizeUtils.horizontalBlockSize * 8,
+                            //       width: SizeUtils.horizontalBlockSize * 8,
+                            //       decoration: BoxDecoration(
+                            //         shape: BoxShape.circle,
+                            //         color: AppConst.grey,
+                            //       ),
+                            //       child: inventoriesModel?[index]
+                            //                       .isQunitityAdd
+                            //                       ?.value ==
+                            //                   true &&
+                            //               inventoriesModel?[index]
+                            //                       .quntity!
+                            //                       .value !=
+                            //                   0
+                            //           ? Center(
+                            //               child: Text(
+                            //                   "${inventoriesModel?[index].quntity!.value}",
+                            //                   style: TextStyle(
+                            //                     color: AppConst.white,
+                            //                     fontSize: SizeUtils
+                            //                             .horizontalBlockSize *
+                            //                         4,
+                            //                   )),
+                            //             )
+                            //           : Icon(
+                            //               Icons.add,
+                            //               color: AppConst.white,
+                            //             ),
+                            //     ),
+                            //   ),
+                            ),
                   ),
                 ],
               ),

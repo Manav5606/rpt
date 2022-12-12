@@ -1,5 +1,8 @@
+import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/utils/app_constants.dart';
+import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
+import 'package:customer_app/widgets/search_text_field/search_field_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,6 +33,7 @@ class MoreStoreProductScreen extends StatefulWidget {
 
 class _StoreScreenState extends State<MoreStoreProductScreen> {
   late PersistentTabController _controller;
+  // final ScrollController? gridViewScroll;
   bool isGrocery = false;
   final AddCartController _addCartController = Get.find();
   @override
@@ -104,192 +108,481 @@ class MoreStoreProductView extends StatelessWidget {
         _moreStoreController.getStoreDataModel.value?.data?.store?.color;
     Color updatedColor = hexToColor(
         (_moreStoreController.getStoreDataModel.value?.data?.store?.color)!);
-    return Scaffold(
-      body: NestedScrollView(
-        physics: BouncingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: updatedColor,
-                  statusBarIconBrightness: (colorinversion == "#FFFFFF")
-                      ? Brightness.dark
-                      : Brightness.light),
-              expandedHeight: 18.h,
-              centerTitle: true,
-              pinned: true,
-              stretch: true,
-              floating: true,
-              backgroundColor: updatedColor,
-              title: (innerBoxIsScrolled)
-                  ? Obx(
-                      () => Container(
-                        width: 80.w,
-                        child: Text(
-                          _moreStoreController
-                                  .getStoreDataModel.value?.data?.store?.name
-                                  .toString() ??
-                              "",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                              color: (colorinversion == "#FFFFFF")
-                                  ? AppConst.black
-                                  : AppConst.white,
-                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                              fontWeight: FontWeight.w600),
+    return Obx(
+      () => Scaffold(
+        bottomSheet: ((_moreStoreController
+                        .getCartIDModel.value?.totalItemsCount ??
+                    0) >
+                0)
+            ? Obx(
+                () => InkWell(
+                  onTap: () async {
+                    Get.toNamed(
+                      AppRoutes.CartReviewScreen,
+                      arguments: {
+                        'logo': _moreStoreController
+                            .getStoreDataModel.value?.data?.store?.logo,
+                        'storeName': _moreStoreController
+                            .getStoreDataModel.value?.data?.store?.name,
+                        'totalCount': _moreStoreController
+                                .getCartIDModel.value?.totalItemsCount
+                                .toString() ??
+                            "",
+                      },
+                    );
+                    await _addCartController.getReviewCartData(
+                        cartId:
+                            _moreStoreController.getCartIDModel.value?.sId ??
+                                "");
+                    // await _addCartController.getCartPageInformation(storeId: _moreStoreController.addToCartModel.value?.store ?? "");
+                    await _addCartController.getCartLocation(
+                        storeId: _moreStoreController.storeId.value,
+                        cartId:
+                            _moreStoreController.getCartIDModel.value?.sId ??
+                                "");
+                    _addCartController.cartId.value =
+                        _moreStoreController.getCartIDModel.value?.sId ?? "";
+                    if (_addCartController.store.value?.sId == null) {
+                      _addCartController.store.value?.sId =
+                          _moreStoreController.storeId.value;
+                    }
+                  },
+                  child: CartRibbn(
+                      totalItemsCount: _moreStoreController
+                          .getCartIDModel.value?.totalItemsCount),
+                ),
+              )
+            : SizedBox(),
+        body: NestedScrollView(
+          physics: BouncingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                systemOverlayStyle: SystemUiOverlayStyle(
+                    statusBarColor: updatedColor,
+                    statusBarIconBrightness: (colorinversion == "#FFFFFF")
+                        ? Brightness.dark
+                        : Brightness.light),
+                expandedHeight: 16.h,
+                centerTitle: true,
+                pinned: true,
+                stretch: true,
+                floating: true,
+                iconTheme: (colorinversion == "#FFFFFF")
+                    ? IconThemeData(color: AppConst.black)
+                    : IconThemeData(color: AppConst.white),
+                backgroundColor:
+                    //  AppConst.yellow,
+                    updatedColor,
+                title: (innerBoxIsScrolled)
+                    ? Obx(
+                        () => Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // InkWell(
+                            //     onTap: (() {
+                            //       Get.back();
+                            //     }),
+                            //     child: Padding(
+                            //       padding: EdgeInsets.symmetric(horizontal: 1.w),
+                            //       child: Icon(Icons.arrow_back),
+                            //     )),
+                            // SizedBox(
+                            //   width: 2.w,
+                            // ),
+                            Container(
+                              width: 75.w,
+                              // color: AppConst.red,
+                              child: Text(
+                                _moreStoreController.getStoreDataModel.value
+                                        ?.data?.store?.name
+                                        .toString() ??
+                                    "",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: (colorinversion == "#FFFFFF")
+                                      ? AppConst.black
+                                      : AppConst.white,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+
+                    // CircleAvatar(
+                    //     radius: SizeUtils.horizontalBlockSize * 3.82,
+                    //     child: Image.asset("assets/images/image4.png"))
+                    : Row(
+                        children: [
+                          // InkWell(
+                          //     onTap: (() {
+                          //       Get.back();
+                          //     }),
+                          //     child: Padding(
+                          //       padding: EdgeInsets.symmetric(horizontal: 1.w),
+                          //       child: Icon(Icons.arrow_back),
+                          //     )),
+                          Text(
+                            "",
+                            style: TextStyle(
+                                color: (colorinversion == "#FFFFFF")
+                                    ? AppConst.black
+                                    : AppConst.white,
+                                fontSize: SizeUtils.horizontalBlockSize * 4),
+                          ),
+                        ],
+                      ),
+                // leading: IconButton(
+                //   onPressed: () {
+                //     Get.back();
+                //   },
+                //   color: (colorinversion == "#FFFFFF")
+                //       ? AppConst.black
+                //       : AppConst.white,
+                //   icon: Icon(
+                //     Icons.cancel_rounded,
+                //     size: SizeUtils.horizontalBlockSize * 8,
+                //     color: (colorinversion == "#FFFFFF")
+                //         ? AppConst.black
+                //         : AppConst.white,
+                //   ),
+                // ),
+                // actions: [
+                //   Obx(
+                //     () => CartWidget(
+                //       onTap: () async {
+                //         Get.toNamed(
+                //           AppRoutes.CartReviewScreen,
+                //           arguments: {
+                //             'logo': _moreStoreController
+                //                 .getStoreDataModel.value?.data?.store?.logo,
+                //             'storeName': _moreStoreController
+                //                 .getStoreDataModel.value?.data?.store?.name,
+                //             'totalCount': _moreStoreController
+                //                     .getCartIDModel.value?.totalItemsCount
+                //                     .toString() ??
+                //                 "",
+                //           },
+                //         );
+                //         await _addCartController.getReviewCartData(
+                //             cartId:
+                //                 _moreStoreController.getCartIDModel.value?.sId ??
+                //                     "");
+                //         // await _addCartController.getCartPageInformation(storeId: _moreStoreController.addToCartModel.value?.store ?? "");
+                //         await _addCartController.getCartLocation(
+                //             storeId: _moreStoreController.storeId.value,
+                //             cartId:
+                //                 _moreStoreController.getCartIDModel.value?.sId ??
+                //                     "");
+                //         _addCartController.cartId.value =
+                //             _moreStoreController.getCartIDModel.value?.sId ?? "";
+                //         if (_addCartController.store.value?.sId == null) {
+                //           _addCartController.store.value?.sId =
+                //               _moreStoreController.storeId.value;
+                //         }
+                //       },
+                //       count:
+                //           "${_moreStoreController.getCartIDModel.value?.totalItemsCount ?? 0}",
+                //     ),
+                //   ),
+                // ],
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  collapseMode: CollapseMode.parallax,
+                  background: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      // SizedBox(
+                      //   height: 2.h,
+                      // ),
+                      // SafeArea(
+                      //   child: Obx(
+                      //     () => CircleAvatar(
+                      //       radius: SizeUtils.horizontalBlockSize * 3.82,
+                      //       child: (_moreStoreController.getStoreDataModel.value
+                      //                   ?.data?.store?.logo?.isNotEmpty ??
+                      //               false)
+                      //           ? Image.network(_moreStoreController
+                      //               .getStoreDataModel.value!.data!.store!.logo
+                      //               .toString())
+                      //           : Image.asset("assets/images/image4.png"),
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 4.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5.w, top: 6.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Obx(
+                              () => Text(
+                                _moreStoreController.getStoreDataModel.value
+                                        ?.data?.store?.name
+                                        .toString() ??
+                                    "",
+                                style: TextStyle(
+                                  color: (colorinversion == "#FFFFFF")
+                                      ? AppConst.black
+                                      : AppConst.white,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    )
+                      // SizedBox(
+                      //   height: 1.h,
+                      // ),
 
-                  // CircleAvatar(
-                  //     radius: SizeUtils.horizontalBlockSize * 3.82,
-                  //     child: Image.asset("assets/images/image4.png"))
-                  : Text(
-                      "",
-                      style: TextStyle(
-                          color: (colorinversion == "#FFFFFF")
-                              ? AppConst.black
-                              : AppConst.white,
-                          fontSize: SizeUtils.horizontalBlockSize * 4),
-                    ),
-              leading: IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                color: (colorinversion == "#FFFFFF")
-                    ? AppConst.black
-                    : AppConst.white,
-                icon: Icon(
-                  Icons.cancel_rounded,
-                  size: SizeUtils.horizontalBlockSize * 8,
-                  color: (colorinversion == "#FFFFFF")
-                      ? AppConst.black
-                      : AppConst.white,
+                      Padding(
+                        padding: EdgeInsets.only(left: 5.w, bottom: 3.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Obx(() => RichText(
+                                    text: TextSpan(children: [
+                                  TextSpan(
+                                    text: "CasBack ",
+                                    style: TextStyle(
+                                      color: (colorinversion == "#FFFFFF")
+                                          ? AppConst.grey
+                                          : AppConst.white,
+                                      fontFamily: 'MuseoSans',
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback ?? 0}%",
+                                    style: TextStyle(
+                                      color: (colorinversion == "#FFFFFF")
+                                          ? AppConst.black
+                                          : AppConst.white,
+                                      fontFamily: 'MuseoSans',
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                    ),
+                                  )
+                                ]))),
+                            SizedBox(
+                              width: 3.w,
+                            ),
+                            _moreStoreController.displayHour.isNotEmpty
+                                ? RichText(
+                                    text: TextSpan(children: [
+                                    TextSpan(
+                                      text: "Ready by ",
+                                      style: TextStyle(
+                                        color: (colorinversion == "#FFFFFF")
+                                            ? AppConst.grey
+                                            : AppConst.white,
+                                        fontFamily: 'MuseoSans',
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.7,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          "${_moreStoreController.displayHour}",
+                                      style: TextStyle(
+                                        color: (colorinversion == "#FFFFFF")
+                                            ? AppConst.black
+                                            : AppConst.white,
+                                        fontFamily: 'MuseoSans',
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.7,
+                                      ),
+                                    )
+                                  ]))
+                                : SizedBox(),
+                          ],
+                        ),
+                      )
+                      // InkWell(
+                      //   highlightColor: AppConst.highLightColor,
+                      //   onTap: () {
+                      //     Get.toNamed(AppRoutes.InStoreSearch, arguments: {
+                      //       'storeId': _moreStoreController.storeId.value
+                      //     });
+                      //   },
+                      //   child: SizedBox(width: 90.w, child: StoreSearchField()),
+                      // ),
+                      // SizedBox(
+                      //   height: 1.h,
+                      // ),
+                    ],
+                  ),
                 ),
               ),
-              actions: [
-                Obx(
-                  () => CartWidget(
-                    onTap: () async {
-                      Get.toNamed(
-                        AppRoutes.CartReviewScreen,
-                        arguments: {
-                          'logo': _moreStoreController
-                              .getStoreDataModel.value?.data?.store?.logo,
-                          'storeName': _moreStoreController
-                              .getStoreDataModel.value?.data?.store?.name,
-                          'totalCount': _moreStoreController
-                                  .addToCartModel.value?.totalItemsCount
-                                  .toString() ??
-                              "",
+            ];
+          },
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // BannerWidget(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        onTap: (() {
+                          Get.to(ChatOrderScreen(
+                            isNewStore: true,
+                          ));
+                        }),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 2.w),
+                          child: Bubble(
+                            color: AppConst.lightSkyBlue,
+                            margin: BubbleEdges.only(top: 1.h),
+                            stick: true,
+                            nip: BubbleNip.leftTop,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 2.h, horizontal: 2.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 50.w,
+                                    child: Text(
+                                      "Struggling to find items? \nChat with store & place orders instantly.",
+                                      style: TextStyle(
+                                        color: AppConst.darkGreen,
+                                        // Color(0xff003d29),
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.7,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 28.w,
+                                    height: 5.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(85),
+                                        color: AppConst.darkGreen),
+                                    child: Center(
+                                      child: Text(
+                                        "Chat ",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    3.7,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      InkWell(
+                        highlightColor: AppConst.highLightColor,
+                        onTap: () {
+                          Get.toNamed(AppRoutes.InStoreSearch, arguments: {
+                            'storeId': _moreStoreController.storeId.value
+                          });
                         },
-                      );
-                      await _addCartController.getReviewCartData(
-                          cartId:
-                              _moreStoreController.addToCartModel.value?.sId ??
-                                  "");
-                      // await _addCartController.getCartPageInformation(storeId: _moreStoreController.addToCartModel.value?.store ?? "");
-                      await _addCartController.getCartLocation(
-                          storeId: _moreStoreController.storeId.value,
-                          cartId:
-                              _moreStoreController.addToCartModel.value?.sId ??
-                                  "");
-                      _addCartController.cartId.value =
-                          _moreStoreController.addToCartModel.value?.sId ?? "";
-                      if (_addCartController.store.value?.sId == null) {
-                        _addCartController.store.value?.sId =
-                            _moreStoreController.storeId.value;
-                      }
-                    },
-                    count:
-                        "${_moreStoreController.addToCartModel.value?.totalItemsCount ?? 0}",
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: StoreSearchField(),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: MoewStoreViewProductsList(),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      )
+                    ],
                   ),
                 ),
               ],
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                collapseMode: CollapseMode.parallax,
-                background: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // SizedBox(
-                    //   height: 2.h,
-                    // ),
-                    SafeArea(
-                      child: Obx(
-                        () => CircleAvatar(
-                          radius: SizeUtils.horizontalBlockSize * 3.82,
-                          child: (_moreStoreController.getStoreDataModel.value
-                                      ?.data?.store?.logo?.isNotEmpty ??
-                                  false)
-                              ? Image.network(_moreStoreController
-                                  .getStoreDataModel.value!.data!.store!.logo
-                                  .toString())
-                              : Image.asset("assets/images/image4.png"),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    Obx(
-                      () => Text(
-                        _moreStoreController
-                                .getStoreDataModel.value?.data?.store?.name
-                                .toString() ??
-                            "",
-                        style: TextStyle(
-                            color: (colorinversion == "#FFFFFF")
-                                ? AppConst.black
-                                : AppConst.white,
-                            fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    InkWell(
-                      highlightColor: AppConst.highLightColor,
-                      onTap: () {
-                        Get.toNamed(AppRoutes.InStoreSearch, arguments: {
-                          'storeId': _moreStoreController.storeId.value
-                        });
-                      },
-                      child: SizedBox(width: 90.w, child: StoreSearchField()),
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                  ],
-                ),
-              ),
             ),
-          ];
-        },
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              BannerWidget(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    DeliveryTimeWidget(),
-                    Divider(
-                      thickness: 1,
-                    ),
-                    MoewStoreViewProductsList()
-                  ],
-                ),
-              ),
-            ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CartRibbn extends StatelessWidget {
+  CartRibbn({Key? key, this.totalItemsCount}) : super(key: key);
+
+  int? totalItemsCount;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 9.h,
+      decoration: BoxDecoration(color: AppConst.green),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        child: Row(
+          children: [
+            Icon(
+              Icons.shopping_cart,
+              color: AppConst.white,
+            ),
+            SizedBox(
+              width: 3.w,
+            ),
+            Text("${totalItemsCount ?? 0} Item",
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: AppConst.white,
+                  fontSize: SizeUtils.horizontalBlockSize * 4,
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                )),
+            Spacer(),
+            Text("View Cart",
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: AppConst.white,
+                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                )),
+            SizedBox(
+              width: 1.w,
+            ),
+            Icon(
+              Icons.arrow_forward_ios_outlined,
+              color: AppConst.white,
+              size: 2.2.h,
+            ),
+          ],
         ),
       ),
     );
@@ -421,30 +714,36 @@ class MoewStoreViewProductsList extends StatelessWidget {
                 return Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeUtils.horizontalBlockSize * 2),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            storesWithProductsModel?.name ?? "",
-                            style: AppStyles.STORE_NAME_STYLE,
-                          ),
-                          ((storesWithProductsModel?.products?.length ?? 0) > 5)
-                              ? Text(
-                                  "View More",
-                                  style: TextStyle(
-                                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                                  ),
-                                )
-                              : SizedBox(),
+                          Text(storesWithProductsModel?.name ?? "",
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.black,
+                                fontSize: SizeUtils.horizontalBlockSize * 4,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              )),
+                          // ((storesWithProductsModel?.products?.length ?? 0) >
+                          //         5)
+                          //     ? Text(
+                          //         "View More",
+                          //         style: TextStyle(
+                          //           fontSize:
+                          //               SizeUtils.horizontalBlockSize * 4,
+                          //         ),
+                          //       )
+                          //     : SizedBox(),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: SizeUtils.verticalBlockSize * 1,
-                    ),
+                    // SizedBox(
+                    //   height: 1.h,
+                    // ),
                     if (storesWithProductsModel!.products!.isEmpty)
                       SizedBox()
                     else
@@ -453,164 +752,368 @@ class MoewStoreViewProductsList extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Container(
-                              height: 20.h,
+                              // height: 20.h,
                               width: double.infinity,
-                              child: ListView.separated(
-                                physics: ClampingScrollPhysics(),
+                              child: GridView(
+                                physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
+                                // controller: gridViewScroll,
+                                scrollDirection: Axis.vertical,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 2.w,
+                                        mainAxisSpacing: 2.h),
+                                children: List.generate(
                                     storesWithProductsModel.products?.length ??
-                                        0,
-                                itemBuilder: (context, i) {
+                                        0, (index) {
                                   StoreModelProducts product =
-                                      storesWithProductsModel.products![i];
+                                      storesWithProductsModel.products![index];
                                   return Container(
-                                    width: 40.w,
+                                    width: 45.w,
+                                    height: 25.h,
+                                    // color: AppConst.yellow,
                                     child: Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Stack(
-                                          // crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Center(
-                                              child: Image.network(
-                                                product.logo!,
-                                                fit: BoxFit.cover,
-                                                height: 12.h,
-                                                width: 24.w,
-                                              ),
-                                            ),
-                                            Obx(
-                                              () =>
-                                                  product.quntity!.value > 0 &&
-                                                          product.isQunitityAdd
-                                                                  ?.value ==
-                                                              false
-                                                      ? _shoppingItem(product)
-                                                      : GestureDetector(
-                                                          onTap: () async {
-                                                            if (product.quntity!
-                                                                    .value ==
-                                                                0) {
-                                                              product.quntity!
-                                                                  .value++;
-                                                              _moreStoreController.addToCart(
-                                                                  store_id:
-                                                                      _moreStoreController
-                                                                          .storeId
-                                                                          .value,
-                                                                  index: 0,
-                                                                  increment:
-                                                                      true,
-                                                                  cart_id: _moreStoreController
-                                                                          .addToCartModel
-                                                                          .value
-                                                                          ?.sId ??
-                                                                      '',
-                                                                  product:
-                                                                      product);
-                                                              totalCalculated();
-                                                            }
-                                                            if (product.quntity!
-                                                                        .value !=
-                                                                    0 &&
-                                                                product.isQunitityAdd
-                                                                        ?.value ==
-                                                                    false) {
-                                                              product
-                                                                  .isQunitityAdd
-                                                                  ?.value = false;
-                                                              await Future.delayed(
-                                                                      Duration(
-                                                                          milliseconds:
-                                                                              500))
-                                                                  .whenComplete(
-                                                                      () => product
-                                                                          .isQunitityAdd
-                                                                          ?.value = true);
-                                                            }
-                                                            // addItem(product);
-                                                          },
-                                                          child: product.isQunitityAdd
-                                                                          ?.value ==
-                                                                      true &&
-                                                                  product.quntity!
-                                                                          .value !=
-                                                                      0
-                                                              ? _dropDown(
-                                                                  product,
-                                                                  storesWithProductsModel
-                                                                          .sId ??
-                                                                      '')
-                                                              : Align(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topRight,
-                                                                  child:
-                                                                      Container(
-                                                                    height:
-                                                                        SizeUtils.horizontalBlockSize *
-                                                                            8,
-                                                                    width: SizeUtils
-                                                                            .horizontalBlockSize *
-                                                                        8,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                      color: Colors
-                                                                          .grey,
-                                                                    ),
-                                                                    child: product.isQunitityAdd?.value ==
-                                                                                true &&
-                                                                            product.quntity!.value !=
-                                                                                0
-                                                                        ? Center(
-                                                                            child: Text("${product.quntity!.value}",
-                                                                                style: TextStyle(
-                                                                                  color: Colors.white,
-                                                                                  fontSize: SizeUtils.horizontalBlockSize * 4,
-                                                                                )),
-                                                                          )
-                                                                        : Icon(
-                                                                            Icons.add,
-                                                                            color:
-                                                                                Colors.white,
-                                                                          ),
-                                                                  ),
-                                                                ),
-                                                        ),
-                                            ),
-                                          ],
+                                        Center(
+                                          child: (product.logo != null &&
+                                                  product.logo != "")
+                                              ? Image.network(
+                                                  product.logo!,
+                                                  fit: BoxFit.cover,
+                                                  height: 10.h,
+                                                  width: 24.w,
+                                                )
+                                              : Container(
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        AppConst.veryLightGrey,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    // border: Border.all(
+                                                    //     width: 0.1,
+                                                    //     color:
+                                                    //         AppConst.grey)
+                                                  ),
+                                                  height: 10.h,
+                                                  width: 30.w,
+                                                  child: Center(
+                                                      child: Image.asset(
+                                                          "assets/images/noimage.png")),
+                                                ),
+                                        ),
+                                        Container(
+                                          // color: AppConst.red,
+                                          height: 4.5.h,
+                                          child: Text(product.name.toString(),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontFamily: 'MuseoSans',
+                                                color: AppConst.black,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    3.7,
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle: FontStyle.normal,
+                                              )),
+                                        ),
+                                        SizedBox(
+                                          height: 0.5.h,
                                         ),
                                         Text(
-                                          " \u20b9 ${product.cashback.toString()}",
-                                          style: AppStyles.STORE_NAME_STYLE,
-                                        ),
-                                        Flexible(
-                                          child: Text(
-                                            product.name.toString(),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: AppStyles.STORE_NAME_STYLE,
-                                          ),
-                                        ),
+                                            "Cashback \u20b9${product.cashback.toString()}",
+                                            style: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              color: AppConst.black,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  3.5,
+                                              fontWeight: FontWeight.w700,
+                                              fontStyle: FontStyle.normal,
+                                            )),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text("₹ 125 / 3Kg",
+                                                style: TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.black,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      3.3,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle: FontStyle.normal,
+                                                )),
+                                            Spacer(),
+                                            Obx(
+                                              () => product.quntity!.value >
+                                                          0 &&
+                                                      product.isQunitityAdd
+                                                              ?.value ==
+                                                          false
+                                                  ? _shoppingItem(product)
+                                                  : GestureDetector(
+                                                      onTap: () async {
+                                                        if (product.quntity!
+                                                                .value ==
+                                                            0) {
+                                                          product
+                                                              .quntity!.value++;
+                                                          _moreStoreController.addToCart(
+                                                              store_id:
+                                                                  _moreStoreController
+                                                                      .storeId
+                                                                      .value,
+                                                              index: 0,
+                                                              increment: true,
+                                                              cart_id: _moreStoreController
+                                                                      .getCartIDModel
+                                                                      .value
+                                                                      ?.sId ??
+                                                                  '',
+                                                              product: product);
+                                                          totalCalculated();
+                                                        }
+                                                        if (product.quntity!
+                                                                    .value !=
+                                                                0 &&
+                                                            product.isQunitityAdd
+                                                                    ?.value ==
+                                                                false) {
+                                                          product.isQunitityAdd
+                                                              ?.value = false;
+                                                          await Future.delayed(
+                                                                  Duration(
+                                                                      milliseconds:
+                                                                          500))
+                                                              .whenComplete(
+                                                                  () => product
+                                                                      .isQunitityAdd
+                                                                      ?.value = true);
+                                                        }
+                                                        // addItem(product);
+                                                      },
+                                                      child: product.isQunitityAdd
+                                                                      ?.value ==
+                                                                  true &&
+                                                              product.quntity!
+                                                                      .value !=
+                                                                  0
+                                                          ? _dropDown(
+                                                              product,
+                                                              storesWithProductsModel
+                                                                      .sId ??
+                                                                  '')
+                                                          : DisplayAddPlus(),
+                                                    ),
+                                            ),
+                                            SizedBox(
+                                              width: 3.w,
+                                            )
+                                          ],
+                                        )
                                       ],
                                     ),
                                   );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(
-                                    width: 2.w,
-                                  );
-                                },
+                                }),
                               ),
+
+                              // ListView.separated(
+                              //   physics: ClampingScrollPhysics(),
+                              //   shrinkWrap: true,
+                              //   scrollDirection: Axis.horizontal,
+                              //   itemCount: storesWithProductsModel
+                              //           .products?.length ??
+                              //       0,
+                              //   itemBuilder: (context, i) {
+                              //     StoreModelProducts product =
+                              //         storesWithProductsModel.products![i];
+                              //     return Container(
+                              //       width: 45.w,
+                              //       height: 25.h,
+                              //       child: Column(
+                              //         mainAxisSize: MainAxisSize.min,
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.start,
+                              //         children: [
+                              //           Center(
+                              //             child: (product.logo != null &&
+                              //                     product.logo != "")
+                              //                 ? Image.network(
+                              //                     product.logo!,
+                              //                     fit: BoxFit.cover,
+                              //                     height: 11.h,
+                              //                     width: 24.w,
+                              //                   )
+                              //                 : Container(
+                              //                     decoration: BoxDecoration(
+                              //                       color: AppConst
+                              //                           .veryLightGrey,
+                              //                       borderRadius:
+                              //                           BorderRadius
+                              //                               .circular(8),
+                              //                       // border: Border.all(
+                              //                       //     width: 0.1,
+                              //                       //     color:
+                              //                       //         AppConst.grey)
+                              //                     ),
+                              //                     height: 11.h,
+                              //                     width: 30.w,
+                              //                     child: Center(
+                              //                         child: Image.asset(
+                              //                             "assets/images/noimage.png")),
+                              //                   ),
+                              //           ),
+                              //           Obx(
+                              //             () =>
+                              //                 product.quntity!.value > 0 &&
+                              //                         product.isQunitityAdd
+                              //                                 ?.value ==
+                              //                             false
+                              //                     ? _shoppingItem(product)
+                              //                     : GestureDetector(
+                              //                         onTap: () async {
+                              //                           if (product.quntity!
+                              //                                   .value ==
+                              //                               0) {
+                              //                             product.quntity!
+                              //                                 .value++;
+                              //                             _moreStoreController.addToCart(
+                              //                                 store_id:
+                              //                                     _moreStoreController
+                              //                                         .storeId
+                              //                                         .value,
+                              //                                 index: 0,
+                              //                                 increment:
+                              //                                     true,
+                              //                                 cart_id: _moreStoreController
+                              //                                         .getCartIDModel
+                              //                                         .value
+                              //                                         ?.sId ??
+                              //                                     '',
+                              //                                 product:
+                              //                                     product);
+                              //                             totalCalculated();
+                              //                           }
+                              //                           if (product.quntity!
+                              //                                       .value !=
+                              //                                   0 &&
+                              //                               product.isQunitityAdd
+                              //                                       ?.value ==
+                              //                                   false) {
+                              //                             product
+                              //                                 .isQunitityAdd
+                              //                                 ?.value = false;
+                              //                             await Future.delayed(
+                              //                                     Duration(
+                              //                                         milliseconds:
+                              //                                             500))
+                              //                                 .whenComplete(
+                              //                                     () => product
+                              //                                         .isQunitityAdd
+                              //                                         ?.value = true);
+                              //                           }
+                              //                           // addItem(product);
+                              //                         },
+                              //                         child: product.isQunitityAdd
+                              //                                         ?.value ==
+                              //                                     true &&
+                              //                                 product.quntity!
+                              //                                         .value !=
+                              //                                     0
+                              //                             ? _dropDown(
+                              //                                 product,
+                              //                                 storesWithProductsModel
+                              //                                         .sId ??
+                              //                                     '')
+                              //                             : Container(
+                              //                                 height: 3.5.h,
+                              //                                 width: product.isQunitityAdd?.value ==
+                              //                                             true &&
+                              //                                         product.quntity!.value !=
+                              //                                             0
+                              //                                     ? 8.w
+                              //                                     : 15.w,
+                              //                                 decoration:
+                              //                                     BoxDecoration(
+                              //                                   border: Border.all(
+                              //                                       color: AppConst
+                              //                                           .green,
+                              //                                       width:
+                              //                                           0.8),
+                              //                                   borderRadius:
+                              //                                       BorderRadius.circular(product.isQunitityAdd?.value == true &&
+                              //                                               product.quntity!.value != 0
+                              //                                           ? 25
+                              //                                           : 8),
+                              //                                   color: AppConst
+                              //                                       .white,
+                              //                                 ),
+                              //                                 child: product.isQunitityAdd?.value ==
+                              //                                             true &&
+                              //                                         product.quntity!.value !=
+                              //                                             0
+                              //                                     ? Center(
+                              //                                         child: Text(
+                              //                                             "${product.quntity?.value ?? "0"}",
+                              //                                             style: TextStyle(
+                              //                                               fontFamily: 'MuseoSans',
+                              //                                               color: AppConst.green,
+                              //                                               fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                              //                                               fontWeight: FontWeight.w500,
+                              //                                               fontStyle: FontStyle.normal,
+                              //                                             )),
+                              //                                       )
+                              //                                     : Center(
+                              //                                         child:
+                              //                                             Text(
+                              //                                           " Add +",
+                              //                                           style:
+                              //                                               TextStyle(
+                              //                                             fontFamily: 'MuseoSans',
+                              //                                             color: AppConst.green,
+                              //                                             fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                              //                                             fontWeight: FontWeight.w500,
+                              //                                             fontStyle: FontStyle.normal,
+                              //                                           ),
+                              //                                         ),
+                              //                                       ),
+                              //                               ),
+                              //                       ),
+                              //           ),
+                              //           SizedBox(
+                              //             width: 3.w,
+                              //           ),
+                              //           Text(
+                              //             " \u20b9 ${product.cashback.toString()}",
+                              //             style: AppStyles.STORE_NAME_STYLE,
+                              //           ),
+                              //           Flexible(
+                              //             child: Text(
+                              //               product.name.toString(),
+                              //               maxLines: 2,
+                              //               overflow: TextOverflow.ellipsis,
+                              //               style:
+                              //                   AppStyles.STORE_NAME_STYLE,
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     );
+                              //   },
+                              //   separatorBuilder: (context, index) {
+                              //     return SizedBox(
+                              //       width: 2.w,
+                              //     );
+                              //   },
+                              // ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 3.w,
                           ),
                         ],
                       ),
@@ -618,9 +1121,9 @@ class MoewStoreViewProductsList extends StatelessWidget {
                 );
               },
               separatorBuilder: (context, index) {
-                return Divider(
-                  thickness: 1,
-                  height: 2.h,
+                return Container(
+                  height: 1.5.w,
+                  color: AppConst.veryLightGrey,
                 );
               },
             )
@@ -663,35 +1166,43 @@ class MoewStoreViewProductsList extends StatelessWidget {
             index: 0,
             increment: true,
             product: product,
-            cart_id: _moreStoreController.addToCartModel.value?.sId ?? '',
+            cart_id: _moreStoreController.getCartIDModel.value?.sId ?? '',
           );
           totalCalculated();
         },
         offset: Offset(0.0, 40),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            height: SizeUtils.horizontalBlockSize * 8,
-            width: SizeUtils.horizontalBlockSize * 8,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey,
-            ),
-            child: product.isQunitityAdd?.value == true &&
-                    product.quntity!.value != 0
-                ? Center(
-                    child: Text("${product.quntity!.value}",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: SizeUtils.horizontalBlockSize * 4,
-                        )),
-                  )
-                : Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-          ),
+        child: DisplayProductCount(
+          count: product.quntity!.value,
         ),
+        // Align(
+        //   alignment: Alignment.topRight,
+        //   child: Container(
+        //     height: 3.5.h,
+        //     width: 18.w,
+        //     decoration: BoxDecoration(
+        //         shape: BoxShape.rectangle,
+        //         color: Color(0xff005b41),
+        //         borderRadius: BorderRadius.circular(4)),
+        //     child: product.isQunitityAdd?.value == true &&
+        //             product.quntity!.value != 0
+        //         ? Center(
+        //             child: Text(
+        //               " -   ${product.quntity!.value}   + ",
+        //               style: TextStyle(
+        //                 fontFamily: 'MuseoSans',
+        //                 color: AppConst.white,
+        //                 fontSize: SizeUtils.horizontalBlockSize * 3.8,
+        //                 fontWeight: FontWeight.w500,
+        //                 fontStyle: FontStyle.normal,
+        //               ),
+        //             ),
+        //           )
+        //         : Icon(
+        //             Icons.add,
+        //             color: Colors.white,
+        //           ),
+        //   ),
+        // ),
         itemBuilder: (ctx) {
           return [
             PopupMenuItem(
@@ -757,44 +1268,65 @@ class MoewStoreViewProductsList extends StatelessWidget {
   }
 
   Widget _shoppingItem(product) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(SizeUtils.horizontalBlockSize * 5),
-        color: Colors.grey,
-      ),
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(vertical: SizeUtils.verticalBlockSize * 1),
-        child: Obx(
-          () => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _decrementButton(product),
-              Text(
-                '${product.quntity!.value}',
-                style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 5,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54),
-              ),
-              _incrementButton(product),
-            ],
-          ),
-        ),
+    return Obx(
+      () => DisplayProductCount(
+        count: product.quntity!.value,
       ),
     );
+
+    // Container(
+    //     height: 3.5.h,
+    //     width: 18.w,
+    //     decoration: BoxDecoration(
+    //       borderRadius: BorderRadius.circular(4),
+    //       color: Color(0xff005b41),
+    //     ),
+    //     child: Obx(
+    //       () => Center(
+    //         child: Text(
+    //           " -   ${product.quntity!.value}   + ",
+    //           style: TextStyle(
+    //             fontFamily: 'MuseoSans',
+    //             color: AppConst.white,
+    //             fontSize: SizeUtils.horizontalBlockSize * 3.8,
+    //             fontWeight: FontWeight.w500,
+    //             fontStyle: FontStyle.normal,
+    //           ),
+    //         ),
+    //       ),
+    //     )
+    // Padding(
+    //   padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 1.w),
+    //   child: Obx(
+    //     () => Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //       children: <Widget>[
+    //         _decrementButton(product),
+    //         Text('${product.quntity!.value}',
+    //             style: TextStyle(
+    //                 fontSize: SizeUtils.horizontalBlockSize * 4,
+    //                 fontWeight: FontWeight.w500,
+    //                 color: AppConst.white)),
+    //         _incrementButton(product),
+    //       ],
+    //     ),
+    //   ),
+    // ),
+    // );
   }
 
   Widget _incrementButton(product) {
     return GestureDetector(
       child: Container(
+        width: 5.w,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
+          shape: BoxShape.rectangle,
+          color: AppConst.green,
         ),
         child: Icon(
           Icons.add,
-          color: Colors.grey,
+          color: Colors.white,
+          size: 2.h,
         ),
       ),
       onTap: () async {
@@ -817,13 +1349,75 @@ class MoewStoreViewProductsList extends StatelessWidget {
         // addItem(products);
       },
       child: Container(
+        width: 5.w,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
+          shape: BoxShape.rectangle,
+          color: AppConst.green,
         ),
         child: Icon(
           Icons.remove,
-          color: Colors.grey,
+          color: Colors.white,
+          size: 2.h,
+        ),
+      ),
+    );
+  }
+}
+
+class DisplayAddPlus extends StatelessWidget {
+  const DisplayAddPlus({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 3.5.h,
+      width:
+          // product.isQunitityAdd?.value ==
+          //             true &&
+          //         product.quntity!.value !=
+          //             0
+          //     ? 8.w
+          // :
+          18.w,
+      decoration: BoxDecoration(
+        border: Border.all(color: AppConst.green, width: 0.8),
+        borderRadius: BorderRadius.circular(
+            // product.isQunitityAdd?.value == true &&
+            //       product.quntity!.value != 0
+            //   ? 25
+            //   :
+            4),
+        color: AppConst.white,
+      ),
+      child:
+          // product.isQunitityAdd?.value ==
+          //             true &&
+          //         product.quntity!.value !=
+          //             0
+          //     ? Center(
+          //         child: Text(
+          //             "${product.quntity?.value ?? "0"}",
+          //             style: TextStyle(
+          //               fontFamily: 'MuseoSans',
+          //               color: AppConst.green,
+          //               fontSize: SizeUtils.horizontalBlockSize * 3.8,
+          //               fontWeight: FontWeight.w500,
+          //               fontStyle: FontStyle.normal,
+          //             )),
+          //       )
+          // :
+          Center(
+        child: Text(
+          " Add +",
+          style: TextStyle(
+            fontFamily: 'MuseoSans',
+            color: AppConst.green,
+            fontSize: SizeUtils.horizontalBlockSize * 3.8,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
         ),
       ),
     );

@@ -420,7 +420,7 @@ class _SignInScreenState extends State<SignInScreen> {
 class BottomWideButton extends StatelessWidget {
   final Color color;
 
-  BottomWideButton({Key? key, this.text, this.color = AppConst.kSecondaryColor})
+  BottomWideButton({Key? key, this.text, this.color = AppConst.darkGreen})
       : super(key: key);
   String? text;
 
@@ -428,7 +428,7 @@ class BottomWideButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 1.h, bottom: 1.h),
-      height: 7.h,
+      height: 6.6.h,
       child: Container(
         decoration: new BoxDecoration(
             // color: Colors.,
@@ -440,7 +440,7 @@ class BottomWideButton extends StatelessWidget {
                   color,
               // Color(0xFFDF2A63),
               // kSecondaryTextColor,
-              border: Border.all(width: 0.3, color: AppConst.green
+              border: Border.all(width: 0.3, color: AppConst.darkGreen
                   // kPrimaryColor
                   ),
               borderRadius: BorderRadius.circular(10)),
@@ -449,9 +449,11 @@ class BottomWideButton extends StatelessWidget {
               text ?? "LOGIN",
               // "LOGIN",
               style: TextStyle(
+                fontFamily: 'MuseoSans',
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+                fontSize: SizeUtils.horizontalBlockSize * 5,
                 color: AppConst.white,
-                fontSize: SizeUtils.horizontalBlockSize * 5.7,
-                fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -470,33 +472,32 @@ class EnterNumberScreen extends StatelessWidget {
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
     return KeyboardActionsConfig(
-      keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-      keyboardBarColor: Colors.grey[200],
-      nextFocus: false,
-      actions: [
-        KeyboardActionsItem(
-          focusNode: _nodeText1,
-          toolbarButtons: [
-            
-            (node) {
-              return GestureDetector(
-                onTap: () => node.unfocus(),
-                child: Container(
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4)
-                    ,color: AppConst.grey,
+        keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+        keyboardBarColor: Colors.grey[200],
+        nextFocus: false,
+        actions: [
+          KeyboardActionsItem(
+            focusNode: _nodeText1,
+            toolbarButtons: [
+              (node) {
+                return GestureDetector(
+                  onTap: () => node.unfocus(),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: AppConst.grey,
+                    ),
+                    margin: const EdgeInsets.only(right: 4),
+                    child: Text(
+                      "DONE",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                  margin: const EdgeInsets.only(right: 4),
-                  child: Text(
-                    "DONE",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              );
-            }
-          ],
-        ),
+                );
+              }
+            ],
+          ),
         ]);
   }
 
@@ -560,29 +561,28 @@ class EnterNumberScreen extends StatelessWidget {
                               height: 4.h,
                             ),
                             Container(
-  height: 50,
-  child:   KeyboardActions(
-        config: _buildConfig(context),
-        autoScroll: false,
-        disableScroll: true,
-        child: Container(
-          height: 50,
-          child: SignUpFeilds(
-            focusNode: _nodeText1,
-            
-                                  hinttext: "Enter mobile number",
-                                  keyboardtype: TextInputType.number,
-                                  maxlength: 10,
-  
-                                  controller:
-                                      _signInController.phoneNumberController,
-                                  onChange: (value) {
-                                    _signInController.phoneNumber.value = value;
-                                  },
+                              height: 50,
+                              child: KeyboardActions(
+                                config: _buildConfig(context),
+                                autoScroll: false,
+                                disableScroll: true,
+                                child: Container(
+                                  height: 50,
+                                  child: SignUpFeilds(
+                                    focusNode: _nodeText1,
+                                    hinttext: "Enter mobile number",
+                                    keyboardtype: TextInputType.number,
+                                    maxlength: 10,
+                                    controller:
+                                        _signInController.phoneNumberController,
+                                    onChange: (value) {
+                                      _signInController.phoneNumber.value =
+                                          value;
+                                    },
+                                  ),
                                 ),
-        ),
-  ),
-),
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(

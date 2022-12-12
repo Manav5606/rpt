@@ -91,8 +91,15 @@ class Products {
   String? logo;
   int? cashback;
   RxInt? quntity = 0.obs;
+  RxBool? isQunitityAdd = false.obs;
 
-  Products({this.sId, this.name, this.logo, this.cashback,this.quntity,});
+  Products(
+      {this.sId,
+      this.name,
+      this.logo,
+      this.cashback,
+      this.quntity,
+      this.isQunitityAdd});
 
   Products.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -100,7 +107,6 @@ class Products {
     logo = json['logo'];
     cashback = json['cashback'];
     quntity?.value = json['quantity'] != null ? 0 : 0;
-
   }
 
   Map<String, dynamic> toJson() {

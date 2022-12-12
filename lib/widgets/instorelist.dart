@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -10,6 +13,7 @@ import 'package:customer_app/screens/home/models/homeFavStoreModel.dart';
 import 'package:customer_app/screens/home/models/homePageRemoteConfigModel.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/theme/styles.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -72,141 +76,106 @@ class ListViewChild extends StatelessWidget {
             businessId: inStoreModel?.businesstype ?? '');
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: 2.w,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            inStoreModel!.logo!.isEmpty
-                ? Padding(
-                    padding: EdgeInsets.only(bottom: 3.h),
-                    child: CircleAvatar(
-                      child: Text(inStoreModel?.name?.substring(0, 1) ?? "",
-                          style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 6)),
-                      backgroundColor: AppConst.blue,
-                      radius: SizeUtils.horizontalBlockSize * 6.5,
-                    ),
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(bottom: 2.h),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(inStoreModel!.logo!),
-                      backgroundColor: AppConst.white,
-                      radius: SizeUtils.horizontalBlockSize * 6.5,
-                    ),
-                  ),
-            SizedBox(
-              width: 4.w,
-            ),
-            // inStoreModel!.logo!.isEmpty
-            //     ? CircleAvatar(
-            //         child: Text(
-            //           inStoreModel?.name?.substring(0, 1) ?? "",
-            //           style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5),
-            //         ),
-            //         backgroundColor: color,
-            //         radius: SizeUtils.horizontalBlockSize * 7,
-            //       )
-            //     : CircleAvatar(
-            //         backgroundImage: NetworkImage(inStoreModel?.logo ?? ''),
-            //         backgroundColor: AppConst.white,
-            //         radius: SizeUtils.horizontalBlockSize * 7,
-            //       ),
-            // SizedBox(
-            //   width: 3.w,
-            // ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ((inStoreModel?.premium ?? false) == true)
-                      ? Text(
-                          StringContants.latest,
-                          style: TextStyle(
-                              color: AppConst.kPrimaryColor,
-                              fontSize: SizeUtils.horizontalBlockSize * 4),
-                        )
-                      : SizedBox(),
-                  Text(
-                    inStoreModel?.name ?? '',
-                    maxLines: 1,
-                    style: AppStyles.STORE_NAME_STYLE,
-                  ),
-                  if (inStoreModel?.storeType?.isNotEmpty ?? false)
-                    if ((inStoreModel?.storeType ?? '') == 'online')
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Pickup /", style: AppStyles.BOLD_STYLE),
-                          Text(
-                            " Delivery",
-                            style: AppStyles.BOLD_STYLE_GREEN,
-                          ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          // (inStoreModel?.calculatedDistance != null)
-                          //     ? Container(
-                          //         // margin: EdgeInsets.only(top: 0.5.h),
-                          //         padding: EdgeInsets.all(1.w),
-                          //         decoration: BoxDecoration(
-                          //             borderRadius: BorderRadius.circular(4),
-                          //             border: Border.all(color: AppConst.grey)),
-                          //         child: Text(
-                          //             "${inStoreModel!.calculatedDistance!.toStringAsFixed(2)} km away",
-                          //             style: TextStyle(
-                          //                 fontSize:
-                          //                     SizeUtils.horizontalBlockSize * 3,
-                          //                 fontWeight: FontWeight.w500,
-                          //                 fontFamily: 'Stag',
-                          //                 color: AppConst.darkGrey,
-                          //                 letterSpacing: 0.5)),
-                          //       )
-                          //     : SizedBox(),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                        ],
-                      )
-                    else
-                      Text(StringContants.pickUp, style: AppStyles.BOLD_STYLE),
-                  // Text(
-                  //   "${StringContants.instoreprice}",
-                  //   style: AppStyles.BOLD_STYLE,
-                  // ),
-                  Row(
-                    children: [
-                      (inStoreModel?.calculatedDistance != null)
-                          ? Container(
-                              margin: EdgeInsets.only(top: 1.h),
-                              padding: EdgeInsets.all(1.w),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(color: AppConst.grey)),
-                              child: Text(
-                                  "${(inStoreModel!.calculatedDistance!.toInt() / 1000).toStringAsFixed(2)} km away",
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: 'Stag',
-                                      color: AppConst.darkGrey,
-                                      letterSpacing: 0.5)),
-                            )
-                          : SizedBox(),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppConst.grey,
-              size: SizeUtils.horizontalBlockSize * 5,
+            DispalyStoreLogo(
+              logo: inStoreModel?.logo,
             ),
             SizedBox(
               width: 2.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 72.w,
+                      child: Text(inStoreModel?.name ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.black,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppConst.black,
+                      size: SizeUtils.horizontalBlockSize * 3.5,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                Row(
+                  children: [
+                    (inStoreModel?.calculatedDistance != null)
+                        ? DisplayDistance(
+                            distance: inStoreModel?.calculatedDistance,
+                          )
+                        : SizedBox(),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 1.w, right: 2.w, top: 0.5.h),
+                      child: Icon(
+                        Icons.circle,
+                        color: AppConst.grey,
+                        size: 0.8.h,
+                      ),
+                    ),
+                    if (inStoreModel?.storeType?.isNotEmpty ?? false)
+                      if ((inStoreModel?.storeType ?? '') == 'online')
+                        DsplayPickupDelivery()
+                      else
+                        Text("Only Pickup",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.grey,
+                              fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            )),
+                  ],
+                ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                Row(
+                  children: [
+                    ((inStoreModel?.premium ?? false) == true)
+                        ? DisplayPreminumStore()
+                        : (inStoreModel?.businesstype == Constants.fresh)
+                            ? DisplayFreshStore()
+                            : SizedBox(),
+                    (inStoreModel?.businesstype == Constants.fresh)
+                        ? SizedBox(
+                            width: 3.w,
+                          )
+                        : SizedBox(),
+                    DisplayCashback(
+                      cashback: int.parse("${inStoreModel?.defaultCashback}"),
+                      iscashbackPercentage: true,
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
+                  child: Container(
+                      width: 68.w, height: 1, color: Color(0xffcacaca)),
+                )
+              ],
             ),
           ],
         ),

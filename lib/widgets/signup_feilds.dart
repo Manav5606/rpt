@@ -10,6 +10,7 @@ class SignUpFeilds extends StatelessWidget {
       {Key? key,
       // this.text,
       this.hinttext,
+      this.labelText,
       this.controller,
       this.keyboardtype,
       this.maxlength,
@@ -19,6 +20,7 @@ class SignUpFeilds extends StatelessWidget {
       : super(key: key);
   // String? text;
   String? hinttext;
+  String? labelText;
   TextEditingController? controller;
   TextInputType? keyboardtype;
   int? maxlength;
@@ -38,7 +40,12 @@ class SignUpFeilds extends StatelessWidget {
           children: [
             Flexible(
               child: TextFormField(
-                style: TextStyle(fontSize: 14.sp),
+                style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.black,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                    fontSize: SizeUtils.horizontalBlockSize * 4),
                 focusNode: focusNode,
                 textAlign: TextAlign.start,
                 cursorColor: AppConst.black,
@@ -56,6 +63,13 @@ class SignUpFeilds extends StatelessWidget {
                   contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
                   hintTextDirection: TextDirection.ltr,
                   counterText: "",
+                  labelText: labelText ?? "",
+                  labelStyle: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: AppConst.darkGrey,
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.normal,
+                      fontSize: SizeUtils.horizontalBlockSize * 4),
                   // suffixIcon: (controller?.text.length)! > 0
                   //     ? TextFieldClearButton(
                   //         onTap: () {

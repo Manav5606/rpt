@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +23,6 @@ class CategoryCard extends StatelessWidget {
       "assets/images/Pickup.png",
       "assets/images/Premium.png",
       "assets/images/Medics.png",
-      "assets/images/Pickup.png",
-      "assets/images/Fresh.png"
     ];
     return Container(
       height: 20.h,

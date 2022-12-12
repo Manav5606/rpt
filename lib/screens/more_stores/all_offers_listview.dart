@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -82,34 +83,7 @@ class ListViewChild extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
         child: Row(
           children: [
-            inStoreModel!.logo!.isEmpty
-                ? Padding(
-                    padding: EdgeInsets.only(bottom: 6.h),
-                    child: Container(
-                      padding: const EdgeInsets.all(12.0),
-                      height: 7.h,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppConst.lightGrey,
-                          border: Border.all(
-                            width: 0.1,
-                            color: AppConst.lightGrey,
-                          )),
-                      child: Image(
-                        image: AssetImage(
-                          'assets/images/Store.png',
-                        ),
-                      ),
-                    ),
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(bottom: 6.h),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(inStoreModel?.logo ?? ''),
-                      backgroundColor: AppConst.white,
-                      radius: SizeUtils.horizontalBlockSize * 6.5,
-                    ),
-                  ),
+            DispalyStoreLogo(logo: inStoreModel?.logo),
             SizedBox(
               width: 4.w,
             ),
@@ -175,23 +149,8 @@ class ListViewChild extends StatelessWidget {
                   Row(
                     children: [
                       (inStoreModel?.calculateDistance != null)
-                          ? Container(
-                              // margin: EdgeInsets.only(top: 1.h),
-                              padding: EdgeInsets.all(1.w),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                // border: Border.all(color: AppConst.grey),
-                              ),
-                              child: Text(
-                                  "${(inStoreModel!.calculateDistance!.toInt() / 1000).toStringAsFixed(2)} km",
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: 'Stag',
-                                      color: AppConst.darkGrey,
-                                      letterSpacing: 0.5)),
-                            )
+                          ? DisplayDistance(
+                              distance: inStoreModel?.calculateDistance)
                           : SizedBox(),
                       Padding(
                         padding:
@@ -204,38 +163,7 @@ class ListViewChild extends StatelessWidget {
                       ),
                       if (inStoreModel?.storeType?.isNotEmpty ?? false)
                         if ((inStoreModel?.storeType ?? '') == 'online')
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Pickup",
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.grey,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.7,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 2.w, right: 2.w, top: 1.h),
-                                child: Icon(
-                                  Icons.circle,
-                                  color: AppConst.grey,
-                                  size: 0.8.h,
-                                ),
-                              ),
-                              Text("Delivery",
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.grey,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.7,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                            ],
-                          )
+                          DsplayPickupDelivery()
                         else
                           Text("Only Pickup",
                               style: TextStyle(
@@ -268,90 +196,18 @@ class ListViewChild extends StatelessWidget {
                   Row(
                     children: [
                       ((inStoreModel?.premium ?? false) == true)
-                          ? Container(
-                              width: 24.w,
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: AppConst.lightPichYellow),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(FontAwesomeIcons.crown,
-                                      size: 1.8.h, color: Color(0xffe7a408)),
-                                  Text("Premium",
-                                      style: TextStyle(
-                                        fontFamily: 'MuseoSans',
-                                        color: Color(0xff462f03),
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 3.2,
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ],
-                              ),
-                            )
+                          ? DisplayPreminumStore()
                           : (inStoreModel?.businesstype == Constants.fresh)
-                              ? Container(
-                                  width: 18.w,
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color: Color(0xfffff0e9)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Icon(Icons.star,
-                                          size: 1.8.h,
-                                          color: Color(0xfffc763b)),
-                                      Text("Meat",
-                                          style: TextStyle(
-                                            fontFamily: 'MuseoSans',
-                                            color: Color(0xff462f03),
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3.2,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ],
-                                  ),
-                                )
+                              ? DisplayFreshStore()
                               : SizedBox(),
                       (inStoreModel?.businesstype == Constants.fresh)
                           ? SizedBox(
                               width: 3.w,
                             )
                           : SizedBox(),
-                      Container(
-                        width: 28.w,
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: Color(0xffebf7f3)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xff00d18f)),
-                              child: Icon(Icons.currency_rupee_rounded,
-                                  size: 1.8.h, color: Color(0xffebf7f3)),
-                            ),
-                            Text("${inStoreModel?.defaultCashback}% Cashback",
-                                style: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: Color(0xff053e2a),
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.2,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FontStyle.normal,
-                                )),
-                          ],
-                        ),
+                      DisplayCashback(
+                        cashback: inStoreModel?.defaultCashback,
+                        iscashbackPercentage: true,
                       ),
                     ],
                   ),
@@ -392,6 +248,214 @@ class ListViewChild extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DisplayDistance extends StatelessWidget {
+  DisplayDistance({Key? key, this.distance}) : super(key: key);
+
+  num? distance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // margin: EdgeInsets.only(top: 1.h),
+      padding: EdgeInsets.all(1.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        // border: Border.all(color: AppConst.grey),
+      ),
+      child: Text(
+          //  "${(inStoreModel!.calculateDistance!.toInt() / 1000).toStringAsFixed(2)} km",
+          "${(distance!.toInt() / 1000).toStringAsFixed(2)} km",
+          style: TextStyle(
+              fontSize: SizeUtils.horizontalBlockSize * 3,
+              fontWeight: FontWeight.w500,
+              fontFamily: 'Stag',
+              color: AppConst.darkGrey,
+              letterSpacing: 0.5)),
+    );
+  }
+}
+
+class DispalyStoreLogo extends StatelessWidget {
+  DispalyStoreLogo({Key? key, this.logo}) : super(key: key);
+
+  String? logo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: logo!.isEmpty
+          ? Padding(
+              padding: EdgeInsets.only(bottom: 5.h),
+              child: Container(
+                padding: const EdgeInsets.all(12.0),
+                height: 7.h,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppConst.lightGrey,
+                    border: Border.all(
+                      width: 0.1,
+                      color: AppConst.lightGrey,
+                    )),
+                child: Image(
+                  image: AssetImage(
+                    'assets/images/Store.png',
+                  ),
+                ),
+              ),
+            )
+          : Padding(
+              padding: EdgeInsets.only(bottom: 6.h),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(logo ?? ''),
+                backgroundColor: AppConst.white,
+                radius: SizeUtils.horizontalBlockSize * 6.5,
+              ),
+            ),
+    );
+  }
+}
+
+class DisplayFreshStore extends StatelessWidget {
+  const DisplayFreshStore({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 18.w,
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Color(0xfffff0e9)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(Icons.star, size: 1.8.h, color: Color(0xfffc763b)),
+          Text("Meat",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: Color(0xff462f03),
+                fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+class DisplayPreminumStore extends StatelessWidget {
+  const DisplayPreminumStore({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 24.w,
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: AppConst.lightPichYellow),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(FontAwesomeIcons.crown, size: 1.8.h, color: Color(0xffe7a408)),
+          Text("Premium",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: Color(0xff462f03),
+                fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+class DsplayPickupDelivery extends StatelessWidget {
+  const DsplayPickupDelivery({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Pickup",
+            style: TextStyle(
+              fontFamily: 'MuseoSans',
+              color: AppConst.grey,
+              fontSize: SizeUtils.horizontalBlockSize * 3.7,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            )),
+        Padding(
+          padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h),
+          child: Icon(
+            Icons.circle,
+            color: AppConst.grey,
+            size: 0.8.h,
+          ),
+        ),
+        Text("Delivery",
+            style: TextStyle(
+              fontFamily: 'MuseoSans',
+              color: AppConst.grey,
+              fontSize: SizeUtils.horizontalBlockSize * 3.7,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            )),
+      ],
+    );
+  }
+}
+
+class DisplayCashback extends StatelessWidget {
+  DisplayCashback({Key? key, this.cashback, this.iscashbackPercentage})
+      : super(key: key);
+
+  bool? iscashbackPercentage;
+  int? cashback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 28.w,
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Color(0xffebf7f3)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration:
+                BoxDecoration(shape: BoxShape.circle, color: Color(0xff00d18f)),
+            child: Icon(Icons.currency_rupee_rounded,
+                size: 1.8.h, color: Color(0xffebf7f3)),
+          ),
+          Text(
+              (iscashbackPercentage ?? false)
+                  ? "${cashback ?? 0}% Cashback"
+                  : "${cashback ?? 0} Cashback",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: Color(0xff053e2a),
+                fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              )),
+        ],
       ),
     );
   }

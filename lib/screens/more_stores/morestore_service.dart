@@ -38,7 +38,7 @@ class MoreStoreService {
     return getCartIDModel;
   }
 
-  static Future<AddToCartModel?> addToCart({
+  static Future<GetCartIDModel?> addToCart({
     var product,
     required String store_id,
     required String cart_id,
@@ -68,12 +68,12 @@ class MoreStoreService {
       if (result['error'] == false) {
         print("::rest :: false");
 
-        final AddToCartModel addToCartModel =
-            AddToCartModel.fromJson(result['data']);
+        final GetCartIDModel getCartIDModel =
+            GetCartIDModel.fromJson(result['data']);
 
-        print(">> tot: ${addToCartModel.totalItemsCount}");
+        print(">> tot: ${getCartIDModel.totalItemsCount}");
 
-        return addToCartModel;
+        return getCartIDModel;
       } else {
         print("::rest :: true");
       }
@@ -83,7 +83,7 @@ class MoreStoreService {
     }
   }
 
-  static Future<AddToCartModel?> addToCartInventory({
+  static Future<GetCartIDModel?> addToCartInventory({
     var inventory,
     required String store_id,
     required String cart_id,
@@ -103,9 +103,9 @@ class MoreStoreService {
           variables: variables);
       log("result: ${result}");
       if (result['error'] == false) {
-        final AddToCartModel addToCartModel =
-            AddToCartModel.fromJson(result['data']);
-        return addToCartModel;
+        final GetCartIDModel getCartIDModel =
+            GetCartIDModel.fromJson(result['data']);
+        return getCartIDModel;
       }
     } catch (e, st) {
       log("addToCart $e , $st");
