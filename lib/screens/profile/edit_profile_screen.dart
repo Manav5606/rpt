@@ -1,3 +1,4 @@
+import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/widgets/signup_feilds.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,225 +44,132 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SafeArea(
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+      ),
+      bottomSheet: GestureDetector(
+          onTap: () async {
+            _signInController.UpdateInfo(firstNameController.text,
+                lastNameController.text, mobileNumberController.text);
+          },
+
+          // onTap: (_signInController
+          //             .phoneNumberController.value.text.length ==
+          //         10)
+          //     ? () {
+          //         _signInController.submitPhoneNumber();
+          //       }
+          //     : null,
           child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
+            padding: EdgeInsets.symmetric(horizontal: 2.w),
+            child: BottomWideButton(
+              text: "Update Profile ",
+            ),
+          )),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 2.w),
         child: Obx(
           () => _signInController.isLoading.value
               ? SignupScreenShimmerEffect()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 2.w),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          BackButton(
-                            color: AppConst.black,
-                            onPressed: () {
-                              Get.back();
-                            },
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 1.w),
+                            child: Text(
+                              "Edit Profile",
+                              style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize:
+                                      SizeUtils.horizontalBlockSize * 4.7),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     Container(
+                          //       width: 45.w,
+                          //       child: SignUpFeilds(
+                          //         labelText: "First Name*",
+
+                          //         hinttext: (_Controller.user.firstName) ??
+                          //             "First name", //"Enter your first name ",
+                          //         controller: firstNameController,
+                          //       ),
+                          //     ),
+                          //     SizedBox(
+                          //       width: 3.w,
+                          //     ),
+                          //     Container(
+                          //       width: 45.w,
+                          //       child: SignUpFeilds(
+                          //         labelText: "Last Name*",
+
+                          //         hinttext: _Controller.user.lastName ??
+                          //             "Last name", //"Enter your last name ",
+                          //         controller: lastNameController,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+
+                          SignUpFeilds(
+                            labelText: "First Name*",
+
+                            hinttext: (_Controller.user.firstName) ??
+                                "First name", //"Enter your first name ",
+                            controller: firstNameController,
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          SignUpFeilds(
+                            labelText: "Last Name*",
+
+                            hinttext: _Controller.user.lastName ??
+                                "Last name", //"Enter your last name ",
+                            controller: lastNameController,
                           ),
                           SizedBox(
                             height: 1.h,
                           ),
 
-                          Container(
-                            height: 25.h,
-                            color: AppConst.lightYellow,
-                          ),
-                          SizedBox(
-                            height: 3.h,
-                          ),
-                          Text(
-                            " Update",
-                            style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "MuseoSans_700.otf"),
-                          ),
-                          SizedBox(
-                            height: 3.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 45.w,
-                                child: SignUpFeilds(
-                                  // text: "First Name",
-
-                                  hinttext: (_Controller.user.firstName) ??
-                                      "First name", //"Enter your first name ",
-                                  controller: firstNameController,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 3.w,
-                              ),
-                              Container(
-                                width: 45.w,
-                                child: SignUpFeilds(
-                                  // text: "Last Name",
-                                  hinttext: _Controller.user.lastName ??
-                                      "Last name", //"Enter your last name ",
-                                  controller: lastNameController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-
                           SignUpFeilds(
-                            // text: "Last Name",
+                            labelText: "Email ID",
                             hinttext: _Controller
                                 .user.email, //"Enter your last name ",
                             controller: mobileNumberController,
                             readOnly: true,
                           ),
                           SizedBox(
-                            height: 2.h,
+                            height: 1.h,
                           ),
                           SignUpFeilds(
-                            // text: "Last Name",
+                            labelText: "Mobile Number*",
                             hinttext: _Controller
                                 .user.mobile, //"Enter your last name ",
                             controller: mobileNumberController,
                             readOnly: true,
                           ),
-                          // Container(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   // height: 9.h,
-                          //   decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(10),
-                          //       border: Border.all(color: AppConst.black, width: 1.5)),
-                          //   child: Column(
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: [
-                          //       Padding(
-                          //         padding: EdgeInsets.only(
-                          //             left: 2.w, top: 0.5.h, bottom: 0.5.h),
-                          //         child: Text(
-                          //           "Email",
-                          //           style: TextStyle(
-                          //               fontSize: 9.sp, fontWeight: FontWeight.w500),
-                          //         ),
-                          //       ),
-                          //       TextField(
-                          //         style: TextStyle(fontSize: 14.sp),
-                          //         textAlign: TextAlign.start,
-                          //         cursorColor: AppConst.kPrimaryColor,
-                          //         readOnly: true,
-
-                          //         // maxLength: 10,
-                          //         // keyboardType: TextInputType.number,
-                          //         controller: mobileNumberController,
-                          //         decoration: InputDecoration(
-                          //           isDense: true,
-                          //           border: InputBorder.none,
-                          //           hintText: _Controller.user.email, //'Enter Email',
-                          //           contentPadding:
-                          //               EdgeInsets.only(left: 2.w, bottom: 1.h),
-                          //           hintTextDirection: TextDirection.ltr,
-                          //           counterText: "",
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 2.h,
-                          // ),
-                          // Container(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   // height: 9.h,
-                          //   decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(10),
-                          //       border: Border.all(color: AppConst.black, width: 1.5)),
-                          //   child: Column(
-                          //     mainAxisSize: MainAxisSize.min,
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: [
-                          //       Padding(
-                          //         padding: EdgeInsets.only(
-                          //             left: 2.w, top: 0.5.h, bottom: 0.5.h),
-                          //         child: Text(
-                          //           "Mobile number",
-                          //           style: TextStyle(
-                          //               fontSize: 9.sp, fontWeight: FontWeight.w500),
-                          //         ),
-                          //       ),
-                          //       Flexible(
-                          //         child: TextFormField(
-                          //           style: TextStyle(fontSize: 14.sp),
-                          //           textAlign: TextAlign.start,
-                          //           cursorColor: AppConst.kPrimaryColor,
-                          //           maxLength: 10,
-                          //           showCursor: false,
-                          //           keyboardType: TextInputType.number,
-                          //           readOnly: true,
-                          //           // controller: controller,
-                          //           decoration: InputDecoration(
-                          //             isDense: true,
-                          //             border: InputBorder.none,
-                          //             hintText: _Controller.user.mobile,
-                          //             hintStyle: TextStyle(color: AppConst.grey),
-                          //             contentPadding:
-                          //                 EdgeInsets.only(left: 2.w, bottom: 1.h),
-                          //             hintTextDirection: TextDirection.ltr,
-                          //             counterText: "",
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 33.h,
-                          // ),
-                          // GestureDetector(
-                          //     onTap: () async {
-                          //       _signInController.UpdateInfo(
-                          //           firstNameController.text,
-                          //           lastNameController.text,
-                          //           mobileNumberController.text);
-                          //     },
-
-                          //     // onTap: (_signInController
-                          //     //             .phoneNumberController.value.text.length ==
-                          //     //         10)
-                          //     //     ? () {
-                          //     //         _signInController.submitPhoneNumber();
-                          //     //       }
-                          //     //     : null,
-                          //     child: BottomWideButton(
-                          //       text: "Update info ",
-                          //     ))
-                        ]),
-                    GestureDetector(
-                        onTap: () async {
-                          _signInController.UpdateInfo(
-                              firstNameController.text,
-                              lastNameController.text,
-                              mobileNumberController.text);
-                        },
-
-                        // onTap: (_signInController
-                        //             .phoneNumberController.value.text.length ==
-                        //         10)
-                        //     ? () {
-                        //         _signInController.submitPhoneNumber();
-                        //       }
-                        //     : null,
-                        child: BottomWideButton(
-                          text: "Update info ",
-                        ))
+                        ],
+                      ),
+                    ),
                   ],
                 ),
         ),
-      )),
+      ),
     );
 
     // Scaffold(
