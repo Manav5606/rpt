@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -1265,7 +1266,10 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ));
                     },
-                    child: Icon(Icons.camera_alt_outlined),
+                    child: Icon(
+                      CupertinoIcons.camera,
+                      size: 3.8.h,
+                    ),
                   ),
                 ),
               ],

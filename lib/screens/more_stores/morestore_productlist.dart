@@ -24,79 +24,79 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class MoreStoreProductScreen extends StatefulWidget {
-  const MoreStoreProductScreen({Key? key}) : super(key: key);
+// class MoreStoreProductScreen extends StatefulWidget {
+//   const MoreStoreProductScreen({Key? key}) : super(key: key);
 
-  @override
-  _StoreScreenState createState() => _StoreScreenState();
-}
+//   @override
+//   _StoreScreenState createState() => _StoreScreenState();
+// }
 
-class _StoreScreenState extends State<MoreStoreProductScreen> {
-  late PersistentTabController _controller;
-  // final ScrollController? gridViewScroll;
-  bool isGrocery = false;
-  final AddCartController _addCartController = Get.find();
-  @override
-  void initState() {
-    super.initState();
-    Map arg = Get.arguments ?? {};
-    isGrocery = arg['isGrocery'] ?? false;
-    _controller = PersistentTabController(initialIndex: 0);
-  }
+// class _StoreScreenState extends State<MoreStoreProductScreen> {
+//   late PersistentTabController _controller;
+//   // final ScrollController? gridViewScroll;
+//   bool isGrocery = false;
+//   final AddCartController _addCartController = Get.find();
+//   @override
+//   void initState() {
+//     super.initState();
+//     Map arg = Get.arguments ?? {};
+//     isGrocery = arg['isGrocery'] ?? false;
+//     _controller = PersistentTabController(initialIndex: 0);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      confineInSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardShows: true,
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      navBarStyle: NavBarStyle.style14,
-      onItemSelected: (int) {
-        _addCartController.onTabChange.value =
-            !_addCartController.onTabChange.value;
-      },
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return PersistentTabView(
+//       context,
+//       controller: _controller,
+//       screens: _buildScreens(),
+//       items: _navBarsItems(),
+//       confineInSafeArea: true,
+//       backgroundColor: Colors.white,
+//       handleAndroidBackButtonPress: true,
+//       resizeToAvoidBottomInset: true,
+//       stateManagement: true,
+//       hideNavigationBarWhenKeyboardShows: true,
+//       popAllScreensOnTapOfSelectedTab: true,
+//       popActionScreens: PopActionScreensType.all,
+//       navBarStyle: NavBarStyle.style14,
+//       onItemSelected: (int) {
+//         _addCartController.onTabChange.value =
+//             !_addCartController.onTabChange.value;
+//       },
+//     );
+//   }
 
-  List<Widget> _buildScreens() {
-    return [
-      MoreStoreProductView(),
-      isGrocery
-          ? ChatOrderScreen(
-              isNewStore: true,
-            )
-          : FreshStoreScreen(),
-    ];
-  }
+//   List<Widget> _buildScreens() {
+//     return [
+//       MoreStoreProductView(),
+//       isGrocery
+//           ? ChatOrderScreen(
+//               isNewStore: true,
+//             )
+//           : FreshStoreScreen(),
+//     ];
+//   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-          icon: Icon(Icons.shopping_bag_outlined),
-          title: "Shop",
-          activeColorPrimary: AppConst.kSecondaryColor,
-          activeColorSecondary: AppConst.green,
-          inactiveColorPrimary: AppConst.grey),
-      PersistentBottomNavBarItem(
-          icon: isGrocery
-              ? Icon(Icons.chat_bubble_outlined)
-              : Icon(Icons.shopping_cart),
-          title: isGrocery ? "Chat Order" : "Fresh Store",
-          activeColorPrimary: AppConst.kSecondaryColor,
-          activeColorSecondary: AppConst.green,
-          inactiveColorPrimary: AppConst.grey),
-    ];
-  }
-}
+//   List<PersistentBottomNavBarItem> _navBarsItems() {
+//     return [
+//       PersistentBottomNavBarItem(
+//           icon: Icon(Icons.shopping_bag_outlined),
+//           title: "Shop",
+//           activeColorPrimary: AppConst.kSecondaryColor,
+//           activeColorSecondary: AppConst.green,
+//           inactiveColorPrimary: AppConst.grey),
+//       PersistentBottomNavBarItem(
+//           icon: isGrocery
+//               ? Icon(Icons.chat_bubble_outlined)
+//               : Icon(Icons.shopping_cart),
+//           title: isGrocery ? "Chat Order" : "Fresh Store",
+//           activeColorPrimary: AppConst.kSecondaryColor,
+//           activeColorSecondary: AppConst.green,
+//           inactiveColorPrimary: AppConst.grey),
+//     ];
+//   }
+// }
 
 class MoreStoreProductView extends StatelessWidget {
   final MoreStoreController _moreStoreController = Get.find();

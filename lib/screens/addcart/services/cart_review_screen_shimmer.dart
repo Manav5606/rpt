@@ -288,7 +288,7 @@ class CartReviewScreenShimmer extends StatelessWidget {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              "${_addCartController.selectAddressHouse.value} ${_addCartController.selectAddress.value}",
+                                              "${_addCartController.selectAddressHouse.value} ",
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(

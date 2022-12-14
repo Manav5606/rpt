@@ -31,25 +31,26 @@ class AddCartService {
     }
   }
 
-  static Future<GetCartPageInformation?> getCartPageInformation(
-      String storeId) async {
-    try {
-      final result = await GraphQLRequest.query(
-          query: GraphQLQueries.getCartPageInformation,
-          variables: {
-            'store_id': storeId,
-          });
-      log("getCartPageInformation------${result}");
-      // if (result['error'] == false) {
-      final GetCartPageInformation getCartPageInformation =
-          GetCartPageInformation.fromJson(result);
-      return getCartPageInformation;
-      // }
-    } catch (e, st) {
-      log("$e , $st");
-      rethrow;
-    }
-  }
+// //change remove  the query
+//   static Future<GetOrderConfirmPageData?> getCartPageInformation(
+//       String storeId) async {
+//     try {
+//       final result = await GraphQLRequest.query(
+//           query: GraphQLQueries.getCartPageInformation,
+//           variables: {
+//             'store_id': storeId,
+//           });
+//       log("getCartPageInformation------${result}");
+//       // if (result['error'] == false) {
+//       final GetOrderConfirmPageData getCartPageInformation =
+//           GetOrderConfirmPageData.fromJson(result);
+//       return getCartPageInformation;
+//       // }
+//     } catch (e, st) {
+//       log("$e , $st");
+//       rethrow;
+//     }
+//   }
 
   static Future<CartLocationModel?> getCartLocation(
       String storeId, String cartId) async {

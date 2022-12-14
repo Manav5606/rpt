@@ -110,7 +110,7 @@ class ScheduleTimeScreen extends StatelessWidget {
                                 _addCartController
                                         .dayTimeSlots.value?.startTime =
                                     _addCartController
-                                        .getCartPageInformationModel
+                                        .getOrderConfirmPageDataModel
                                         .value
                                         ?.data
                                         ?.deliverySlots?[int.parse(
@@ -120,7 +120,7 @@ class ScheduleTimeScreen extends StatelessWidget {
                                         .startTime;
                                 _addCartController.dayTimeSlots.value?.endTime =
                                     _addCartController
-                                        .getCartPageInformationModel
+                                        .getOrderConfirmPageDataModel
                                         .value
                                         ?.data
                                         ?.deliverySlots?[int.parse(
@@ -132,7 +132,7 @@ class ScheduleTimeScreen extends StatelessWidget {
                                 _addCartController
                                         .dayTimeSlots.value?.cutOffTime =
                                     _addCartController
-                                        .getCartPageInformationModel
+                                        .getOrderConfirmPageDataModel
                                         .value
                                         ?.data
                                         ?.deliverySlots?[int.parse(

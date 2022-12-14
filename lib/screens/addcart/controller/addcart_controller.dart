@@ -68,19 +68,19 @@ class AddCartController extends GetxController {
     '10'
   ];
 
-  Rx<GetCartPageInformation?> getCartPageInformationModel =
-      GetCartPageInformation().obs;
+  // Rx<GetOrderConfirmPageData?> getCartPageInformationModel =
+  //     GetOrderConfirmPageData().obs;
   Rx<CartLocationModel?> cartLocationModel = CartLocationModel().obs;
   Rx<order_model.OrderData?> orderModel = order_model.OrderData().obs;
   Rx<Store?> store = Store().obs;
-  Rx<TimeSlots?> timeSlots = TimeSlots().obs;
+  Rx<Slots?> timeSlots = Slots().obs;
   Rx<DayTimeSlots?> dayTimeSlots = DayTimeSlots().obs;
   Rx<CreateRazorpayResponse?> createRazorpayResponseModel =
       CreateRazorpayResponse().obs;
   Rx<Addresses?> selectAddressIndex = Addresses().obs;
   Rx<GetOrderConfirmPageData?> getOrderConfirmPageDataModel =
       GetOrderConfirmPageData().obs;
-  RxList<DeliverySlot?> deliverySlots = <DeliverySlot>[].obs;
+  RxList<DeliverySlots?> deliverySlots = <DeliverySlots>[].obs;
 
   void getUserData() {
     if (hiveRepository.hasUser()) {
@@ -97,7 +97,7 @@ class AddCartController extends GetxController {
       if (currentDay.value == "7") {
         currentDay.value = "0";
       }
-      getCartPageInformationModel
+      getOrderConfirmPageDataModel
           .value?.data?.deliverySlots?[int.parse(currentDay.value)].slots
           ?.forEach((element) {
         if ((element.startTime?.hour ?? 0) >
@@ -115,7 +115,7 @@ class AddCartController extends GetxController {
           }
           log('currentDay.value :${currentDay.value}');
           log('date.weekday.value :${date.weekday}');
-          var timeData = getCartPageInformationModel.value?.data
+          var timeData = getOrderConfirmPageDataModel.value?.data
               ?.deliverySlots?[int.parse(currentDay.value)].slots?.first;
 
           displayHour.value =
@@ -152,18 +152,18 @@ class AddCartController extends GetxController {
     }
   }
 
-  Future<void> getCartPageInformation({required String storeId}) async {
-    try {
-      isLoading.value = true;
-      getCartPageInformationModel.value =
-          await AddCartService.getCartPageInformation(storeId);
-      deliverySlots
-          .addAll(getCartPageInformationModel.value?.data?.deliverySlots ?? []);
-      isLoading.value = false;
-    } catch (e, st) {
-      isLoading.value = false;
-    }
-  }
+  // Future<void> getCartPageInformation({required String storeId}) async {
+  //   try {
+  //     isLoading.value = true;
+  //     getOrderConfirmPageDataModel.value =
+  //         await AddCartService.getCartPageInformation(storeId);
+  //     deliverySlots.addAll(
+  //         getOrderConfirmPageDataModel.value?.data?.deliverySlots ?? []);
+  //     isLoading.value = false;
+  //   } catch (e, st) {
+  //     isLoading.value = false;
+  //   }
+  // }
 
   Future<void> addToCart({
     var rawItem,

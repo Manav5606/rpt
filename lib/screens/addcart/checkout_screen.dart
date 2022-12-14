@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/location_picker/address_model.dart';
@@ -28,8 +30,13 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   int selectExpandeIndex = 0;
   // bool pickedup = false;
 
+  String storeName = '';
+
   @override
   void initState() {
+    Map arg = Get.arguments ?? {};
+
+    storeName = arg['storeName'] ?? '';
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -98,206 +105,288 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: EdgeInsets.only(left: SizeUtils.horizontalBlockSize * 1.8),
-          child: InkWell(
-            onTap: () async {
-              Get.back();
-              // await _exploreController.getStoreData(id: _addCartController.store.value?.sId ?? '');
-            },
-            child: Icon(
-              Icons.clear,
-              color: AppConst.black,
-              size: SizeUtils.horizontalBlockSize * 7.65,
-            ),
-          ),
-        ),
-        actions: [
-          Center(
-            child: Padding(
-              padding:
-                  EdgeInsets.only(right: SizeUtils.horizontalBlockSize * 3),
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Text(
-                  "My Carts",
-                  style: TextStyle(
-                    color: AppConst.grey,
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        centerTitle: true,
+        elevation: 1,
         title: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Personal FoodsCo ",
-              style: TextStyle(
-                color: AppConst.black,
-                fontWeight: FontWeight.w600,
-                fontSize: SizeUtils.horizontalBlockSize * 5,
-              ),
-            ),
-            Text(
-              "Shopping in 94103",
-              style: TextStyle(
-                color: AppConst.black,
-                fontSize: SizeUtils.horizontalBlockSize * 4,
-              ),
-            ),
+            Text("Your Orders",
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: Color(0xff000000),
+                  fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                )),
+            Text(storeName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: Color(0xff9e9e9e),
+                  fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                )),
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Obx(
-                  () => Column(
-                    key: Key(
-                        'builder ${_addCartController.selectExpendTile.value.toString()}'),
-                    children: [
-                      _buildPlayerModelList(
-                        iconData: Icons.location_on_rounded,
-                        title: _addCartController
-                                    .selectAddressHouse.value.isNotEmpty ||
-                                _addCartController
-                                    .selectAddress.value.isNotEmpty
-                            ? "${_addCartController.selectAddressHouse.value} ${_addCartController.selectAddress.value}"
-                            : StringContants.addDeliveryAddresses,
-                        bottomWidget: addressView(context),
-                        isEnable: true,
-                        key: 0,
-                      ),
-                      _buildPlayerModelList(
-                        iconData: Icons.account_balance_wallet_outlined,
-                        title: StringContants.walletAmount,
-                        bottomWidget: walletAmountView(context),
-                        isEnable: _addCartController
-                                .selectAddressHouse.value.isNotEmpty ||
-                            _addCartController.selectAddress.value.isNotEmpty,
-                        key: 1,
-                      ),
-                      _buildPlayerModelList(
-                        iconData: Icons.timer,
-                        title:
-                            _addCartController.deliveryMessage.value.isNotEmpty
-                                ? _addCartController.deliveryMessage.value
-                                : StringContants.chooseDeliveryTime,
-                        bottomWidget: timeSheetView(context),
-                        isEnable: _addCartController
-                                .selectAddressHouse.value.isNotEmpty ||
-                            _addCartController.selectAddress.value.isNotEmpty,
-                        key: 2,
-                      ),
-                      _buildPlayerModelList(
-                          iconData: Icons.payment,
-                          title: StringContants.paymentMode,
-                          bottomWidget: paymentMode(),
-                          key: 3,
-                          isEnable: _addCartController
-                              .deliveryMessage.value.isNotEmpty),
-                      payView(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Obx(
-              () => GestureDetector(
-                onTap: () async {
-                  if (_addCartController.selectPaymentMode.value == 'paynow') {
-                    await _addCartController.createRazorPayOrder(
-                        storeId: _addCartController.store.value?.sId ?? '',
-                        amount: _addCartController
-                                .getOrderConfirmPageDataModel.value?.data?.total
-                                ?.toDouble() ??
-                            00);
-                    if (_addCartController.createRazorpayResponseModel.value !=
-                        null) {
-                      launchPayment(
-                          _addCartController.getOrderConfirmPageDataModel.value
-                                  ?.data?.total
-                                  ?.toInt() ??
-                              00,
-                          _addCartController
-                                  .createRazorpayResponseModel.value?.orderId ??
-                              '');
-                    } else {
-                      Get.showSnackbar(GetBar(
-                        message: "failed to create razor order",
-                        duration: Duration(seconds: 2),
-                      ));
-                    }
-                  } else {
-                    finalPlaceOrder();
-                  }
-                },
-                // onTap: onTap,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppConst.kSecondaryColor,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  height: SizeUtils.verticalBlockSize * 6,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: SizeUtils.horizontalBlockSize * 2,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Obx(
+                () => Column(
+                  key: Key(
+                      'builder ${_addCartController.selectExpendTile.value.toString()}'),
+                  children: [
+                    // _buildPlayerModelList(
+                    //   iconData: Icons.location_on_rounded,
+                    //   title: _addCartController
+                    //               .selectAddressHouse.value.isNotEmpty ||
+                    //           _addCartController
+                    //               .selectAddress.value.isNotEmpty
+                    //       ? "${_addCartController.selectAddressHouse.value} ${_addCartController.selectAddress.value}"
+                    //       : StringContants.addDeliveryAddresses,
+                    //   bottomWidget: addressView(context),
+                    //   isEnable: true,
+                    //   key: 0,
+                    // ),
+                    // _buildPlayerModelList(
+                    //   iconData: Icons.account_balance_wallet_outlined,
+                    //   title: StringContants.walletAmount,
+                    //   bottomWidget: walletAmountView(context),
+                    //   isEnable: _addCartController
+                    //           .selectAddressHouse.value.isNotEmpty ||
+                    //       _addCartController.selectAddress.value.isNotEmpty,
+                    //   key: 1,
+                    // ),
+                    _buildPlayerModelList(
+                      iconData: Icons.access_time_filled,
+                      title: _addCartController.deliveryMessage.value.isNotEmpty
+                          ? _addCartController.deliveryMessage.value
+                          : "Delivery Time",
+                      bottomWidget: timeSheetView(context),
+                      isEnable: _addCartController
+                              .selectAddressHouse.value.isNotEmpty ||
+                          _addCartController.selectAddress.value.isNotEmpty,
+                      key: 2,
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              "Go to CheckOut",
-                              style: TextStyle(
-                                color: AppConst.white,
-                                fontSize: SizeUtils.horizontalBlockSize * 4,
-                              ),
+                    // _buildPlayerModelList(
+                    //     iconData: Icons.payment,
+                    //     title: StringContants.paymentMode,
+                    //     bottomWidget: paymentMode(),
+                    //     key: 3,
+                    //     isEnable: _addCartController
+                    //         .deliveryMessage.value.isNotEmpty),
+                    DisplayGuaranteeCard(),
+
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 2.w,
+                              bottom: 2.h,
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppConst.darkGrey,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        SizeUtils.horizontalBlockSize * 3,
-                                    vertical: SizeUtils.verticalBlockSize * 1),
-                                child: Text(
-                                  "\u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.total.toString() ?? ''}",
+                            child: Row(
+                              children: [
+                                Text(
+                                  'View Order Details',
                                   style: TextStyle(
-                                    color: AppConst.white,
-                                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                                    color: Colors.black,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4.5,
+                                    fontFamily: 'MuseoSans',
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
+                          CheckoutWalletCard(
+                            name: storeName,
+                            balance: _addCartController
+                                .getOrderConfirmPageDataModel
+                                .value
+                                ?.data
+                                ?.walletAmount,
+                            ID: _addCartController.store.value?.sId,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
+                    payView(),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          Obx(
+            () => Container(
+              height: 10.h,
+              decoration: BoxDecoration(color: Color(0xffe6faf1)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50.w,
+                      height: 9.h,
+                      child: paymentMode(),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        if (_addCartController.selectPaymentMode.value ==
+                            'paynow') {
+                          await _addCartController.createRazorPayOrder(
+                              storeId:
+                                  _addCartController.store.value?.sId ?? '',
+                              amount: _addCartController
+                                      .getOrderConfirmPageDataModel
+                                      .value
+                                      ?.data
+                                      ?.total
+                                      ?.toDouble() ??
+                                  00);
+                          if (_addCartController
+                                  .createRazorpayResponseModel.value !=
+                              null) {
+                            launchPayment(
+                                _addCartController.getOrderConfirmPageDataModel
+                                        .value?.data?.total
+                                        ?.toInt() ??
+                                    00,
+                                _addCartController.createRazorpayResponseModel
+                                        .value?.orderId ??
+                                    '');
+                          } else {
+                            Get.showSnackbar(GetBar(
+                              message: "failed to create razor order",
+                              duration: Duration(seconds: 2),
+                            ));
+                          }
+                        } else {
+                          finalPlaceOrder();
+                        }
+                      },
+                      child: Container(
+                        width: 40.w,
+                        height: 6.h,
+                        decoration: BoxDecoration(
+                          color: AppConst.darkGreen,
+                          border:
+                              Border.all(width: 1, color: AppConst.darkGreen),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                            child: Text(
+                          (_addCartController.selectPaymentMode.value ==
+                                  "paybycash")
+                              ? "Pay Cash \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.total ?? 0}"
+                              : "Pay \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.total ?? 0}",
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.white,
+                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        )),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Obx(
+          //   () => GestureDetector(
+          //     onTap: () async {
+          //       if (_addCartController.selectPaymentMode.value == 'paynow') {
+          //         await _addCartController.createRazorPayOrder(
+          //             storeId: _addCartController.store.value?.sId ?? '',
+          //             amount: _addCartController
+          //                     .getOrderConfirmPageDataModel.value?.data?.total
+          //                     ?.toDouble() ??
+          //                 00);
+          //         if (_addCartController.createRazorpayResponseModel.value !=
+          //             null) {
+          //           launchPayment(
+          //               _addCartController.getOrderConfirmPageDataModel.value
+          //                       ?.data?.total
+          //                       ?.toInt() ??
+          //                   00,
+          //               _addCartController
+          //                       .createRazorpayResponseModel.value?.orderId ??
+          //                   '');
+          //         } else {
+          //           Get.showSnackbar(GetBar(
+          //             message: "failed to create razor order",
+          //             duration: Duration(seconds: 2),
+          //           ));
+          //         }
+          //       } else {
+          //         finalPlaceOrder();
+          //       }
+          //     },
+          //     // onTap: onTap,
+          //     child: Container(
+          //       decoration: BoxDecoration(
+          //         color: AppConst.kSecondaryColor,
+          //         borderRadius: BorderRadius.circular(6),
+          //       ),
+          //       height: SizeUtils.verticalBlockSize * 6,
+          //       child: Padding(
+          //         padding: EdgeInsets.symmetric(
+          //           horizontal: SizeUtils.horizontalBlockSize * 2,
+          //         ),
+          //         child: Row(
+          //           children: [
+          //             Expanded(
+          //               child: Center(
+          //                 child: Text(
+          //                   "Go to CheckOut",
+          //                   style: TextStyle(
+          //                     color: AppConst.white,
+          //                     fontSize: SizeUtils.horizontalBlockSize * 4,
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             Padding(
+          //               padding: const EdgeInsets.all(8.0),
+          //               child: Container(
+          //                 decoration: BoxDecoration(
+          //                   color: AppConst.darkGrey,
+          //                   borderRadius: BorderRadius.circular(6),
+          //                 ),
+          //                 child: Center(
+          //                   child: Padding(
+          //                     padding: EdgeInsets.symmetric(
+          //                         horizontal:
+          //                             SizeUtils.horizontalBlockSize * 3,
+          //                         vertical: SizeUtils.verticalBlockSize * 1),
+          //                     child: Text(
+          //                       "\u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.total.toString() ?? ''}",
+          //                       style: TextStyle(
+          //                         color: AppConst.white,
+          //                         fontSize: SizeUtils.horizontalBlockSize * 3,
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+        ],
       ),
     );
   }
@@ -479,9 +568,9 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       _addCartController.selectAddressIndex.value = addresses;
       await _addCartController.selectCartLocation(
           addresses: addresses, cardId: _addCartController.cartId.value);
-      await _addCartController.getCartPageInformation(
-        storeId: _addCartController.store.value?.sId ?? '',
-      );
+      // await _addCartController.getCartPageInformation(
+      //   storeId: _addCartController.store.value?.sId ?? '',
+      // );
 
       _addCartController.formatDate();
       _addCartController.selectExpendTile.value = 1;
@@ -494,22 +583,60 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   Widget paymentMode() {
     return Obx(
       () => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RadioListTile(
-            title: Text("Pay Now"),
-            value: "paynow",
-            groupValue: _addCartController.selectPaymentMode.value,
-            onChanged: (value) {
-              _addCartController.selectPaymentMode.value = value.toString();
-            },
+          Container(
+            height: 4.h,
+            child: Row(
+              children: [
+                Radio<String>(
+                  activeColor: AppConst.darkGreen,
+                  value: "paybycash",
+                  groupValue: _addCartController.selectPaymentMode.value,
+                  onChanged: (value) {
+                    _addCartController.selectPaymentMode.value =
+                        value.toString();
+                  },
+                ),
+                Text(
+                  "Pay by Cash",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                  ),
+                )
+              ],
+            ),
           ),
-          RadioListTile(
-            title: Text("Pay by Cash"),
-            value: "paybycash",
-            groupValue: _addCartController.selectPaymentMode.value,
-            onChanged: (value) {
-              _addCartController.selectPaymentMode.value = value.toString();
-            },
+          Container(
+            height: 4.h,
+            child: Row(
+              children: [
+                Radio<String>(
+                  activeColor: AppConst.darkGreen,
+                  value: "paynow",
+                  groupValue: _addCartController.selectPaymentMode.value,
+                  onChanged: (value) {
+                    _addCartController.selectPaymentMode.value =
+                        value.toString();
+                  },
+                ),
+                Text(
+                  "Pay Now",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -532,7 +659,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           children: [
             Expanded(child: Text("Wallet Amount")),
             Text(
-                "${_addCartController.getCartPageInformationModel.value?.data?.walletAmount ?? 0}"),
+                "${_addCartController.getOrderConfirmPageDataModel.value?.data?.walletAmount ?? 0}"),
           ],
         ),
         Obx(
@@ -589,23 +716,15 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          StringContants.chooseDeliveryTime,
-          style: TextStyle(
-            fontSize: SizeUtils.horizontalBlockSize * 4.5,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 1.5),
-        chooseSecondTimeWidget(),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 1.5),
+        chooseSecondTimeWidget(context),
+        SizedBox(height: 1.h),
         chooseThirdTimeWidget(),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 1.5),
+        SizedBox(height: 1.h),
         button(
           onTap: () {
             if (_addCartController.selectTimeSheetIndex.value == 1) {
               _addCartController.timeSlots.value = _addCartController
-                  .getCartPageInformationModel
+                  .getOrderConfirmPageDataModel
                   .value
                   ?.data
                   ?.deliverySlots?[
@@ -628,82 +747,155 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   }
 
   Widget payView() {
-    return Column(
-      children: [
-        SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow(
-            'Total Amount',
-            (_addCartController.getOrderConfirmPageDataModel.value?.data
-                        ?.previousTotalAmount ??
-                    '0')
-                .toString()),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        Divider(
-          height: 0,
-        ),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow(
-            'Gst Amount',
-            (_addCartController.getOrderConfirmPageDataModel.value?.data
-                        ?.totalGstAmount ??
-                    '0')
-                .toString()),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        Divider(
-          height: 0,
-        ),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow(
-            'Packaging Fee',
-            (_addCartController.getOrderConfirmPageDataModel.value?.data
-                        ?.packagingFee ??
-                    '0')
-                .toString()),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-        bottomRow(
-            'Wallet Amount',
-            (_addCartController.getCartPageInformationModel.value?.data
-                        ?.walletAmount ??
-                    '0')
-                .toString()),
-        SizedBox(height: SizeUtils.horizontalBlockSize * 2),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      child: Column(
+        children: [
+          bottomRow(
+              'Item Subtotal',
+              (_addCartController.getOrderConfirmPageDataModel.value?.data
+                          ?.previousTotalAmount ??
+                      '0')
+                  .toString(),
+              true),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.5.h),
+            child: Container(
+              height: 1,
+              color: AppConst.lightGrey,
+            ),
+          ),
+          bottomRow(
+              'Gst and Packaging',
+              (_addCartController.getOrderConfirmPageDataModel.value?.data
+                          ?.gstAndPackaging ??
+                      '0')
+                  .toString(),
+              true),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.5.h),
+            child: Container(
+              height: 1,
+              color: AppConst.lightGrey,
+            ),
+          ),
+          bottomRow(
+              'bill Discount ',
+              (_addCartController.getOrderConfirmPageDataModel.value?.data
+                          ?.billDiscountOfferAmount ??
+                      '0')
+                  .toString(),
+              false),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.5.h),
+            child: Container(
+              height: 1,
+              color: AppConst.lightGrey,
+            ),
+          ),
+          bottomRow(
+              'Wallet Amount',
+              (_addCartController.getOrderConfirmPageDataModel.value?.data
+                          ?.walletAmount ??
+                      '0')
+                  .toString(),
+              false),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.7.h),
+            child: Container(
+              height: 1,
+              color: AppConst.darkGrey,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total Amount',
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: AppConst.black,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                ),
+              ),
+              Text(
+                " \u{20B9}${(_addCartController.getOrderConfirmPageDataModel.value?.data?.total ?? '0').toString()}",
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: AppConst.black,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                ),
+              ),
+            ],
+          )
+          // bottomRow(
+          //     'Wallet Amount',
+          //     (_addCartController.getOrderConfirmPageDataModel.value?.data
+          //                 ?.walletAmount ??
+          //             '0')
+          //         .toString()),
+        ],
+      ),
     );
   }
 
-  Widget chooseSecondTimeWidget() {
+  Widget chooseSecondTimeWidget(BuildContext context) {
     return Obx(
       () => GestureDetector(
         onTap: () {
           _addCartController.selectTimeSheetIndex.value = 1;
         },
         child: Container(
-          height: SizeUtils.horizontalBlockSize * 16,
+          height: 7.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(8),
+            color: _addCartController.selectTimeSheetIndex.value == 1
+                ? Color(0xffe6faf1)
+                : AppConst.white,
             border: Border.all(
                 color: _addCartController.selectTimeSheetIndex.value == 1
-                    ? AppConst.black
-                    : AppConst.lightGrey),
+                    ? AppConst.green
+                    : AppConst.grey),
           ),
           child: Padding(
-            padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
+            padding: EdgeInsets.only(
+              bottom: 0.5.h,
+              top: 1.h,
+            ),
             child: Row(
               children: [
-                Icon(Icons.directions_car),
-                SizedBox(width: SizeUtils.horizontalBlockSize * 2),
+                Radio<int>(
+                  activeColor: AppConst.darkGreen,
+                  value: (_addCartController.selectTimeSheetIndex.value),
+                  groupValue: 1,
+                  onChanged: (value) {},
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _addCartController.displayHour.value,
+                      "Standard Fast Delivery",
                       style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4),
+                        fontFamily: 'MuseoSans',
+                        color: AppConst.darkGreen,
+                        fontSize: SizeUtils.horizontalBlockSize * 4,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
                     Text(
-                      "Standard",
+                      _addCartController.displayHour.value,
                       style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4),
+                        fontFamily: 'MuseoSans',
+                        color: AppConst.grey,
+                        fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
                   ],
                 )
@@ -717,16 +909,22 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
   Widget chooseThirdTimeWidget() {
     return Container(
-      height: SizeUtils.horizontalBlockSize * 16,
+      height: 7.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
+        color: _addCartController.selectTimeSheetIndex.value == 2
+            ? Color(0xffe6faf1)
+            : AppConst.white,
         border: Border.all(
             color: _addCartController.selectTimeSheetIndex.value == 2
-                ? AppConst.black
-                : AppConst.lightGrey),
+                ? AppConst.green
+                : AppConst.grey),
       ),
       child: Padding(
-        padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 2),
+        padding: EdgeInsets.only(
+          bottom: 0.5.h,
+          top: 1.h,
+        ),
         child: _addCartController.timeTitleCustom.value.isNotEmpty ||
                 _addCartController.timeZoneCustom.value.isNotEmpty
             ? GestureDetector(
@@ -737,57 +935,70 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   color: AppConst.transparent,
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.timer,
-                        color: AppConst.black,
+                      Radio<int>(
+                        activeColor: AppConst.darkGreen,
+                        value: (_addCartController.selectTimeSheetIndex.value),
+                        groupValue: 2,
+                        onChanged: (value) {},
                       ),
-                      SizedBox(width: 2.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(AppRoutes.ScheduleTimeScreen);
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "${_addCartController.timeTitleCustom.value}",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: AppConst.black,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 4),
-                                ),
-                                SizedBox(
-                                  width: SizeUtils.horizontalBlockSize * 2,
-                                ),
-                                Text(
-                                  "${_addCartController.timeZoneCustom.value}",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: AppConst.black,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 4),
-                                ),
-                              ],
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.ScheduleTimeScreen);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Change Time",
+                              style: TextStyle(
+                                  color: AppConst.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: "MuseoSans",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4),
                             ),
-                          ),
-                          SizedBox(
-                            height: SizeUtils.horizontalBlockSize * 1,
-                          ),
-                          Text(
-                            "Change",
-                            style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 4),
-                          ),
-                        ],
+                            GestureDetector(
+                              // onTap: () {
+                              //   Get.toNamed(AppRoutes.ScheduleTimeScreen);
+                              // },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "${_addCartController.timeTitleCustom.value}",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.grey,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 2.w,
+                                  ),
+                                  Text(
+                                    "${_addCartController.timeZoneCustom.value}",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.grey,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -801,18 +1012,37 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   color: AppConst.transparent,
                   child: Row(
                     children: [
-                      Icon(Icons.calendar_today_outlined),
-                      SizedBox(width: SizeUtils.horizontalBlockSize * 2),
-                      Text(
-                        "Schedule a time",
-                        style: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 4),
+                      Radio<int>(
+                        activeColor: AppConst.darkGreen,
+                        value: (_addCartController.selectTimeSheetIndex.value),
+                        groupValue: 2,
+                        onChanged: (value) {},
                       ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Icon(Icons.arrow_forward_ios,
-                          size: SizeUtils.horizontalBlockSize * 4),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Change Time",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.black,
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                          Text(
+                            "Choose Custom Time",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.grey,
+                              fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -821,22 +1051,29 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
     );
   }
 
-  Widget bottomRow(String title, String value) {
+  Widget bottomRow(String title, String value, bool isPlus) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
           style: TextStyle(
-            fontSize: SizeUtils.horizontalBlockSize * 4.5,
-            fontWeight: FontWeight.bold,
+            fontFamily: 'MuseoSans',
+            color: Color(0xff3a3a3a),
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+            fontSize: SizeUtils.horizontalBlockSize * 3.5,
           ),
         ),
         Text(
-          value,
+          isPlus ? " \u{20B9}${value}" : " -\u{20B9}${value}",
           style: TextStyle(
-            fontSize: SizeUtils.horizontalBlockSize * 4.5,
-            fontWeight: FontWeight.bold,
+            fontFamily: 'MuseoSans',
+            color:
+                isPlus ? AppConst.black : AppConst.green, //Color(0xffdd2863),
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.normal,
+            fontSize: SizeUtils.horizontalBlockSize * 3.5,
           ),
         ),
       ],
@@ -849,7 +1086,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       required int key,
       required Widget bottomWidget,
       required bool isEnable}) {
-    return Card(
+    return Container(
       child: IgnorePointer(
         ignoring: !isEnable,
         child: ExpansionTile(
@@ -865,7 +1102,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
             children: [
               Icon(
                 iconData,
-                color: isEnable ? AppConst.themeBlue : AppConst.grey,
+                size: 3.h,
+                color: isEnable ? AppConst.black : AppConst.grey,
               ),
               SizedBox(
                 width: SizeUtils.verticalBlockSize * 1,
@@ -876,9 +1114,11 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                    fontWeight: FontWeight.bold,
-                    color: isEnable ? null : AppConst.grey,
+                    fontFamily: 'MuseoSans',
+                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                    color: isEnable ? AppConst.black : AppConst.grey,
                   ),
                 ),
               ),
@@ -896,22 +1136,27 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
   Widget button({required GestureTapCallback onTap, required String text}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.symmetric(vertical: 0.5.h),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           height: SizeUtils.horizontalBlockSize * 12,
           decoration: BoxDecoration(
-            color: AppConst.kSecondaryColor,
+            color: AppConst.darkGreen,
             borderRadius: BorderRadius.circular(6),
           ),
           child: Center(
-              child: Text(
-            text,
-            style: TextStyle(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
                 color: AppConst.white,
-                fontSize: SizeUtils.horizontalBlockSize * 4),
-          )),
+                fontSize: SizeUtils.horizontalBlockSize * 4,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -933,4 +1178,328 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       log('e :$e');
     }
   }
+}
+
+class DisplayGuaranteeCard extends StatelessWidget {
+  const DisplayGuaranteeCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(left: 2.w, right: 4.w),
+                  height: 5.h,
+                  width: 10.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    // color: AppConst.white
+                  ),
+                  child: Image.asset(
+                    "assets/images/bestoffer.png",
+                    fit: BoxFit.contain,
+                  )),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "100% satisfaction guarantee",
+                    style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: Color(0xff2b78c6),
+                        fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: -0.7),
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Place your order with peace of mind.",
+                        style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.grey,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                            letterSpacing: -0.3),
+                      ),
+                      Icon(
+                        Icons.info,
+                        color: AppConst.grey,
+                        size: 2.h,
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.w),
+            child: Container(
+              padding: EdgeInsets.only(left: 2.w, top: 1.h, right: 2.w),
+              height: 9.h,
+              width: 98.w,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  color: AppConst.veryLightGrey),
+              child: RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                  text:
+                      "By placing your order you agree to be bound by the bloyal ",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.grey,
+                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+                TextSpan(
+                  text: "Terms of Services ",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.green,
+                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+                TextSpan(
+                  text: "and ",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.grey,
+                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+                TextSpan(
+                  text: "Privacy Policy ",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.green,
+                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+                TextSpan(
+                  text:
+                      ". Your Statement will refelect the final order total after order completion. To know ",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.grey,
+                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+                TextSpan(
+                  text: "Learn more..",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.green,
+                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
+                )
+              ])),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class CheckoutWalletCard extends StatelessWidget {
+  CheckoutWalletCard(
+      {Key? key, this.ID, this.balance, this.isSelected, this.name})
+      : super(key: key);
+  String? name;
+  String? ID;
+  num? balance;
+  bool? isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 20.h,
+      width: 100.w,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: AppConst.veryLightGrey),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
+        child: Column(
+          children: [
+            Container(
+              height: 15.h,
+              width: 100.w,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Color(0xff36ced8)),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Container(
+                        height: 9.h,
+                        width: 20.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppConst.white.withOpacity(0.3),
+                        ),
+                        child: Center(
+                          child: Text(
+                            (name ?? "S").substring(0, 1),
+                            // "S",
+                            style: TextStyle(
+                              color: AppConst.white,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "MuseoSans",
+                              fontStyle: FontStyle.normal,
+                              fontSize: SizeUtils.horizontalBlockSize * 11,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            // height: 5.h,
+                            width: 40.w,
+                            child: Text(
+                              (name ?? ""),
+                              // "Sreeja Kirana & GeneralSreeja Kirana & General",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: const Color(0xff006a71),
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "MuseoSans",
+                                fontStyle: FontStyle.normal,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 0.5.h,
+                          ),
+                          Text(
+                            "ID: ${ID?.substring((ID ?? "123456").length - 6) ?? "12345"}",
+                            style: TextStyle(
+                              color: const Color(0xff00878f),
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "MuseoSans",
+                              fontStyle: FontStyle.normal,
+                              fontSize: SizeUtils.horizontalBlockSize * 3.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      ClipPath(
+                        clipper: Clip1Clipper(),
+                        child: Container(
+                          height: 12.h,
+                          width: 28.w,
+                          decoration: BoxDecoration(color: Color(0xffe1ffa2)),
+                          child: Center(
+                            child: RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                text: "Balance\n ",
+                                style: TextStyle(
+                                  color: const Color(0xff6fa400),
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "MuseoSans",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                ),
+                              ),
+                              TextSpan(
+                                  text: "\u{20B9}${balance ?? 0}", // "₹130",
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: Color(0xff6fa400),
+                                    fontSize: SizeUtils.horizontalBlockSize * 6,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                            ])),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Text(
+                    'Use wallet & Save your money',
+                    style: TextStyle(
+                      color: Color(0xff008890),
+                      fontSize: SizeUtils.horizontalBlockSize * 3.3,
+                      fontFamily: 'MuseoSans',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  )
+                ],
+              ),
+            ),
+            Spacer(),
+            Text("Your Wallet has been applied. Tap to unselect",
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: Color(0xffdd2863),
+                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Clip1Clipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    // path.lineTo(0, size.height);
+    path.quadraticBezierTo(0, size.height, 0, 0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }

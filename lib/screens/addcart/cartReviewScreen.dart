@@ -4,8 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/widgets/copied/confirm_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -56,19 +58,24 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: AppConst.white,
+            statusBarIconBrightness: Brightness.dark),
         elevation: 1,
         // automaticallyImplyLeading: false,
         // leading: Padding(
         //   padding: EdgeInsets.only(left: SizeUtils.horizontalBlockSize * 1.8),
         //   child: InkWell(
         //     onTap: () async {
+        //       _addCartController.refresh();
         //       Get.back();
+        //       // handleBackPressed();
         //       // await _exploreController.getStoreData(id: _addCartController.store.value?.sId ?? '');
         //     },
         //     child: Icon(
-        //       Icons.clear,
+        //       Icons.arrow_back,
         //       color: AppConst.black,
-        //       size: SizeUtils.horizontalBlockSize * 7.65,
+        //       size: 3.5.h,
         //     ),
         //   ),
         // ),
@@ -1437,12 +1444,16 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                             right: 2.w,
                                             top: 1.h),
                                         height: ((_addCartController
-                                                        .cartLocationModel
-                                                        .value
-                                                        ?.addresses
-                                                        ?.length ??
-                                                    0) >
-                                                0
+                                                            .cartLocationModel
+                                                            .value
+                                                            ?.addresses
+                                                            ?.length ??
+                                                        0) >
+                                                    0 ||
+                                                _addCartController
+                                                        .selectAddress.value !=
+                                                    ""
+
                                             // ||
                                             // ((_addCartController
                                             //             .cartLocationModel
@@ -1470,12 +1481,15 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                           ],
                                         ),
                                         child: ((_addCartController
-                                                        .cartLocationModel
-                                                        .value
-                                                        ?.addresses
-                                                        ?.length ??
-                                                    0) >
-                                                0
+                                                            .cartLocationModel
+                                                            .value
+                                                            ?.addresses
+                                                            ?.length ??
+                                                        0) >
+                                                    0 ||
+                                                _addCartController
+                                                        .selectAddress.value !=
+                                                    ""
                                             // ||
                                             // ((_addCartController
                                             //             .cartLocationModel
@@ -1595,8 +1609,42 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                   Spacer(),
                                                   GestureDetector(
                                                     onTap: () async {
-                                                      Get.toNamed(AppRoutes
-                                                          .orderCheckOutScreen);
+                                                      Get.toNamed(
+                                                        AppRoutes
+                                                            .orderCheckOutScreen,
+                                                        arguments: {
+                                                          'storeName':
+                                                              storeName,
+                                                        },
+                                                      );
+                                                      // );
+                                                      await _addCartController.getOrderConfirmPageData(
+                                                          storeId:
+                                                              _addCartController
+                                                                      .store
+                                                                      .value
+                                                                      ?.sId ??
+                                                                  "",
+                                                          distance: 0,
+                                                          products:
+                                                              _addCartController
+                                                                  .reviewCart
+                                                                  .value
+                                                                  ?.data
+                                                                  ?.products,
+                                                          inventories:
+                                                              _addCartController
+                                                                  .reviewCart
+                                                                  .value
+                                                                  ?.data
+                                                                  ?.inventories,
+                                                          walletAmount:
+                                                              _addCartController
+                                                                      .reviewCart
+                                                                      .value
+                                                                      ?.data
+                                                                      ?.walletAmount ??
+                                                                  0.0);
                                                     },
                                                     child: CheckOutButton(),
                                                   ),
@@ -2097,9 +2145,9 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
       _addCartController.selectAddressIndex.value = addresses;
       await _addCartController.selectCartLocation(
           addresses: addresses, cardId: _addCartController.cartId.value);
-      await _addCartController.getCartPageInformation(
-        storeId: _addCartController.store.value?.sId ?? '',
-      );
+      // await _addCartController.getCartPageInformation(
+      //   storeId: _addCartController.store.value?.sId ?? '',
+      // );
 
       _addCartController.formatDate();
       _addCartController.selectExpendTile.value = 1;

@@ -1816,43 +1816,43 @@ data{
     ''',
   );
 
-  static final getCartPageInformation = new GraphQLQuery(
-    name: 'getCartPageInformation',
-    query: r'''
-  query($store_id: ID){
-  getCartPageInformation(store_id: $store_id){
-    error
-    msg
-    data{
-      bill_discount_offer_status
-      bill_discount_offer_target
-      bill_discount_offer_amount
-      wallet_amount
-      delivery_slots{
-        _id
-        day
-      
-        slots{
-          _id
-          cut_off_time{
-            hour
-            minute
-          }
-          start_time{
-            hour
-            minute
-          }
-          end_time{
-            hour
-            minute
-          }
-        }
-      }
-    }
-  }
-}
-    ''',
-  );
+//   static final getCartPageInformation = new GraphQLQuery(
+//     name: 'getCartPageInformation',
+//     query: r'''
+//   query($store_id: ID){
+//   getCartPageInformation(store_id: $store_id){
+//     error
+//     msg
+//     data{
+//       bill_discount_offer_status
+//       bill_discount_offer_target
+//       bill_discount_offer_amount
+//       wallet_amount
+//       delivery_slots{
+//         _id
+//         day
+
+//         slots{
+//           _id
+//           cut_off_time{
+//             hour
+//             minute
+//           }
+//           start_time{
+//             hour
+//             minute
+//           }
+//           end_time{
+//             hour
+//             minute
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+//     ''',
+//   );
 
   static final getOrderConfirmPageData = new GraphQLQuery(
     name: 'getOrderConfirmPageData',
@@ -1875,26 +1875,27 @@ data{
       gst_and_packaging
       packaging_fee
       delivery_fee
-      delivery_slots {
+         delivery_slots{
+        _id
         day
-        slots {
+      
+        slots{
           _id
-          start_time {
-            hour
-            minute
-          }
           cut_off_time{
             hour
             minute
           }
-          end_time {
+          start_time{
             hour
             minute
           }
-          status
+          end_time{
+            hour
+            minute
+          }
         }
-        status
       }
+     
       wallet_amount
       bill_discount_offer_amount
       bill_discount_offer_status

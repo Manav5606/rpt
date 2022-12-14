@@ -167,17 +167,20 @@ class AllModifiedItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var foundItemCount = ((order?.products
-            ?.where((c) => c.status == "modified")
-            .toList()
-            .length)! +
+                ?.where((c) => c.status == "modified")
+                .toList()
+                .length ??
+            0) +
         (order?.rawItems
-            ?.where((c) => c.status == "modified")
-            .toList()
-            .length)! +
+                ?.where((c) => c.status == "modified")
+                .toList()
+                .length ??
+            0) +
         (order?.inventories
-            ?.where((c) => c.status == "modified")
-            .toList()
-            .length)!);
+                ?.where((c) => c.status == "modified")
+                .toList()
+                .length ??
+            0));
     return foundItemCount != 0
         ? Column(
             children: [
@@ -214,10 +217,11 @@ class AllModifiedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.products!
-                          .where((c) => c.status == "modified")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.products
+                              ?.where((c) => c.status == "modified")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return ModifiedItemsList(
                           name: (order?.products?[index].name),
@@ -243,10 +247,11 @@ class AllModifiedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.inventories!
-                          .where((c) => c.status == "modified")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.inventories
+                              ?.where((c) => c.status == "modified")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return ModifiedItemsList(
                           name: (order?.inventories?[index].name),
@@ -269,10 +274,11 @@ class AllModifiedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.rawItems!
-                          .where((c) => c.status == "modified")
-                          .toList()
-                          .length),
+                      itemCount: (order?.rawItems
+                              ?.where((c) => c.status == "modified")
+                              .toList()
+                              .length ??
+                          0),
                       itemBuilder: (BuildContext context, int index) {
                         return ModifiedItemsList(
                           name: (order?.rawItems?[index].item),
@@ -453,17 +459,20 @@ class AllReplacedItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var foundItemCount = ((order?.products
-            ?.where((c) => c.status == "replaced")
-            .toList()
-            .length)! +
+                ?.where((c) => c.status == "replaced")
+                .toList()
+                .length ??
+            0) +
         (order?.rawItems
-            ?.where((c) => c.status == "replaced")
-            .toList()
-            .length)! +
+                ?.where((c) => c.status == "replaced")
+                .toList()
+                .length ??
+            0) +
         (order?.inventories
-            ?.where((c) => c.status == "replaced")
-            .toList()
-            .length)!);
+                ?.where((c) => c.status == "replaced")
+                .toList()
+                .length ??
+            0));
     return foundItemCount != 0
         ? Column(
             children: [
@@ -506,10 +515,11 @@ class AllReplacedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.products!
-                          .where((c) => c.status == "replaced")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.products
+                              ?.where((c) => c.status == "replaced")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return ReplaceItemsList(
                           name: order?.products?[index].name,
@@ -543,10 +553,11 @@ class AllReplacedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.inventories!
-                          .where((c) => c.status == "replaced")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.inventories
+                              ?.where((c) => c.status == "replaced")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return ReplaceItemsList(
                           name: order?.inventories?[index].name,
@@ -577,10 +588,11 @@ class AllReplacedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.rawItems!
-                          .where((c) => c.status == "replaced")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.rawItems
+                              ?.where((c) => c.status == "replaced")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return ReplaceItemsList(
                           name: order?.rawItems?[index].item,
@@ -873,10 +885,11 @@ class AllFoundedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.products!
-                          .where((c) => c.status == "found")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.products
+                              ?.where((c) => c.status == "found")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return FoundItemsList(
                           name: order?.products?[index].name,
@@ -897,10 +910,11 @@ class AllFoundedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.rawItems!
-                          .where((c) => c.status == "found")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.rawItems
+                              ?.where((c) => c.status == "found")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return FoundItemsList(
                           name: order?.rawItems?[index].item,
@@ -921,10 +935,11 @@ class AllFoundedItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.inventories!
-                          .where((c) => c.status == "found")
-                          .toList()
-                          .length),
+                      itemCount: ((order?.inventories
+                              ?.where((c) => c.status == "found")
+                              .toList()
+                              .length ??
+                          0)),
                       itemBuilder: (BuildContext context, int index) {
                         return FoundItemsList(
                           name: order?.inventories?[index].name,
@@ -1064,11 +1079,13 @@ class YetToReviewItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var foundItemCount = ((order?.products
-            ?.where((c) => c.status == null)
-            .toList()
-            .length)! +
-        (order?.rawItems?.where((c) => c.status == null).toList().length)! +
-        (order?.inventories?.where((c) => c.status == null).toList().length)!);
+                ?.where((c) => c.status == null)
+                .toList()
+                .length ??
+            0) +
+        (order?.rawItems?.where((c) => c.status == null).toList().length ?? 0) +
+        (order?.inventories?.where((c) => c.status == null).toList().length ??
+            0));
     return foundItemCount != 0
         ? Column(
             children: [
@@ -1105,10 +1122,11 @@ class YetToReviewItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.products!
-                          .where((c) => c.status == null)
-                          .toList()
-                          .length),
+                      itemCount: (order?.products
+                              ?.where((c) => c.status == null)
+                              .toList()
+                              .length ??
+                          0),
                       itemBuilder: (BuildContext context, int index) {
                         return FoundItemsList(
                           name: order?.products?[index].name,
@@ -1129,10 +1147,11 @@ class YetToReviewItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.rawItems!
-                          .where((c) => c.status == null)
-                          .toList()
-                          .length),
+                      itemCount: (order?.rawItems
+                              ?.where((c) => c.status == null)
+                              .toList()
+                              .length ??
+                          0),
                       itemBuilder: (BuildContext context, int index) {
                         return FoundItemsList(
                           name: order?.rawItems?[index].item,
@@ -1153,10 +1172,11 @@ class YetToReviewItems extends StatelessWidget {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: (order!.inventories!
-                          .where((c) => c.status == null)
-                          .toList()
-                          .length),
+                      itemCount: (order?.inventories
+                              ?.where((c) => c.status == null)
+                              .toList()
+                              .length ??
+                          0),
                       itemBuilder: (BuildContext context, int index) {
                         return FoundItemsList(
                           name: order?.inventories?[index].name,

@@ -832,7 +832,7 @@ class DisplayProductImage extends StatelessWidget {
               logo
                   // chatOrderController.cartIndex.value?.rawItems?[index].logo
                   ??
-                  'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg',
+                  '',
             ),
     );
   }
