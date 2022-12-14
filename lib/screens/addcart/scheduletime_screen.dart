@@ -44,139 +44,197 @@ class ScheduleTimeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: new Icon(
-            Icons.clear,
-            size: SizeUtils.horizontalBlockSize * 6,
-            color: AppConst.black,
-          ),
-          onPressed: () {
-            if (_addCartController.timeTitleCustom.value.isEmpty) {
-              tempText = _addCartController.weekDayList[0].day ?? '';
-              _addCartController.timeTitleCustom.value = tempText;
-            }
-            if (_addCartController.timeZoneCustom.value.isEmpty) {
-              _addCartController.timeZoneCustom.value = getTemp(0);
-            }
-            Get.back();
-          },
-        ),
-        title: Text(
-          'Schedule a time',
-          style: TextStyle(
-            fontSize: SizeUtils.horizontalBlockSize * 5,
-            fontWeight: FontWeight.w600,
-            color: AppConst.black,
-          ),
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        // leading: IconButton(
+        //   icon: new Icon(
+        //     Icons.clear,
+        //     size: SizeUtils.horizontalBlockSize * 6,
+        //     color: AppConst.black,
+        //   ),
+        //   onPressed: () {
+        //     if (_addCartController.timeTitleCustom.value.isEmpty) {
+        //       tempText = _addCartController.weekDayList[0].day ?? '';
+        //       _addCartController.timeTitleCustom.value = tempText;
+        //     }
+        //     if (_addCartController.timeZoneCustom.value.isEmpty) {
+        //       _addCartController.timeZoneCustom.value = getTemp(0);
+        //     }
+        //     Get.back();
+        //   },
+        // ),
+        title: Row(
+          children: [
+            SizedBox(
+              width: 2.w,
+            ),
+            Text(
+              'Change Time',
+              style: TextStyle(
+                fontSize: SizeUtils.horizontalBlockSize * 5,
+                fontWeight: FontWeight.w600,
+                color: AppConst.black,
+              ),
+            ),
+            Spacer(),
+            IconButton(
+              icon: new Icon(
+                Icons.clear,
+                size: SizeUtils.horizontalBlockSize * 6,
+                color: AppConst.black,
+              ),
+              onPressed: () {
+                if (_addCartController.timeTitleCustom.value.isEmpty) {
+                  tempText = _addCartController.weekDayList[0].day ?? '';
+                  _addCartController.timeTitleCustom.value = tempText;
+                }
+                if (_addCartController.timeZoneCustom.value.isEmpty) {
+                  _addCartController.timeZoneCustom.value = getTemp(0);
+                }
+                Get.back();
+              },
+            ),
+          ],
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: SizeUtils.verticalBlockSize * 2,
-            ),
-            _daySelection(),
-            SizedBox(
-              height: SizeUtils.verticalBlockSize * 1,
-            ),
-            // _timeSlotList(),
-            Obx(
-              () => Padding(
-                padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _addCartController
-                            .getOrderConfirmPageDataModel
-                            .value
-                            ?.data
-                            ?.deliverySlots?[
-                                _addCartController.dayIndexForTimeSlot.value]
-                            .slots
-                            ?.length ??
-                        0,
-                    itemBuilder: (context, index) {
-                      return Obx(
-                        () {
-                          return GestureDetector(
-                            onTap: () {
-                              if (_addCartController.selectedTimeIndex.value ==
-                                  index) {
-                                _addCartController.selectedTimeIndex.value = -1;
-                              } else {
-                                _addCartController.selectedTimeIndex.value =
-                                    index;
-
-                                _addCartController
-                                        .dayTimeSlots.value?.startTime =
-                                    _addCartController
-                                        .getOrderConfirmPageDataModel
-                                        .value
-                                        ?.data
-                                        ?.deliverySlots?[int.parse(
-                                            _addCartController
-                                                .currentDay.value)]
-                                        .slots?[index]
-                                        .startTime;
-                                _addCartController.dayTimeSlots.value?.endTime =
-                                    _addCartController
-                                        .getOrderConfirmPageDataModel
-                                        .value
-                                        ?.data
-                                        ?.deliverySlots?[int.parse(
-                                            _addCartController
-                                                .currentDay.value)]
-                                        .slots?[index]
-                                        .endTime;
-
-                                _addCartController
-                                        .dayTimeSlots.value?.cutOffTime =
-                                    _addCartController
-                                        .getOrderConfirmPageDataModel
-                                        .value
-                                        ?.data
-                                        ?.deliverySlots?[int.parse(
-                                            _addCartController
-                                                .currentDay.value)]
-                                        .slots![index]
-                                        .cutOffTime;
-
-                                _addCartController.timeZoneCustom.value =
-                                    getTemp(index);
-                              }
-                            },
-                            child: Container(
-                              color: AppConst.transparent,
-                              child: Row(
-                                children: [
-                                  IgnorePointer(
-                                    child: Checkbox(
-                                      value: _addCartController
-                                              .selectedTimeIndex.value ==
-                                          index,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        getTemp(index),
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 1.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _daySelection(),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 1.h),
+                child: Container(
+                  height: 1.2.w,
+                  color: AppConst.veryLightGrey,
+                ),
               ),
-            )
-          ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.h),
+                child: Text("Choose your desired Time Slot",
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: AppConst.black,
+                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+                    )),
+              ),
+              // _timeSlotList(),
+              Obx(
+                () => Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: _addCartController
+                              .getOrderConfirmPageDataModel
+                              .value
+                              ?.data
+                              ?.deliverySlots?[
+                                  _addCartController.dayIndexForTimeSlot.value]
+                              .slots
+                              ?.length ??
+                          0,
+                      itemBuilder: (context, index) {
+                        return Obx(
+                          () {
+                            return GestureDetector(
+                              onTap: () {
+                                if (_addCartController
+                                        .selectedTimeIndex.value ==
+                                    index) {
+                                  _addCartController.selectedTimeIndex.value =
+                                      -1;
+                                } else {
+                                  _addCartController.selectedTimeIndex.value =
+                                      index;
+
+                                  _addCartController
+                                          .dayTimeSlots.value?.startTime =
+                                      _addCartController
+                                          .getOrderConfirmPageDataModel
+                                          .value
+                                          ?.data
+                                          ?.deliverySlots?[int.parse(
+                                              _addCartController
+                                                  .currentDay.value)]
+                                          .slots?[index]
+                                          .startTime;
+                                  _addCartController
+                                          .dayTimeSlots.value?.endTime =
+                                      _addCartController
+                                          .getOrderConfirmPageDataModel
+                                          .value
+                                          ?.data
+                                          ?.deliverySlots?[int.parse(
+                                              _addCartController
+                                                  .currentDay.value)]
+                                          .slots?[index]
+                                          .endTime;
+
+                                  _addCartController
+                                          .dayTimeSlots.value?.cutOffTime =
+                                      _addCartController
+                                          .getOrderConfirmPageDataModel
+                                          .value
+                                          ?.data
+                                          ?.deliverySlots?[int.parse(
+                                              _addCartController
+                                                  .currentDay.value)]
+                                          .slots![index]
+                                          .cutOffTime;
+
+                                  _addCartController.timeZoneCustom.value =
+                                      getTemp(index);
+                                }
+                              },
+                              child: Container(
+                                height: 5.h,
+                                child: Row(
+                                  children: [
+                                    IgnorePointer(
+                                      child: Radio(
+                                        activeColor: AppConst.darkGreen,
+                                        value: index,
+                                        groupValue: _addCartController
+                                            .selectedTimeIndex.value,
+                                        onChanged: (value) {
+                                          _addCartController
+                                                  .selectedTimeIndex.value ==
+                                              value;
+                                        },
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          getTemp(index),
+                                          style: TextStyle(
+                                            color: AppConst.black,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    3.8,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "MuseoSans",
+                                            fontStyle: FontStyle.normal,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -195,9 +253,19 @@ class ScheduleTimeScreen extends StatelessWidget {
                     .startTime
                     ?.hour ??
                 0) >
-            1
+            12
         ? "PM - "
         : "AM - ";
+    print("DatesAmPm");
+    print(_addCartController
+        .getOrderConfirmPageDataModel
+        .value
+        ?.data
+        ?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]
+        .slots?[index]
+        .startTime
+        ?.hour);
+
     var date3 =
         "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.minute}";
     var date4 = (_addCartController
@@ -213,6 +281,15 @@ class ScheduleTimeScreen extends StatelessWidget {
             12
         ? "PM"
         : "AM";
+    print("DatesAmPm");
+    print(_addCartController
+        .getOrderConfirmPageDataModel
+        .value
+        ?.data
+        ?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]
+        .slots?[index]
+        .endTime
+        ?.hour);
 
     var lastText = date1 + date2 + date3 + date4;
     return lastText;
@@ -323,92 +400,107 @@ class ScheduleTimeScreen extends StatelessWidget {
   }*/
 
   Widget _daySelection() {
-    return Container(
-      height: SizeUtils.verticalBlockSize * 10,
-      color: AppConst.white,
-      child: ListView.builder(
-        padding: EdgeInsets.symmetric(
-          horizontal: SizeUtils.horizontalBlockSize * 3,
-        ),
-        itemCount: _addCartController.weekDayList.length,
-        addAutomaticKeepAlives: false,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 1),
-            child: Obx(
-              () {
-                return GestureDetector(
-                  onTap: () {
-                    _addCartController.selectedDayIndex.value = index;
-                    _addCartController.dayTimeSlots.value?.day =
-                        _addCartController.deliverySlots[index]?.day ?? 0;
-                    _addCartController.timeTitleCustom.value =
-                        _addCartController.weekDayList[index].day ?? '';
-                    _addCartController.dayIndexForTimeSlot.value =
-                        _addCartController.weekDayList[index].value!;
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: _addCartController.selectedDayIndex.value == index
-                          ? AppConst.green
-                          : AppConst.lightGrey,
-                      borderRadius: BorderRadius.circular(6.0),
-                      border: Border.all(
-                          width: 0.5,
-                          color:
-                              _addCartController.selectedDayIndex.value == index
-                                  ? AppConst.green
-                                  : AppConst.black),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 2.w, vertical: 0.5.h),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              index == 0
-                                  ? "TODAY"
-                                  : _addCartController.weekDayList[index].day
-                                      .toString()
-                                      .substring(0, 3)
-                                      .toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: SizeUtils.horizontalBlockSize * 4,
-                                color:
-                                    _addCartController.selectedDayIndex.value ==
-                                            index
-                                        ? AppConst.white
-                                        : AppConst.green,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.h),
+      child: Container(
+        height: 10.h,
+        color: AppConst.white,
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(
+            horizontal: 3.w,
+          ),
+          itemCount: _addCartController.weekDayList.length,
+          addAutomaticKeepAlives: false,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 2.w,
+              ),
+              child: Obx(
+                () {
+                  return GestureDetector(
+                    onTap: () {
+                      _addCartController.selectedDayIndex.value = index;
+                      _addCartController.dayTimeSlots.value?.day =
+                          _addCartController.deliverySlots[index]?.day ?? 0;
+                      _addCartController.timeTitleCustom.value =
+                          _addCartController.weekDayList[index].day ?? '';
+                      _addCartController.dayIndexForTimeSlot.value =
+                          _addCartController.weekDayList[index].value!;
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color:
+                            _addCartController.selectedDayIndex.value == index
+                                ? AppConst.darkGreen
+                                : AppConst.lightGrey,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            width: 0.5,
+                            color: _addCartController.selectedDayIndex.value ==
+                                    index
+                                ? AppConst.darkGreen
+                                : AppConst.lightGrey),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 2.w, vertical: 0.5.h),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: SizeUtils.verticalBlockSize * 0.5,
                               ),
-                            ),
-                            SizedBox(
-                              height: SizeUtils.verticalBlockSize * 0.5,
-                            ),
-                            Text(
-                              _addCartController.weekDayList[index].date ?? '',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: SizeUtils.horizontalBlockSize * 4,
-                                color:
-                                    _addCartController.selectedDayIndex.value ==
-                                            index
-                                        ? AppConst.white
-                                        : AppConst.green,
+                              Text(
+                                _addCartController.weekDayList[index].date ??
+                                    '',
+                                style: TextStyle(
+                                  fontSize: SizeUtils.horizontalBlockSize * 4,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  color: _addCartController
+                                              .selectedDayIndex.value ==
+                                          index
+                                      ? AppConst.white
+                                      : AppConst.black,
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 0.5.h,
+                              ),
+                              Text(
+                                index == 0
+                                    ? "Today"
+                                    : _addCartController.weekDayList[index].day
+                                        .toString()
+                                        .substring(0, 3)
+                                        .toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  color: _addCartController
+                                              .selectedDayIndex.value ==
+                                          index
+                                      ? AppConst.white
+                                      : AppConst.black,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          );
-        },
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

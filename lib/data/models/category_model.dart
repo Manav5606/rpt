@@ -35,21 +35,21 @@ class CategoryModel {
 
 List<CategoryModel> category = [
   CategoryModel(
-      id: "",
+      id: "61f960000a984e3d1c8f9ecb",
       name: "Fruits and Veg",
       subtitle: "new",
       keywordHelper: "business_type",
       image: "assets/images/Fresh.png",
       isProductAvailable: true),
   CategoryModel(
-      id: "",
+      id: "61f95fcd0a984e3d1c8f9ec9",
       name: "Grocery",
       subtitle: "new",
       keywordHelper: "business_type",
       image: "assets/images/groceryImage.png",
       isProductAvailable: true),
   CategoryModel(
-      id: "",
+      id: "624e503dbd7079a799ffc9e1",
       name: "Meat and Eggs",
       subtitle: "new",
       keywordHelper: "business_type",
