@@ -848,7 +848,7 @@ query($lat: Float, $lng: Float) {
         _id
         name
         logo
-        default_cashback
+        actual_cashback
         calculated_distance
         store_type
         premium
@@ -880,7 +880,7 @@ query($lat: Float, $lng: Float) {
           _id
         name
         logo
-        default_cashback
+        actual_cashback
         calculated_distance
         store_type
         premium
@@ -997,7 +997,7 @@ query($lat: Float, $lng: Float) {
       name
         store_type
         color
-        default_cashback
+        actual_cashback
         default_welcome_offer
         actual_cashback
         promotion_cashback
@@ -1878,9 +1878,11 @@ data{
          delivery_slots{
         _id
         day
+        status
       
         slots{
           _id
+          status
           cut_off_time{
             hour
             minute

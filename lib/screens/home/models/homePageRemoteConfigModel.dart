@@ -55,7 +55,7 @@ class Data {
     sId = json['_id'];
     name = json['name'];
     logo = json['logo'];
-    defaultCashback = json['default_cashback'] ?? 0.0;
+    defaultCashback = json['actual_cashback'] ?? 0;
     calculatedDistance = json['calculated_distance'] ?? 0.0;
     storeType = json['store_type'];
     businesstype = json['businesstype'];
@@ -74,7 +74,7 @@ class Data {
     data['name'] = this.name;
     data['logo'] = this.logo;
     data['businesstype'] = this.businesstype;
-    data['default_cashback'] = this.defaultCashback;
+    data['actual_cashback'] = this.defaultCashback;
     data['calculated_distance'] = this.calculatedDistance;
     data['store_type'] = this.storeType;
     data['premium'] = this.premium;
