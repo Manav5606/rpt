@@ -452,7 +452,7 @@ class BottomWideButton extends StatelessWidget {
                 fontFamily: 'MuseoSans',
                 fontWeight: FontWeight.w600,
                 fontStyle: FontStyle.normal,
-                fontSize: SizeUtils.horizontalBlockSize * 5,
+                fontSize: SizeUtils.horizontalBlockSize * 4,
                 color: AppConst.white,
               ),
             ),
@@ -509,26 +509,38 @@ class EnterNumberScreen extends StatelessWidget {
       _signInController.referralController.text = flag ?? '';
       _signInController.referral.value = flag ?? '';
     }
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        title: Bloyallogo(),
-        centerTitle: true,
-        // actions: [
-        //   Bloyallogo(),
-        // ],
-      ),
-      body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-        child: Obx(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: AppConst.transparent,
+          statusBarIconBrightness: Brightness.dark),
+      child: Scaffold(
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   automaticallyImplyLeading: false,
+        //   title: Bloyallogo(),
+        //   centerTitle: true,
+        //   // actions: [
+        // Bloyallogo(),
+        //   // ],
+        // ),
+
+        body: Obx(
           () => _signInController.isLoading.value
               ? SignInShimmerEffect()
               : SingleChildScrollView(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Container(
+                            height: 70.h,
+                            width: double.infinity,
+                            color: AppConst.yellow,
+                            child: FittedBox(
+                              child: Center(
+                                  child:
+                                      Image.asset("assets/images/noimage.png")),
+                            )),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.center,
                         //   children: [
@@ -544,50 +556,96 @@ class EnterNumberScreen extends StatelessWidget {
                         //     // )
                         //   ],
                         // ),
-                        SizedBox(
-                          height: 35.h,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              " Sign in ",
-                              style: TextStyle(
-                                  fontSize: 20.sp,
+                        // SizedBox(
+                        //   height: 5.h,
+                        // ),
+
+                        Padding(
+                          padding:
+                              EdgeInsets.only(left: 4.w, right: 4.w, top: 6.h),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Sign in",
+                                style: TextStyle(
+                                  color: AppConst.black,
+                                  fontFamily: "MuseoSans",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4.5,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: "MuseoSans_700.otf"),
-                            ),
-                            SizedBox(
-                              height: 4.h,
-                            ),
-                            Container(
-                              height: 50,
-                              child: KeyboardActions(
-                                config: _buildConfig(context),
-                                autoScroll: false,
-                                disableScroll: true,
-                                child: Container(
-                                  height: 50,
-                                  child: SignUpFeilds(
-                                    focusNode: _nodeText1,
-                                    hinttext: "Enter mobile number",
-                                    keyboardtype: TextInputType.number,
-                                    maxlength: 10,
-                                    controller:
-                                        _signInController.phoneNumberController,
-                                    onChange: (value) {
-                                      _signInController.phoneNumber.value =
-                                          value;
-                                    },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              Text(
+                                "Enter your Mobile Number",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppConst.grey,
+                                  fontFamily: "MuseoSans",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                ),
+                              ),
+                              Container(
+                                // height: 6.h,
+                                child: KeyboardActions(
+                                  config: _buildConfig(context),
+                                  autoScroll: false,
+                                  disableScroll: true,
+                                  child: Container(
+                                    // height: 50,
+                                    child: SignUpFeilds(
+                                      prefixIcon: AddPlus91(
+                                          signInController: _signInController),
+                                      focusNode: _nodeText1,
+                                      hinttext: "",
+                                      keyboardtype: TextInputType.number,
+                                      maxlength: 10,
+                                      controller: _signInController
+                                          .phoneNumberController,
+                                      onChange: (value) {
+                                        _signInController.phoneNumber.value =
+                                            value;
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                              Obx(
+                                () => GestureDetector(
+                                    onTap: (_signInController
+                                                .phoneNumber.value.length ==
+                                            10)
+                                        ? () {
+                                            log("aavoooo :0");
+                                            try {
+                                              _signInController
+                                                  .submitPhoneNumber();
+                                            } catch (e) {
+                                              print(e);
+                                            }
+                                            log("aavoooo :1");
+                                          }
+                                        : null,
+                                    child: BottomWideButton(
+                                      text: "Sign in",
+                                      color: _signInController
+                                                  .phoneNumber.value.length ==
+                                              10
+                                          ? AppConst.darkGreen
+                                          : AppConst.grey,
+                                    )),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 27.h,
-                        ),
+                        // SizedBox(
+                        //   height: 27.h,
+                        // ),
                         // Container(
                         //   width: MediaQuery.of(context).size.width,
                         //   // height: 9.h,
@@ -675,34 +733,56 @@ class EnterNumberScreen extends StatelessWidget {
                         // SizedBox(
                         //   height: 2.h,
                         // ),
-                        Obx(
-                          () => GestureDetector(
-                              onTap: (_signInController
-                                          .phoneNumber.value.length ==
-                                      10)
-                                  ? () {
-                                      log("aavoooo :0");
-                                      try {
-                                        _signInController.submitPhoneNumber();
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                      log("aavoooo :1");
-                                    }
-                                  : null,
-                              child: BottomWideButton(
-                                text: "Sign in",
-                                color: _signInController
-                                            .phoneNumber.value.length ==
-                                        10
-                                    ? AppConst.kSecondaryColor
-                                    : AppConst.grey,
-                              )),
-                        ),
                       ]),
                 ),
         ),
-      )),
+      ),
+    );
+  }
+}
+
+class AddPlus91 extends StatelessWidget {
+  const AddPlus91({
+    Key? key,
+    required SignInScreenController signInController,
+  })  : _signInController = signInController,
+        super(key: key);
+
+  final SignInScreenController _signInController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 20.w,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 2.w,
+          ),
+          Icon(
+            Icons.call,
+            size: 3.h,
+            color: _signInController.phoneNumber.value.length == 10
+                ? AppConst.darkGreen
+                : AppConst.grey,
+          ),
+          SizedBox(
+            width: 3.w,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 0.5.h),
+            child: Text(
+              "+91",
+              style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: AppConst.black,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                  fontSize: SizeUtils.horizontalBlockSize * 4),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -16,6 +16,7 @@ class SignUpFeilds extends StatelessWidget {
       this.maxlength,
       this.onChange,
       this.focusNode,
+      this.prefixIcon,
       this.readOnly})
       : super(key: key);
   // String? text;
@@ -26,6 +27,7 @@ class SignUpFeilds extends StatelessWidget {
   int? maxlength;
   bool? readOnly;
   FocusNode? focusNode;
+  Widget? prefixIcon;
   final void Function(String)? onChange;
 
   @override
@@ -70,6 +72,14 @@ class SignUpFeilds extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       fontStyle: FontStyle.normal,
                       fontSize: SizeUtils.horizontalBlockSize * 4),
+                  prefixIcon: prefixIcon,
+                  // (controller?.text.length)! > 0
+                  //     ? TextFieldClearButton(
+                  //         onTap: () {
+                  //           controller?.clear();
+                  //         },
+                  //       )
+                  //     : null,
                   // suffixIcon: (controller?.text.length)! > 0
                   //     ? TextFieldClearButton(
                   //         onTap: () {
