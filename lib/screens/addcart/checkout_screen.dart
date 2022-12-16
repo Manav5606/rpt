@@ -27,21 +27,35 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   final AddCartController _addCartController = Get.find();
   final HomeController _homeController = Get.find();
   late Razorpay _razorpay;
+  late ScrollController _delivertTimeController;
+  late ScrollController _nextDaySlotsController;
   int selectExpandeIndex = 0;
   // bool pickedup = false;
 
   String storeName = '';
+  String storeID = "123456";
 
   @override
   void initState() {
     Map arg = Get.arguments ?? {};
 
     storeName = arg['storeName'] ?? '';
+    storeID = arg['id'] ?? '';
+    _delivertTimeController = ScrollController();
+    _nextDaySlotsController = ScrollController();
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _delivertTimeController.dispose();
+    _nextDaySlotsController.dispose();
+
+    super.dispose();
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -213,7 +227,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                 .value
                                 ?.data
                                 ?.walletAmount,
-                            ID: _addCartController.store.value?.sId,
+                            ID: storeID,
                           )
                         ],
                       ),
@@ -239,46 +253,57 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                     ),
                     InkWell(
                       onTap: () async {
-                        if (_addCartController.selectPaymentMode.value ==
-                            'paynow') {
-                          await _addCartController.createRazorPayOrder(
-                              storeId:
-                                  _addCartController.store.value?.sId ?? '',
-                              amount: _addCartController
-                                      .getOrderConfirmPageDataModel
-                                      .value
-                                      ?.data
-                                      ?.total
-                                      ?.toDouble() ??
-                                  00);
-                          if (_addCartController
-                                  .createRazorpayResponseModel.value !=
-                              null) {
-                            launchPayment(
-                                _addCartController.getOrderConfirmPageDataModel
-                                        .value?.data?.total
-                                        ?.toInt() ??
-                                    00,
-                                _addCartController.createRazorpayResponseModel
-                                        .value?.orderId ??
-                                    '');
+                        if (_addCartController.isTodaySlotsAvailable.value ||
+                            _addCartController.isTomorrowSlotsAvailable.value) {
+                          if (_addCartController.selectPaymentMode.value ==
+                              'paynow') {
+                            await _addCartController.createRazorPayOrder(
+                                storeId:
+                                    _addCartController.store.value?.sId ?? '',
+                                amount: _addCartController
+                                        .getOrderConfirmPageDataModel
+                                        .value
+                                        ?.data
+                                        ?.total
+                                        ?.toDouble() ??
+                                    00);
+                            if (_addCartController
+                                    .createRazorpayResponseModel.value !=
+                                null) {
+                              launchPayment(
+                                  _addCartController
+                                          .getOrderConfirmPageDataModel
+                                          .value
+                                          ?.data
+                                          ?.total
+                                          ?.toInt() ??
+                                      00,
+                                  _addCartController.createRazorpayResponseModel
+                                          .value?.orderId ??
+                                      '');
+                            } else {
+                              Get.showSnackbar(GetBar(
+                                message: "failed to create razor order",
+                                duration: Duration(seconds: 2),
+                              ));
+                            }
                           } else {
-                            Get.showSnackbar(GetBar(
-                              message: "failed to create razor order",
-                              duration: Duration(seconds: 2),
-                            ));
+                            finalPlaceOrder();
                           }
-                        } else {
-                          finalPlaceOrder();
                         }
                       },
                       child: Container(
                         width: 40.w,
                         height: 6.h,
                         decoration: BoxDecoration(
-                          color: AppConst.darkGreen,
+                          color:
+                              (_addCartController.isTodaySlotsAvailable.value ||
+                                      _addCartController
+                                          .isTomorrowSlotsAvailable.value)
+                                  ? AppConst.darkGreen
+                                  : AppConst.grey,
                           border:
-                              Border.all(width: 1, color: AppConst.darkGreen),
+                              Border.all(width: 0.5, color: AppConst.darkGreen),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Center(
@@ -718,29 +743,36 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
       children: [
         chooseSecondTimeWidget(context),
         SizedBox(height: 1.h),
-        chooseThirdTimeWidget(),
+        chooseThirdTimeWidget1(),
         SizedBox(height: 1.h),
         button(
           onTap: () {
-            if (_addCartController.selectTimeSheetIndex.value == 1) {
-              _addCartController.timeSlots.value = _addCartController
-                  .getOrderConfirmPageDataModel
-                  .value
-                  ?.data
-                  ?.deliverySlots?[
-                      int.parse(_addCartController.currentDay.value)]
-                  .slots
-                  ?.first;
-              _addCartController.deliveryMessage.value =
-                  _addCartController.displayHour.value;
-              _addCartController.selectExpendTile.value = 3;
-            } else {
-              _addCartController.deliveryMessage.value =
-                  "${_addCartController.timeZoneCustom.value}  ${_addCartController.timeTitleCustom.value}";
-              _addCartController.selectExpendTile.value = 3;
+            if (_addCartController.isTodaySlotsAvailable.value ||
+                _addCartController.isTomorrowSlotsAvailable.value) {
+              if (_addCartController.selectTimeSheetIndex.value == 1) {
+                _addCartController.timeSlots.value = _addCartController
+                    .getOrderConfirmPageDataModel
+                    .value
+                    ?.data
+                    ?.deliverySlots?[
+                        int.parse(_addCartController.currentDay.value)]
+                    .slots
+                    ?.first;
+                _addCartController.deliveryMessage.value =
+                    _addCartController.displayHour.value;
+
+                _addCartController.selectExpendTile.value = 3;
+              } else {
+                _addCartController.deliveryMessage.value =
+                    "${_addCartController.timeZoneCustom.value}  ${_addCartController.timeTitleCustom.value}";
+                _addCartController.selectExpendTile.value = 3;
+              }
             }
           },
-          text: "Choose Time",
+          text: (_addCartController.isTodaySlotsAvailable.value ||
+                  _addCartController.isTomorrowSlotsAvailable.value)
+              ? "Choose Time"
+              : "Delivery Slot not available",
         )
       ],
     );
@@ -849,6 +881,9 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         onTap: () {
           _addCartController.selectTimeSheetIndex.value = 1;
         },
+        onDoubleTap: () {
+          _addCartController.selectTimeSheetIndex.value = 2;
+        },
         child: Container(
           height: 7.h,
           decoration: BoxDecoration(
@@ -905,6 +940,485 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         ),
       ),
     );
+  }
+
+  Widget chooseThirdTimeWidget1() {
+    return Container(
+      height: 18.h,
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(8),
+      //   color: _addCartController.selectTimeSheetIndex.value == 2
+      //       ? Color(0xffe6faf1)
+      //       : AppConst.white,
+      //   border: Border.all(
+      //       color: _addCartController.selectTimeSheetIndex.value == 2
+      //           ? AppConst.green
+      //           : AppConst.grey),
+      // ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _daySelection1(),
+          SizedBox(
+            height: 1.h,
+          ),
+          ((_addCartController.isTodaySlotsAvailable.value &&
+                      _addCartController.selectedDayIndex.value == 0) &&
+                  ((_addCartController.remainingSlotForDay != null &&
+                      _addCartController.remainingSlotForDay!.length > 0))
+              ? Container(
+                  height: 7.h,
+                  child: Obx(
+                    () => ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                            width: 2.w,
+                          );
+                        },
+                        shrinkWrap: true,
+                        controller: _delivertTimeController,
+                        physics: PageScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            ((_addCartController.remainingSlotForDay?.length ??
+                                    1) -
+                                1),
+                        itemBuilder: (context, index) {
+                          return Obx(
+                            () {
+                              return GestureDetector(
+                                onTap: () {
+                                  _addCartController
+                                      .selectTimeSheetIndex.value = 2;
+                                  if (_addCartController
+                                          .selectedTimeIndex.value ==
+                                      index) {
+                                    _addCartController.selectedTimeIndex.value =
+                                        -1;
+                                  } else {
+                                    _addCartController.selectedTimeIndex.value =
+                                        index;
+
+                                    _addCartController
+                                            .dayTimeSlots.value?.startTime =
+                                        _addCartController
+                                            .remainingSlotForDay![index]
+                                            .startTime;
+
+                                    _addCartController
+                                            .dayTimeSlots.value?.endTime =
+                                        _addCartController
+                                            .remainingSlotForDay![index]
+                                            .endTime;
+
+                                    _addCartController
+                                            .dayTimeSlots.value?.cutOffTime =
+                                        _addCartController
+                                            .remainingSlotForDay![index]
+                                            .cutOffTime;
+                                    _addCartController.dayTimeSlots.value?.day =
+                                        int.parse(_addCartController
+                                            .currentDay.value);
+
+                                    _addCartController.timeZoneCustom.value =
+                                        getTemp1(index);
+                                    _addCartController.dayTimeSlots.refresh();
+                                  }
+                                },
+                                child: Container(
+                                  height: 6.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: _addCartController
+                                                .selectedTimeIndex.value ==
+                                            index
+                                        ? Color(0xffe6faf1)
+                                        : AppConst.white,
+                                    border: Border.all(
+                                        color: _addCartController
+                                                    .selectedTimeIndex.value ==
+                                                index
+                                            ? AppConst.green
+                                            : AppConst.grey),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 2.w),
+                                    child: Row(
+                                      children: [
+                                        IgnorePointer(
+                                          child: Radio(
+                                            activeColor: AppConst.darkGreen,
+                                            value: index,
+                                            groupValue: _addCartController
+                                                .selectedTimeIndex.value,
+                                            onChanged: (value) {
+                                              _addCartController
+                                                      .selectedTimeIndex
+                                                      .value ==
+                                                  value;
+                                            },
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              getTemp1(index),
+                                              style: TextStyle(
+                                                color: AppConst.black,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    3.5,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: "MuseoSans",
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }),
+                  ),
+                )
+              : SizedBox()),
+          ((_addCartController.isTomorrowSlotsAvailable.value &&
+                      _addCartController.selectedDayIndex.value == 1) &&
+                  ((_addCartController.nextDaySlots != null &&
+                      _addCartController.nextDaySlots!.length > 0))
+              ? Container(
+                  height: 7.h,
+                  child: Obx(
+                    () => ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                            width: 2.w,
+                          );
+                        },
+                        shrinkWrap: true,
+                        controller: _nextDaySlotsController,
+                        physics: PageScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            ((_addCartController.nextDaySlots?.length ?? 1) -
+                                1),
+                        itemBuilder: (context, index) {
+                          return Obx(
+                            () {
+                              return GestureDetector(
+                                onTap: () {
+                                  _addCartController
+                                      .selectTimeSheetIndex.value = 2;
+                                  if (_addCartController
+                                          .selectedTimeIndexForNextDay.value ==
+                                      index) {
+                                    _addCartController
+                                        .selectedTimeIndexForNextDay.value = -1;
+                                  } else {
+                                    _addCartController
+                                        .selectedTimeIndexForNextDay
+                                        .value = index;
+
+                                    _addCartController
+                                            .dayTimeSlots.value?.startTime =
+                                        _addCartController
+                                            .nextDaySlots![index].startTime;
+
+                                    _addCartController
+                                            .dayTimeSlots.value?.endTime =
+                                        _addCartController
+                                            .nextDaySlots![index].endTime;
+
+                                    _addCartController
+                                            .dayTimeSlots.value?.cutOffTime =
+                                        _addCartController
+                                            .nextDaySlots![index].cutOffTime;
+
+                                    _addCartController.dayTimeSlots.value?.day =
+                                        (int.parse(_addCartController
+                                                .currentDay.value) +
+                                            1);
+
+                                    _addCartController.timeZoneCustom.value =
+                                        getTempNextDay(index);
+                                    _addCartController.dayTimeSlots.refresh();
+                                  }
+                                },
+                                child: Container(
+                                  height: 6.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: _addCartController
+                                                .selectedTimeIndexForNextDay
+                                                .value ==
+                                            index
+                                        ? Color(0xffe6faf1)
+                                        : AppConst.white,
+                                    border: Border.all(
+                                        color: _addCartController
+                                                    .selectedTimeIndexForNextDay
+                                                    .value ==
+                                                index
+                                            ? AppConst.green
+                                            : AppConst.grey),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 2.w),
+                                    child: Row(
+                                      children: [
+                                        IgnorePointer(
+                                          child: Radio(
+                                            activeColor: AppConst.darkGreen,
+                                            value: index,
+                                            groupValue: _addCartController
+                                                .selectedTimeIndexForNextDay
+                                                .value,
+                                            onChanged: (value) {
+                                              _addCartController
+                                                      .selectedTimeIndexForNextDay
+                                                      .value ==
+                                                  value;
+                                            },
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              getTempNextDay(index),
+                                              style: TextStyle(
+                                                color: AppConst.black,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    3.5,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: "MuseoSans",
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }),
+                  ),
+                )
+              : SizedBox())
+          // Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Icon(Icons.delivery_dining_outlined),
+          //       SizedBox(
+          //         width: 2.w,
+          //       ),
+          //       Text("Delivery Slots Not Available ")
+          //     ],
+          //   )),
+        ],
+      ),
+    );
+  }
+
+  Widget _daySelection1() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 0.5.h),
+      child: InkWell(
+        onTap: (() {
+          _addCartController.selectTimeSheetIndex.value = 2;
+        }),
+        child: Container(
+          height: 6.h,
+          color: AppConst.transparent,
+          child: ListView.builder(
+            padding: EdgeInsets.symmetric(
+              horizontal: 3.w,
+            ),
+            itemCount: 2,
+            addAutomaticKeepAlives: false,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 2.w,
+                ),
+                child: Obx(
+                  () {
+                    return GestureDetector(
+                      onTap: () {
+                        _addCartController.selectedDayIndex.value = index;
+                        _addCartController.dayTimeSlots.value?.day =
+                            _addCartController.deliverySlots[index]?.day ?? 0;
+
+                        _addCartController.timeTitleCustom.value =
+                            _addCartController.weekDayList[index].day ?? '';
+                        _addCartController.dayIndexForTimeSlot.value =
+                            _addCartController.weekDayList[index].value!;
+                      },
+                      child: Container(
+                        width: 40.w,
+                        decoration: BoxDecoration(
+                          color:
+                              // _addCartController.selectedDayIndex.value == index
+                              //     ? AppConst.darkGreen
+                              //     :
+                              AppConst.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              width: 2,
+                              color:
+                                  _addCartController.selectedDayIndex.value ==
+                                          index
+                                      ? AppConst.green
+                                      : AppConst.lightGrey),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 0.5.h),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _addCartController.weekDayList[index].date ??
+                                      '',
+                                  style: TextStyle(
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.5,
+                                    fontFamily: 'MuseoSans',
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                    color:
+                                        // _addCartController
+                                        //             .selectedDayIndex.value ==
+                                        //         index
+                                        //     ? AppConst.white
+                                        // :
+                                        AppConst.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 0.5.h,
+                                ),
+                                Text(
+                                  index == 0
+                                      ? "Today"
+                                      : _addCartController
+                                          .weekDayList[index].day
+                                          .toString()
+                                          .substring(0, 3)
+                                          .toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                                    fontFamily: 'MuseoSans',
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                    color:
+                                        // _addCartController
+                                        //             .selectedDayIndex.value ==
+                                        //         index
+                                        //     ? AppConst.white
+                                        //     :
+                                        AppConst.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  String getTemp1(index) {
+    var date1 =
+        "${(_addCartController.remainingSlotForDay![index].startTime?.hour ?? 0) > 12 ? ((_addCartController.remainingSlotForDay![index].startTime?.hour ?? 0) - 12) : _addCartController.remainingSlotForDay![index].startTime?.hour}:${_addCartController.remainingSlotForDay![index].startTime?.minute}";
+    var date2 =
+        (_addCartController.remainingSlotForDay![index].startTime?.hour ?? 0) >
+                12
+            ? "PM - "
+            : "AM - ";
+
+    var date3 =
+        "${(_addCartController.remainingSlotForDay![index].endTime?.hour ?? 0) > 12 ? ((_addCartController.remainingSlotForDay![index].endTime?.hour ?? 0) - 12) : _addCartController.remainingSlotForDay![index].endTime?.hour}:${_addCartController.remainingSlotForDay![index].endTime?.minute}";
+    var date4 =
+        (_addCartController.remainingSlotForDay![index].endTime?.hour ?? 0) > 12
+            ? "PM"
+            : "AM";
+
+    var lastText = date1 + date2 + date3 + date4;
+    return lastText;
+  }
+
+  String getTempNextDay(index) {
+    var date1 =
+        "${(_addCartController.nextDaySlots![index].startTime?.hour ?? 0) > 12 ? ((_addCartController.nextDaySlots![index].startTime?.hour ?? 0) - 12) : _addCartController.nextDaySlots![index].startTime?.hour}:${_addCartController.nextDaySlots![index].startTime?.minute}";
+    var date2 =
+        (_addCartController.nextDaySlots![index].startTime?.hour ?? 0) > 12
+            ? "PM - "
+            : "AM - ";
+
+    var date3 =
+        "${(_addCartController.nextDaySlots![index].endTime?.hour ?? 0) > 12 ? ((_addCartController.nextDaySlots![index].endTime?.hour ?? 0) - 12) : _addCartController.nextDaySlots![index].endTime?.hour}:${_addCartController.nextDaySlots![index].endTime?.minute}";
+    var date4 =
+        (_addCartController.nextDaySlots![index].endTime?.hour ?? 0) > 12
+            ? "PM"
+            : "AM";
+
+    var lastText = date1 + date2 + date3 + date4;
+    return lastText;
+  }
+
+  String getTemp(index) {
+    var date1 =
+        "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
+    var date2 = (_addCartController
+                    .getOrderConfirmPageDataModel
+                    .value
+                    ?.data
+                    ?.deliverySlots?[
+                        _addCartController.dayIndexForTimeSlot.value]
+                    .slots?[index]
+                    .startTime
+                    ?.hour ??
+                0) >
+            12
+        ? "PM - "
+        : "AM - ";
+
+    var date3 =
+        "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.minute}";
+    var date4 = (_addCartController
+                    .getOrderConfirmPageDataModel
+                    .value
+                    ?.data
+                    ?.deliverySlots?[
+                        _addCartController.dayIndexForTimeSlot.value]
+                    .slots?[index]
+                    .endTime
+                    ?.hour ??
+                0) >
+            12
+        ? "PM"
+        : "AM";
+
+    var lastText = date1 + date2 + date3 + date4;
+    return lastText;
   }
 
   Widget chooseThirdTimeWidget() {
@@ -1142,7 +1656,10 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         child: Container(
           height: SizeUtils.horizontalBlockSize * 12,
           decoration: BoxDecoration(
-            color: AppConst.darkGreen,
+            color: (_addCartController.isTodaySlotsAvailable.value ||
+                    _addCartController.isTomorrowSlotsAvailable.value)
+                ? AppConst.darkGreen
+                : AppConst.grey,
             borderRadius: BorderRadius.circular(6),
           ),
           child: Center(

@@ -8,36 +8,36 @@ import 'package:sizer/sizer.dart';
 class ScheduleTimeScreen extends StatelessWidget {
   final AddCartController _addCartController = Get.find();
 
-  List<TempClass> _tempClassList = [
-    TempClass(
-      time: '1pm - 2pm',
-      amount: '\₹0',
-    ),
-    TempClass(
-      time: '2pm - 4pm',
-      amount: '\₹0',
-    ),
-    TempClass(
-      time: '3pm - 5pm',
-      amount: '\₹0',
-    ),
-    TempClass(
-      time: '4pm - 6pm',
-      amount: '\₹0',
-    ),
-    TempClass(
-      time: '5pm - 7pm',
-      amount: '\₹0',
-    ),
-    TempClass(
-      time: '6pm - 8pm',
-      amount: '\₹0',
-    ),
-    TempClass(
-      time: '7pm - 9pm',
-      amount: '\₹0',
-    ),
-  ];
+  // List<TempClass> _tempClassList = [
+  //   TempClass(
+  //     time: '1pm - 2pm',
+  //     amount: '\₹0',
+  //   ),
+  //   TempClass(
+  //     time: '2pm - 4pm',
+  //     amount: '\₹0',
+  //   ),
+  //   TempClass(
+  //     time: '3pm - 5pm',
+  //     amount: '\₹0',
+  //   ),
+  //   TempClass(
+  //     time: '4pm - 6pm',
+  //     amount: '\₹0',
+  //   ),
+  //   TempClass(
+  //     time: '5pm - 7pm',
+  //     amount: '\₹0',
+  //   ),
+  //   TempClass(
+  //     time: '6pm - 8pm',
+  //     amount: '\₹0',
+  //   ),
+  //   TempClass(
+  //     time: '7pm - 9pm',
+  //     amount: '\₹0',
+  //   ),
+  // ];
   String tempText = '';
 
   @override
@@ -103,7 +103,7 @@ class ScheduleTimeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _daySelection(),
+              _daySelection1(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 1.h),
                 child: Container(
@@ -129,15 +129,20 @@ class ScheduleTimeScreen extends StatelessWidget {
                   child: ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _addCartController
-                              .getOrderConfirmPageDataModel
-                              .value
-                              ?.data
-                              ?.deliverySlots?[
-                                  _addCartController.dayIndexForTimeSlot.value]
-                              .slots
-                              ?.length ??
-                          0,
+                      itemCount:
+                          ((_addCartController.remainingSlotForDay?.length ??
+                                  1) -
+                              1),
+
+                      // _addCartController
+                      //         .getOrderConfirmPageDataModel
+                      //         .value
+                      //         ?.data
+                      //         ?.deliverySlots?[
+                      //             _addCartController.dayIndexForTimeSlot.value]
+                      //         .slots
+                      //         ?.length ??
+                      //     0,
                       itemBuilder: (context, index) {
                         return Obx(
                           () {
@@ -155,40 +160,47 @@ class ScheduleTimeScreen extends StatelessWidget {
                                   _addCartController
                                           .dayTimeSlots.value?.startTime =
                                       _addCartController
-                                          .getOrderConfirmPageDataModel
-                                          .value
-                                          ?.data
-                                          ?.deliverySlots?[int.parse(
-                                              _addCartController
-                                                  .currentDay.value)]
-                                          .slots?[index]
+                                          .remainingSlotForDay![index]
                                           .startTime;
+                                  // _addCartController
+                                  //     .getOrderConfirmPageDataModel
+                                  //     .value
+                                  //     ?.data
+                                  //     ?.deliverySlots?[int.parse(
+                                  //         _addCartController.currentDay.value)]
+                                  //     .slots?[index]
+                                  //     .startTime;
                                   _addCartController
                                           .dayTimeSlots.value?.endTime =
                                       _addCartController
-                                          .getOrderConfirmPageDataModel
-                                          .value
-                                          ?.data
-                                          ?.deliverySlots?[int.parse(
-                                              _addCartController
-                                                  .currentDay.value)]
-                                          .slots?[index]
-                                          .endTime;
+                                          .remainingSlotForDay![index].endTime;
+                                  // _addCartController
+                                  //     .getOrderConfirmPageDataModel
+                                  //     .value
+                                  //     ?.data
+                                  //     ?.deliverySlots?[int.parse(
+                                  //         _addCartController
+                                  //             .currentDay.value)]
+                                  //     .slots?[index]
+                                  //     .endTime;
 
                                   _addCartController
                                           .dayTimeSlots.value?.cutOffTime =
                                       _addCartController
-                                          .getOrderConfirmPageDataModel
-                                          .value
-                                          ?.data
-                                          ?.deliverySlots?[int.parse(
-                                              _addCartController
-                                                  .currentDay.value)]
-                                          .slots![index]
+                                          .remainingSlotForDay![index]
                                           .cutOffTime;
+                                  // _addCartController
+                                  //     .getOrderConfirmPageDataModel
+                                  //     .value
+                                  //     ?.data
+                                  //     ?.deliverySlots?[int.parse(
+                                  //         _addCartController
+                                  //             .currentDay.value)]
+                                  //     .slots![index]
+                                  //     .cutOffTime;
 
                                   _addCartController.timeZoneCustom.value =
-                                      getTemp(index);
+                                      getTemp1(index);
                                 }
                               },
                               child: Container(
@@ -211,7 +223,7 @@ class ScheduleTimeScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
-                                          getTemp(index),
+                                          getTemp1(index),
                                           style: TextStyle(
                                             color: AppConst.black,
                                             fontSize:
@@ -240,6 +252,26 @@ class ScheduleTimeScreen extends StatelessWidget {
     );
   }
 
+  String getTemp1(index) {
+    var date1 =
+        "${(_addCartController.remainingSlotForDay![index].startTime?.hour ?? 0) > 12 ? ((_addCartController.remainingSlotForDay![index].startTime?.hour ?? 0) - 12) : _addCartController.remainingSlotForDay![index].startTime?.hour}:${_addCartController.remainingSlotForDay![index].startTime?.minute}";
+    var date2 =
+        (_addCartController.remainingSlotForDay![index].startTime?.hour ?? 0) >
+                12
+            ? "PM - "
+            : "AM - ";
+
+    var date3 =
+        "${(_addCartController.remainingSlotForDay![index].endTime?.hour ?? 0) > 12 ? ((_addCartController.remainingSlotForDay![index].endTime?.hour ?? 0) - 12) : _addCartController.remainingSlotForDay![index].endTime?.hour}:${_addCartController.remainingSlotForDay![index].endTime?.minute}";
+    var date4 =
+        (_addCartController.remainingSlotForDay![index].endTime?.hour ?? 0) > 12
+            ? "PM"
+            : "AM";
+
+    var lastText = date1 + date2 + date3 + date4;
+    return lastText;
+  }
+
   String getTemp(index) {
     var date1 =
         "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].startTime?.minute}";
@@ -256,15 +288,6 @@ class ScheduleTimeScreen extends StatelessWidget {
             12
         ? "PM - "
         : "AM - ";
-    print("DatesAmPm");
-    print(_addCartController
-        .getOrderConfirmPageDataModel
-        .value
-        ?.data
-        ?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]
-        .slots?[index]
-        .startTime
-        ?.hour);
 
     var date3 =
         "${(_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) > 12 ? ((_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour ?? 0) - 12) : _addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.hour}:${_addCartController.getOrderConfirmPageDataModel.value?.data?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value].slots?[index].endTime?.minute}";
@@ -281,15 +304,6 @@ class ScheduleTimeScreen extends StatelessWidget {
             12
         ? "PM"
         : "AM";
-    print("DatesAmPm");
-    print(_addCartController
-        .getOrderConfirmPageDataModel
-        .value
-        ?.data
-        ?.deliverySlots?[_addCartController.dayIndexForTimeSlot.value]
-        .slots?[index]
-        .endTime
-        ?.hour);
 
     var lastText = date1 + date2 + date3 + date4;
     return lastText;
@@ -430,6 +444,113 @@ class ScheduleTimeScreen extends StatelessWidget {
                           _addCartController.weekDayList[index].value!;
                     },
                     child: Container(
+                      decoration: BoxDecoration(
+                        color:
+                            _addCartController.selectedDayIndex.value == index
+                                ? AppConst.darkGreen
+                                : AppConst.lightGrey,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            width: 0.5,
+                            color: _addCartController.selectedDayIndex.value ==
+                                    index
+                                ? AppConst.darkGreen
+                                : AppConst.lightGrey),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 2.w, vertical: 0.5.h),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: SizeUtils.verticalBlockSize * 0.5,
+                              ),
+                              Text(
+                                _addCartController.weekDayList[index].date ??
+                                    '',
+                                style: TextStyle(
+                                  fontSize: SizeUtils.horizontalBlockSize * 4,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  color: _addCartController
+                                              .selectedDayIndex.value ==
+                                          index
+                                      ? AppConst.white
+                                      : AppConst.black,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 0.5.h,
+                              ),
+                              Text(
+                                index == 0
+                                    ? "Today"
+                                    : _addCartController.weekDayList[index].day
+                                        .toString()
+                                        .substring(0, 3)
+                                        .toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  color: _addCartController
+                                              .selectedDayIndex.value ==
+                                          index
+                                      ? AppConst.white
+                                      : AppConst.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _daySelection1() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.h),
+      child: Container(
+        height: 10.h,
+        color: AppConst.white,
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(
+            horizontal: 3.w,
+          ),
+          itemCount: 2,
+          addAutomaticKeepAlives: false,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 2.w,
+              ),
+              child: Obx(
+                () {
+                  return GestureDetector(
+                    onTap: () {
+                      _addCartController.selectedDayIndex.value = index;
+                      _addCartController.dayTimeSlots.value?.day =
+                          _addCartController.deliverySlots[index]?.day ?? 0;
+                      _addCartController.timeTitleCustom.value =
+                          _addCartController.weekDayList[index].day ?? '';
+                      _addCartController.dayIndexForTimeSlot.value =
+                          _addCartController.weekDayList[index].value!;
+                    },
+                    child: Container(
+                      width: 30.w,
                       decoration: BoxDecoration(
                         color:
                             _addCartController.selectedDayIndex.value == index

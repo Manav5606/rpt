@@ -36,8 +36,10 @@ class AddCartController extends GetxController {
   RxInt currentSelectIndex = 0.obs;
   RxInt selectedDayIndex = 0.obs;
   RxInt selectedTimeIndex = (-1).obs;
+  RxInt selectedTimeIndexForNextDay = (-1).obs;
   RxInt dayIndexForTimeSlot = 0.obs;
   RxInt selectTimeSheetIndex = 1.obs;
+  RxInt selectDayIndex = 1.obs;
   RxInt totalValue = 0.obs;
   RxInt selectExpendTile = 0.obs;
   final currentDate = DateTime.now();
@@ -45,16 +47,20 @@ class AddCartController extends GetxController {
   final dayNameFormatter = DateFormat('EEEE');
   final monthFormatter = DateFormat('MMM');
   RxBool isSelectFirstAddress = true.obs;
+  RxBool isTodaySlotsAvailable = false.obs;
+  RxBool isTomorrowSlotsAvailable = false.obs;
   Rx<Cart?> reviewCart = Cart().obs;
   RxString selectDay = ''.obs;
   RxString currentDay = ''.obs;
   RxString currentHour = ''.obs;
   RxString displayHour = ''.obs;
+  RxString NextDaydisplayHour = ''.obs;
   RxString cartId = ''.obs;
   RxString selectPaymentMode = ''.obs;
   RxString selectWalletMode = 'yes'.obs;
   RxString totalCount = '0'.obs;
   Rx<Carts?> cart = Carts().obs;
+
   List<String> quntityList = [
     '1',
     '2',
@@ -75,12 +81,15 @@ class AddCartController extends GetxController {
   Rx<Store?> store = Store().obs;
   Rx<Slots?> timeSlots = Slots().obs;
   Rx<DayTimeSlots?> dayTimeSlots = DayTimeSlots().obs;
+
   Rx<CreateRazorpayResponse?> createRazorpayResponseModel =
       CreateRazorpayResponse().obs;
   Rx<Addresses?> selectAddressIndex = Addresses().obs;
   Rx<GetOrderConfirmPageData?> getOrderConfirmPageDataModel =
       GetOrderConfirmPageData().obs;
   RxList<DeliverySlots?> deliverySlots = <DeliverySlots>[].obs;
+  RxList<Slots>? remainingSlotForDay = <Slots>[].obs;
+  RxList<Slots>? nextDaySlots = <Slots>[].obs;
 
   void getUserData() {
     if (hiveRepository.hasUser()) {
@@ -90,6 +99,10 @@ class AddCartController extends GetxController {
 
   String formatDate() {
     try {
+      remainingSlotForDay?.clear();
+      remainingSlotForDay?.refresh();
+      nextDaySlots?.clear();
+      nextDaySlots?.refresh();
       DateTime date = DateTime.now();
 
       currentDay.value = date.weekday.toString();
@@ -97,31 +110,142 @@ class AddCartController extends GetxController {
       if (currentDay.value == "7") {
         currentDay.value = "0";
       }
-      getOrderConfirmPageDataModel
-          .value?.data?.deliverySlots?[int.parse(currentDay.value)].slots
-          ?.forEach((element) {
-        if ((element.startTime?.hour ?? 0) >
-            int.parse(currentHour.value.toString())) {
-          displayHour.value = element.startTime?.hour.toString() ?? "";
-          if (int.parse(displayHour.value) >= 12) {
-            displayHour.value = 'By ${int.parse(displayHour.value) - 12} PM';
-          } else {
-            displayHour.value = 'By ${int.parse(displayHour.value)} AM';
-          }
-        } else {
-          currentDay.value = (date.weekday).toString();
-          if (currentDay.value == "7") {
-            currentDay.value = "0";
-          }
-          log('currentDay.value :${currentDay.value}');
-          log('date.weekday.value :${date.weekday}');
-          var timeData = getOrderConfirmPageDataModel.value?.data
-              ?.deliverySlots?[int.parse(currentDay.value)].slots?.first;
+      var CurrentDaySlots = getOrderConfirmPageDataModel
+          .value?.data?.deliverySlots?[int.parse(currentDay.value)].slots;
 
-          displayHour.value =
-              "Tomorrow, ${timeType(timeData?.startTime?.hour.toString())}  -  ${timeType(timeData?.endTime?.hour.toString())}";
+      var CurrentDayStatus = getOrderConfirmPageDataModel
+          .value?.data?.deliverySlots?[int.parse(currentDay.value)].status;
+
+      var NextDaySlots = getOrderConfirmPageDataModel
+          .value?.data?.deliverySlots?[int.parse(currentDay.value) + 1].slots;
+      var NextDaySlotsStatus = getOrderConfirmPageDataModel
+          .value?.data?.deliverySlots?[int.parse(currentDay.value) + 1].status;
+
+      //get todays available slots
+      if (CurrentDayStatus == true) {
+        for (var slots in CurrentDaySlots!) {
+          isTodaySlotsAvailable.value = true;
+
+          if ((slots.startTime?.hour ?? 0) >
+              int.parse(currentHour.value.toString())) {
+            if (slots.status == true) {
+              remainingSlotForDay?.add(slots);
+            }
+          }
         }
-      });
+        //get tomorrows all slots
+        if (NextDaySlotsStatus == true) {
+          for (var slots in NextDaySlots!) {
+            isTomorrowSlotsAvailable.value = true;
+            if (slots.status == true) {
+              nextDaySlots?.add(slots);
+              nextDaySlots?.refresh();
+            }
+          }
+        }
+      }
+//check for todays slots available or not
+      if (CurrentDayStatus == true) {
+        for (var slots in CurrentDaySlots!) {
+          isTodaySlotsAvailable.value = true;
+          //get latest available slot for delivery
+          if ((slots.startTime?.hour ?? 0) >
+              int.parse(currentHour.value.toString())) {
+            remainingSlotForDay?.add(slots);
+            displayHour.value = slots.startTime?.hour.toString() ?? "";
+            if (int.parse(displayHour.value) >= 12) {
+              displayHour.value = 'By ${int.parse(displayHour.value) - 12} PM';
+            } else {
+              displayHour.value = 'By ${int.parse(displayHour.value)} AM';
+            }
+
+            break;
+          } else {
+            currentDay.value = (date.weekday).toString();
+            if (currentDay.value == "7") {
+              currentDay.value = "0";
+            }
+            log('currentDay.value :${currentDay.value}');
+            log('date.weekday.value :${date.weekday}');
+            var timeData = CurrentDaySlots.first;
+
+            displayHour.value =
+                "Tomorrow, ${timeType(timeData.startTime?.hour.toString())}  -  ${timeType(timeData.endTime?.hour.toString())}";
+          }
+        }
+      } else {
+        displayHour.value = 'No slots available for Today';
+        isTodaySlotsAvailable.value = false;
+      }
+//check for tomorrows slots available or not
+      for (var slots in NextDaySlots!) {
+        if (displayHour.value == 'No slots available for Today') {
+          if (NextDaySlotsStatus == true) {
+            isTomorrowSlotsAvailable.value = true;
+            if ((NextDaySlotsStatus == true)
+
+                // (slots.startTime?.hour ?? 0) >
+                //   int.parse(currentHour.value.toString())
+
+                ) {
+              if (slots.status == true) {
+                nextDaySlots?.add(slots);
+                nextDaySlots?.refresh();
+              }
+              NextDaydisplayHour.value = slots.startTime?.hour.toString() ?? "";
+              if (int.parse(NextDaydisplayHour.value) >= 12) {
+                NextDaydisplayHour.value =
+                    'By ${int.parse(NextDaydisplayHour.value) - 12} PM';
+              } else {
+                NextDaydisplayHour.value =
+                    'By ${int.parse(NextDaydisplayHour.value)} AM';
+              }
+              // break;
+            } else {
+              currentDay.value = (date.weekday).toString();
+              if (currentDay.value == "7") {
+                currentDay.value = "0";
+              }
+              log('currentDay.value :${currentDay.value}');
+              log('date.weekday.value :${date.weekday}');
+              var timeData = CurrentDaySlots?.first;
+
+              NextDaydisplayHour.value =
+                  "Tomorrow, ${timeType(timeData?.startTime?.hour.toString())}  -  ${timeType(timeData?.endTime?.hour.toString())}";
+            }
+          } else {
+            displayHour.value = 'No slots available for Today & Tomorrow';
+            isTomorrowSlotsAvailable.value = false;
+          }
+        }
+      }
+
+      // getOrderConfirmPageDataModel
+      //     .value?.data?.deliverySlots?[int.parse(currentDay.value)].slots
+      //     ?.forEach((element) {
+      //   if ((element.startTime?.hour ?? 0) >
+      //       int.parse(currentHour.value.toString())) {
+      //     displayHour.value = element.startTime?.hour.toString() ?? "";
+      //     if (int.parse(displayHour.value) >= 12) {
+      //       displayHour.value = 'By ${int.parse(displayHour.value) - 12} PM';
+      //     } else {
+      //       displayHour.value = 'By ${int.parse(displayHour.value)} AM';
+      //     }
+      //   } else {
+      //     currentDay.value = (date.weekday).toString();
+      //     if (currentDay.value == "7") {
+      //       currentDay.value = "0";
+      //     }
+      //     log('currentDay.value :${currentDay.value}');
+      //     log('date.weekday.value :${date.weekday}');
+      //     var timeData = getOrderConfirmPageDataModel.value?.data
+      //         ?.deliverySlots?[int.parse(currentDay.value)].slots?.first;
+
+      //     displayHour.value =
+      //         "Tomorrow, ${timeType(timeData?.startTime?.hour.toString())}  -  ${timeType(timeData?.endTime?.hour.toString())}";
+      //   }
+      // }
+      // );
 
       log("displayHour.value===${displayHour.value}");
       return DateFormat('H').format(date).toString();
@@ -302,6 +426,7 @@ class AddCartController extends GetxController {
       var inventories}) async {
     try {
       isLoading.value = true;
+
       getOrderConfirmPageDataModel.value =
           await AddCartService.getOrderConfirmPageData(
               storeId: storeId,
@@ -309,7 +434,7 @@ class AddCartController extends GetxController {
               walletAmount: walletAmount,
               products: products,
               inventories: inventories);
-
+      getOrderConfirmPageDataModel.refresh();
       // deliverySlots.addAll(getOrderConfirmPageDataModel.value?.data?.deliverySlots ?? []);
       isLoading.value = false;
     } catch (e, st) {

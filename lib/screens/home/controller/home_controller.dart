@@ -54,6 +54,7 @@ class HomeController extends GetxController {
     try {
       isAllCartLoading.value = true;
       getAllCartsModel.value = await HomeService.getAllCartsData();
+      getAllCartsModel.refresh();
       isAllCartLoading.value = false;
     } catch (e, st) {
       isAllCartLoading.value = false;

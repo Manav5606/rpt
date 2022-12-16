@@ -36,16 +36,19 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DaySelection(int index) {
-      var day = _addCartController.weekDayList[index].day
-          .toString()
-          .substring(0, 3)
-          .toUpperCase();
-      return day;
-    }
+    // DaySelection(int index) {
+    //   var day = _addCartController.weekDayList[index].day
+    //       .toString()
+    //       .substring(0, 3)
+    //       .toUpperCase();
+    //   return day;
+    // }
+
+    List Weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
     var date0 = "${order?.deliverySlot?.day ?? 0}";
-    var DayName = DaySelection(int.parse(date0));
+    // var DayName = DaySelection(int.parse(date0));
+    var DayName = Weekdays[int.parse(date0)];
     var date1 =
         "${((order?.deliverySlot?.startTime?.hour ?? 0) > 12 ? ((order?.deliverySlot?.startTime?.hour ?? 0) - 12) : order?.deliverySlot?.startTime?.hour ?? 0)}${(order?.deliverySlot?.startTime?.minute == 0) ? "" : (":${order?.deliverySlot?.startTime?.minute ?? ""}")}";
 

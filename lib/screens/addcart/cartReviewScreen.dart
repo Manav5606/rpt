@@ -40,6 +40,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
 
   String logo = '';
   String storeName = '';
+  String storeID = "";
 
   // String totalCount = '';
 
@@ -49,6 +50,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
     super.initState();
     Map arg = Get.arguments ?? {};
     logo = arg['logo'] ?? '';
+    storeID = arg['id'] ?? '';
     storeName = arg['storeName'] ?? '';
     _addCartController.totalCount.value = arg['totalCount'].toString();
   }
@@ -409,16 +411,23 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                               ?.products?[i]
                                                               .status ==
                                                           false
-                                                      ? Text(
-                                                          "Item Not Available",
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                            fontSize: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                3,
-                                                          ))
+                                                      ? Container(
+                                                          width: 15.w,
+                                                          child: Text(
+                                                              "Not Available",
+                                                              maxLines: 2,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                fontSize: SizeUtils
+                                                                        .horizontalBlockSize *
+                                                                    3,
+                                                              )),
+                                                        )
                                                       : Obx(
                                                           () => CustomPopMenu(
                                                             title: 'Quantity',
@@ -1615,16 +1624,12 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                         arguments: {
                                                           'storeName':
                                                               storeName,
+                                                          'id': storeID,
                                                         },
                                                       );
                                                       // );
                                                       await _addCartController.getOrderConfirmPageData(
-                                                          storeId:
-                                                              _addCartController
-                                                                      .store
-                                                                      .value
-                                                                      ?.sId ??
-                                                                  "",
+                                                          storeId: storeID,
                                                           distance: 0,
                                                           products:
                                                               _addCartController
@@ -1645,6 +1650,8 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                       ?.data
                                                                       ?.walletAmount ??
                                                                   0.0);
+                                                      _addCartController
+                                                          .formatDate();
                                                     },
                                                     child: CheckOutButton(),
                                                   ),
@@ -2149,7 +2156,6 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
       //   storeId: _addCartController.store.value?.sId ?? '',
       // );
 
-      _addCartController.formatDate();
       _addCartController.selectExpendTile.value = 1;
     } catch (e) {
       _addCartController.selectExpendTile.value = 0;

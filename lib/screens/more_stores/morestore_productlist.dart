@@ -122,6 +122,8 @@ class MoreStoreProductView extends StatelessWidget {
                       arguments: {
                         'logo': _moreStoreController
                             .getStoreDataModel.value?.data?.store?.logo,
+                        'id': _moreStoreController
+                            .getStoreDataModel.value?.data?.store?.sId,
                         'storeName': _moreStoreController
                             .getStoreDataModel.value?.data?.store?.name,
                         'totalCount': _moreStoreController
