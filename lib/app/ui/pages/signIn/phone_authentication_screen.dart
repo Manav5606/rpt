@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
@@ -34,7 +35,19 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     _controller = PageController(initialPage: 0);
-    super.initState();
+    Timer.periodic(Duration(seconds: 3), (Timer timer) {
+      if (CurrentIndex < 3) {
+        CurrentIndex++;
+        _controller.animateToPage(
+          CurrentIndex,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeIn,
+        );
+      } else {
+        CurrentIndex = 3;
+      }
+      super.initState();
+    });
   }
 
   @override
@@ -43,373 +56,357 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
+  final FocusNode _nodeText1 = FocusNode();
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+        keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+        keyboardBarColor: Colors.grey[200],
+        nextFocus: false,
+        actions: [
+          KeyboardActionsItem(
+            focusNode: _nodeText1,
+            toolbarButtons: [
+              (node) {
+                return GestureDetector(
+                  onTap: () => node.unfocus(),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: AppConst.grey,
+                    ),
+                    margin: const EdgeInsets.only(right: 4),
+                    child: Text(
+                      "DONE",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                );
+              }
+            ],
+          ),
+        ]);
+  }
+
   @override
   Widget build(BuildContext context) {
+    var currentTabs = [
+      DisplayAppInfo(
+          context,
+          "assets/images/order1.png",
+          "Order",
+          " from your Nearby Stores",
+          "Order from your Nearby Stores Order from your Nearby Stores  "),
+      DisplayAppInfo(
+          context,
+          "assets/images/scan2.png",
+          "Scan",
+          " the Receipts",
+          "Scan the receipts after purchasing the products to get more "),
+      DisplayAppInfo(
+          context,
+          "assets/images/cashback3.png",
+          "Earn",
+          " Cashbacks from the Store",
+          "Get Cashback instantly to your E-Wallet "),
+      DisplayAppInfo(
+          context,
+          "assets/images/redeem4.png",
+          "Redeem",
+          " in your next purchase",
+          " Use your E-Wallet in your next purchase get more Rewards")
+    ];
     SizeUtils().init(context);
-    return Stack(
-      children: [
-        Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.only(top: 2.h, left: 1.h, right: 1.h),
-                child: Obx(
-                  () => _signInController.isLoading.value
-                      ? SignInScreenShimmer()
-                      : Column(
-                          children: [
-                            // Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                            // InkWell(
-                            //   onTap: () {},
-                            //   child: Container(
-                            //     padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.h),
-                            //     decoration: BoxDecoration(
-                            //       borderRadius: BorderRadius.circular(2.h),
-                            //       color: kGreyColor,
-                            //     ),
-                            //     child: Center(
-                            //         child: Text(
-                            //       'Skip',
-                            //           style: TextStyle(fontSize: 14.sp),
-                            //     )),
-                            //   ),
-                            // )
-                            // ]),
-                            // SizedBox(
-                            //   height: 2.h,
-                            // ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Bloyallogo(),
-                                // Container(
-                                //     height: 7.h,
-                                //     width: 50.w,
-                                //     child: FittedBox(
-                                //       child: SvgPicture.asset(
-                                //         "assets/icons/bloyal_logo.svg",
-                                //         fit: BoxFit.fill,
-                                //       ),
-                                //     )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            // Container(
-                            //   height: 15.h,
-                            //   width: 45.w,
-                            //   child: Lottie.asset(
-                            //       'assets/lottie/loginscreen1.json'),
-                            // ),
-                            // Container(
-                            //   height: 15.h,
-                            //   width: 45.w,
-                            //   child: Lottie.asset(
-                            //       'assets/lottie/loginscreen2.json'),
-                            // ),
-                            // Container(
-                            //   height: 4.h,
-                            //   child: FittedBox(
-                            //     fit: BoxFit.scaleDown,
-                            //     child: Text(
-                            //       'Welcome to Recipto',
-                            //       style: TextStyle(
-                            //           fontSize: 18.sp,
-                            //           color: kSecondaryTextColor),
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(
-                            //   height: 3.h,
-                            // ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //   children: [
-                            //     Flexible(
-                            //       child: Divider(
-                            //         thickness: 2,
-                            //       ),
-                            //     ),
-                            //     Padding(
-                            //       padding: EdgeInsets.all(2.h),
-                            //       child: FittedBox(
-                            //         fit: BoxFit.scaleDown,
-                            //         child: Text(
-                            //           'Login or Signup',
-                            //           style: TextStyle(
-                            //               fontWeight: FontWeight.bold,
-                            //               fontSize: 12.sp),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     Flexible(
-                            //       child: Divider(
-                            //         thickness: 2,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: 3.h,
-                            // ),
-                            Container(
-                              height: 50.h,
-                              width: MediaQuery.of(context).size.width,
-                              color: AppConst.white,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: PageView.builder(
-                                        controller: _controller,
-                                        itemCount: 4,
-                                        onPageChanged: (int index) {
-                                          setState(() {
-                                            CurrentIndex = index;
-                                          });
-                                        },
-                                        itemBuilder: (_, index) {
-                                          return Column(
-                                            children: [
-                                              Container(
-                                                height: 15.h,
-                                                width: 45.w,
-                                                child: Lottie.asset(
-                                                    'assets/lottie/loginscreen1.json'),
-                                              ),
-                                              Container(
-                                                height: 15.h,
-                                                width: 45.w,
-                                                child: Lottie.asset(
-                                                    'assets/lottie/loginscreen2.json'),
-                                              ),
-                                              Text(
-                                                "Scan recipts \n and earn money",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily:
-                                                        "MuseoSans_700.otf"),
-                                              ),
-                                              SizedBox(
-                                                height: 1.5.h,
-                                              ),
-                                              Text(
-                                                "Scan recipts  and earn money Scan recipts  and earn money Scan recipts  and earn money",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        }),
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      CurrentIndex > 0
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                if (CurrentIndex == 4) {}
-                                                _controller.previousPage(
-                                                    duration: Duration(
-                                                        milliseconds: 100),
-                                                    curve: Curves.bounceIn);
-                                              },
-                                              child: Icon(
-                                                Icons.arrow_back,
-                                                size: 3.2.h,
-                                              ),
-                                            )
-                                          : Container(
-                                              child: SizedBox(
-                                              width: 5.w,
-                                            )),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: List.generate(
-                                              4,
-                                              (index) =>
-                                                  buildDot(index, context)),
-                                        ),
-                                      ),
-                                      CurrentIndex < 3
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                if (CurrentIndex == 4) {}
-                                                _controller.nextPage(
-                                                    duration: Duration(
-                                                        milliseconds: 100),
-                                                    curve: Curves.bounceIn);
-                                              },
-                                              child: Icon(
-                                                Icons.arrow_forward,
-                                                size: 3.2.h,
-                                              ),
-                                            )
-                                          : Container(
-                                              child: SizedBox(
-                                              width: 5.w,
-                                            )),
-                                    ],
-                                  ),
-                                ],
-                              ),
+    final box = Boxes.getCommonBox();
+    final flag = box.get(HiveConstants.REFERID);
+    if (flag?.isNotEmpty ?? false) {
+      _signInController.referralController.text = flag ?? '';
+      _signInController.referral.value = flag ?? '';
+    }
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: AppConst.transparent,
+          statusBarIconBrightness: Brightness.dark),
+      child: Scaffold(
+          // resizeToAvoidBottomInset: false,
 
-                              // child:,
-                            ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   children: [
-                            //     Container(
-                            //       width: 12.w,
-                            //       decoration: BoxDecoration(
-                            //           border: Border.all(color: AppConst.black)),
-                            //       child: TextField(
-                            //         style: TextStyle(fontSize: 14.sp),
-                            //         textAlign: TextAlign.center,
-                            //         enabled: false,
-                            //         decoration: InputDecoration(
-                            //           border: InputBorder.none,
-                            //           hintText: '+91',
-                            //           hintStyle: TextStyle(
-                            //               fontSize: 14.sp, color: AppConst.black),
-                            //           hintTextDirection: TextDirection.ltr,
-                            //           counterText: "",
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     SizedBox(
-                            //       width: 1.w,
-                            //     ),
-                            //     Container(
-                            //       width: 65.w,
-                            //       decoration: BoxDecoration(
-                            //           border: Border.all(color: AppConst.black)),
-                            //       child: TextField(
-                            //         style: TextStyle(fontSize: 14.sp),
-                            //         textAlign: TextAlign.center,
-                            //         cursorColor: kPrimaryColor,
-                            //         maxLength: 10,
-                            //         keyboardType: TextInputType.number,
-                            //         controller:
-                            // _signInController.phoneNumberController,
-                            //         decoration: InputDecoration(
-                            //           border: InputBorder.none,
-                            //           hintText: 'Enter Phone Number',
-                            //           hintTextDirection: TextDirection.ltr,
-                            //           counterText: "",
-                            //         ),
-                            //       ),
-                            //     )
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: 3.h,
-                            // ),
-                            /* SizedBox(
-                        height: 50,
-                        width: 280,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Continue',
-                            style: AppStyles.BOLD_STYLE,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              shadowColor: kPrimaryColor, primary: kPrimaryColor),
-                        ),
-                      ),*/
-                            // ElevatedButton(
-                            //     style: ElevatedButton.styleFrom(
-                            //       elevation: 0,
-                            //       primary: kSecondaryTextColor,
-                            //       padding: EdgeInsets.symmetric(
-                            //           vertical: 1.5.h, horizontal: 10.h),
-                            //       shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(1.h),
-                            //       ),
-                            //     ),
-                            // onPressed: (_signInController
-                            //             .phoneNumberController
-                            //             .value
-                            //             .text
-                            //             .length ==
-                            //         10)
-                            //     ? () {
-                            //         _signInController.submitPhoneNumber();
-                            //       }
-                            //     : null,
-                            //     child: Text(
-                            //       "Continue",
-                            //       style: TextStyle(
-                            //         fontSize: 15.sp,
-                            //         fontWeight: FontWeight.w500,
-                            //       ),
-                            //     )),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                                onTap: (() {
-                                  Get.to(EnterNumberScreen());
-                                }),
-                                child: BottomWideButton()),
-                            // Divider(
-                            //   thickness: 1,
-                            // ),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Don't have an account ? | ",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(SignUpScreen());
-                                  },
-                                  child: Text(
-                                    "Sign up ",
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppConst.blue),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Divider(
-                              thickness: 1,
-                            ),
-                          ],
-                        ),
-                ),
+          bottomSheet: Container(
+            height: 22.h,
+            color: AppConst.white,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: 4.w,
+                right: 4.w,
               ),
-            )),
-      ],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Sign in",
+                    style: TextStyle(
+                      color: AppConst.black,
+                      fontFamily: "MuseoSans",
+                      fontStyle: FontStyle.normal,
+                      fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Text(
+                    "Enter your Mobile Number",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: AppConst.darkGrey,
+                      fontFamily: "MuseoSans",
+                      fontStyle: FontStyle.normal,
+                      fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                    ),
+                  ),
+                  Container(
+                    // height: 6.h,
+                    child: KeyboardActions(
+                      config: _buildConfig(context),
+                      autoScroll: false,
+                      disableScroll: true,
+                      child: Container(
+                        // height: 50,
+                        child: SignUpFeilds(
+                          prefixIcon:
+                              AddPlus91(signInController: _signInController),
+                          focusNode: _nodeText1,
+                          hinttext: "",
+                          keyboardtype: TextInputType.number,
+                          maxlength: 10,
+                          controller: _signInController.phoneNumberController,
+                          onChange: (value) {
+                            _signInController.phoneNumber.value = value;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => GestureDetector(
+                        onTap:
+                            (_signInController.phoneNumber.value.length == 10)
+                                ? () {
+                                    log("aavoooo :0");
+                                    try {
+                                      _signInController.submitPhoneNumber();
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                    log("aavoooo :1");
+                                  }
+                                : null,
+                        child: BottomWideButton(
+                          text: "Sign in",
+                          color:
+                              _signInController.phoneNumber.value.length == 10
+                                  ? AppConst.darkGreen
+                                  : AppConst.grey,
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          body: Obx(
+            () => _signInController.isLoading.value
+                ? SignInScreenShimmer()
+                : SingleChildScrollView(
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                            height: 77.h,
+                            child: PageView(
+                              controller: _controller,
+                              children: currentTabs,
+                              onPageChanged: (int index) {
+                                setState(() {
+                                  CurrentIndex = index;
+                                });
+                              },
+                            )),
+                        SizedBox(
+                          height: 3.h,
+                        )
+                      ],
+                    ),
+                  ),
+          )),
+    );
+  }
+
+  Container DisplayAppInfo(BuildContext context, String image, String text1,
+      String text2, String subtitle) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppConst.white,
+        image: DecorationImage(
+            image: AssetImage("assets/images/BG.png"), fit: BoxFit.fill),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          SizedBox(
+            height: 4.h,
+          ),
+          Bloyallogo(),
+          SizedBox(
+            height: 4.h,
+          ),
+
+          Container(
+            height: 40.h,
+            width: double.infinity,
+            child: FittedBox(
+              child: Center(
+                  child: Image.asset(
+                image,
+                // "assets/images/order1.png",
+              )),
+            ),
+          ),
+
+          // SizedBox(),
+          Container(
+            height: 15.h,
+            width: double.infinity,
+            color: AppConst.white,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                      style: TextStyle(
+                          color: AppConst.green,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "MuseoSans",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 20),
+                      text: text1,
+                      // "Order "
+                    ),
+                    TextSpan(
+                        style: TextStyle(
+                            color: AppConst.black,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "MuseoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: 20.0),
+                        text: text2
+                        // " from your Nearby Stores"
+                        )
+                  ])),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Text(subtitle,
+                      // "Order from your Nearby Stores Order from your Nearby Stores  ",
+                      style: TextStyle(
+                          color: AppConst.black,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "MuseoSans",
+                          fontStyle: FontStyle.normal,
+                          fontSize: SizeUtils.horizontalBlockSize * 3.8),
+                      textAlign: TextAlign.center),
+                ],
+              ),
+            ),
+          ),
+
+          Container(
+            color: AppConst.white,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:
+                        List.generate(4, (index) => buildDot(index, context)),
+                  ),
+                ),
+                // CurrentIndex > 0
+                //     ? GestureDetector(
+                //         onTap: () {
+                //           if (CurrentIndex == 4) {}
+                //           _controller.previousPage(
+                //               duration: Duration(
+                //                   milliseconds:
+                //                       100),
+                //               curve:
+                //                   Curves.bounceIn);
+                //         },
+                //         child: Icon(
+                //           Icons.arrow_back,
+                //           size: 3.2.h,
+                //         ),
+                //       )
+                //     : Container(
+                //         child: SizedBox(
+                //         width: 5.w,
+                //       )),
+                // Container(
+                //   child: Row(
+                //     mainAxisAlignment:
+                //         MainAxisAlignment.center,
+                //     children: List.generate(
+                //         4,
+                //         (index) => buildDot(
+                //             index, context)),
+                //   ),
+                // ),
+                // CurrentIndex < 3
+                //     ? GestureDetector(
+                //         onTap: () {
+                //           if (CurrentIndex == 4) {}
+                //           _controller.nextPage(
+                //               duration: Duration(
+                //                   milliseconds:
+                //                       100),
+                //               curve:
+                //                   Curves.bounceIn);
+                //         },
+                //         child: Icon(
+                //           Icons.arrow_forward,
+                //           size: 3.2.h,
+                //         ),
+                //       )
+                //     : Container(
+                //         child: SizedBox(
+                //         width: 5.w,
+                //       )),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Container buildDot(int index, BuildContext context) {
     return Container(
       height: 10,
-      width: CurrentIndex == index ? 25 : 10,
+      width: 10,
+      // CurrentIndex == index ? 25 : 10,
       margin: EdgeInsets.only(right: 2.w),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Color(0xFFDF2A63)
+          borderRadius: BorderRadius.circular(20),
+          color: CurrentIndex == index ? AppConst.darkGreen : AppConst.lightGrey
           // Colors.green
           // kSecondaryColor
           ),
@@ -427,8 +424,8 @@ class BottomWideButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 1.h, bottom: 1.h),
-      height: 6.6.h,
+      margin: EdgeInsets.only(bottom: 1.h),
+      height: 6.h,
       child: Container(
         decoration: new BoxDecoration(
             // color: Colors.,
@@ -535,11 +532,18 @@ class EnterNumberScreen extends StatelessWidget {
                         Container(
                             height: 70.h,
                             width: double.infinity,
-                            color: AppConst.yellow,
+                            decoration: BoxDecoration(
+                              color: AppConst.white,
+                              image: DecorationImage(
+                                  image: AssetImage("assets/images/BG.png"),
+                                  fit: BoxFit.fill),
+                            ),
                             child: FittedBox(
                               child: Center(
-                                  child:
-                                      Image.asset("assets/images/noimage.png")),
+                                  child: Image.asset(
+                                "assets/images/order1.png",
+                                fit: BoxFit.contain,
+                              )),
                             )),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.center,
