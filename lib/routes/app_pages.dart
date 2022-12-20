@@ -1,3 +1,4 @@
+import 'package:customer_app/app/ui/pages/my_account/about_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/bindings/cartBindings.dart';
 import 'package:customer_app/app/bindings/home_binding.dart';
@@ -170,6 +171,10 @@ class AppPages {
       name: AppRoutes.ActiveOrders,
       page: () => ActiveOrdersScreen(),
       // binding: MyAccountBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.About,
+      page: () => AboutScreen(),
     ),
   ];
 }

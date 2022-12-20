@@ -31,6 +31,7 @@ class SignInScreenController extends GetxController {
   RxString referral = ''.obs;
   RxBool isFromOTP = false.obs;
   RxBool isResendEnable = false.obs;
+  RxBool checkBox = false.obs;
   User? user;
   late Timer _timer;
   UserModel? userModel;

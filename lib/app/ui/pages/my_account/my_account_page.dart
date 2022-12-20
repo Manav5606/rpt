@@ -920,6 +920,8 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 .showChatConversation(
                                                     "opening chat support \n");
                                             // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.mobile ?? ''}
+                                          } else if (index == 8) {
+                                            Get.toNamed(AppRoutes.About);
                                           } else if (index == 9) {
                                             _showLogOutDialog();
                                           }

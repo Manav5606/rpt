@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen>
     // _homeController.checkLocationPermission();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-          statusBarColor: Color(0xff005b41),
+          statusBarColor: AppConst.darkGreen,
           statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         body: SafeArea(

@@ -17,6 +17,7 @@ class SignUpFeilds extends StatelessWidget {
       this.onChange,
       this.focusNode,
       this.prefixIcon,
+      this.validator,
       this.readOnly})
       : super(key: key);
   // String? text;
@@ -29,11 +30,12 @@ class SignUpFeilds extends StatelessWidget {
   FocusNode? focusNode;
   Widget? prefixIcon;
   final void Function(String)? onChange;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 3.h),
+      padding: EdgeInsets.only(bottom: 2.h),
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -42,6 +44,7 @@ class SignUpFeilds extends StatelessWidget {
           children: [
             Flexible(
               child: TextFormField(
+                validator: validator,
                 style: TextStyle(
                     fontFamily: 'MuseoSans',
                     color: AppConst.black,
@@ -61,8 +64,8 @@ class SignUpFeilds extends StatelessWidget {
                   hintText: hinttext ?? '',
                   hintStyle: TextStyle(
                       color: AppConst.grey,
-                      fontSize: SizeUtils.horizontalBlockSize * 4.2),
-                  contentPadding: EdgeInsets.only(left: 2.w, bottom: 1.h),
+                      fontSize: SizeUtils.horizontalBlockSize * 4),
+                  contentPadding: EdgeInsets.only(left: 2.w, bottom: 0.5.h),
                   hintTextDirection: TextDirection.ltr,
                   counterText: "",
                   labelText: labelText ?? "",
