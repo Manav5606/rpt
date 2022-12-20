@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:customer_app/app/data/serivce/dynamic_link_service.dart';
+import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -73,9 +74,12 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
     if (hiveRepository.hasUser()) {
       try {
         final UserModel userModel = hiveRepository.getCurrentUser();
-        connectUserStream(userId: userModel.id!, name: "${userModel.firstName} ${userModel.lastName}");
+        connectUserStream(
+            userId: userModel.id!,
+            name: "${userModel.firstName} ${userModel.lastName}");
         if ((userModel.addresses?.length ?? 0) > 0) {
-          for (final AddressModel? addressModal in (userModel.addresses ?? [])) {
+          for (final AddressModel? addressModal
+              in (userModel.addresses ?? [])) {
             if (addressModal?.status ?? false) {
               WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
                 Get.offAllNamed(AppRoutes.BaseScreen);
@@ -90,14 +94,17 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
         } else {
           WidgetsBinding.instance!.addPostFrameCallback((_) {
             log("checkSession : 12121}");
-            Get.offAllNamed(AppRoutes.NewLocationScreen, arguments: {"isFalse": false});
+            Get.offAllNamed(AppRoutes.NewLocationScreen,
+                arguments: {"isFalse": false});
           });
         }
       } catch (e) {
-        Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
+        Future.delayed(Duration(seconds: 2),
+            () => Get.offAllNamed(AppRoutes.Authentication));
       }
     } else {
-      Future.delayed(Duration(seconds: 2), () => Get.offAllNamed(AppRoutes.Authentication));
+      Future.delayed(Duration(seconds: 2),
+          () => Get.offAllNamed(AppRoutes.Authentication));
     }
   }
 
@@ -161,10 +168,28 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
     // sizeConfig.setSize((Get.height - (Get.mediaQuery.padding.top + Get.mediaQuery.padding.bottom)) / 1000,
     //     (Get.width - (Get.mediaQuery.padding.left + Get.mediaQuery.padding.right)) / 1000);
     return Scaffold(
-      body: Center(
-          child: Lottie.asset(
-        'assets/lottie/splash.json',
-      )),
+      body: Container(
+        decoration: BoxDecoration(
+          color: AppConst.white,
+          image: DecorationImage(
+              image: AssetImage("assets/images/splashbg.png"),
+              fit: BoxFit.fill),
+        ),
+        height: double.infinity,
+        width: double.infinity,
+        child: FittedBox(
+          child: Center(
+              child: Image.asset(
+            "assets/images/splash.gif",
+          )),
+        ),
+      ),
+
+      //     Center(
+      //         child: Lottie.asset(
+      //   'assets/lottie/splashscreen.json',
+      // )),
+      // )
     );
   }
 }
