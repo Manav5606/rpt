@@ -194,7 +194,7 @@ class Inventories extends StatelessWidget {
               child: Row(
                 children: [
                   DisplayProductImage(
-                    logo: inventoriesModel?[index].logo,
+                    logo: inventoriesModel?[index].img,
                   ),
                   SizedBox(
                     width: 2.w,

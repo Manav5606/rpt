@@ -1,3 +1,4 @@
+import 'package:customer_app/data/models/business_types.dart';
 import 'package:get/get.dart';
 
 class AutoCompleteProductsByStoreModel {
@@ -10,7 +11,9 @@ class AutoCompleteProductsByStoreModel {
   AutoCompleteProductsByStoreModel.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     error = json['error'];
-    data = json['data'] != null ? new AutoCompleteProductsByData.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? new AutoCompleteProductsByData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -62,16 +65,27 @@ class Products {
   String? name;
   String? sId;
   int? cashback;
+  String? img;
   String? logo;
   Store? store;
   RxInt? quntity = 0.obs;
   RxBool? isQunitityAdd = false.obs;
-  Products({this.mrp, this.name, this.sId, this.cashback, this.logo, this.store, this.quntity ,this.isQunitityAdd});
+  Products(
+      {this.mrp,
+      this.name,
+      this.sId,
+      this.img,
+      this.cashback,
+      this.logo,
+      this.store,
+      this.quntity,
+      this.isQunitityAdd});
 
   Products.fromJson(Map<String, dynamic> json) {
     mrp = json['mrp'];
     name = json['name'];
     sId = json['_id'];
+    img = json['img'];
     cashback = json['cashback'];
     logo = json['logo'];
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
@@ -95,14 +109,21 @@ class Products {
 
 class Store {
   String? sId;
-  Store? name;
-  Store? logo;
+  String? name;
+  String? logo;
   dynamic defaultCashback;
   dynamic calculatedDistance;
-  Store? storeType;
-  Store? premium;
+  String? storeType;
+  String? premium;
 
-  Store({this.sId, this.name, this.logo, this.defaultCashback, this.calculatedDistance, this.storeType, this.premium});
+  Store(
+      {this.sId,
+      this.name,
+      this.logo,
+      this.defaultCashback,
+      this.calculatedDistance,
+      this.storeType,
+      this.premium});
 
   Store.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];

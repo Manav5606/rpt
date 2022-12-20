@@ -12,13 +12,16 @@ import 'package:customer_app/models/addcartmodel.dart';
 class ExploreService {
   static Future<GetNearMePageData?> getNearMePageData(String searchText) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getNearMePageData, variables: {
-        'lat': UserViewModel.currentLocation.value.latitude,
-        'lng': UserViewModel.currentLocation.value.longitude,
-        'query': searchText,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getNearMePageData,
+          variables: {
+            'lat': UserViewModel.currentLocation.value.latitude,
+            'lng': UserViewModel.currentLocation.value.longitude,
+            'query': searchText,
+          });
       if (result['error'] == false) {
-        final GetNearMePageData _getHomePageFavoriteShops = GetNearMePageData.fromJson(result);
+        final GetNearMePageData _getHomePageFavoriteShops =
+            GetNearMePageData.fromJson(result);
         return _getHomePageFavoriteShops;
       }
     } catch (e, st) {
@@ -29,13 +32,16 @@ class ExploreService {
 
   static Future<GetProductsByName?> getProductsByName(String name) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getProductsByName, variables: {
-        'lat': UserViewModel.currentLocation.value.latitude,
-        'lng': UserViewModel.currentLocation.value.longitude,
-        'name': name,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getProductsByName,
+          variables: {
+            'lat': UserViewModel.currentLocation.value.latitude,
+            'lng': UserViewModel.currentLocation.value.longitude,
+            'name': name,
+          });
       if (result['error'] == false) {
-        final GetProductsByName _getProductsByName = GetProductsByName.fromJson(result);
+        final GetProductsByName _getProductsByName =
+            GetProductsByName.fromJson(result);
         return _getProductsByName;
       }
     } catch (e, st) {
@@ -44,14 +50,20 @@ class ExploreService {
     }
   }
 
-  static Future<AutoCompleteProductsByStoreModel?> getAutoCompleteProductsByStore({String name = '', String storeId = ''}) async {
+  static Future<AutoCompleteProductsByStoreModel?>
+      getAutoCompleteProductsByStore(
+          {String name = '', String storeId = ''}) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getAutoCompleteProductsByStore, variables: {
-        'store': storeId,
-        'query': name,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getAutoCompleteProductsByStore,
+          variables: {
+            'store': storeId,
+            'query': name,
+          });
       if (result['error'] == false) {
-        final AutoCompleteProductsByStoreModel autoCompleteProductsByStoreModel = AutoCompleteProductsByStoreModel.fromJson(result);
+        final AutoCompleteProductsByStoreModel
+            autoCompleteProductsByStoreModel =
+            AutoCompleteProductsByStoreModel.fromJson(result);
         return autoCompleteProductsByStoreModel;
       }
     } catch (e, st) {
@@ -62,11 +74,14 @@ class ExploreService {
 
   static Future<GetStoreDataModel?> getStoreData(String id) async {
     try {
-      final result = await GraphQLRequest.query(query: GraphQLQueries.getOrderOnlinePageProductsData, variables: {
-        'store': id,
-      });
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getOrderOnlinePageProductsData,
+          variables: {
+            'store': id,
+          });
       if (result['error'] == false) {
-        final GetStoreDataModel _getStoreDataModel = GetStoreDataModel.fromJson(result);
+        final GetStoreDataModel _getStoreDataModel =
+            GetStoreDataModel.fromJson(result);
         return _getStoreDataModel;
       }
     } catch (e, st) {
@@ -91,9 +106,11 @@ class ExploreService {
         'index': index,
         'cart_id': cart_id,
       };
-      final result = await GraphQLRequest.query(query: GraphQLQueries.addToCartWithId, variables: variables);
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.addToCartWithId, variables: variables);
       if (result['error'] == false) {
-        final AddToCartModel addToCartModel = AddToCartModel.fromJson(result['data']);
+        final AddToCartModel addToCartModel =
+            AddToCartModel.fromJson(result['data']);
         return addToCartModel;
       }
     } catch (e, st) {

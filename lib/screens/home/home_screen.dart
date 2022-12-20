@@ -289,6 +289,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                 .category[index].subtitle,
                                             image: _homeController
                                                 .category[index].image,
+                                            title: _homeController
+                                                .category[index].title,
                                           );
                                           await _homeController
                                               .homePageRemoteConfigData(
@@ -330,8 +332,10 @@ class _HomeScreenState extends State<HomeScreen>
                                                   InStoreScreen(
                                                       category: _homeController
                                                           .category[index]))
-                                              : await Get.to(
-                                                  () => StoreListScreen());
+                                              : await Get.to(() =>
+                                                  StoreListScreen(
+                                                      category: _homeController
+                                                          .category[index]));
                                           //      (!(_homeController
                                           //         .getHomePageFavoriteShopsModel
                                           //         .value

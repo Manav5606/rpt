@@ -132,8 +132,9 @@ class _StoreListScreenState extends State<StoreListScreen>
                     Padding(
                       padding: EdgeInsets.only(bottom: 1.h, left: 5.w),
                       child: Text(
-                        "Fresh Store near you",
-                        // "${category?.name.toString() ?? ""}",
+                        // "Fresh Store near you",
+
+                        "${category?.title.toString() ?? "Grocery"}",
                         // "Pickup",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

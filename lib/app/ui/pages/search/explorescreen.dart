@@ -1,3 +1,5 @@
+import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/location_picker/address_model.dart';
@@ -58,19 +60,6 @@ class _ExploreScreen extends State<ExploreScreen> {
             height: SizeUtils.horizontalBlockSize * 15,
             decoration: BoxDecoration(color: AppConst.white, boxShadow: []),
             child: GestureDetector(
-              // onTap: () {
-              //   // Get.toNamed(AppRoutes.NewLocationScreen);
-              //   showModalBottomSheet(
-              //     isScrollControlled: true,
-              //     context: context,
-              //     useRootNavigator: true,
-              //     builder: (context) {
-              //       return AddressModel(
-              //         isHomeScreen: true,
-              //       );
-              //     },
-              //   );
-              // },
               onTap: () async {
                 dynamic value = await Get.to(AddressModel(
                   // isSavedAddress: false,
@@ -78,8 +67,10 @@ class _ExploreScreen extends State<ExploreScreen> {
                 ));
                 _exploreController.searchController.clear();
                 _exploreController.searchText.value = '';
-                _exploreController.getNearMePageDataModel.value?.data?.products?.clear();
-                _exploreController.getNearMePageDataModel.value?.data?.stores?.clear();
+                _exploreController.getNearMePageDataModel.value?.data?.products
+                    ?.clear();
+                _exploreController.getNearMePageDataModel.value?.data?.stores
+                    ?.clear();
                 _exploreController.getNearMePageDataModel.refresh();
               },
               child: Row(
@@ -147,9 +138,14 @@ class _ExploreScreen extends State<ExploreScreen> {
                               onPressed: () {
                                 _exploreController.searchController.clear();
                                 _exploreController.searchText.value = '';
-                                _exploreController.getNearMePageDataModel.value?.data?.products?.clear();
-                                _exploreController.getNearMePageDataModel.value?.data?.stores?.clear();
-                                _exploreController.getNearMePageDataModel.refresh();
+                                _exploreController.getNearMePageDataModel.value
+                                    ?.data?.products
+                                    ?.clear();
+                                _exploreController
+                                    .getNearMePageDataModel.value?.data?.stores
+                                    ?.clear();
+                                _exploreController.getNearMePageDataModel
+                                    .refresh();
                               },
                               icon: Icon(
                                 Icons.cancel,
@@ -167,7 +163,9 @@ class _ExploreScreen extends State<ExploreScreen> {
                       ),
                       hintTextDirection: TextDirection.rtl,
                       hintText: " Search products,stores & recipes",
-                      hintStyle: TextStyle(color: AppConst.grey, fontSize: SizeUtils.horizontalBlockSize * 4)),
+                      hintStyle: TextStyle(
+                          color: AppConst.grey,
+                          fontSize: SizeUtils.horizontalBlockSize * 4)),
                   showCursor: true,
                   cursorColor: AppConst.black,
                   cursorHeight: SizeUtils.horizontalBlockSize * 5,
@@ -179,7 +177,8 @@ class _ExploreScreen extends State<ExploreScreen> {
                   onChanged: (value) {
                     _exploreController.searchText.value = value;
                     _exploreController.searchText.value.isNotEmpty
-                        ? _exploreController.getNearMePageData(searchText: value)
+                        ? _exploreController.getNearMePageData(
+                            searchText: value)
                         : _exploreController.getNearMePageData(searchText: " ");
                     // onSearch(value);
                   });
@@ -189,8 +188,12 @@ class _ExploreScreen extends State<ExploreScreen> {
             height: 2.h,
           ),
           Obx(
-            () => (((_exploreController.getNearMePageDataModel.value?.data?.products?.isEmpty ?? true) &&
-                    (_exploreController.getNearMePageDataModel.value?.data?.stores?.isEmpty ?? true)))
+            () => (((_exploreController.getNearMePageDataModel.value?.data
+                            ?.products?.isEmpty ??
+                        true) &&
+                    (_exploreController.getNearMePageDataModel.value?.data
+                            ?.stores?.isEmpty ??
+                        true)))
                 ? _exploreController.searchText.value.isNotEmpty
                     ? Center(
                         child: Text(
@@ -211,15 +214,53 @@ class _ExploreScreen extends State<ExploreScreen> {
             height: 2.h,
           ),
           Obx(
-            () => (((_exploreController.getNearMePageDataModel.value?.data?.products?.isEmpty ?? true) &&
-                    (_exploreController.getNearMePageDataModel.value?.data?.stores?.isEmpty ?? true) &&
-                    (_exploreController.getNearMePageDataModel.value?.data?.inventories?.isEmpty ?? true)))
+            () => (((_exploreController.getNearMePageDataModel.value?.data
+                            ?.products?.isEmpty ??
+                        true) &&
+                    (_exploreController.getNearMePageDataModel.value?.data
+                            ?.stores?.isEmpty ??
+                        true) &&
+                    (_exploreController.getNearMePageDataModel.value?.data
+                            ?.inventories?.isEmpty ??
+                        true)))
                 ? _exploreController.searchText.value.isNotEmpty
                     ? SizedBox()
                     : Expanded(
                         child: SingleChildScrollView(
                           child: RecentSearchList(
-                            foundedStores: _exploreController.recentProductList.value,
+                            foundedStores:
+                                _exploreController.recentProductList.value,
+                          ),
+                        ),
+                      )
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: SearchList(
+                        foundedStores: foundStores,
+                      ),
+                    ),
+                  ),
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          Obx(
+            () => (((_exploreController.getNearMePageDataModel.value?.data
+                            ?.products?.isEmpty ??
+                        true) &&
+                    (_exploreController.getNearMePageDataModel.value?.data
+                            ?.stores?.isEmpty ??
+                        true) &&
+                    (_exploreController.getNearMePageDataModel.value?.data
+                            ?.inventories?.isEmpty ??
+                        true)))
+                ? _exploreController.searchText.value.isNotEmpty
+                    ? SizedBox()
+                    : Expanded(
+                        child: SingleChildScrollView(
+                          child: RecentSearchList(
+                            foundedStores:
+                                _exploreController.recentProductList.value,
                           ),
                         ),
                       )

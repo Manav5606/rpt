@@ -5,6 +5,7 @@ class CategoryModel {
   String keywordHelper;
   String id;
   bool isProductAvailable;
+  String title;
 
   CategoryModel(
       {required this.image,
@@ -12,13 +13,15 @@ class CategoryModel {
       required this.subtitle,
       required this.id,
       required this.keywordHelper,
-      required this.isProductAvailable});
+      required this.isProductAvailable,
+      required this.title});
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         name: json["name"] ?? '',
         keywordHelper: json["keyword_helper"] ?? '',
         image: json["image"] ?? '',
         subtitle: json["subtitle"] ?? '',
+        title: json["title"] ?? '',
         id: json["_id"] ?? '',
         isProductAvailable: json["isProductAvailable"] ?? false,
       );
@@ -27,6 +30,7 @@ class CategoryModel {
         "name": name,
         "keyword_helper": keywordHelper,
         "image": image,
+        "title": title,
         "subtitle": subtitle,
         "isProductAvailable": isProductAvailable,
         "_id": id,
@@ -37,6 +41,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "61f960000a984e3d1c8f9ecb",
       name: "Fruits and Veg",
+      title: "Fruits and Veg stores Near you",
       subtitle: "new",
       keywordHelper: "business_type",
       image: "assets/images/Fresh.png",
@@ -44,6 +49,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "61f95fcd0a984e3d1c8f9ec9",
       name: "Grocery",
+      title: "Grocery  stores Near you",
       subtitle: "new",
       keywordHelper: "business_type",
       image: "assets/images/groceryImage.png",
@@ -51,6 +57,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "624e503dbd7079a799ffc9e1",
       name: "Meat and Eggs",
+      title: "Meat stores Near you",
       subtitle: "new",
       keywordHelper: "business_type",
       image: "assets/images/Nonveg.png",
@@ -58,6 +65,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "",
       name: "30 mins",
+      title: "Delivery within 30 mins",
       subtitle: "new",
       keywordHelper: "",
       image: "assets/images/Pickup.png",
@@ -65,6 +73,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "",
       name: "Premium",
+      title: "Premium stores near you",
       subtitle: "",
       keywordHelper: "",
       image: "assets/images/Premium.png",
@@ -72,6 +81,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "",
       name: "30 mins",
+      title: "Delivery within 30 mins",
       subtitle: "new",
       keywordHelper: "",
       image: "assets/images/Medics.png",

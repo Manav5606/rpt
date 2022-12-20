@@ -908,40 +908,37 @@ query($lat: Float, $lng: Float) {
   {
     name
     _id
-    logo
-    _id
+    logo 
+    mrp
+    cashback
     store{
        name
-    logo
+    
     _id
-    businesstype
+
     }
-    catalog
-    {
-      name
-      _id
-    }
+   
+    
   }
     inventories
       {
         mrp
+        img
         name
         _id
-        store{
+     
+  store{
        name
-    logo
+    
     _id
-    businesstype
-    }
-      }
+
+    }      }
   stores
   {
     name
-    logo
     _id
-    businesstype
-  }
- }
+    
+} }
 }
 }''',
   );
@@ -1101,6 +1098,7 @@ wallet_amount
       {
                mrp
         name
+        img
         _id
         store{
                 _id
@@ -1155,6 +1153,7 @@ wallet_amount
           {
           name
           quantity
+          logo
           deleted
           modified
           selling_price
@@ -1173,6 +1172,7 @@ wallet_amount
           {
             name
           quantity
+          img
           deleted
           modified
           selling_price
@@ -1794,6 +1794,7 @@ data{
         quantity
         cashback
         logo
+        unit
       }
     rawitems
       {
@@ -1808,7 +1809,8 @@ data{
         _id
         quantity
         status
-        logo
+        img
+        unit
       }
     }
   }

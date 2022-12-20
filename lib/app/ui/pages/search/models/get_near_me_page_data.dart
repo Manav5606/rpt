@@ -1,5 +1,5 @@
-import 'package:customer_app/models/inventroy_model.dart';
 import 'package:hive/hive.dart';
+import 'package:customer_app/app/ui/pages/search/models/autoCompleteProductsByStoreModel.dart';
 
 part 'get_near_me_page_data.g.dart';
 
@@ -14,7 +14,8 @@ class GetNearMePageData {
 
   GetNearMePageData.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
-    data = json['data'] != null ? new NearMePageData.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? new NearMePageData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -36,7 +37,7 @@ class NearMePageData {
   @HiveField(2)
   List<Stores>? stores;
   @HiveField(3)
-  List<Inventories>? inventories;
+  List<Products>? inventories;
 
   NearMePageData({this.sId, this.products, this.stores, this.inventories});
 
@@ -55,9 +56,9 @@ class NearMePageData {
       });
     }
     if (json['inventories'] != null) {
-      inventories = <Inventories>[];
+      inventories = <Products>[];
       json['inventories'].forEach((v) {
-        inventories!.add(new Inventories.fromJson(v));
+        inventories!.add(new Products.fromJson(v));
       });
     }
   }
@@ -78,68 +79,6 @@ class NearMePageData {
   }
 }
 
-@HiveType(typeId: 7)
-class Products {
-  @HiveField(0)
-  String? sId;
-  @HiveField(1)
-  String? name;
-  @HiveField(2)
-  String? logo;
-  @HiveField(3)
-  Catalog? catalog;
-  @HiveField(4)
-  Stores? store;
-
-  Products({this.sId, this.name, this.logo, this.catalog, this.store});
-
-  Products.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'] ?? '';
-    name = json['name'] ?? '';
-    logo = json['logo'] ?? '';
-    store = json['store'] != null ? new Stores.fromJson(json['store']) : null;
-    catalog = json['catalog'] != null ? new Catalog.fromJson(json['catalog']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['logo'] = this.logo;
-    data['store'] = this.store;
-    if (this.catalog != null) {
-      data['catalog'] = this.catalog!.toJson();
-    }
-    if (this.store != null) {
-      data['store'] = this.store!.toJson();
-    }
-    return data;
-  }
-}
-
-@HiveType(typeId: 8)
-class Catalog {
-  @HiveField(0)
-  String? name;
-  @HiveField(1)
-  String? sId;
-
-  Catalog({this.name, this.sId});
-
-  Catalog.fromJson(Map<String, dynamic> json) {
-    name = json['name'] ?? '';
-    sId = json['_id'] ?? '';
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['_id'] = this.sId;
-    return data;
-  }
-}
-
-@HiveType(typeId: 9)
 class Stores {
   @HiveField(0)
   String? name;

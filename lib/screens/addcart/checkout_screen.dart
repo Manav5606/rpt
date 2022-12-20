@@ -1927,7 +1927,9 @@ class CheckoutWalletCard extends StatelessWidget {
                             height: 0.5.h,
                           ),
                           Text(
-                            "ID: ${ID?.substring((ID ?? "123456").length - 6) ?? "12345"}",
+                            (ID != Null && ID!.length > 6)
+                                ? "ID: ${ID?.substring(ID!.length - 6)}"
+                                : "ID: 123456",
                             style: TextStyle(
                               color: const Color(0xff00878f),
                               fontWeight: FontWeight.w500,

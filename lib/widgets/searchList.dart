@@ -17,7 +17,8 @@ class SearchList extends StatelessWidget {
   List<StoreSearchModel>? foundedStores;
   final ScrollController? controller;
 
-  SearchList({Key? key, this.controller, required this.foundedStores}) : super(key: key);
+  SearchList({Key? key, this.controller, required this.foundedStores})
+      : super(key: key);
 
   final ExploreController _exploreController = Get.find();
 
@@ -25,11 +26,13 @@ class SearchList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        NearMePageData? data = _exploreController.getNearMePageDataModel.value?.data;
-        return (((data?.products?.isEmpty ?? true) && (data?.stores?.isEmpty ?? true)))
+        NearMePageData? data =
+            _exploreController.getNearMePageDataModel.value?.data;
+        return (((data?.products?.isEmpty ?? true) &&
+                (data?.stores?.isEmpty ?? true)))
             ? Center(
                 child: Text(
-                "No data",
+                "",
                 style: AppStyles.STORES_SUBTITLE_STYLE,
               ))
             : Column(
@@ -41,8 +44,11 @@ class SearchList extends StatelessWidget {
                           itemCount: storeSearchData.length,
                           itemBuilder: (context, index) {
                             return _listViewChildShimmer(
-                                name: storeSearchData[index].storeName.toString(),
-                                logo: storeSearchData[index].storeImage.toString(),
+                                name:
+                                    storeSearchData[index].storeName.toString(),
+                                logo: storeSearchData[index]
+                                    .storeImage
+                                    .toString(),
                                 icon: Icons.arrow_forward_ios_rounded,
                                 color: colorList[index],
                                 onTap: () {});
@@ -65,18 +71,24 @@ class SearchList extends StatelessWidget {
                                 icon: Icons.arrow_forward_ios_rounded,
                                 color: colorList[index],
                                 onTap: () async {
-                                  RecentProductsData recentProductsData = RecentProductsData(
+                                  RecentProductsData recentProductsData =
+                                      RecentProductsData(
                                     name: data.stores![index].name.toString(),
                                     logo: data.stores![index].logo.toString(),
                                     sId: data.stores![index].sId.toString(),
                                     isStore: true,
                                   );
-                                  var contain = _exploreController.recentProductList.where((element) => element.sId == data.stores![index].sId);
+                                  var contain = _exploreController
+                                      .recentProductList
+                                      .where((element) =>
+                                          element.sId ==
+                                          data.stores![index].sId);
                                   if (contain.isEmpty) {
-                                    _exploreController.setNearDataProduct(recentProductsData);
+                                    _exploreController
+                                        .setNearDataProduct(recentProductsData);
                                   }
                                   await _exploreController.getStoreData(
-                                      id: data.stores![index].sId.toString(), businessId: data.stores![index].businesstype.toString());
+                                      id: data.stores![index].sId.toString());
                                 });
                           },
                           separatorBuilder: (context, index) {
@@ -102,20 +114,29 @@ class SearchList extends StatelessWidget {
                                 icon: Icons.search,
                                 color: colorList[index],
                                 onTap: () async {
-                                  RecentProductsData recentProductsData = RecentProductsData(
+                                  RecentProductsData recentProductsData =
+                                      RecentProductsData(
                                     name: data.products![index].name.toString(),
                                     logo: data.products![index].logo.toString(),
                                     sId: data.products![index].sId.toString(),
                                     isStore: false,
                                   );
-                                  var contain =
-                                      _exploreController.recentProductList.indexWhere((element) => element.sId == data.products![index].sId);
+                                  var contain = _exploreController
+                                      .recentProductList
+                                      .indexWhere((element) =>
+                                          element.sId ==
+                                          data.products![index].sId);
                                   if (contain == -1) {
-                                    _exploreController.setNearDataProduct(recentProductsData);
+                                    _exploreController
+                                        .setNearDataProduct(recentProductsData);
                                   }
-                                  _exploreController.searchText.value = data.products![index].name.toString();
+                                  _exploreController.searchText.value =
+                                      data.products![index].name.toString();
                                   await _exploreController.getStoreData(
-                                      id: data.products![index].store?.sId.toString() ?? '', businessId: data.stores![index].businesstype.toString());
+                                    id: data.products![index].store?.sId
+                                            .toString() ??
+                                        '',
+                                  );
                                   // Get.toNamed(AppRoutes.SearchStoresScreen);
                                   // await _exploreController.getProductsByName(name: data.products![index].name.toString());
                                 });
@@ -129,28 +150,33 @@ class SearchList extends StatelessWidget {
                   _exploreController.isLoadingStoreData.value
                       ? SizedBox()
                       : Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(SizeUtils.horizontalBlockSize *2),
-                          child: Text(
-                            "Inventories",
-                            style: AppStyles.BOLD_STYLE,
-                          ),
-                        ),
-                          ListView.separated(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(
+                                  SizeUtils.horizontalBlockSize * 2),
+                              child: Text(
+                                "Inventories",
+                                style: AppStyles.BOLD_STYLE,
+                              ),
+                            ),
+                            ListView.separated(
                               controller: this.controller,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: data?.inventories?.length ?? 0,
                               itemBuilder: (context, index) {
                                 return _listViewChild(
-                                    name: data!.inventories![index].name.toString(),
+                                    name: data!.inventories![index].name
+                                        .toString(),
                                     logo: '',
                                     icon: Icons.search,
                                     color: colorList[index],
                                     onTap: () async {
                                       await _exploreController.getStoreData(
-                                          id: data.inventories![index].store?.sId.toString() ?? '', businessId: data.stores![index].businesstype.toString());
+                                        id: data.inventories![index].store?.sId
+                                                .toString() ??
+                                            '',
+                                      );
                                     });
                               },
                               separatorBuilder: (context, index) {
@@ -159,8 +185,8 @@ class SearchList extends StatelessWidget {
                                 );
                               },
                             ),
-                        ],
-                      ),
+                          ],
+                        ),
                 ],
               );
       },
@@ -187,7 +213,11 @@ class SearchList extends StatelessWidget {
   }
 
   Widget _listViewChild(
-      {required String logo, required String name, required IconData icon, required Color color, required GestureTapCallback onTap}) {
+      {required String logo,
+      required String name,
+      required IconData icon,
+      required Color color,
+      required GestureTapCallback onTap}) {
     return Column(
       children: [
         GestureDetector(
@@ -196,7 +226,9 @@ class SearchList extends StatelessWidget {
             children: [
               logo.isEmpty
                   ? CircleAvatar(
-                      child: Text(name.substring(0, 1), style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5)),
+                      child: Text(name.substring(0, 1),
+                          style: TextStyle(
+                              fontSize: SizeUtils.horizontalBlockSize * 5)),
                       backgroundColor: color,
                       radius: SizeUtils.horizontalBlockSize * 5.3,
                     )
@@ -227,7 +259,11 @@ class SearchList extends StatelessWidget {
   }
 
   Widget _listViewChildShimmer(
-      {required String logo, required String name, required IconData icon, required Color color, required GestureTapCallback onTap}) {
+      {required String logo,
+      required String name,
+      required IconData icon,
+      required Color color,
+      required GestureTapCallback onTap}) {
     return Column(
       children: [
         GestureDetector(
@@ -237,7 +273,9 @@ class SearchList extends StatelessWidget {
               logo.isEmpty
                   ? ShimmerEffect(
                       child: CircleAvatar(
-                        child: Text(name.substring(0, 1), style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5)),
+                        child: Text(name.substring(0, 1),
+                            style: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 5)),
                         backgroundColor: color,
                         radius: SizeUtils.horizontalBlockSize * 5.3,
                       ),
@@ -316,3 +354,5 @@ class SearchList extends StatelessWidget {
 //     );
 //   }
 // }
+
+

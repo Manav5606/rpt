@@ -20,6 +20,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../screens/more_stores/morestore_controller.dart';
+
 class ActiveOrdersScreen extends StatefulWidget {
   ActiveOrdersScreen({Key? key}) : super(key: key);
   final MyAccountController myAccountController = Get.find()..getActiveOrders();
@@ -316,7 +318,9 @@ class ActiveOrderTabView extends StatelessWidget {
 
 class ActiveOrderTabViewCard extends StatelessWidget {
   final ActiveOrderData? order;
+
   ActiveOrderTabViewCard({Key? key, this.order}) : super(key: key);
+  final MoreStoreController _moreStoreController = Get.find();
   // final MyAccountController _myAccountController = Get.find();
   final ExploreController _exploreController = Get.find();
   @override
@@ -469,20 +473,11 @@ class ActiveOrderTabViewCard extends StatelessWidget {
                 Spacer(),
                 GestureDetector(
                   onTap: () async {
-                    if ((order?.orderType) == "online") {
-                      _exploreController.isLoadingStoreData.value = true;
-
-                      await _exploreController.getStoreData(
-                          id: '${order?.store?.sId}');
-                      Get.back();
-                      (_exploreController.getStoreDataModel.value?.error ??
-                              false)
-                          ? null
-                          : Get.toNamed(AppRoutes.StoreScreen);
-                      // Get.toNamed(AppRoutes.StoreScreen);
-                    } else {
-                      Get.toNamed(AppRoutes.ScanStoreViewScreen);
-                    }
+                    _moreStoreController.storeId.value =
+                        order?.store?.sId ?? '';
+                    await _moreStoreController.getStoreData(
+                      id: order?.store?.sId ?? '',
+                    );
                   },
                   child: Container(
                       height: 5.5.h,

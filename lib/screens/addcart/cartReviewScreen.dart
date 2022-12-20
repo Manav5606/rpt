@@ -1078,7 +1078,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                 ?.data
                                                                 ?.inventories?[
                                                                     index]
-                                                                .logo,
+                                                                .img,
                                                           ),
                                                           DisplayProductName(
                                                             name: _addCartController

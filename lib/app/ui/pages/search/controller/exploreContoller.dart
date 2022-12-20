@@ -22,6 +22,10 @@ import 'package:customer_app/screens/more_stores/morestore_service.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:customer_app/screens/home/models/homePageRemoteConfigModel.dart'
+    as eox;
+
+import 'package:customer_app/screens/home/service/home_service.dart';
 
 import '../../../../../routes/app_list.dart';
 
@@ -29,10 +33,15 @@ class ExploreController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isClick = false.obs;
   RxBool isLoadingGetProducts = false.obs;
+  RxBool isRemoteConfigPageLoading1 = false.obs;
   RxBool isLoadingSubmit = false.obs;
   RxBool isLoadingStoreData = false.obs;
   RxBool isLoadingAddData = false.obs;
 
+  int remoteConfigPageNumber = 1;
+
+  Rx<eox.HomePageRemoteConfigData?> homePageRemoteConfigModel1 =
+      eox.HomePageRemoteConfigData().obs;
   Rx<GetNearMePageData?> getNearMePageDataModel = GetNearMePageData().obs;
   Rx<AddToCartModel?> addToCartModel = AddToCartModel().obs;
   Rx<GetProductsByName?> getProductsByNameModel = GetProductsByName().obs;
@@ -49,6 +58,7 @@ class ExploreController extends GetxController {
   RxString currentHour = ''.obs;
   RxString displayHour = ''.obs;
   RxString amountText = ''.obs;
+  RxList<eox.Data> storeDataList = <eox.Data>[].obs;
   RxList<RecentProductsData> recentProductList = <RecentProductsData>[].obs;
   RxList<StoreModelProducts> addCartProduct = <StoreModelProducts>[].obs;
   RxInt totalValue = 0.obs;
@@ -116,9 +126,7 @@ class ExploreController extends GetxController {
   }
 
   Future<void> getStoreData(
-      {required String id,
-      bool isScanFunction = false,
-      String businessId = ''}) async {
+      {required String id, bool isScanFunction = false}) async {
     try {
       isLoadingStoreData.value = true;
       getStoreDataModel.value = await ExploreService.getStoreData(id);
@@ -199,7 +207,7 @@ class ExploreController extends GetxController {
         Get.toNamed(AppRoutes.ScanStoreViewScreen);
       } else {
         final HomeController _homeController = Get.find();
-        bool isGrocery = Constants.grocery == businessId;
+        bool isGrocery = true;
         await Get.toNamed(AppRoutes.StoreScreen,
             arguments: {'isGrocery': isGrocery});
         if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
@@ -276,6 +284,33 @@ class ExploreController extends GetxController {
           (element.cashback! * element.quntity!.value).toInt();
       log('addCartProduct totalValue.value):${totalValue.value}');
     });
+  }
+
+  Future<void> homePageRemoteConfigData1({
+    required String keyword,
+    required bool productFetch,
+    required String keywordHelper,
+    required String id,
+  }) async {
+    try {
+      isRemoteConfigPageLoading1.value = true;
+      homePageRemoteConfigModel1.value =
+          await HomeService.homePageRemoteConfigData("", true, "Catalog",
+              "625cff9aaf81283a247966b5", remoteConfigPageNumber);
+
+      if (homePageRemoteConfigModel1.value!.data!.isNotEmpty &&
+          !(homePageRemoteConfigModel1.value!.data!.length < 10)) {
+        isRemoteConfigPageLoading1.value = true;
+        remoteConfigPageNumber++;
+      } else {
+        isRemoteConfigPageLoading1.value = false;
+      }
+      storeDataList.addAll(homePageRemoteConfigModel1.value?.data ?? []);
+    } catch (e) {
+      print(e);
+    } finally {
+      isRemoteConfigPageLoading1.value = false;
+    }
   }
 
   @override

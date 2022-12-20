@@ -138,8 +138,8 @@ class InStoreScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(bottom: 1.h, left: 5.w),
                         child: Text(
-                          "Fresh Store near you",
-                          // "${category?.name.toString() ?? ""}",
+                          // "Fresh Store near you",
+                          "${category?.title.toString() ?? ""}",
                           // "Pickup",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,

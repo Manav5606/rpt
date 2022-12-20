@@ -57,7 +57,7 @@ class NearMePageDataAdapter extends TypeAdapter<NearMePageData> {
       sId: fields[0] as String?,
       products: (fields[1] as List?)?.cast<Products>(),
       stores: (fields[2] as List?)?.cast<Stores>(),
-      inventories: (fields[3] as List?)?.cast<Inventories>(),
+      inventories: (fields[3] as List?)?.cast<Products>(),
     );
   }
 
@@ -100,8 +100,6 @@ class ProductsAdapter extends TypeAdapter<Products> {
       sId: fields[0] as String?,
       name: fields[1] as String?,
       logo: fields[2] as String?,
-      catalog: fields[3] as Catalog?,
-      store: fields[4] as Stores?,
     );
   }
 
@@ -116,7 +114,6 @@ class ProductsAdapter extends TypeAdapter<Products> {
       ..writeByte(2)
       ..write(obj.logo)
       ..writeByte(3)
-      ..write(obj.catalog)
       ..writeByte(4)
       ..write(obj.store);
   }
@@ -132,42 +129,8 @@ class ProductsAdapter extends TypeAdapter<Products> {
           typeId == other.typeId;
 }
 
-class CatalogAdapter extends TypeAdapter<Catalog> {
-  @override
-  final int typeId = 8;
-
-  @override
-  Catalog read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return Catalog(
-      name: fields[0] as String?,
-      sId: fields[1] as String?,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, Catalog obj) {
-    writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.name)
-      ..writeByte(1)
-      ..write(obj.sId);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CatalogAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
+@override
+final int typeId = 8;
 
 class StoresAdapter extends TypeAdapter<Stores> {
   @override

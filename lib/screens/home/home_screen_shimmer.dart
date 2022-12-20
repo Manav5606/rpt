@@ -245,6 +245,7 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
                                           .name,
                                       subtitle: '',
                                       image: '',
+                                      title: '',
                                     );
                                     await _homeController
                                         .homePageRemoteConfigData(

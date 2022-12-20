@@ -201,6 +201,8 @@ class Products {
   num? cashback;
   num? gstAmount;
   String? logo;
+  String? img;
+  String? unit;
 
   Products(
       {this.sId,
@@ -211,18 +213,22 @@ class Products {
       this.quantity,
       this.cashback,
       this.gstAmount,
-      this.logo});
+      this.logo,
+      this.img,
+      this.unit});
 
   Products.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     status = json['status'];
     name = json['name'];
     logo = json['logo'];
+    img = json['img'];
     mrp = json['mrp'];
     sellingPrice = json['selling_price'];
     quantity?.value = json['quantity'];
     cashback = json['cashback'];
     gstAmount = json['gst_amount'];
+    unit = json['unit'];
   }
 
   Map<String, dynamic> toJson() {
@@ -231,11 +237,13 @@ class Products {
     // data['status'] = this.status;
     data['name'] = this.name;
     data['logo'] = this.logo;
+    data['img'] = this.img;
     data['mrp'] = this.mrp;
     data['selling_price'] = this.sellingPrice;
     data['quantity'] = this.quantity?.value;
     data['cashback'] = this.cashback;
     data['gst_amount'] = this.gstAmount;
+    data['unit'] = this.unit;
     return data;
   }
 }
