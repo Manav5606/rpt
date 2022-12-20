@@ -13,6 +13,7 @@ import 'package:customer_app/app/data/repository/hive_repository.dart';
 import 'package:customer_app/routes/app_list.dart';
 
 import 'package:customer_app/utils/utils.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -82,7 +83,9 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
               in (userModel.addresses ?? [])) {
             if (addressModal?.status ?? false) {
               WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-                Get.offAllNamed(AppRoutes.BaseScreen);
+                Future.delayed(Duration(seconds: 2),
+                    () => Get.offAllNamed(AppRoutes.BaseScreen));
+                // Get.offAllNamed(AppRoutes.BaseScreen);
                 // Get.offAllNamed(AppRoutes.NewLocationScreen);
               });
               break;
@@ -167,29 +170,34 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
     SizeUtils().init(context);
     // sizeConfig.setSize((Get.height - (Get.mediaQuery.padding.top + Get.mediaQuery.padding.bottom)) / 1000,
     //     (Get.width - (Get.mediaQuery.padding.left + Get.mediaQuery.padding.right)) / 1000);
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: AppConst.white,
-          image: DecorationImage(
-              image: AssetImage("assets/images/splashbg.png"),
-              fit: BoxFit.fill),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: AppConst.transparent,
+          statusBarIconBrightness: Brightness.dark),
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            color: AppConst.white,
+            image: DecorationImage(
+                image: AssetImage("assets/images/splashbg.png"),
+                fit: BoxFit.fill),
+          ),
+          height: double.infinity,
+          width: double.infinity,
+          child: FittedBox(
+            child: Center(
+                child: Image.asset(
+              "assets/images/splash.gif",
+            )),
+          ),
         ),
-        height: double.infinity,
-        width: double.infinity,
-        child: FittedBox(
-          child: Center(
-              child: Image.asset(
-            "assets/images/splash.gif",
-          )),
-        ),
-      ),
 
-      //     Center(
-      //         child: Lottie.asset(
-      //   'assets/lottie/splashscreen.json',
-      // )),
-      // )
+        //     Center(
+        //         child: Lottie.asset(
+        //   'assets/lottie/splashscreen.json',
+        // )),
+        // )
+      ),
     );
   }
 }
