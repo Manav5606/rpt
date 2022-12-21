@@ -280,7 +280,7 @@ class Bloyallogo extends StatelessWidget {
         width: 50.w,
         child: FittedBox(
           child: SvgPicture.asset(
-            "assets/icons/bloyal_logo.svg",
+            "assets/icons/reciptologo.svg",
             fit: BoxFit.fill,
             color: Color(0xff171e2e),
           ),
