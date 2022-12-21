@@ -281,19 +281,21 @@ class DisplayDistance extends StatelessWidget {
 }
 
 class DispalyStoreLogo extends StatelessWidget {
-  DispalyStoreLogo({Key? key, this.logo}) : super(key: key);
+  DispalyStoreLogo({Key? key, this.logo, this.height, this.bottomPadding})
+      : super(key: key);
 
   String? logo;
-
+  num? height;
+  num? bottomPadding;
   @override
   Widget build(BuildContext context) {
     return Container(
       child: logo!.isEmpty
           ? Padding(
-              padding: EdgeInsets.only(bottom: 5.h),
+              padding: EdgeInsets.only(bottom: (bottomPadding ?? 5).h),
               child: Container(
                 padding: const EdgeInsets.all(12.0),
-                height: 7.h,
+                height: (height ?? 7).h,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppConst.lightGrey,

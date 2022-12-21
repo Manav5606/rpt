@@ -937,6 +937,11 @@ query($lat: Float, $lng: Float) {
   {
     name
     _id
+    premium
+    logo
+    store_type
+    default_cashback
+    calculated_distance
     
 } }
 }

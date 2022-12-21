@@ -35,7 +35,7 @@ class NearMePageData {
   @HiveField(1)
   List<Products>? products;
   @HiveField(2)
-  List<Stores>? stores;
+  List<Store>? stores;
   @HiveField(3)
   List<Products>? inventories;
 
@@ -50,9 +50,9 @@ class NearMePageData {
       });
     }
     if (json['stores'] != null) {
-      stores = <Stores>[];
+      stores = <Store>[];
       json['stores'].forEach((v) {
-        stores!.add(new Stores.fromJson(v));
+        stores!.add(new Store.fromJson(v));
       });
     }
     if (json['inventories'] != null) {
@@ -79,39 +79,39 @@ class NearMePageData {
   }
 }
 
-class Stores {
-  @HiveField(0)
-  String? name;
-  @HiveField(1)
-  String? logo;
-  @HiveField(2)
-  String? sId;
-  @HiveField(3)
-  String? businesstype;
+// class Stores {
+//   @HiveField(0)
+//   String? name;
+//   @HiveField(1)
+//   String? logo;
+//   @HiveField(2)
+//   String? sId;
+//   @HiveField(3)
+//   String? businesstype;
 
-  Stores({this.name, this.logo, this.businesstype, this.sId});
+//   Stores({this.name, this.logo, this.businesstype, this.sId});
 
-  Stores.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'] ?? '';
-    name = json['name'] ?? '';
-    sId = json['_id'] ?? '';
-    logo = json['logo'] ?? '';
-    businesstype = json['businesstype'] ?? '';
-    // businesstype = json['businesstype'] != null
-    //     ? new Catalog.fromJson(json['businesstype'])
-    //     : null;
-  }
+//   Stores.fromJson(Map<String, dynamic> json) {
+//     sId = json['_id'] ?? '';
+//     name = json['name'] ?? '';
+//     sId = json['_id'] ?? '';
+//     logo = json['logo'] ?? '';
+//     businesstype = json['businesstype'] ?? '';
+//     // businesstype = json['businesstype'] != null
+//     //     ? new Catalog.fromJson(json['businesstype'])
+//     //     : null;
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['_id'] = this.sId;
-    data['logo'] = this.logo;
-    data['businesstype'] = this.businesstype;
-    // if (this.businesstype != null) {
-    //   data['businesstype'] = this.businesstype!.toJson();
-    // }
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['_id'] = this.sId;
+//     data['name'] = this.name;
+//     data['_id'] = this.sId;
+//     data['logo'] = this.logo;
+//     data['businesstype'] = this.businesstype;
+//     // if (this.businesstype != null) {
+//     //   data['businesstype'] = this.businesstype!.toJson();
+//     // }
+//     return data;
+//   }
+// }

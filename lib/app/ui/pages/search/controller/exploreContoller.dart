@@ -105,7 +105,18 @@ class ExploreController extends GetxController {
 
   Future<void> setNearDataProduct(RecentProductsData data) async {
     final userBox = Hive.box(HiveConstants.GET_NEAR_PAGE_DATA_PRODUCT);
+
     userBox.add(data);
+    var recent = recentProductList.length;
+    log("recent: $recent");
+    recentProductList.value = List<RecentProductsData>.from(userBox.values);
+  }
+
+  Future<void> DeleteNearDataProduct() async {
+    final userBox = Hive.box(HiveConstants.GET_NEAR_PAGE_DATA_PRODUCT);
+
+    userBox.clear();
+
     recentProductList.value = List<RecentProductsData>.from(userBox.values);
   }
 
@@ -286,12 +297,14 @@ class ExploreController extends GetxController {
     });
   }
 
-  Future<void> homePageRemoteConfigData1({
-    required String keyword,
-    required bool productFetch,
-    required String keywordHelper,
-    required String id,
-  }) async {
+  Future<void> homePageRemoteConfigData1(
+      // {
+      // required String keyword,
+      // required bool productFetch,
+      // required String keywordHelper,
+      // required String id,
+      // }
+      ) async {
     try {
       isRemoteConfigPageLoading1.value = true;
       homePageRemoteConfigModel1.value =

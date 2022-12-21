@@ -397,21 +397,6 @@ class ListViewChild extends StatelessWidget {
                                                                   .sId ??
                                                               '',
                                                         );
-
-                                                        // _exploreController.addToCart(
-                                                        //     cart_id:
-                                                        //         _exploreController
-                                                        //                 .cartIndex
-                                                        //                 .value
-                                                        //                 ?.sId ??
-                                                        //             '',
-                                                        //     store_id:
-                                                        //         storesWithProductsModel
-                                                        //                 .sId ??
-                                                        //             '',
-                                                        //     index: 0,
-                                                        //     increment: true,
-                                                        //     product: product);
                                                       }
                                                       if (product.quntity!
                                                                   .value !=

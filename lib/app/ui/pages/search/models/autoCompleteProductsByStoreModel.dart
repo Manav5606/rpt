@@ -114,7 +114,7 @@ class Store {
   dynamic defaultCashback;
   dynamic calculatedDistance;
   String? storeType;
-  String? premium;
+  bool? premium;
 
   Store(
       {this.sId,
