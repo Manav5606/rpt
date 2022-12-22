@@ -884,7 +884,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           _addCartController.selectTimeSheetIndex.value = 2;
         },
         child: Container(
-          height: 7.h,
+          height: 8.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: _addCartController.selectTimeSheetIndex.value == 1
@@ -1234,7 +1234,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           _addCartController.selectTimeSheetIndex.value = 2;
         }),
         child: Container(
-          height: 6.h,
+          height: 7.h,
           color: AppConst.transparent,
           child: ListView.builder(
             padding: EdgeInsets.symmetric(
@@ -1280,7 +1280,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 2.w, vertical: 0.5.h),
+                              horizontal: 2.w, vertical: 0.2.h),
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -1858,7 +1858,7 @@ class CheckoutWalletCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 20.h,
+      height: 21.h,
       width: 100.w,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -1868,7 +1868,7 @@ class CheckoutWalletCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 15.h,
+              height: 16.h,
               width: 100.w,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

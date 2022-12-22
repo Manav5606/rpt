@@ -153,7 +153,8 @@ class _AllChatsState extends State<AllChats> {
             Expanded(
               child: ChannelsBloc(
                 child: ChannelListView(
-                  pagination: PaginationParams(limit: 20),
+                  limit: 20,
+                  // pagination: PaginationParams(limit: 20),
                   filter: Filter.and([
                     Filter.equal('type', 'messaging'),
                     Filter.in_('members', [

@@ -272,7 +272,7 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                 ),
                               ),
                               SizedBox(
-                                height: 3.h,
+                                height: 2.h,
                               ),
 
                               Row(
@@ -304,14 +304,15 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                 ],
                               ),
                               SizedBox(
-                                height: 2.h,
+                                height: 1.h,
                               ),
                               RichText(
                                   text: TextSpan(
                                       text: "You Saved   ",
                                       style: TextStyle(
                                           fontSize:
-                                              SizeUtils.horizontalBlockSize * 5,
+                                              SizeUtils.horizontalBlockSize *
+                                                  4.8,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black),
                                       children: [
@@ -322,7 +323,7 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                             fontWeight: FontWeight.bold,
                                             fontSize:
                                                 SizeUtils.horizontalBlockSize *
-                                                    5.5))
+                                                    5))
                                   ])),
                               //  Text(
                               //       "You Saved ",

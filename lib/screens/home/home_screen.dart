@@ -397,13 +397,16 @@ class _HomeScreenState extends State<HomeScreen>
                                       ),
                                     )
                                   : Container(
-                                      height: 33.h,
+                                      height: 38.h,
                                       child: GridView(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        physics: NeverScrollableScrollPhysics(),
                                         gridDelegate:
                                             SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 3,
-                                                crossAxisSpacing: 1.w,
-                                                mainAxisSpacing: 1.h),
+                                                crossAxisSpacing: 2.w,
+                                                mainAxisSpacing: 2.h),
                                         children: List.generate(
                                             (_homeController.category.length),
                                             (index) {
@@ -477,9 +480,9 @@ class _HomeScreenState extends State<HomeScreen>
                                         }),
                                       ),
                                     ),
-                              SizedBox(
-                                height: 2.h,
-                              ),
+                              // SizedBox(
+                              //   height: 2.h,
+                              // ),
                               // (_homeController.getAllCartsModel.value?.carts
                               //             ?.isNotEmpty ??
                               //         false)
@@ -493,11 +496,15 @@ class _HomeScreenState extends State<HomeScreen>
                               //   height: 1.h,
                               // ),
                               ((_myAccountController.activeOrdersModel.value
-                                              ?.data?.length ??
-                                          0) >
-                                      0)
+                                                  ?.data?.length ??
+                                              0) >
+                                          0) ||
+                                      ((_homeController.getAllCartsModel.value
+                                                  ?.carts?.length) ??
+                                              0) >
+                                          0
                                   ? Container(
-                                      height: 21.h,
+                                      height: 24.h,
                                       decoration: BoxDecoration(
                                           color: Color(0xfff2f3f7)),
                                       child: Padding(
@@ -518,7 +525,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                       color: AppConst.black,
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
-                                                          4.7,
+                                                          4.5,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       fontStyle:
@@ -564,7 +571,7 @@ class _HomeScreenState extends State<HomeScreen>
                                               height: 1.5.h,
                                             ),
                                             Container(
-                                              height: 15.h,
+                                              height: 17.h,
                                               // color: AppConst.yellow,
                                               width: double.infinity,
                                               child: SingleChildScrollView(
@@ -1453,7 +1460,7 @@ class RecentCarts extends StatelessWidget {
                   left: 1.w,
                 ),
                 width: 26.w,
-                height: 10.h,
+                height: 12.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     color: AppConst.white),
@@ -1543,7 +1550,7 @@ class RecentActiveOrders extends StatelessWidget {
                   left: 1.w,
                 ),
                 width: 26.w,
-                height: 10.h,
+                height: 12.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     color: AppConst.white),
@@ -1597,7 +1604,7 @@ class RecentActiveOrders extends StatelessWidget {
                       ))
                   : Container(
                       width: 12.w,
-                      padding: EdgeInsets.all(4),
+                      padding: EdgeInsets.symmetric(vertical: 0.5.h),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           color: AppConst.green),

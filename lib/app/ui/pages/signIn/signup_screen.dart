@@ -276,7 +276,7 @@ class Bloyallogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 5.h,
+        height: 6.h,
         width: 50.w,
         child: FittedBox(
           child: SvgPicture.asset(

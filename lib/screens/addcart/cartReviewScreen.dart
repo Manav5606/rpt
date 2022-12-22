@@ -160,8 +160,8 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                               BorderRadius.circular(3.w),
                                           color: Color(0xfffe6faf1)),
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 3.w, vertical: 1.h),
+                                        padding: EdgeInsets.only(
+                                            left: 3.w, right: 3.w, top: 1.h),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -172,7 +172,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                   color: Color(0xff005b41),
                                                   fontSize: SizeUtils
                                                           .horizontalBlockSize *
-                                                      5.4,
+                                                      5,
                                                   fontWeight: FontWeight.w700,
                                                   fontStyle: FontStyle.normal,
                                                   letterSpacing: -0.36,
@@ -1477,7 +1477,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                             )
 
                                             // (DeliveryAddress != null)
-                                            ? 15.h
+                                            ? 16.h
                                             : 12.h,
                                         decoration: BoxDecoration(
                                           color: AppConst.white,
@@ -1907,7 +1907,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
             ),
           ),
           Container(
-            height: 38.h,
+            height: 37.h,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -1995,7 +1995,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                   ),
                                                   Container(
                                                     width: 80.w,
-                                                    height: 5.h,
+                                                    // height: 5.h,
                                                     // color: AppConst.yellow,
                                                     child: Text(
                                                       "${_addCartController.cartLocationModel.value?.addresses?[index].house ?? ''} ${_addCartController.cartLocationModel.value?.addresses?[index].address ?? ''}",
@@ -2102,7 +2102,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                 ),
                                                 Container(
                                                   width: 80.w,
-                                                  height: 5.h,
+                                                  // height: 5.h,
                                                   // color: AppConst.yellow,
                                                   child: Text(
                                                     "${_addCartController.cartLocationModel.value?.storeAddress?.address ?? ""}",

@@ -452,7 +452,7 @@ class DisplayHotProducts extends StatelessWidget {
                                                 ),
                                         ),
                                         SizedBox(
-                                          height: 4.5.h,
+                                          // height: 4.5.h,
                                           child: Text(product.name.toString(),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,

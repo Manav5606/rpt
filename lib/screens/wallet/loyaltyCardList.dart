@@ -166,7 +166,7 @@ class CardlistView extends StatelessWidget {
           children: [
             Container(
               width: 50.w,
-              height: 4.5.h,
+              // height: 4.5.h,
               child: Text(StoreName ?? '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

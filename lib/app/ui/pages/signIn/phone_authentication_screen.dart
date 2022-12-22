@@ -132,7 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
           // resizeToAvoidBottomInset: false,
 
           bottomSheet: Container(
-            height: 22.h,
+            height: 24.h,
             color: AppConst.white,
             child: Padding(
               padding: EdgeInsets.only(
@@ -223,7 +223,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       // mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                            height: 77.h,
+                            height: 75.h,
                             child: PageView(
                               controller: _controller,
                               children: currentTabs,
@@ -281,11 +281,11 @@ class _SignInScreenState extends State<SignInScreen> {
             width: double.infinity,
             color: AppConst.white,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
               child: Column(
                 children: [
                   SizedBox(
-                    height: 4.h,
+                    height: 2.h,
                   ),
                   RichText(
                       text: TextSpan(children: [
@@ -763,12 +763,15 @@ class AddPlus91 extends StatelessWidget {
           SizedBox(
             width: 2.w,
           ),
-          Icon(
-            Icons.call,
-            size: 3.h,
-            color: _signInController.phoneNumber.value.length == 10
-                ? AppConst.darkGreen
-                : AppConst.grey,
+          Padding(
+            padding: EdgeInsets.only(top: 0.5.h),
+            child: Icon(
+              Icons.call,
+              size: 3.h,
+              color: _signInController.phoneNumber.value.length == 10
+                  ? AppConst.darkGreen
+                  : AppConst.grey,
+            ),
           ),
           SizedBox(
             width: 3.w,

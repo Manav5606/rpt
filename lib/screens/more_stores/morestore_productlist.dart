@@ -165,7 +165,7 @@ class MoreStoreProductView extends StatelessWidget {
                     statusBarIconBrightness: (colorinversion == "#FFFFFF")
                         ? Brightness.dark
                         : Brightness.light),
-                expandedHeight: 16.h,
+                expandedHeight: 18.h,
                 centerTitle: true,
                 pinned: true,
                 stretch: true,
@@ -350,7 +350,7 @@ class MoreStoreProductView extends StatelessWidget {
                       // ),
 
                       Padding(
-                        padding: EdgeInsets.only(left: 5.w, bottom: 3.h),
+                        padding: EdgeInsets.only(left: 5.w, bottom: 2.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -810,7 +810,7 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                         ),
                                         Container(
                                           // color: AppConst.red,
-                                          height: 4.5.h,
+                                          // height: 4.5.h,
                                           child: Text(product.name.toString(),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
