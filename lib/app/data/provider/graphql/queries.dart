@@ -1876,6 +1876,7 @@ data{
         msg
          data {
       previous_total_amount
+      final_payable_amount
       total_gst_amount
       used_wallet_amount
       total
@@ -2132,9 +2133,11 @@ data{
       $rawitems: [OrderRawDataInput] 
       $inventories: [OrderInventory]
       $total: Float 
+      $previous_total_amount: Float
       $cashback: Float 
       $lat: Float 
       $lng: Float 
+      $final_payable_amount: Float
       $order_type: String
       $address: String
       $razor_order_id: String
@@ -2142,6 +2145,7 @@ data{
       $razor_payment_id: String
       $packaging_fee: Int
       $delivery_fee: Int
+      $pickedup: Boolean
       $wallet_amount: Float){
       placeOrder(orderInput:{
         order_type: $order_type
@@ -2155,8 +2159,11 @@ data{
         wallet_amount: $wallet_amount
         address: $address
         delivery_slot: $delivery_slot
+        final_payable_amount: $final_payable_amount
+         previous_total_amount: $previous_total_amount
         lat: $lat
         lng: $lng
+        pickedup: $pickedup
         razorpay_signature: $razor_signature
         razorpay_order_id: $razor_order_id
         razorpay_payment_id: $razor_payment_id
