@@ -262,14 +262,16 @@ class ExploreSearchProducts extends StatelessWidget {
               SizedBox(
                 height: 0.5.h,
               ),
-              Text("Cashback \u20b9${product.cashback.toString()}",
-                  style: TextStyle(
-                    fontFamily: 'MuseoSans',
-                    color: AppConst.black,
-                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                  )),
+              (product.cashback == null || product.cashback == "")
+                  ? SizedBox()
+                  : Text("Cashback \u20b9${product.cashback.toString()}",
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: AppConst.black,
+                        fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      )),
               SizedBox(
                 height: 0.5.h,
               ),

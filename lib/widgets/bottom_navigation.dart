@@ -45,10 +45,12 @@ class BottomNavigation extends StatelessWidget {
               elevation: 0,
               items: [
                 BottomNavigationBarItem(
-                  label: StringContants.orders,
+                  label: "Home",
+                  // StringContants.orders,
                   icon: (value == 0)
                       ? Icon(
-                          Icons.home,
+                          Icons.home_outlined,
+                          // Icons.home,
                           size: 3.5.h,
                         )
                       : Icon(
@@ -85,7 +87,8 @@ class BottomNavigation extends StatelessWidget {
                     badgeContent: Text(""),
                     child: (value == 1)
                         ? Icon(
-                            CupertinoIcons.chat_bubble_fill,
+                            CupertinoIcons.chat_bubble,
+                            // CupertinoIcons.chat_bubble_fill,
                             size: 3.5.h,
                           )
                         : Icon(
@@ -110,7 +113,8 @@ class BottomNavigation extends StatelessWidget {
                     label: StringContants.myAccount,
                     icon: (value == 3)
                         ? Icon(
-                            CupertinoIcons.person_fill,
+                            CupertinoIcons.person,
+                            // CupertinoIcons.person_fill,
                             size: 3.5.h,
                           )
                         : Icon(
