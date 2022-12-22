@@ -23,15 +23,16 @@ class GetOrderConfirmPageData {
 }
 
 class Data {
-  int? previousTotalAmount;
+  num? previousTotalAmount;
   int? totalGstAmount;
-  int? usedWalletAmount;
-  int? total;
+  num? usedWalletAmount;
+  num? total;
+  num? finalpayableAmount;
   int? gstAndPackaging;
   int? packagingFee;
   int? deliveryFee;
   List<DeliverySlots>? deliverySlots;
-  int? walletAmount;
+  num? walletAmount;
   int? billDiscountOfferAmount;
   bool? billDiscountOfferStatus;
   int? billDiscountOfferTarget;
@@ -39,6 +40,7 @@ class Data {
 
   Data(
       {this.previousTotalAmount,
+      this.finalpayableAmount,
       this.totalGstAmount,
       this.usedWalletAmount,
       this.total,
@@ -57,6 +59,7 @@ class Data {
     previousTotalAmount = json['previous_total_amount'];
     totalGstAmount = json['total_gst_amount'];
     usedWalletAmount = json['used_wallet_amount'];
+    finalpayableAmount = json['final_payable_amount'];
     total = json['total'];
     gstAndPackaging = json['gst_and_packaging'];
     packagingFee = json['packaging_fee'];
@@ -80,6 +83,7 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['previous_total_amount'] = this.previousTotalAmount;
     data['total_gst_amount'] = this.totalGstAmount;
+    data['final_payable_amount'] = this.finalpayableAmount;
     data['used_wallet_amount'] = this.usedWalletAmount;
     data['total'] = this.total;
     data['gst_and_packaging'] = this.gstAndPackaging;

@@ -354,6 +354,8 @@ class AddCartController extends GetxController {
     required var products,
     required var inventories,
     required double total,
+    required double previous_total_amount,
+    required double final_payable_amount,
     required String order_type,
     required String cartId,
     required String razorPayOrderId,
@@ -377,10 +379,12 @@ class AddCartController extends GetxController {
           products: products,
           inventories: inventories,
           total: total,
+          previous_total_amount: previous_total_amount,
           order_type: order_type,
           razorPayOrderId: razorPayOrderId,
           razorPaySignature: razorPaySignature,
           razorPayPaymentId: razorPayPaymentId,
+          final_payable_amount: final_payable_amount,
           address: address,
           walletAmount: walletAmount,
           lat: lat,
@@ -421,7 +425,7 @@ class AddCartController extends GetxController {
   Future<void> getOrderConfirmPageData(
       {required String storeId,
       required double distance,
-      required double walletAmount,
+      required int walletAmount,
       var products,
       var inventories}) async {
     try {
@@ -431,7 +435,7 @@ class AddCartController extends GetxController {
           await AddCartService.getOrderConfirmPageData(
               storeId: storeId,
               distance: distance,
-              walletAmount: walletAmount,
+              walletAmount: 0,
               products: products,
               inventories: inventories);
       getOrderConfirmPageDataModel.refresh();

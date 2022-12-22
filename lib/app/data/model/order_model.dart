@@ -32,6 +32,7 @@ class OrderData {
   String? status;
   String? receipt;
   String? orderType;
+  num? final_payable_amount;
   num? total;
   num? total_cashback;
   int? cashback_percentage;
@@ -65,16 +66,17 @@ class OrderData {
       this.inventories,
       this.store,
       this.rawItems,
-      this.receipt});
+      this.receipt,
+      this.final_payable_amount});
 
   OrderData.fromJson(Map<String, dynamic> json) {
     Id = json['_id'];
     status = json['status'];
     receipt = json['receipt'];
-
+    final_payable_amount = json['final_payable_amount'];
     orderType = json['order_type'];
     total = json['total'];
-    previous_total = json['previous_total'];
+    previous_total = json['previous_total_amount'];
     cashback_percentage = json['cashback_percentage'];
     total_cashback = json['total_cashback'];
     wallet_amount = json['wallet_amount'];
@@ -115,7 +117,8 @@ class OrderData {
     data['receipt'] = this.receipt;
     data['order_type'] = this.orderType;
     data['total'] = this.total;
-    data['previous_total'] = this.previous_total;
+    data['final_payable_amount'] = this.final_payable_amount;
+    data['previous_total_amount'] = this.previous_total;
     data['cashback_percentage'] = this.cashback_percentage;
     data['total_cashback'] = this.total_cashback;
     data['wallet_amount'] = this.wallet_amount;

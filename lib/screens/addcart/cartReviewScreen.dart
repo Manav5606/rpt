@@ -1628,28 +1628,23 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                         },
                                                       );
                                                       // );
-                                                      await _addCartController.getOrderConfirmPageData(
-                                                          storeId: storeID,
-                                                          distance: 0,
-                                                          products:
-                                                              _addCartController
-                                                                  .reviewCart
-                                                                  .value
-                                                                  ?.data
-                                                                  ?.products,
-                                                          inventories:
-                                                              _addCartController
-                                                                  .reviewCart
-                                                                  .value
-                                                                  ?.data
-                                                                  ?.inventories,
-                                                          walletAmount:
-                                                              _addCartController
+                                                      await _addCartController
+                                                          .getOrderConfirmPageData(
+                                                              storeId: storeID,
+                                                              distance: 0,
+                                                              products:
+                                                                  _addCartController
                                                                       .reviewCart
                                                                       .value
                                                                       ?.data
-                                                                      ?.walletAmount ??
-                                                                  0.0);
+                                                                      ?.products,
+                                                              inventories:
+                                                                  _addCartController
+                                                                      .reviewCart
+                                                                      .value
+                                                                      ?.data
+                                                                      ?.inventories,
+                                                              walletAmount: 0);
                                                       _addCartController
                                                           .formatDate();
                                                     },

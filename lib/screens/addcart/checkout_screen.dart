@@ -74,21 +74,24 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         total: double.parse(_addCartController
                 .getOrderConfirmPageDataModel.value?.data?.total
                 ?.toStringAsFixed(2) ??
-            ''),
+            '0.0'),
+        final_payable_amount: double.parse(_addCartController
+                .getOrderConfirmPageDataModel.value?.data?.finalpayableAmount
+                ?.toStringAsFixed(2) ??
+            "0.0"),
+        previous_total_amount: double.parse(_addCartController
+                .getOrderConfirmPageDataModel.value?.data?.previousTotalAmount
+                ?.toStringAsFixed(2) ??
+            "0.0"),
         store: _addCartController.store.value,
         cartId: _addCartController.cartId.value,
         products: _addCartController.reviewCart.value?.data?.products,
         rawItem: _addCartController.reviewCart.value?.data?.rawItems,
         inventories: _addCartController.reviewCart.value?.data?.inventories,
         deliveryTimeSlot: _addCartController.dayTimeSlots.value,
-        walletAmount:
-            _addCartController.reviewCart.value?.data?.walletAmount ?? 0,
-        deliveryFee: _addCartController
-                .getOrderConfirmPageDataModel.value?.data?.deliveryFee ??
-            0,
-        packagingFee: _addCartController
-                .getOrderConfirmPageDataModel.value?.data?.packagingFee ??
-            0,
+        walletAmount: double.parse(_addCartController.getOrderConfirmPageDataModel.value?.data?.usedWalletAmount?.toStringAsFixed(2) ?? "0.0"),
+        deliveryFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.deliveryFee ?? 0,
+        packagingFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.packagingFee ?? 0,
         razorPayPaymentId: response?.paymentId ?? '',
         razorPayOrderId: response?.orderId ?? '',
         razorPaySignature: response?.signature ?? '',
@@ -96,6 +99,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         lng: _addCartController.selectAddressIndex.value?.location?.lng ?? 0,
         address: _addCartController.selectAddressIndex.value?.address ?? '',
         pickedup: _addCartController.pickedup.value);
+
     if (_addCartController.orderModel.value != null) {
       _addCartController.formatDate();
       await Navigator.pushAndRemoveUntil(
@@ -260,13 +264,13 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                             await _addCartController.createRazorPayOrder(
                                 storeId:
                                     _addCartController.store.value?.sId ?? '',
-                                amount: _addCartController
+                                amount: double.parse(_addCartController
                                         .getOrderConfirmPageDataModel
                                         .value
                                         ?.data
                                         ?.total
-                                        ?.toDouble() ??
-                                    00);
+                                        ?.toStringAsFixed(2) ??
+                                    "0.0"));
                             if (_addCartController
                                     .createRazorpayResponseModel.value !=
                                 null) {
@@ -310,8 +314,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                             child: Text(
                           (_addCartController.selectPaymentMode.value ==
                                   "paybycash")
-                              ? "Pay Cash \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.total ?? 0}"
-                              : "Pay \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.total ?? 0}",
+                              ? "Pay Cash \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}"
+                              : "Pay \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}",
                           style: TextStyle(
                             fontFamily: 'MuseoSans',
                             color: AppConst.white,
@@ -684,7 +688,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           children: [
             Expanded(child: Text("Wallet Amount")),
             Text(
-                "${_addCartController.getOrderConfirmPageDataModel.value?.data?.walletAmount ?? 0}"),
+                "${_addCartController.getOrderConfirmPageDataModel.value?.data?.usedWalletAmount ?? 0}"),
           ],
         ),
         Obx(
@@ -723,12 +727,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   products: _addCartController.reviewCart.value?.data?.products,
                   inventories:
                       _addCartController.reviewCart.value?.data?.inventories,
-                  walletAmount:
-                      _addCartController.selectWalletMode.value == 'true'
-                          ? _addCartController
-                                  .reviewCart.value?.data?.walletAmount ??
-                              0.0
-                          : 0);
+                  walletAmount: 0);
               _addCartController.selectExpendTile.value = 2;
             },
             text: "Choose Wallet")
@@ -787,7 +786,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
               'Item Subtotal',
               (_addCartController.getOrderConfirmPageDataModel.value?.data
                           ?.previousTotalAmount ??
-                      '0')
+                      0.0)
                   .toString(),
               true),
           Padding(
@@ -828,7 +827,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           bottomRow(
               'Wallet Amount',
               (_addCartController.getOrderConfirmPageDataModel.value?.data
-                          ?.walletAmount ??
+                          ?.usedWalletAmount ??
                       '0')
                   .toString(),
               false),

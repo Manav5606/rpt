@@ -94,7 +94,7 @@ class AddCartService {
   static Future<GetOrderConfirmPageData?> getOrderConfirmPageData(
       {required String storeId,
       required double distance,
-      required double walletAmount,
+      required int walletAmount,
       var products,
       var inventories}) async {
     try {
@@ -144,6 +144,8 @@ class AddCartService {
     required var products,
     required var inventories,
     required double total,
+    required double previous_total_amount,
+    required double final_payable_amount,
     required String order_type,
     required String cartId,
     required String razorPayOrderId,
@@ -179,7 +181,9 @@ class AddCartService {
         'lat': lat,
         'lng': lng,
         'cartID': cartId,
-        'pickedup': pickedup
+        'pickedup': pickedup,
+        'final_payable_amount': final_payable_amount,
+        'previous_total_amount': previous_total_amount
       };
       final result = await GraphQLRequest.query(
           query: GraphQLQueries.finalPlaceOrder, variables: variables);
