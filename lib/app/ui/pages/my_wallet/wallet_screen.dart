@@ -54,7 +54,7 @@ class WalletScreen extends GetView<MyWalletController> {
               SizedBox(
                 width: 4.w,
               ),
-              Text("Wallets",
+              Text("My Wallets",
                   style: TextStyle(
                     fontFamily: 'MuseoSans',
                     color: AppConst.black,
@@ -95,20 +95,20 @@ class WalletScreen extends GetView<MyWalletController> {
                               : Column(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 1.h, horizontal: 2.w),
-                                      child: Text(
-                                          "List of all available stores with their wallets are given below. ",
-                                          style: TextStyle(
-                                            fontFamily: 'MuseoSans',
-                                            color: AppConst.black,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    4,
-                                            fontWeight: FontWeight.w300,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 1.h, horizontal: 2.w)),
+                                    //   child: Text(
+                                    //       "List of all available stores with their wallets are given below. ",
+                                    //       style: TextStyle(
+                                    //         fontFamily: 'MuseoSans',
+                                    //         color: AppConst.black,
+                                    //         fontSize:
+                                    //             SizeUtils.horizontalBlockSize *
+                                    //                 4,
+                                    //         fontWeight: FontWeight.w300,
+                                    //         fontStyle: FontStyle.normal,
+                                    //       )),
+                                    // ),
                                     Obx(
                                       () => ListView.separated(
                                         shrinkWrap: true,
@@ -166,14 +166,20 @@ class WalletScreen extends GetView<MyWalletController> {
                                                           .myWalletModel
                                                           .value
                                                           ?.data?[index]
-                                                          .welcomeOfferAmount ??
+                                                          .welcomeOffer ??
                                                       0,
-                                                  Balance: controller
-                                                          .myWalletModel
-                                                          .value
-                                                          ?.data?[index]
-                                                          .earnedCashback ??
-                                                      0),
+                                                  Balance: (controller
+                                                              .myWalletModel
+                                                              .value
+                                                              ?.data?[index]
+                                                              .earnedCashback ??
+                                                          0) +
+                                                      (controller
+                                                              .myWalletModel
+                                                              .value
+                                                              ?.data?[index]
+                                                              .welcomeOfferAmount ??
+                                                          0)),
                                               //  Padding(
                                               //   padding: EdgeInsets.symmetric(
                                               //       horizontal: 2.w, vertical: 2.h),

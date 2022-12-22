@@ -143,7 +143,10 @@ class CardlistView extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Text("Card ID   ${StoreID?.substring((StoreID!.length) - 6)}",
+                Text(
+                    ((StoreID != Null && StoreID!.length > 6)
+                        ? "Card ID: ${StoreID?.substring(StoreID!.length - 6)}"
+                        : "Card ID: 123456"),
                     style: TextStyle(
                       fontFamily: 'MuseoSans',
                       color: AppConst.white,
@@ -197,7 +200,7 @@ class CardlistView extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Balance",
+                  Text("Withdrawal Limit",
                       style: TextStyle(
                         fontFamily: 'MuseoSans',
                         fontSize: SizeUtils.horizontalBlockSize * 3.7,
