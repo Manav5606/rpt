@@ -825,7 +825,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                             SizeUtils.horizontalBlockSize * 4.5,
                                         fontFamily: 'MuseoSans',
                                         color: AppConst.black,
-                                        fontWeight: FontWeight.w700,
+                                        fontWeight: FontWeight.w400,
                                         fontStyle: FontStyle.normal,
                                       ),
                                     ),
@@ -835,7 +835,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
-                                      if (index == 5) {
+                                      if (index == 3) {
                                         return GestureDetector(
                                           onTap: () =>
                                               Get.to(ReferAndEarnScreen()),
@@ -853,11 +853,11 @@ class MyAccountPage extends GetView<MyAccountController> {
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 4.w, vertical: .4.h),
                                         dense: true,
-                                        trailing: Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          color: AppConst.grey,
-                                          size: 2.7.h,
-                                        ),
+                                        // trailing: Icon(
+                                        //   Icons.arrow_forward_ios_rounded,
+                                        //   color: AppConst.grey,
+                                        //   size: 2.7.h,
+                                        // ),
                                         leading: Container(
                                           width: 10.w,
                                           height: 5.h,
@@ -881,7 +881,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                     4,
                                                 fontFamily: 'MuseoSans',
                                                 color: AppConst.black,
-                                                fontWeight: FontWeight.w500,
+                                                fontWeight: FontWeight.w400,
                                                 fontStyle: FontStyle.normal,
                                                 letterSpacing: -0.48,
                                               ),
@@ -895,7 +895,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                       4,
                                                   fontFamily: 'MuseoSans',
                                                   color: AppConst.black,
-                                                  fontWeight: FontWeight.w500,
+                                                  fontWeight: FontWeight.w400,
                                                   fontStyle: FontStyle.normal,
                                                   letterSpacing: -0.48,
                                                 ),
@@ -906,23 +906,21 @@ class MyAccountPage extends GetView<MyAccountController> {
                                           if (index == 0) {
                                             Get.toNamed(AppRoutes.Wallet);
                                             // Get.toNamed(AppRoutes.EditProfile);
-                                          } else if (index == 1 ||
-                                              index == 3 ||
-                                              index == 4) {
+                                          } else if (index == 1) {
                                             Get.toNamed(AppRoutes.History);
                                           } else if (index == 2) {
                                             Get.toNamed(AppRoutes.MyAddresses);
-                                          } else if (index == 6) {
+                                          } else if (index == 4) {
                                             Get.to(ReferAndEarnScreen());
-                                          } else if (index == 7) {
+                                          } else if (index == 5) {
                                             _freshChat.initState();
                                             await _freshChat
                                                 .showChatConversation(
                                                     "opening chat support \n");
                                             // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.mobile ?? ''}
-                                          } else if (index == 8) {
+                                          } else if (index == 6) {
                                             Get.toNamed(AppRoutes.About);
-                                          } else if (index == 9) {
+                                          } else if (index == 7) {
                                             _showLogOutDialog();
                                           }
                                         },

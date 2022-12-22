@@ -90,7 +90,7 @@ List<ProfileScreen> profileScreenDataNew = [
       color: AppConst.grey,
       size: 2.7.h,
     ),
-    name: "Orders",
+    name: "Orders & Receipts & Redeems ",
   ),
   ProfileScreen(
     icon: Icon(
@@ -99,22 +99,6 @@ List<ProfileScreen> profileScreenDataNew = [
       size: 2.7.h,
     ),
     name: "My Addresses",
-  ),
-  ProfileScreen(
-    icon: Icon(
-      FontAwesomeIcons.handHoldingUsd,
-      color: AppConst.grey,
-      size: 2.7.h,
-    ),
-    name: "Redeems",
-  ),
-  ProfileScreen(
-    icon: Icon(
-      Icons.receipt_outlined,
-      color: AppConst.grey,
-      size: 2.7.h,
-    ),
-    name: "Receipts",
   ),
   ProfileScreen(
     icon: Icon(
