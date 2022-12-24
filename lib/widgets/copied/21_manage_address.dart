@@ -1,3 +1,4 @@
+import 'package:customer_app/app/ui/pages/location_picker/new_location_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:customer_app/app/data/model/address_model.dart';
@@ -56,7 +57,7 @@ class ManageAddress extends StatelessWidget {
           visible: showAddAddress,
           child: GradientButton(
             onTap: () {
-              Get.to(() => LocationPickerScreen());
+              Get.to(() => AddLocationScreen());
             },
             height: 50,
             label: 'Add New Address',
@@ -313,7 +314,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
           padding: const EdgeInsets.all(20),
           child: GradientButton(
             onTap: () {
-              Get.to(() => LocationPickerScreen());
+              Get.to(() => AddLocationScreen());
             },
             height: 50,
             label: 'Add New Address',
