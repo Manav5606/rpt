@@ -141,22 +141,22 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
               () => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _homeController.checkPermission.value
-                      ? SizedBox()
-                      : PermissionRaw(
-                          onTap: () async {
-                            bool isEnable =
-                                await _homeController.getCurrentLocation();
-                            if (isEnable) {
-                              _paymentController.latLng = LatLng(
-                                  UserViewModel.currentLocation.value.latitude,
-                                  UserViewModel
-                                      .currentLocation.value.longitude);
-                              await _paymentController
-                                  .getScanReceiptPageNearMeStoresData();
-                            }
-                          },
-                        ),
+                  // _homeController.checkPermission.value
+                  //     ? SizedBox()
+                  //     : PermissionRaw(
+                  //         onTap: () async {
+                  //           bool isEnable =
+                  //               await _homeController.getCurrentLocation();
+                  //           if (isEnable) {
+                  //             _paymentController.latLng = LatLng(
+                  //                 UserViewModel.currentLocation.value.latitude,
+                  //                 UserViewModel
+                  //                     .currentLocation.value.longitude);
+                  //             await _paymentController
+                  //                 .getScanReceiptPageNearMeStoresData();
+                  //           }
+                  //         },
+                  //       ),
                   SizedBox(
                     height: 1.h,
                   ),

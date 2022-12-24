@@ -131,20 +131,20 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _homeController.checkPermission.value
-                  ? SizedBox()
-                  : PermissionRaw(
-                      onTap: () async {
-                        bool isEnable =
-                            await _homeController.getCurrentLocation();
-                        if (isEnable) {
-                          _paymentController.latLng = LatLng(
-                              UserViewModel.currentLocation.value.latitude,
-                              UserViewModel.currentLocation.value.longitude);
-                          await _paymentController.getRedeemCashInStorePage();
-                        }
-                      },
-                    ),
+              // _homeController.checkPermission.value
+              //     ? SizedBox()
+              //     : PermissionRaw(
+              //         onTap: () async {
+              //           bool isEnable =
+              //               await _homeController.getCurrentLocation();
+              //           if (isEnable) {
+              //             _paymentController.latLng = LatLng(
+              //                 UserViewModel.currentLocation.value.latitude,
+              //                 UserViewModel.currentLocation.value.longitude);
+              //             await _paymentController.getRedeemCashInStorePage();
+              //           }
+              //         },
+              //       ),
 
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),

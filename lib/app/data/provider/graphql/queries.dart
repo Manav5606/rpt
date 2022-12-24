@@ -161,39 +161,66 @@ class GraphQLQueries {
     query: r'''
       query($token: String){
         verifyCustomerToken(token: $token){
+          token
+          streamChatToken
+          signup
+          bonus
           error
           msg
           data{
-           _id
-          first_name
-          last_name
-          mobile
-          email
-          type
-          status
-          restoreID
-          addresses{
             _id
-            title
-            address
-            house
-            apartment
-            direction_to_reach
-            distance
-            location{
-              lat
-              lng
-            }
+            first_name
+            last_name
+            mobile
+            email
+            type
             status
-          }
-          balance
-          logo
-          date_of_birth
-          male_or_female
-          rank
+            restoreID
+            addresses{
+            	_id
+            	title
+            	address
+            	house
+            	apartment
+            	distance
+            	direction_to_reach
+            	location{
+              	lat
+              	lng
+            	}
+            status
+          	}
+            stores{
+            	_id
+            	store{
+             _id
+              name
+              mobile
+              businesstype
+              address{
+                address
+                location{
+                  lat
+                  lng
+                }
+              }
+              
+            }
+            	earned_cashback
+            	welcome_offer
+            	welcome_offer_amount
+              recently_visited
+              visited_at
+              name
+          	}
+            balance
+            logo
+            date_of_birth
+            male_or_female
+            rank
+            }
           }
         }
-      }
     ''',
   );
   static final updateRiderInformation = new GraphQLQuery(

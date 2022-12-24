@@ -17,11 +17,12 @@ class AppRoutes {
   static const String MyAddresses = '/myddresses';
   static const String AddLocationScreen = '/addlocation';
   static const String ConfirmLocation = "/confirmlocation";
-  static const String LocationPickerScreen = '/locationpicker';
+  // static const String LocationPickerScreen = '/locationpicker';
   static const String OrderHistory = '/orderhistory';
   static const String EditProfile = '/editprofile';
   static const String AddressModel = '/AddressModel';
   static const String NewLocationScreen = '/newLocationScreen';
+  static const String SelectLocationAddress = '/SelectLocationAddress';
   static const String CheckOutScreen = '/checkoutScreen';
   static const String orderCheckOutScreen = '/CheckOutScreen';
   static const String EditAddressScreen = '/EditAddressScreen';

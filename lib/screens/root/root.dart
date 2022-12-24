@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/data/provider/hive/hive.dart';
+import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
+import 'package:customer_app/app/data/repository/my_account_repository.dart';
 import 'package:customer_app/app/data/serivce/dynamic_link_service.dart';
+import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
+import 'package:customer_app/data/repositories/mainRepoWithAllApi.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/address_model.dart';
@@ -33,7 +38,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   void initState() {
     checkNetwork();
     checkPermission();
-    FireBaseNotification().firebaseCloudMessagingLSetup();
+
     if (!mounted) {
       return;
     } else {
@@ -44,7 +49,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
 
   void checkPermission() async {
     await Geolocator.requestPermission();
-    await Permission.location.request();
+    // await Permission.location.request();
   }
 
   void checkNetwork() async {
@@ -72,6 +77,68 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   Future<void> checkSession() async {
     UserViewModel.setRefferralCode('');
     await DynamicLinkService().retrieveDynamicLink();
+    final box = Boxes.getCommonBox();
+    final token = box.get(HiveConstants.USER_TOKEN);
+
+    if (token != null && token != "") {
+      try {
+        // get customer info based upon token
+        MyAccountRepository().getCurrentUser();
+
+        final UserModel userModel = hiveRepository.getCurrentUser();
+
+        //check for siginupflag
+        final box = Boxes.getCommonBoolBox();
+        final flag = box.get(HiveConstants.SIGNUP_FLAG);
+        log("SiginUp :$flag");
+        if (flag!) {
+          return Get.to(SignUpScreen());
+        }
+        //location permission check
+
+        bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+        final checkPermission =
+            serviceEnabled && await Permission.location.isGranted;
+
+        if (checkPermission == true) {
+          WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+            FireBaseNotification().firebaseCloudMessagingLSetup();
+            Future.delayed(Duration(seconds: 2),
+                () => Get.offAllNamed(AppRoutes.BaseScreen));
+          });
+        } else {
+          if ((userModel.addresses?.length ?? 0) > 0) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
+              FireBaseNotification().firebaseCloudMessagingLSetup();
+              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                  arguments: {"locationListAvilable": true});
+            });
+          } else {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
+              FireBaseNotification().firebaseCloudMessagingLSetup();
+              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                  arguments: {"locationListAvilable": false});
+            });
+          }
+        }
+
+        connectUserStream(
+            userId: userModel.id!,
+            name: "${userModel.firstName} ${userModel.lastName}");
+      } catch (e) {
+        Future.delayed(Duration(seconds: 2),
+            () => Get.offAllNamed(AppRoutes.Authentication));
+      }
+    } else {
+      Future.delayed(Duration(seconds: 2),
+          () => Get.offAllNamed(AppRoutes.Authentication));
+    }
+  }
+
+  Future<void> checkSession1() async {
+    UserViewModel.setRefferralCode('');
+    await DynamicLinkService().retrieveDynamicLink();
+
     if (hiveRepository.hasUser()) {
       try {
         final UserModel userModel = hiveRepository.getCurrentUser();

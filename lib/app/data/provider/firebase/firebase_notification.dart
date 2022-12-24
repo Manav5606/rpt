@@ -8,7 +8,7 @@ import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
 import 'package:customer_app/app/ui/pages/chat/ChatView.dart';
 import 'package:customer_app/constants/app_const.dart';
-import 'package:customer_app/data/models/user_model.dart';
+import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/widgets/snack.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

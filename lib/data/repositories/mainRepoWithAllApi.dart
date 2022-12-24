@@ -1,3 +1,4 @@
+import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 

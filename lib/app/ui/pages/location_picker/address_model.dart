@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
+import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
+import 'package:customer_app/screens/authentication/repository/maprepo.dart';
+import 'package:customer_app/screens/root/root.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -11,8 +15,11 @@ import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/widgets/getstorge.dart';
 import 'package:customer_app/widgets/search_field.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../controllers/userViewModel.dart';
@@ -30,14 +37,25 @@ class AddressModel extends StatefulWidget {
 }
 
 class _AddressModelState extends State<AddressModel> {
-  final AddLocationController _addLocationController = Get.find()
-    ..getUserData();
+  final AddLocationController _addLocationController =
+      Get.put(AddLocationController());
   final HomeController _homeController = Get.put(HomeController());
 
   FocusNode focusNode = FocusNode();
 
   Timer? _debounce;
   bool selected = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    // HomeController().getCurrentLocation();b
+    super.initState();
+    final AddLocationController _addLocationController =
+        Get.put(AddLocationController());
+    final HomeController _homeController = Get.put(HomeController());
+  }
 
   @override
   void dispose() {
@@ -47,6 +65,11 @@ class _AddressModelState extends State<AddressModel> {
 
   @override
   Widget build(BuildContext context) {
+    final AddLocationController _addLocationController =
+        Get.put(AddLocationController());
+
+    final HomeController _homeController = Get.put(HomeController());
+    // final islocationPermission = HomeController().getCurrentLocation();
     _addLocationController.isRecentAddress.value = widget.isHomeScreen;
     return Scaffold(
       appBar: AppBar(
@@ -167,6 +190,9 @@ class _AddressModelState extends State<AddressModel> {
                     SizedBox(
                       height: 2.h,
                     ),
+
+                    // (islocationPermission == true)
+                    //     ?
                     GestureDetector(
                       onTap: () {
                         Get.back();
@@ -220,6 +246,15 @@ class _AddressModelState extends State<AddressModel> {
                             ]),
                       ),
                     ),
+                    // : InkWell(
+                    //     onTap: (() {
+                    //       HomeController().getCurrentLocation();
+                    //     }),
+                    //     child: BottomWideButton(
+                    //       text: "Enable Location",
+                    //     ),
+                    //   ),
+
                     // Divider(
                     //     // height: 2.h,
                     //     ),
@@ -905,3 +940,362 @@ class RecentAddressDetails {
 }
 
 enum Options { search, upload, copy, exit }
+
+class SelectLocationAddress extends StatelessWidget {
+  bool locationListAvilable = false;
+  SelectLocationAddress({
+    Key? key,
+  }) : super(key: key);
+
+  final AddLocationController _addLocationController =
+      Get.put(AddLocationController());
+  final HomeController _homeController = Get.put(HomeController());
+
+  @override
+  Widget build(BuildContext context) {
+    Map arg = Get.arguments ?? {};
+    locationListAvilable = arg['locationListAvilable'];
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: AppConst.darkGreen,
+          statusBarIconBrightness: Brightness.light),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        bottomSheet: Container(
+            decoration: BoxDecoration(
+                color: AppConst.transparent,
+                borderRadius: BorderRadius.circular(25)),
+            child: Container(
+              height: locationListAvilable ? 52.h : 28.h,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: 3.w, right: 3.w, top: 2.h, bottom: 1.h),
+                child: Column(
+                  children: [
+                    Text(
+                      'Please Enable your location to make the delivery process smooth like Butter',
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: AppConst.black,
+                        fontFamily: 'MuseoSans',
+                        fontWeight: FontWeight.w600,
+                        fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 1.h,
+                          width: 4.w,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: AppConst.grey),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Text(
+                          'Select your Precise Location',
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: AppConst.grey,
+                            fontFamily: 'MuseoSans',
+                            fontWeight: FontWeight.w600,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 0.5.h,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 1.h,
+                          width: 4.w,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: AppConst.grey),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Text(
+                          'Confirm your location while using the app',
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: AppConst.grey,
+                            fontFamily: 'MuseoSans',
+                            fontWeight: FontWeight.w600,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Obx((() => (_homeController.checkPermission.value)
+                        ? GestureDetector(
+                            onTap: () {
+                              Get.back();
+                              Get.toNamed(AppRoutes.NewLocationScreen,
+                                  arguments: {
+                                    "isFalse": false,
+                                    // "isHome": widget.isHomeScreen
+                                  });
+                              _addLocationController.getCurrentAddress();
+                            },
+                            child: Container(
+                              height: 5.h,
+                              margin: EdgeInsets.only(
+                                bottom: 3.h,
+                              ),
+                              decoration: BoxDecoration(
+                                // shape: BoxShape.circle,
+                                color: AppConst.white,
+                                borderRadius: BorderRadius.circular(12),
+                                // border: Border.all(
+                                //     // color: AppConst.black,
+                                //     // width: SizeUtils.horizontalBlockSize - 2.92
+                                //     ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppConst.grey,
+                                    blurRadius: 3,
+                                    offset: Offset(1, 1),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Icon(
+                                        Icons.gps_fixed_rounded,
+                                        color: AppConst.kSecondaryTextColor,
+                                        size:
+                                            SizeUtils.horizontalBlockSize * 6.5,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Text(
+                                      "Use current location",
+                                      style: TextStyle(
+                                          color: AppConst.black,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize * 4,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ]),
+                            ),
+                          )
+                        : InkWell(
+                            onTap: (() {
+                              HomeController().getCurrentLocation();
+                            }),
+                            child: BottomWideButton(
+                              text: "Enable Location",
+                            ),
+                          ))),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            locationListAvilable
+                                ? (_addLocationController
+                                            .userModel?.addresses?.isNotEmpty ??
+                                        false)
+                                    ? ListView.separated(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount:
+                                            //  2,
+
+                                            _addLocationController
+                                                    .isSeeMoreEnable.value
+                                                ? _addLocationController
+                                                        .userModel
+                                                        ?.addresses
+                                                        ?.length ??
+                                                    0
+                                                : (_addLocationController
+                                                                .userModel
+                                                                ?.addresses
+                                                                ?.length ??
+                                                            0) <
+                                                        3
+                                                    ? _addLocationController
+                                                            .userModel
+                                                            ?.addresses
+                                                            ?.length ??
+                                                        0
+                                                    : 3,
+                                        itemBuilder: (context, index) {
+                                          return Obx(
+                                            () => GestureDetector(
+                                              onTap: () async {
+                                                _addLocationController
+                                                    .currentSelectValue
+                                                    .value = index;
+                                                _homeController
+                                                    .isLoading.value = true;
+                                                Get.offAllNamed(
+                                                    AppRoutes.BaseScreen);
+
+                                                _homeController
+                                                        .userAddress.value =
+                                                    _addLocationController
+                                                            .userModel
+                                                            ?.addresses?[index]
+                                                            .address ??
+                                                        '';
+                                                _homeController.userAddressTitle
+                                                        .value =
+                                                    _addLocationController
+                                                            .userModel
+                                                            ?.addresses?[index]
+                                                            .title ??
+                                                        '';
+                                                await UserViewModel.setLocation(
+                                                    LatLng(
+                                                        _addLocationController
+                                                                .userModel
+                                                                ?.addresses?[
+                                                                    index]
+                                                                .location
+                                                                ?.lat ??
+                                                            0.0,
+                                                        _addLocationController
+                                                                .userModel
+                                                                ?.addresses?[
+                                                                    index]
+                                                                .location
+                                                                ?.lng ??
+                                                            0.0),
+                                                    _addLocationController
+                                                        .userModel
+                                                        ?.addresses?[index]
+                                                        .id);
+                                                _homeController.pageNumber = 1;
+                                                _homeController
+                                                    .isPageAvailable = true;
+                                                _homeController.isPageLoading
+                                                    .value = false;
+                                                _homeController
+                                                    .homePageFavoriteShopsList
+                                                    .clear();
+                                                await _homeController
+                                                    .getHomePageFavoriteShops();
+                                                await _homeController
+                                                    .getAllCartsData();
+                                                _homeController
+                                                    .getHomePageFavoriteShopsModel
+                                                    .refresh();
+                                                _homeController
+                                                    .isLoading.value = false;
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  ListTile(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0.5.h),
+                                                    leading: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        IgnorePointer(
+                                                          child: Radio(
+                                                            value: true,
+                                                            groupValue:
+                                                                _addLocationController
+                                                                        .currentSelectValue
+                                                                        .value ==
+                                                                    index,
+                                                            onChanged: (value) {
+                                                              _addLocationController
+                                                                  .currentSelectValue
+                                                                  .value = index;
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    title: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          _addLocationController
+                                                                  .userModel
+                                                                  ?.addresses?[
+                                                                      index]
+                                                                  .title ??
+                                                              '',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: SizeUtils
+                                                                      .horizontalBlockSize *
+                                                                  4.2),
+                                                        ),
+                                                        Text(
+                                                          "${_addLocationController.userModel?.addresses?[index].house ?? ''} ${_addLocationController.userModel?.addresses?[index].address ?? ''}",
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .grey[600],
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                              fontSize: SizeUtils
+                                                                      .horizontalBlockSize *
+                                                                  3.7),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider(height: 0);
+                                        },
+                                      )
+                                    : Center(
+                                        child: Text(
+                                          'No Saved Addresses',
+                                        ),
+                                      )
+                                : SizedBox(),
+                            BottomWideButton(
+                              text: "Choose another Address",
+                              color: AppConst.transparent,
+                              Textcolor: AppConst.darkGreen,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )),
+        body: SignUpBackground(),
+      ),
+    );
+  }
+}

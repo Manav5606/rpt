@@ -15,6 +15,7 @@ class UserViewModel extends GetxController {
   static setUser(UserModel data) {
     user.value = data;
     final box = Boxes.getUserBox();
+    // box.clear();
     box.put(HiveConstants.USER_KEY, data);
   }
 

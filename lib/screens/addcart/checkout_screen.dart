@@ -1680,7 +1680,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
   void launchPayment(int amount, String orderId) async {
     var options = {
-      'key': 'rzp_test_K5F950Y92Z3p6X',
+      'key': 'rzp_test_n1q5GFiD3BLkNw', //'rzp_test_K5F950Y92Z3p6X',
       'amount': (amount * 100),
       'order_id': orderId,
       'name': 'Seeya',

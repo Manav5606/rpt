@@ -428,72 +428,82 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: AppConst.transparent,
                 borderRadius: BorderRadius.circular(25)),
             child: SignupBs()),
-        body: Stack(
+        body: SignUpBackground(),
+      ),
+    );
+  }
+}
+
+class SignUpBackground extends StatelessWidget {
+  const SignUpBackground({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Column(
           children: [
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  color: AppConst.darkGreen,
-                  child: SafeArea(
-                    bottom: false,
-                    child: HomeAppBar(
-                      onTap: () async {},
-                      isRedDot: false,
-                      address: 'Your Location',
-                      balance: 0,
-                      onTapWallet: () {},
-                      isHomeScreen: true,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 35.h,
-                  child: GridView.count(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                    crossAxisCount: 3,
-                    children: [
-                      Image.asset(
-                        "assets/images/Fresh.png",
-                      ),
-                      Image.asset(
-                        "assets/images/groceryImage.png",
-                      ),
-                      Image.asset(
-                        "assets/images/Nonveg.png",
-                      ),
-                      Image.asset(
-                        "assets/images/Pickup.png",
-                      ),
-                      Image.asset(
-                        "assets/images/Premium.png",
-                      ),
-                      Image.asset(
-                        "assets/images/Medics.png",
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0.5.h),
-                  child: Container(
-                    height: 1.2.w,
-                    color: AppConst.lightGrey,
-                  ),
-                ),
-                AllOffers()
-              ],
-            ),
-            Positioned(
-                child: Container(
-              height: 100.h,
+            Container(
               width: double.infinity,
-              color: AppConst.black.withOpacity(0.3),
-            ))
+              color: AppConst.darkGreen,
+              child: SafeArea(
+                bottom: false,
+                child: HomeAppBar(
+                  onTap: () async {},
+                  isRedDot: false,
+                  address: 'Your Location',
+                  balance: 0,
+                  onTapWallet: () {},
+                  isHomeScreen: true,
+                ),
+              ),
+            ),
+            Container(
+              height: 35.h,
+              child: GridView.count(
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                crossAxisCount: 3,
+                children: [
+                  Image.asset(
+                    "assets/images/Fresh.png",
+                  ),
+                  Image.asset(
+                    "assets/images/groceryImage.png",
+                  ),
+                  Image.asset(
+                    "assets/images/Nonveg.png",
+                  ),
+                  Image.asset(
+                    "assets/images/Pickup.png",
+                  ),
+                  Image.asset(
+                    "assets/images/Premium.png",
+                  ),
+                  Image.asset(
+                    "assets/images/Medics.png",
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 0.5.h),
+              child: Container(
+                height: 1.2.w,
+                color: AppConst.lightGrey,
+              ),
+            ),
+            AllOffers()
           ],
         ),
-      ),
+        Positioned(
+            child: Container(
+          height: 100.h,
+          width: double.infinity,
+          color: AppConst.black.withOpacity(0.3),
+        ))
+      ],
     );
   }
 }

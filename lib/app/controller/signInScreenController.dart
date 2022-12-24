@@ -16,8 +16,11 @@ import 'package:customer_app/app/data/repository/sigin_in_repository.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/utils/utils.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../data/provider/firebase/firebase_notification.dart';
 import '../ui/pages/signIn/otp_verification_screen.dart';
 
 class SignInScreenController extends GetxController {
@@ -181,26 +184,27 @@ class SignInScreenController extends GetxController {
           userModel?.wallet = wallet;
           if (userModel != null) {
             UserViewModel.setUser(userModel!);
-            try {
-              await connectUserStream(
-                  userId: userModel?.id ?? '',
-                  name: "${userModel?.firstName} ${userModel?.lastName}");
-            } catch (e) {
-              print('e $e');
-            }
+            // try {
+            //   await connectUserStream(
+            //       userId: userModel?.id ?? '',
+            //       name: "${userModel?.firstName} ${userModel?.lastName}");
+            // } catch (e) {
+            //   print('e $e');
+            // }
             if (referralController.text.isNotEmpty) {
               UserViewModel.setReferFlag(true);
             }
+            await checkSession(false);
           }
-          final box = Boxes.getCommonBoolBox();
-          final flag = box.get(HiveConstants.SIGNUP_FLAG);
-          log("flag :$flag");
-          if (flag!) {
-            log("flag 00:");
-            isLoading.value = false;
-            return Get.to(SignUpScreen());
-          }
-          await checkSession();
+          // final box = Boxes.getCommonBoolBox();
+          // final flag = box.get(HiveConstants.SIGNUP_FLAG);
+          // log("flag :$flag");
+          // if (flag!) {
+          //   log("flag 00:");
+          //   isLoading.value = false;
+          //   return Get.to(SignUpScreen());
+          // }
+          // await checkSession();
           isLoading.value = false;
         } else {
           isLoading.value = false;
@@ -221,7 +225,7 @@ class SignInScreenController extends GetxController {
     var flag = await SignInRepository.updateCustomerInformation(
         firstName, lastName, email);
     if (flag) {
-      await checkSession();
+      await checkSession(flag);
     }
   }
 
@@ -254,39 +258,85 @@ class SignInScreenController extends GetxController {
     }
   }
 
-  Future<void> checkSession() async {
-    if (hiveRepository.hasUser()) {
-      try {
-        final UserModel userModel = hiveRepository.getCurrentUser();
-        log("userModeluserModel :${userModel.toJson()}");
-        // final MoreStoreController _moreStoreController = Get.put(MoreStoreController());
-        if ((userModel.addresses?.length ?? 0) > 0) {
-          for (final AddressModel? addressModal
-              in (userModel.addresses ?? [])) {
-            if (addressModal?.status ?? false) {
-              log("checkSession : 0000}");
-              Get.offAllNamed(
-                AppRoutes.NewLocationScreen,
-              );
-              break;
-            }
-          }
-          Get.offAllNamed(AppRoutes.BaseScreen);
-          // Get.offAll(() => ManageAddressScreen());
-        } else {
-          log("checkSession : 879879897}");
-          Get.offAllNamed(AppRoutes.NewLocationScreen,
-              arguments: {"isFalse": false});
+  Future<void> checkSession(bool SignUp) async {
+    try {
+      if (!SignUp) {
+        //check for siginupflag
+        final box = Boxes.getCommonBoolBox();
+        final flag = box.get(HiveConstants.SIGNUP_FLAG);
+        log("SiginUp :$flag");
+        if (flag!) {
+          return Get.to(SignUpScreen());
         }
-      } catch (e) {
-        log("e:$e");
-        Future.delayed(Duration(seconds: 2),
-            () => Get.offAllNamed(AppRoutes.Authentication));
       }
-    } else {
-      log("eggjmghhj");
+
+      //location permission check
+
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      final checkPermission =
+          serviceEnabled && await Permission.location.isGranted;
+
+      if (checkPermission == true) {
+        WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+          FireBaseNotification().firebaseCloudMessagingLSetup();
+          Future.delayed(Duration(seconds: 2),
+              () => Get.offAllNamed(AppRoutes.BaseScreen));
+        });
+      } else {
+        if ((userModel?.addresses?.length ?? 0) > 0) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            FireBaseNotification().firebaseCloudMessagingLSetup();
+            Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                arguments: {"locationListAvilable": true});
+          });
+        } else {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            FireBaseNotification().firebaseCloudMessagingLSetup();
+            Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                arguments: {"locationListAvilable": false});
+          });
+        }
+      }
+
+      connectUserStream(
+          userId: userModel!.id!,
+          name: "${userModel?.firstName} ${userModel?.lastName}");
+    } catch (e) {
       Future.delayed(Duration(seconds: 2),
           () => Get.offAllNamed(AppRoutes.Authentication));
     }
+    // if (hiveRepository.hasUser()) {
+    //   try {
+    //     final UserModel userModel = hiveRepository.getCurrentUser();
+    //     log("userModeluserModel :${userModel.toJson()}");
+    //     // final MoreStoreController _moreStoreController = Get.put(MoreStoreController());
+    //     if ((userModel.addresses?.length ?? 0) > 0) {
+    //       for (final AddressModel? addressModal
+    //           in (userModel.addresses ?? [])) {
+    //         if (addressModal?.status ?? false) {
+    //           log("checkSession : 0000}");
+    //           Get.offAllNamed(
+    //             AppRoutes.NewLocationScreen,
+    //           );
+    //           break;
+    //         }
+    //       }
+    //       Get.offAllNamed(AppRoutes.BaseScreen);
+    //       // Get.offAll(() => ManageAddressScreen());
+    //     } else {
+    //       log("checkSession : 879879897}");
+    //       Get.offAllNamed(AppRoutes.NewLocationScreen,
+    //           arguments: {"isFalse": false});
+    //     }
+    //   } catch (e) {
+    //     log("e:$e");
+    //     Future.delayed(Duration(seconds: 2),
+    //         () => Get.offAllNamed(AppRoutes.Authentication));
+    //   }
+    // } else {
+    //   log("eggjmghhj");
+    //   Future.delayed(Duration(seconds: 2),
+    //       () => Get.offAllNamed(AppRoutes.Authentication));
+    // }
   }
 }

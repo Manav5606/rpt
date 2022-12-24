@@ -209,6 +209,10 @@ class _SignInScreenState extends State<SignInScreen> {
                               _signInController.phoneNumber.value.length == 10
                                   ? AppConst.darkGreen
                                   : AppConst.grey,
+                          borderColor:
+                              _signInController.phoneNumber.value.length == 10
+                                  ? AppConst.darkGreen
+                                  : AppConst.grey,
                         )),
                   ),
                 ],
@@ -416,8 +420,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
 class BottomWideButton extends StatelessWidget {
   final Color color;
-
-  BottomWideButton({Key? key, this.text, this.color = AppConst.darkGreen})
+  final Color Textcolor;
+  final Color borderColor;
+  BottomWideButton(
+      {Key? key,
+      this.text,
+      this.borderColor = AppConst.darkGreen,
+      this.color = AppConst.darkGreen,
+      this.Textcolor = AppConst.white})
       : super(key: key);
   String? text;
 
@@ -437,7 +447,7 @@ class BottomWideButton extends StatelessWidget {
                   color,
               // Color(0xFFDF2A63),
               // kSecondaryTextColor,
-              border: Border.all(width: 0.3, color: AppConst.darkGreen
+              border: Border.all(width: 1.5, color: borderColor
                   // kPrimaryColor
                   ),
               borderRadius: BorderRadius.circular(10)),
@@ -450,7 +460,7 @@ class BottomWideButton extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 fontStyle: FontStyle.normal,
                 fontSize: SizeUtils.horizontalBlockSize * 4,
-                color: AppConst.white,
+                color: Textcolor,
               ),
             ),
           ),
@@ -638,6 +648,11 @@ class EnterNumberScreen extends StatelessWidget {
                                     child: BottomWideButton(
                                       text: "Sign in",
                                       color: _signInController
+                                                  .phoneNumber.value.length ==
+                                              10
+                                          ? AppConst.darkGreen
+                                          : AppConst.grey,
+                                      borderColor: _signInController
                                                   .phoneNumber.value.length ==
                                               10
                                           ? AppConst.darkGreen

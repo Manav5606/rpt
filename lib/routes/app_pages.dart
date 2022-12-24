@@ -110,9 +110,9 @@ class AppPages {
         binding: MyWalletBinding()),
     GetPage(name: AppRoutes.WalletOffer, page: () => WalletOfferScreen()),
     GetPage(name: AppRoutes.MyAddresses, page: () => MyAddressesScreen()),
-    GetPage(
-        name: AppRoutes.LocationPickerScreen,
-        page: () => LocationPickerScreen()),
+    // GetPage(
+    //     name: AppRoutes.LocationPickerScreen,
+    //     page: () => LocationPickerScreen()),
     GetPage(
         name: AppRoutes.ConfirmLocation, page: () => ConfirmLocationScreen()),
     GetPage(name: AppRoutes.EditProfile, page: () => EditProfileScreen()),
@@ -175,6 +175,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.About,
       page: () => AboutScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.SelectLocationAddress,
+      page: () => SelectLocationAddress(),
+      binding: NewLocationScreenBindings(),
     ),
   ];
 }

@@ -175,16 +175,23 @@ class HomeController extends GetxController {
   }
 
   Future<bool> getCurrentLocation() async {
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
-    bool isEnable = await checkLocationPermission();
-    return isEnable;
+    try {
+      await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      bool? isEnable = await checkLocationPermission();
+      checkPermission.value == isEnable;
+      return isEnable;
+    } catch (e) {
+      checkPermission.value == false;
+      return checkPermission.value;
+    }
   }
 
   Future<bool> checkLocationPermission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    checkPermission.value =
+    bool localcheckPermission =
         serviceEnabled && await Permission.location.isGranted;
-    if (checkPermission.value) {
+    if (localcheckPermission) {
       Position position = await Geolocator.getCurrentPosition();
       final box = Boxes.getCommonBox();
       box.put(HiveConstants.LATITUDE, "${position.latitude}");
@@ -201,7 +208,7 @@ class HomeController extends GetxController {
     } else {
       await getUserLocation();
     }
-    return checkPermission.value;
+    return localcheckPermission;
   }
 
 // testing of categories on given data

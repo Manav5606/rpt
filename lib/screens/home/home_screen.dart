@@ -223,20 +223,20 @@ class _HomeScreenState extends State<HomeScreen>
                       SizedBox(
                         height: 1.h,
                       ),
-                      _homeController.checkPermission.value
-                          ? SizedBox()
-                          : PermissionRaw(
-                              onTap: () async {
-                                bool isEnable =
-                                    await _homeController.getCurrentLocation();
-                                if (isEnable) {
-                                  _homeController.isPageAvailable = true;
-                                  _homeController.homePageFavoriteShopsList
-                                      .clear();
-                                  await _homeController.apiCall();
-                                }
-                              },
-                            ),
+                      // _homeController.checkPermission.value
+                      //     ? SizedBox()
+                      //     : PermissionRaw(
+                      //         onTap: () async {
+                      //           bool isEnable =
+                      //               await _homeController.getCurrentLocation();
+                      //           if (isEnable) {
+                      //             _homeController.isPageAvailable = true;
+                      //             _homeController.homePageFavoriteShopsList
+                      //                 .clear();
+                      //             await _homeController.apiCall();
+                      //           }
+                      //         },
+                      //       ),
                       Obx(
                         () => Expanded(
                           child: ListView(
@@ -727,6 +727,33 @@ class _HomeScreenState extends State<HomeScreen>
                                           .homePageFavoriteShopsList.length) >
                                       0)
                                   ? AllOffers()
+
+                                  //  Row(
+                                  //     children: [
+                                  //       InkWell(
+                                  //           onTap: (() {
+                                  //             Get.offAllNamed(
+                                  //                 AppRoutes
+                                  //                     .SelectLocationAddress,
+                                  //                 arguments: {
+                                  //                   "locationListAvilable": true
+                                  //                 });
+                                  //           }),
+                                  //           child: AllOffers()),
+                                  //       Spacer(),
+                                  //       InkWell(
+                                  //           onTap: (() {
+                                  //             Get.offAllNamed(
+                                  //                 AppRoutes
+                                  //                     .SelectLocationAddress,
+                                  //                 arguments: {
+                                  //                   "locationListAvilable":
+                                  //                       false
+                                  //                 });
+                                  //           }),
+                                  //           child: AllOffers()),
+                                  //     ],
+                                  //   )
                                   : SizedBox(
                                       // height: 5.h,
                                       ),
