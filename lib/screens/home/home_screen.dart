@@ -670,46 +670,57 @@ class _HomeScreenState extends State<HomeScreen>
                                                             },
                                                           )
                                                         : SizedBox(),
-                                                    InkWell(
-                                                      onTap: (() {
-                                                        Get.toNamed(AppRoutes
-                                                            .ActiveOrders);
-                                                      }),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                bottom: 2.h,
-                                                                left: 4.w,
-                                                                right: 4.w),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Text(
-                                                              "View All",
-                                                              style: TextStyle(
-                                                                color: AppConst
-                                                                    .green,
-                                                                fontSize: SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    3.4,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                    ((_myAccountController
+                                                                        .activeOrdersModel
+                                                                        .value
+                                                                        ?.data)
+                                                                    ?.length ??
+                                                                0) >
+                                                            0
+                                                        ? InkWell(
+                                                            onTap: (() {
+                                                              Get.toNamed(AppRoutes
+                                                                  .ActiveOrders);
+                                                            }),
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          2.h,
+                                                                      left: 4.w,
+                                                                      right:
+                                                                          4.w),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Text(
+                                                                    "View All",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: AppConst
+                                                                          .green,
+                                                                      fontSize:
+                                                                          SizeUtils.horizontalBlockSize *
+                                                                              3.4,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  Icon(
+                                                                    Icons
+                                                                        .arrow_forward_ios_rounded,
+                                                                    color: AppConst
+                                                                        .green,
+                                                                    size: 1.8.h,
+                                                                  )
+                                                                ],
                                                               ),
                                                             ),
-                                                            Icon(
-                                                              Icons
-                                                                  .arrow_forward_ios_rounded,
-                                                              color: AppConst
-                                                                  .green,
-                                                              size: 1.8.h,
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
+                                                          )
+                                                        : SizedBox(),
                                                   ],
                                                 ),
                                               ),

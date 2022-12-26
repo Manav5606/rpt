@@ -110,14 +110,19 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           if ((userModel.addresses?.length ?? 0) > 0) {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                  arguments: {"locationListAvilable": true});
+              Future.delayed(
+                  Duration(seconds: 2),
+                  () => Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                      arguments: {"locationListAvilable": true}));
             });
           } else {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                  arguments: {"locationListAvilable": false});
+
+              Future.delayed(
+                  Duration(seconds: 2),
+                  () => Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                      arguments: {"locationListAvilable": false}));
             });
           }
         }
@@ -261,7 +266,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
 
         //     Center(
         //         child: Lottie.asset(
-        //   'assets/lottie/splashscreen.json',
+        //   'assets/lottie/splash1.json',
         // )),
         // )
       ),

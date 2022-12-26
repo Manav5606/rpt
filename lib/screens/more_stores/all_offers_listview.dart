@@ -290,8 +290,16 @@ class DispalyStoreLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: logo!.isEmpty
+      child: logo != null && logo != ""
           ? Padding(
+              padding: EdgeInsets.only(bottom: 6.h),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(logo ?? ''),
+                backgroundColor: AppConst.white,
+                radius: SizeUtils.horizontalBlockSize * 6.5,
+              ),
+            )
+          : Padding(
               padding: EdgeInsets.only(bottom: (bottomPadding ?? 5).h),
               child: Container(
                 padding: const EdgeInsets.all(12.0),
@@ -308,14 +316,6 @@ class DispalyStoreLogo extends StatelessWidget {
                     'assets/images/Store.png',
                   ),
                 ),
-              ),
-            )
-          : Padding(
-              padding: EdgeInsets.only(bottom: 6.h),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(logo ?? ''),
-                backgroundColor: AppConst.white,
-                radius: SizeUtils.horizontalBlockSize * 6.5,
               ),
             ),
     );
