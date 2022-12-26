@@ -105,20 +105,14 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           if ((userModel.addresses?.length ?? 0) > 0) {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Future.delayed(Duration(seconds: 2), () {
-                Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                    arguments: {"locationListAvilable": true});
-                _addLocationController.getCurrentLocation();
-              });
+              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                  arguments: {"locationListAvilable": true});
             });
           } else {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Future.delayed(Duration(seconds: 2), () {
-                Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                    arguments: {"locationListAvilable": false});
-                _addLocationController.getCurrentLocation();
-              });
+              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                  arguments: {"locationListAvilable": false});
             });
           }
         }

@@ -1236,6 +1236,7 @@ wallet_amount
         store
           {
            _id
+           logo
               mobile
               name
               address{
@@ -1346,6 +1347,7 @@ wallet_amount
         store
           {
            _id
+           logo
               mobile
               name
               address{
