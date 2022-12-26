@@ -54,7 +54,7 @@ class _AddressModelState extends State<AddressModel> {
     super.initState();
     final AddLocationController _addLocationController =
         Get.put(AddLocationController());
-    final HomeController _homeController = Get.put(HomeController());
+    // final HomeController _homeController = Get.put(HomeController());
   }
 
   @override
@@ -68,8 +68,8 @@ class _AddressModelState extends State<AddressModel> {
     final AddLocationController _addLocationController =
         Get.put(AddLocationController());
 
-    final HomeController _homeController = Get.put(HomeController());
-    // final islocationPermission = HomeController().getCurrentLocation();
+    // final HomeController _homeController = Get.lazyPut(HomeController());
+    //  final islocationPermission = HomeController().getCurrentLocation();
     _addLocationController.isRecentAddress.value = widget.isHomeScreen;
     return Scaffold(
       appBar: AppBar(
@@ -950,6 +950,9 @@ class SelectLocationAddress extends StatelessWidget {
   final AddLocationController _addLocationController =
       Get.put(AddLocationController());
   final HomeController _homeController = Get.put(HomeController());
+  void initState() {
+    _addLocationController.getCurrentLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1037,7 +1040,7 @@ class SelectLocationAddress extends StatelessWidget {
                     SizedBox(
                       height: 1.h,
                     ),
-                    Obx((() => (_homeController.checkPermission.value)
+                    Obx((() => (_addLocationController.checkPermission.value)
                         ? GestureDetector(
                             onTap: () {
                               Get.back();
@@ -1096,7 +1099,7 @@ class SelectLocationAddress extends StatelessWidget {
                           )
                         : InkWell(
                             onTap: (() {
-                              HomeController().getCurrentLocation();
+                              _addLocationController.getCurrentLocation();
                             }),
                             child: BottomWideButton(
                               text: "Enable Location",

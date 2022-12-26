@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:customer_app/widgets/custom_alert_dialog.dart';
+import 'package:location/location.dart' as temp;
 
+import 'package:customer_app/app/data/provider/hive/hive.dart';
+import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/data/model/getClaimRewardsPageCount_model.dart';
 import 'package:customer_app/app/data/model/get_claim_rewards_model.dart';
@@ -14,13 +18,21 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
+import 'package:permission_handler/permission_handler.dart';
+import '../../../controllers/userViewModel.dart';
 
 class AddLocationController extends GetxController {
+  RxBool checkPermission = true.obs;
+
+  UserModel? userModel;
+  bool isPageAvailable = true;
   late GoogleMapController mapController;
   late Position currentPosition;
+  RxString userAddress = ''.obs;
   final locationController = TextEditingController();
   LatLng? middlePointOfScreenOnMap;
   RxString currentAddress = ''.obs;
+  RxString userAddressTitle = ''.obs;
   RxString searchText = ''.obs;
   RxBool loading = false.obs;
   RxBool bottomFullAddressLoading = false.obs;
@@ -31,6 +43,7 @@ class AddLocationController extends GetxController {
   RxInt storesCount = 0.obs;
   RxInt updatedStoresCount = 0.obs;
   RxInt totalCashBack = 0.obs;
+  temp.Location location = new temp.Location();
   RxBool isFullAddressBottomSheet = false.obs;
   final LocationRepository locationRepository = LocationRepository();
   List<Stores> allStores = [];
@@ -47,7 +60,8 @@ class AddLocationController extends GetxController {
       <RecentAddressDetails>[].obs;
   Rx<DetailsResult> detailsResult = DetailsResult().obs;
   final HiveRepository hiveRepository = HiveRepository();
-  UserModel? userModel;
+  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxBool isRecentAddress = true.obs;
@@ -85,6 +99,57 @@ class AddLocationController extends GetxController {
     loading.value = false;
   }
 
+  // Future<bool> getCurrentLocation() async {
+  //   try {
+  //     await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.best);
+  //     bool? isEnable = await checkLocationPermission();
+  //     checkPermission.value == isEnable;
+  //     return isEnable;
+  //   } catch (e) {
+  //     checkPermission.value == false;
+  //     return checkPermission.value;
+  //   }
+  // }
+
+  Future<bool> checkLocationPermission() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool localcheckPermission =
+        serviceEnabled && await Permission.location.isGranted;
+    if (localcheckPermission) {
+      Position position = await Geolocator.getCurrentPosition();
+      final box = Boxes.getCommonBox();
+      box.put(HiveConstants.LATITUDE, "${position.latitude}");
+      box.put(HiveConstants.LONGITUDE, "${position.longitude}");
+      final List<Placemark> p =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      log('p :$p');
+      userAddress.value =
+          '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
+      userAddressTitle.value =
+          '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
+      UserViewModel.setLocation(LatLng(position.latitude, position.longitude));
+      isPageAvailable = true;
+    } else {
+      //  await getUserLocation();
+    }
+    return localcheckPermission;
+  }
+
+  // getUserLocation() async {
+  //   userModel = hiveRepository.getCurrentUser();
+  //   if ((userModel?.addresses?.length ?? 0) > 0) {
+  //     for (final AddressModel? addressModal in (userModel?.addresses ?? [])) {
+  //       if (addressModal?.status ?? false) {
+  //         userAddress.value = addressModal?.address ?? '';
+  //         userAddressTitle.value = addressModal?.title ?? '';
+  //         UserViewModel.setLocation(LatLng(addressModal?.location?.lat ?? 0.0,
+  //             addressModal?.location?.lng ?? 0.0));
+  //       }
+  //     }
+  //   }
+  // }
+
   Future<void> getDetails(String placeId) async {
     addressModelLoading.value = true;
     try {
@@ -109,7 +174,7 @@ class AddLocationController extends GetxController {
   void onInit() async {
     super.onInit();
     getSaveAddress();
-    await initLocation();
+    // await initLocation();
     getUserData();
   }
 
@@ -160,13 +225,49 @@ class AddLocationController extends GetxController {
   }
 
   Future<void> initLocation() async {
-    isRecentAddress.value
-        ? await getRecentLocation()
-        : await getCurrentLocation();
+    // isRecentAddress.value
+    // ? await getRecentLocation()
+    await getCurrentLocation();
   }
 
   Future getCurrentLocation() async {
     loading.value = true;
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    // if (!serviceEnabled) {
+    //   return Future.error('Location services are disabled.');
+    //   // bool test = Geolocator.requestPermission();
+    // }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permantly denied, we cannot request permissions.');
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        return Future.error(
+            'Location permissions are denied (actual value: $permission).');
+      }
+    }
+    bool ison = await location.serviceEnabled();
+    if (!ison) {
+      //if defvice is off
+      bool isturnedon = await location.requestService();
+      if (isturnedon) {
+        print("GPS device is turned ON");
+      } else {
+        print("GPS Device is still OFF");
+        _showPermissionDialog();
+
+        // openAppSettings();
+      }
+    }
 
     ///TODO Add LOCATION Permission and permissionHandler
     // await Geolocator.requestPermission();
@@ -345,4 +446,50 @@ class AddLocationController extends GetxController {
       }
     }
   }
+
+  void _showPermissionDialog() {
+    showDialog(
+      barrierDismissible: true,
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          title: '',
+          content: "Open Location Settings ",
+          buttontext: 'Open Settings',
+          onTap: () async {
+            await _geolocatorPlatform.openLocationSettings();
+          },
+        );
+      },
+    );
+  }
 }
+
+//   static Future<Position> getCurrentLocation() async {
+//     bool serviceEnabled;
+//     LocationPermission permission;
+
+//     serviceEnabled = await Geolocator.isLocationServiceEnabled();
+//     if (!serviceEnabled) {
+//       return Future.error('Location services are disabled.');
+//     }
+
+//     permission = await Geolocator.checkPermission();
+//     if (permission == LocationPermission.deniedForever) {
+//       return Future.error(
+//           'Location permissions are permantly denied, we cannot request permissions.');
+//     }
+
+//     if (permission == LocationPermission.denied) {
+//       permission = await Geolocator.requestPermission();
+//       if (permission != LocationPermission.whileInUse &&
+//           permission != LocationPermission.always) {
+//         return Future.error(
+//             'Location permissions are denied (actual value: $permission).');
+//       }
+//     }
+
+//     return await Geolocator.getCurrentPosition();
+//   }
+// }
+
