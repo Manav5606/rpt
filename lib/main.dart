@@ -13,22 +13,18 @@ import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/routes/app_pages.dart';
 import 'package:customer_app/utils/firebase_remote_config.dart';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
 import 'app/constants/colors.dart';
 
 List<CameraDescription> cameras = [];
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FireBaseNotification().setUpLocalNotification();
   await GetStorage.init();
-
   await FirebaseRemoteConfigUtils().initMethod();
   await HiveHelper.init();
   // DynamicLinkHelper.init();
@@ -36,6 +32,7 @@ void main() async {
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
   //     statusBarColor: AppConst.white,
   //     statusBarIconBrightness: Brightness.dark));
+  Get.put(AddLocationController());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(new MyApp());
@@ -66,22 +63,24 @@ class MyApp extends StatelessWidget {
         statusBarColor: AppConst.white,
         statusBarIconBrightness: Brightness.dark));
     return Sizer(builder: (context, orientation, deviceType) {
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Recipto',
-        theme: appThemeData,
-        getPages: AppPages.list,
-        initialRoute: AppRoutes.Root,
-        // builder: EasyLoading.init(),
-        initialBinding: AppBinding(),
-        builder: (context, child) {
-          EasyLoading.init();
-          return StreamChat(
-            client: Constants.client,
-            child: child,
-          );
-        },
-      );
+      return GetBuilder<AddLocationController>(builder: (_) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Recipto',
+          theme: appThemeData,
+          getPages: AppPages.list,
+          initialRoute: AppRoutes.SplashScreen,
+          // builder: EasyLoading.init(),
+          initialBinding: AppBinding(),
+          builder: (context, child) {
+            EasyLoading.init();
+            return StreamChat(
+              client: Constants.client,
+              child: child,
+            );
+          },
+        );
+      });
     });
   }
 }
@@ -92,7 +91,7 @@ class AppBinding extends Bindings {
     // TODO: implement dependencies
     cameras = await availableCameras();
     // Get.put(HomeController());
-    Get.put(AddLocationController());
+    // Get.put(AddLocationController());
     // Get.lazyPut(() => AddLocationController());
   }
 }
