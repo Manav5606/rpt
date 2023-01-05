@@ -31,9 +31,9 @@ class HomeController extends GetxController {
   Rx<GetAllCartsModel?> getAllCartsModel = GetAllCartsModel().obs;
   RxBool isLoading = false.obs;
   RxBool isAllCartLoading = false.obs;
-  RxString userAddress = ''.obs;
-  RxString userAddressTitle = ''.obs;
-  RxBool checkPermission = true.obs;
+  // RxString userAddress = ''.obs;
+  // RxString userAddressTitle = ''.obs;
+  // RxBool checkPermission = true.obs;
 
   int pageNumber = 1;
   bool isPageAvailable = true;
@@ -49,6 +49,7 @@ class HomeController extends GetxController {
       ScrollController();
   final ScrollController remoteConfigScrollController = ScrollController();
   late CategoryModel keywordValue;
+  final AddLocationController _addLocationController = Get.find();
 
   Future<void> getAllCartsData() async {
     try {
@@ -126,10 +127,11 @@ class HomeController extends GetxController {
     Get.put(AddLocationController());
     Get.put(ExploreController());
     // getUserLocation();
-    await checkLocationPermission();
+    // await checkLocationPermission();
     await apiCall();
     Get.put(ChatController());
     isLoading.value = false;
+    userModel = hiveRepository.getCurrentUser();
   }
 
   apiCall() async {
@@ -160,32 +162,32 @@ class HomeController extends GetxController {
     });
   }
 
-  getUserLocation() async {
-    userModel = hiveRepository.getCurrentUser();
-    if ((userModel?.addresses?.length ?? 0) > 0) {
-      for (final AddressModel? addressModal in (userModel?.addresses ?? [])) {
-        if (addressModal?.status ?? false) {
-          userAddress.value = addressModal?.address ?? '';
-          userAddressTitle.value = addressModal?.title ?? '';
-          UserViewModel.setLocation(LatLng(addressModal?.location?.lat ?? 0.0,
-              addressModal?.location?.lng ?? 0.0));
-        }
-      }
-    }
-  }
+  // getUserLocation() async {
+  //   userModel = hiveRepository.getCurrentUser();
+  //   if ((userModel?.addresses?.length ?? 0) > 0) {
+  //     for (final AddressModel? addressModal in (userModel?.addresses ?? [])) {
+  //       if (addressModal?.status ?? false) {
+  //         userAddress.value = addressModal?.address ?? '';
+  //         userAddressTitle.value = addressModal?.title ?? '';
+  //         UserViewModel.setLocation(LatLng(addressModal?.location?.lat ?? 0.0,
+  //             addressModal?.location?.lng ?? 0.0));
+  //       }
+  //     }
+  //   }
+  // }
 
-  Future<bool> getCurrentLocation() async {
-    try {
-      await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-      bool? isEnable = await checkLocationPermission();
-      checkPermission.value == isEnable;
-      return isEnable;
-    } catch (e) {
-      checkPermission.value == false;
-      return checkPermission.value;
-    }
-  }
+  // Future<bool> getCurrentLocation() async {
+  //   try {
+  //     await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.best);
+  //     bool? isEnable = await checkLocationPermission();
+  //     checkPermission.value == isEnable;
+  //     return isEnable;
+  //   } catch (e) {
+  //     checkPermission.value == false;
+  //     return checkPermission.value;
+  //   }
+  // }
 
   Future<bool> checkLocationPermission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -199,14 +201,14 @@ class HomeController extends GetxController {
       final List<Placemark> p =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       log('p :$p');
-      userAddress.value =
+      _addLocationController.userAddress.value =
           '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
-      userAddressTitle.value =
-          '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
+      // _addLocationController.userAddressTitle.value =
+      //     '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
       UserViewModel.setLocation(LatLng(position.latitude, position.longitude));
       isPageAvailable = true;
     } else {
-      await getUserLocation();
+      // await getUserLocation();
     }
     return localcheckPermission;
   }

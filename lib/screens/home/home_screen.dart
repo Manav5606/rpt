@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
+import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +36,7 @@ import 'package:customer_app/widgets/category_card.dart';
 import 'package:customer_app/widgets/homescreen_appbar.dart';
 import 'package:customer_app/widgets/permission_raw.dart';
 import 'package:customer_app/widgets/yourStores.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -75,6 +78,8 @@ class _HomeScreenState extends State<HomeScreen>
   final MoreStoreController _moreStoreController =
       Get.put(MoreStoreController());
 
+  final AddLocationController _addLocationController = Get.find();
+
   @override
   void initState() {
     super.initState();
@@ -89,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen>
       value: 1,
     );
 
-    _homeController.checkPermission.listen((p0) async {
-      bool isEnable = await _homeController.getCurrentLocation();
+    _addLocationController.checkPermission.listen((p0) async {
+      // bool isEnable = await _homeController.getCurrentLocation();
       _homeController.isPageAvailable = true;
       _homeController.homePageFavoriteShopsList.clear();
       await _homeController.apiCall();
@@ -178,6 +183,14 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    String UserSlecetedAddress =
+        ("${_addLocationController.userAddressTitle.value}") +
+            ((_addLocationController.userAddressTitle.value != "") ? "," : "") +
+            (" ${_addLocationController.userHouse.value}") +
+            ((_addLocationController.userHouse.value != "") ? "," : "") +
+            (" ${_addLocationController.userAppartment.value}") +
+            ((_addLocationController.userAppartment.value != "") ? "," : "") +
+            (" ${_addLocationController.userAddress.value}");
     SizeUtils().init(context);
     Data tempModel = Data.fromJson(
         jsonDecode(FirebaseRemoteConfigUtils.homeScreenTempString));
@@ -203,6 +216,7 @@ class _HomeScreenState extends State<HomeScreen>
                           onTap: () async {
                             dynamic value = Get.to(AddressModel(
                               isHomeScreen: true,
+                              page: "home",
                             ));
                             // if (Constants.isAbleToCallApi)
                             //   await _homeController.getAllCartsData();
@@ -212,8 +226,10 @@ class _HomeScreenState extends State<HomeScreen>
                                   0
                               ? true
                               : false,
-                          address: _homeController.userAddress.value,
-                          balance: (_myAccountController.user.balance ?? 0),
+                          address: UserSlecetedAddress,
+                          // "${_addLocationController.userAddressTitle.value}, ${_addLocationController.userHouse.value}, ${_addLocationController.userAppartment.value}, ${_addLocationController.userAddress.value}",
+                          balance: _addLocationController.convertor(
+                              _myAccountController.user.balance ?? 0),
                           onTapWallet: () {
                             Get.toNamed(AppRoutes.Wallet);
                           },
@@ -778,24 +794,20 @@ class _HomeScreenState extends State<HomeScreen>
                                 thickness: 2.w,
                                 color: AppConst.veryLightGrey,
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 2.h, horizontal: 2.w),
-                                child: Container(
-                                  width: double.infinity,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      StringContants.receipto,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 25.sp,
-                                        letterSpacing: 1,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      height: 5.5.h,
+                                      width: 30.w,
+                                      child: FittedBox(
+                                        child: SvgPicture.asset(
+                                          "assets/icons/reciptologo.svg",
+                                          fit: BoxFit.fill,
+                                          color: AppConst.grey,
+                                        ),
+                                      ))
+                                ],
                               ),
 
                               Padding(
@@ -806,43 +818,86 @@ class _HomeScreenState extends State<HomeScreen>
                                     Text(
                                       "Can't find your store ?",
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 13.sp,
-                                        // letterSpacing: 1,
-                                        color: AppConst.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Currently showing the stores in ${_homeController.userAddress.value}. Please change the location to see local store.",
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 3.8,
-                                        overflow: TextOverflow.visible,
                                         fontFamily: 'MuseoSans',
-                                        // letterSpacing: 0.4,
-                                        color: AppConst.grey,
+                                        color: AppConst.black,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
                                       ),
                                     ),
+                                    // Text(
+                                    //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
+                                    //   maxLines: 2,
+                                    //   style: TextStyle(
+                                    //     fontFamily: 'MuseoSans',
+                                    //     color: AppConst.grey,
+                                    //     fontSize:
+                                    //         SizeUtils.horizontalBlockSize * 3.5,
+                                    //     fontWeight: FontWeight.w500,
+                                    //     fontStyle: FontStyle.normal,
+                                    //   ),
+                                    // ),
+                                    RichText(
+                                        text: TextSpan(children: [
+                                      TextSpan(
+                                        text:
+                                            "currently showing the stores in ",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.grey,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.5,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            "${_addLocationController.userAddress.value}. ",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.darkGrey,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.5,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            "Please change the location to see local store.",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.grey,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.5,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                    ])),
                                     GestureDetector(
                                       onTap: () async {
                                         dynamic value = Get.to(AddressModel(
                                           // isSavedAddress: false,
                                           isHomeScreen: true,
+                                          page: "home",
                                         ));
                                       },
                                       child: Text(
                                         "Click here to change the location.",
                                         maxLines: 1,
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'MuseoSans',
                                           fontSize:
                                               SizeUtils.horizontalBlockSize *
-                                                  3.8,
-                                          overflow: TextOverflow.visible,
-                                          fontFamily: 'MuseoSans',
-                                          // letterSpacing: 0.4,
+                                                  3.5,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle: FontStyle.normal,
                                           color: AppConst.green,
                                         ),
                                       ),
@@ -851,7 +906,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                               ),
                               SizedBox(
-                                height: 5.h,
+                                height: 7.h,
                               ),
                             ],
                           ),

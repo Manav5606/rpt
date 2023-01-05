@@ -704,7 +704,9 @@
 //     );
 //   }
 // }
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
+import 'package:customer_app/app/ui/pages/location_picker/address_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -724,6 +726,7 @@ import '../../../data/provider/hive/hive_constants.dart';
 
 class MyAccountPage extends GetView<MyAccountController> {
   final freshChatController _freshChat = Get.find();
+  final AddLocationController _addLocationController = Get.find();
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -888,7 +891,8 @@ class MyAccountPage extends GetView<MyAccountController> {
                                             ),
                                             if (index == 0)
                                               Text(
-                                                'Rs ${_.user.balance}',
+                                                "Rs ${_addLocationController.convertor(_.user.balance ?? 0)}",
+                                                // 'Rs ${_.user.balance}',
                                                 style: TextStyle(
                                                   fontSize: SizeUtils
                                                           .horizontalBlockSize *
@@ -909,7 +913,14 @@ class MyAccountPage extends GetView<MyAccountController> {
                                           } else if (index == 1) {
                                             Get.toNamed(AppRoutes.History);
                                           } else if (index == 2) {
-                                            Get.toNamed(AppRoutes.MyAddresses);
+                                            Get.to(AddressModel(
+                                              isHomeScreen: true,
+                                              // isSavedAddress: true,
+                                              editOrDelete: true,
+                                              page: "home",
+                                            ));
+
+                                            // Get.toNamed(AppRoutes.MyAddresses);
                                           } else if (index == 4) {
                                             Get.to(ReferAndEarnScreen());
                                           } else if (index == 5) {

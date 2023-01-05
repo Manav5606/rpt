@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:customer_app/app/utils/app_constants.dart';
 import 'package:customer_app/widgets/custom_alert_dialog.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart' as temp;
 
 import 'package:customer_app/app/data/provider/hive/hive.dart';
@@ -22,7 +24,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../controllers/userViewModel.dart';
 
 class AddLocationController extends GetxController {
-  RxBool checkPermission = true.obs;
+  RxBool checkPermission = false.obs;
+  RxBool isGpson = false.obs;
 
   UserModel? userModel;
   bool isPageAvailable = true;
@@ -33,10 +36,15 @@ class AddLocationController extends GetxController {
   LatLng? middlePointOfScreenOnMap;
   RxString currentAddress = ''.obs;
   RxString userAddressTitle = ''.obs;
+
+  RxString userHouse = ''.obs;
+  RxString userAppartment = ''.obs;
+
   RxString searchText = ''.obs;
   RxBool loading = false.obs;
   RxBool bottomFullAddressLoading = false.obs;
   RxBool isLoading = false.obs;
+
   RxInt currentSelectValue = 0.obs;
   RxBool addressModelLoading = false.obs;
   RxBool isChanged = false.obs;
@@ -45,14 +53,14 @@ class AddLocationController extends GetxController {
   RxInt totalCashBack = 0.obs;
   temp.Location location = new temp.Location();
   RxBool isFullAddressBottomSheet = false.obs;
+  RxBool isEditAddress = false.obs;
   final LocationRepository locationRepository = LocationRepository();
   List<Stores> allStores = [];
   RxBool isSeeMoreEnable = false.obs;
   Rx<CameraPosition> initialLocation =
       const CameraPosition(target: LatLng(0.0, 0.0)).obs;
   final TextEditingController searchController = TextEditingController();
-  GooglePlace googlePlace =
-      GooglePlace('AIzaSyAVKjCxMvk5Nymx6VYSlhc4iOasFoTxuCk');
+  GooglePlace googlePlace = GooglePlace(AppConstants.gMapApiKey);
   RxList<AutocompletePrediction> predictions = <AutocompletePrediction>[].obs;
   RxList<AutocompletePrediction> savePredictionsList =
       <AutocompletePrediction>[].obs;
@@ -75,7 +83,7 @@ class AddLocationController extends GetxController {
       location: LatLon(currentPosition.latitude, currentPosition.longitude),
       region: 'IN',
     );
-    log('onMapCreated:---->>> 0001$result');
+    log('onMapCreated:---->>> 0001${result?.predictions?.length}');
     if (result != null && result.predictions != null) {
       predictions.clear();
       predictions.value = result.predictions ?? [];
@@ -112,29 +120,30 @@ class AddLocationController extends GetxController {
   //   }
   // }
 
-  Future<bool> checkLocationPermission() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    bool localcheckPermission =
-        serviceEnabled && await Permission.location.isGranted;
-    if (localcheckPermission) {
-      Position position = await Geolocator.getCurrentPosition();
-      final box = Boxes.getCommonBox();
-      box.put(HiveConstants.LATITUDE, "${position.latitude}");
-      box.put(HiveConstants.LONGITUDE, "${position.longitude}");
-      final List<Placemark> p =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-      log('p :$p');
-      userAddress.value =
-          '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
-      userAddressTitle.value =
-          '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
-      UserViewModel.setLocation(LatLng(position.latitude, position.longitude));
-      isPageAvailable = true;
-    } else {
-      //  await getUserLocation();
-    }
-    return localcheckPermission;
-  }
+  // Future<bool> checkLocationPermission() async {
+  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   bool localcheckPermission =
+  //       serviceEnabled && await Permission.location.isGranted;
+  //   if (localcheckPermission) {
+  //     Position position = await Geolocator.getCurrentPosition();
+  //     currentPosition = position;
+  //     final box = Boxes.getCommonBox();
+  //     box.put(HiveConstants.LATITUDE, "${position.latitude}");
+  //     box.put(HiveConstants.LONGITUDE, "${position.longitude}");
+  //     final List<Placemark> p =
+  //         await placemarkFromCoordinates(position.latitude, position.longitude);
+  //     log('p :$p');
+  //     userAddress.value =
+  //         '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
+  //     userAddressTitle.value =
+  //         '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
+  //     UserViewModel.setLocation(LatLng(position.latitude, position.longitude));
+  //     isPageAvailable = true;
+  //   } else {
+  //     //  await getUserLocation();
+  //   }
+  //   return localcheckPermission;
+  // }
 
   // getUserLocation() async {
   //   userModel = hiveRepository.getCurrentUser();
@@ -175,12 +184,13 @@ class AddLocationController extends GetxController {
     super.onInit();
     getSaveAddress();
     // await initLocation();
-    getUserData();
+    // getUserData();
   }
 
   void getUserData() {
     if (hiveRepository.hasUser()) {
       userModel = hiveRepository.getCurrentUser();
+      log("Addlocation_conrollerUsermodel${userModel}");
     }
   }
 
@@ -212,6 +222,19 @@ class AddLocationController extends GetxController {
     }
   }
 
+  SortByCharactor(String data, String char) {
+    int idx = data.indexOf(char);
+    List parts = [
+      data.substring(0, idx).trim(),
+      data.substring(idx + 1).trim()
+    ];
+    return parts[0];
+  }
+
+  convertor(numberToFormat) {
+    return NumberFormat.compact().format(numberToFormat);
+  }
+
   void onCameraMove(CameraPosition cameraPosition) {
     log('onMapCreated:----onCameraMove>>> p$cameraPosition');
     loading.value = true;
@@ -225,9 +248,176 @@ class AddLocationController extends GetxController {
   }
 
   Future<void> initLocation() async {
-    // isRecentAddress.value
-    // ? await getRecentLocation()
-    await getCurrentLocation();
+    isRecentAddress.value
+        ? await getRecentLocation()
+        : await getCurrentLocation();
+  }
+
+  Future<Position> getCurrentLocation1() async {
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // _showPermissionDialog();
+        checkPermission.value = false;
+      }
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.deniedForever) {
+          checkPermission.value = false;
+          // _showPermissionDialog();
+        }
+      }
+
+      if ((permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse)) {
+        checkPermission.value = true;
+      }
+
+      try {
+        Position position = await Geolocator.getCurrentPosition();
+
+        isGpson.value = true;
+      } catch (e) {
+        isGpson.value = false;
+      }
+
+      try {
+        if ((permission == LocationPermission.always ||
+                permission == LocationPermission.whileInUse) &&
+            isGpson.value == true) {
+          Position position = await Geolocator.getCurrentPosition();
+          currentPosition = position;
+          final box = Boxes.getCommonBox();
+          box.put(HiveConstants.LATITUDE, "${position.latitude}");
+          box.put(HiveConstants.LONGITUDE, "${position.longitude}");
+          final List<Placemark> p = await placemarkFromCoordinates(
+              position.latitude, position.longitude);
+          log('p :$p');
+          userAddress.value =
+              '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
+          // userAddressTitle.value =
+          //     '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
+          UserViewModel.setLocation(
+              LatLng(position.latitude, position.longitude));
+          isPageAvailable = true;
+
+          return position;
+        } else {
+          return Position(
+              longitude: 0.0,
+              latitude: 0.0,
+              timestamp: DateTime.now(),
+              accuracy: 0.0,
+              altitude: 0.0,
+              heading: 0.0,
+              speed: 0.0,
+              speedAccuracy: 0.0);
+        }
+      } catch (e) {
+        return Position(
+            longitude: 0.0,
+            latitude: 0.0,
+            timestamp: DateTime.now(),
+            accuracy: 0.0,
+            altitude: 0.0,
+            heading: 0.0,
+            speed: 0.0,
+            speedAccuracy: 0.0);
+        ;
+      }
+    } catch (e) {
+      return Position(
+          longitude: 0.0,
+          latitude: 0.0,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0);
+    }
+  }
+
+  Future<Position> getCurrentLocation2() async {
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // _showPermissionDialog();
+        checkPermission.value = false;
+      }
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.deniedForever) {
+          checkPermission.value = false;
+          _showPermissionDialog();
+        }
+      }
+
+      if ((permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse)) {
+        checkPermission.value = true;
+      }
+
+      try {
+        Position position = await Geolocator.getCurrentPosition();
+
+        isGpson.value = true;
+      } catch (e) {
+        isGpson.value = false;
+      }
+
+      try {
+        if ((permission == LocationPermission.always ||
+                permission == LocationPermission.whileInUse) &&
+            isGpson.value == true) {
+          Position position = await Geolocator.getCurrentPosition();
+
+          currentPosition = position;
+
+          return position;
+        } else {
+          return Position(
+              longitude: 0.0,
+              latitude: 0.0,
+              timestamp: DateTime.now(),
+              accuracy: 0.0,
+              altitude: 0.0,
+              heading: 0.0,
+              speed: 0.0,
+              speedAccuracy: 0.0);
+        }
+      } catch (e) {
+        return Position(
+            longitude: 0.0,
+            latitude: 0.0,
+            timestamp: DateTime.now(),
+            accuracy: 0.0,
+            altitude: 0.0,
+            heading: 0.0,
+            speed: 0.0,
+            speedAccuracy: 0.0);
+        ;
+      }
+    } catch (e) {
+      return Position(
+          longitude: 0.0,
+          latitude: 0.0,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0);
+      ;
+    }
   }
 
   Future getCurrentLocation() async {
@@ -235,62 +425,63 @@ class AddLocationController extends GetxController {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    // if (!serviceEnabled) {
-    //   return Future.error('Location services are disabled.');
-    //   // bool test = Geolocator.requestPermission();
-    // }
-
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
+      _showPermissionDialog();
       return Future.error(
           'Location permissions are permantly denied, we cannot request permissions.');
     }
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        return Future.error(
-            'Location permissions are denied (actual value: $permission).');
-      }
-    }
-    bool ison = await location.serviceEnabled();
-    if (!ison) {
-      //if defvice is off
-      bool isturnedon = await location.requestService();
-      if (isturnedon) {
-        print("GPS device is turned ON");
-      } else {
-        print("GPS Device is still OFF");
+      if (permission == LocationPermission.deniedForever) {
         _showPermissionDialog();
-
-        // openAppSettings();
       }
     }
+
+    // bool IsGpsOn = isGpson.value;
+    checkGps() async {
+      bool IsGpsOn = false;
+      try {
+        Position position = await Geolocator.getCurrentPosition();
+        IsGpsOn = true;
+        isGpson.value = IsGpsOn;
+      } catch (e) {
+        IsGpsOn = false;
+      }
+      isGpson.value = IsGpsOn;
+    }
+
+    checkGps();
 
     ///TODO Add LOCATION Permission and permissionHandler
     // await Geolocator.requestPermission();
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) async {
-      log('onMapCreated:---getCurrentLocation->>> position $position');
-      currentPosition = position;
-      middlePointOfScreenOnMap = LatLng(position.latitude, position.longitude);
-      log('onMapCreated:---getCurrentLocation->>> middlePointOfScreenOnMap $middlePointOfScreenOnMap');
-      mapController.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
-            zoom: 18.0,
+
+    if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high)
+          .then((Position position) async {
+        log('onMapCreated:---getCurrentLocation->>> position $position');
+        currentPosition = position;
+        middlePointOfScreenOnMap =
+            LatLng(position.latitude, position.longitude);
+        log('onMapCreated:---getCurrentLocation->>> middlePointOfScreenOnMap $middlePointOfScreenOnMap');
+        mapController.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(position.latitude, position.longitude),
+              zoom: 18.0,
+            ),
           ),
-        ),
-      );
-      await getAddress();
-      loading.value = false;
-    }).catchError((e) {
-      print(" error ->  $e");
-      loading.value = false;
-    });
+        );
+        await getAddress();
+        loading.value = false;
+      }).catchError((e) {
+        print(" error ->  $e");
+        loading.value = false;
+      });
+    }
   }
 
   Future getRecentLocation() async {
@@ -298,8 +489,9 @@ class AddLocationController extends GetxController {
     loading.value = true;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) async {
-      currentPosition = position;
+      // currentPosition = position;
       middlePointOfScreenOnMap = LatLng(latitude.value, longitude.value);
+
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -308,7 +500,7 @@ class AddLocationController extends GetxController {
           ),
         ),
       );
-      await getAddress();
+      await getRecentAddress();
       loading.value = false;
     }).catchError((e) {
       loading.value = false;
@@ -316,11 +508,25 @@ class AddLocationController extends GetxController {
     });
   }
 
+  Future getRecentAddress() async {
+    try {
+      final List<Placemark> p =
+          await placemarkFromCoordinates(latitude.value, longitude.value);
+      log(' getAddress : $p');
+      final Placemark place = p[0];
+
+      currentAddress.value =
+          "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future getAddress() async {
     try {
       final List<Placemark> p = await placemarkFromCoordinates(
           currentPosition.latitude, currentPosition.longitude);
-      log('getRecentLocation getAddress : $p');
+      log(' getAddress : $p');
       final Placemark place = p[0];
 
       currentAddress.value =
@@ -334,7 +540,7 @@ class AddLocationController extends GetxController {
     try {
       final List<Placemark> p = await placemarkFromCoordinates(
           currentPosition.latitude, currentPosition.longitude);
-      log('getRecentLocation getCurrentAddress : $p');
+      log(' getCurrentAddress : $p');
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -390,17 +596,18 @@ class AddLocationController extends GetxController {
       required double lng,
       String? house,
       String? apartment,
-      String? directionToReach}) async {
+      String? directionToReach,
+      String? page}) async {
     try {
       await locationRepository.addCustomerAddress(
-        lat: lat,
-        lng: lng,
-        address: address,
-        title: title,
-        house: house,
-        apartment: apartment,
-        directionToReach: directionToReach,
-      );
+          lat: lat,
+          lng: lng,
+          address: address,
+          title: title,
+          house: house,
+          apartment: apartment,
+          directionToReach: directionToReach,
+          page: page);
     } catch (e) {
       print(e);
     }
@@ -457,7 +664,7 @@ class AddLocationController extends GetxController {
           content: "Open Location Settings ",
           buttontext: 'Open Settings',
           onTap: () async {
-            await _geolocatorPlatform.openLocationSettings();
+            await openAppSettings();
           },
         );
       },

@@ -1,4 +1,5 @@
 import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/ui/pages/search/models/recentProductsData.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
@@ -38,7 +39,7 @@ class _ExploreScreen extends State<ExploreScreen> {
   final ExploreController _exploreController = Get.find();
   final ExploreController _controller = Get.find()..homePageRemoteConfigData1();
 
-  final HomeController _homeController = Get.find();
+  final AddLocationController _addLocationController = Get.find();
 
   // @override
   // void initState() {
@@ -78,7 +79,8 @@ class _ExploreScreen extends State<ExploreScreen> {
                     onTap: () async {
                       dynamic value = await Get.to(AddressModel(
                         // isSavedAddress: false,
-                        isHomeScreen: true,
+                        isHomeScreen: false,
+                        page: "explore",
                       ));
                       _exploreController.searchController.clear();
                       _exploreController.searchText.value = '';
@@ -113,7 +115,7 @@ class _ExploreScreen extends State<ExploreScreen> {
                             Container(
                               width: 85.w,
                               child: Text(
-                                "${_homeController.userAddressTitle.value} ${_homeController.userAddress.value}",
+                                "${_addLocationController.userAddressTitle.value} ${_addLocationController.userAddress.value}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
