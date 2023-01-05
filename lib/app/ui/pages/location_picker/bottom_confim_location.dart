@@ -18,17 +18,19 @@ class BottomConfirmLocationSheet extends StatelessWidget {
   final String address;
   final bool isFullAddesss;
   final bool isHome;
+  String page;
 
-  BottomConfirmLocationSheet({
-    Key? key,
-    required this.address,
-    required this.notifyParent,
-    required this.isFullAddesss,
-    required this.getCurrentLocation,
-    required this.getUserLocation,
-    required this.isHome,
-    required this.skipButton,
-  }) : super(key: key);
+  BottomConfirmLocationSheet(
+      {Key? key,
+      required this.address,
+      required this.notifyParent,
+      required this.isFullAddesss,
+      required this.getCurrentLocation,
+      required this.getUserLocation,
+      required this.isHome,
+      required this.skipButton,
+      required this.page})
+      : super(key: key);
   final AddLocationController _addLocationController = Get.find();
 
   @override
@@ -43,57 +45,60 @@ class BottomConfirmLocationSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            InkWell(
-              onTap: getUserLocation,
-              child: Container(
-                height: 5.h,
-                width: 50.w,
-                margin: EdgeInsets.only(
-                  bottom: 3.h,
-                ),
-                decoration: BoxDecoration(
-                  // shape: BoxShape.circle,
-                  color: AppConst.white,
-                  borderRadius: BorderRadius.circular(12),
-                  // border: Border.all(
-                  //     // color: AppConst.black,
-                  //     // width: SizeUtils.horizontalBlockSize - 2.92
-                  //     ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppConst.grey,
-                      blurRadius: 3,
-                      offset: Offset(1, 1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: getUserLocation,
+                  // onTap: (() {
+                  //   _addLocationController.getCurrentAddress();
+                  // }),
+                  child: Container(
+                    // height: 5.h,
+                    // width: 50.w,
+                    margin: EdgeInsets.only(
+                      bottom: 3.h,
                     ),
-                  ],
-                ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Center(
+                    decoration: BoxDecoration(
+                      // shape: BoxShape.circle,
+                      color: AppConst.white,
+                      borderRadius: BorderRadius.circular(12),
+                      // border: Border.all(
+                      //     // color: AppConst.black,
+                      //     // width: SizeUtils.horizontalBlockSize - 2.92
+                      //     ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppConst.grey,
+                          blurRadius: 3,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
                         child: Icon(
                           Icons.gps_fixed_rounded,
-                          color: AppConst.kSecondaryTextColor,
+                          color: AppConst.black,
                           size: SizeUtils.horizontalBlockSize * 6.5,
                         ),
                       ),
-                      // SizedBox(
-                      //   width: 2.w,
-                      // ),
-                      Text(
-                        "Use current location",
-                        style: TextStyle(
-                            color: AppConst.black,
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ]),
-              ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 4.w,
+                )
+              ],
             ),
             Container(
               decoration: BoxDecoration(
                 color: AppConst.white,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: AppConst.grey,
@@ -111,35 +116,43 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 3.w),
-                          child: Text(
-                            "Delivery Location",
-                            style: TextStyle(
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 5.2,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on_rounded,
+                              color: AppConst.green,
+                              size: 3.5.h,
                             ),
-                          ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Container(
+                              width: 65.w,
+                              child: Text(
+                                _addLocationController.SortByCharactor(
+                                    this.address.toString(), ","),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: AppConst.black,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         InkWell(
                           onTap: () async {
                             dynamic value = Get.to(AddressModel(
-                              isSavedAddress: false,
+                              isSavedAddress: true,
+                              page: page,
                             ));
-                            // dynamic value = await showModalBottomSheet(
-                            //   isScrollControlled: true,
-                            //   context: context,
-                            //   useRootNavigator: true,
-                            //   builder: (context) {
-                            //     return AddressModel(
-                            //       isSavedAddress: false,
-                            //     );
-                            // },
-                            // );
+
                             if (value != null) {
-                              getCurrentLocation
-                                  .call(); // how to call this when i don't want bottom sheet ??
+                              getCurrentLocation.call();
                             }
                             log('value is:--->>>$value');
                           },
@@ -147,18 +160,26 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 2.w, vertical: 1.h),
                             child: Container(
-                              width: 22.w,
-                              height: 4.h,
+                              // width: 20.w,
+                              // height: 4.h,
                               decoration: BoxDecoration(
-                                  color: AppConst.lightYellow,
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Center(
-                                child: Text(
-                                  "CHANGE",
-                                  style: TextStyle(
-                                    color: AppConst.black,
-                                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                                    fontWeight: FontWeight.w500,
+                                  border: Border.all(
+                                      width: 1, color: Color(0xff0082ab)),
+                                  color: Color(0xffe1f7ff),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.w, vertical: 0.5.h),
+                                child: Center(
+                                  child: Text(
+                                    "CHANGE",
+                                    style: TextStyle(
+                                      color: Color(0xff003d51),
+                                      fontFamily: 'MuseoSans',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -168,37 +189,56 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                       ],
                     ),
 
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 2.w, bottom: 1.h, right: 2.w),
+                      child: Container(
+                        width: 85.w,
+                        child: Text(
+                          this.address,
+                          maxLines: 2,
+                          overflow: TextOverflow.visible,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.normal,
+                            color: AppConst.black,
+                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 1.h,
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 2.h),
-                          child: Icon(
-                            Icons.location_on_rounded,
-                            color: AppConst.kPrimaryColor,
-                            size: 3.4.h,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Container(
-                          width: 85.w,
-                          child: Text(
-                            this.address,
-                            maxLines: 2,
-                            overflow: TextOverflow.visible,
-                            style: TextStyle(
-                              color: AppConst.DarkColor,
-                              fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     Padding(
+                    //       padding: EdgeInsets.only(bottom: 2.h),
+                    //       child: Icon(
+                    //         Icons.location_on_rounded,
+                    //         color: AppConst.kPrimaryColor,
+                    //         size: 3.4.h,
+                    //       ),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 2.w,
+                    //     ),
+                    //     Container(
+                    //       width: 85.w,
+                    //       child: Text(
+                    //         this.address,
+                    //         maxLines: 2,
+                    //         overflow: TextOverflow.visible,
+                    //         style: TextStyle(
+                    //           color: AppConst.DarkColor,
+                    //           fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                    //           fontWeight: FontWeight.w400,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
 
                     // Padding(
                     //   padding:
@@ -353,7 +393,7 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                     //   ],
                     // ),
                     // Divider(),
-                    SizedBox(height: 3.h),
+                    // SizedBox(height: 3.h),
                     ConfirmLocationWideButton(
                       isHome: isHome,
                       notifyParent: notifyParent,
@@ -385,102 +425,29 @@ class ConfirmLocationWideButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      child: Row(
-        children: [
-          // if (isHome)
-          //   Expanded(
-          //     child: Row(
-          //       children: [
-          //         Expanded(
-          //           child: SizedBox(
-          //             height: 7.3.h,
-          //             child: ElevatedButton(
-          //               style: ElevatedButton.styleFrom(
-          //                 elevation: 0,
-          //                 primary: AppConst.kSecondaryColor,
-          //                 padding:
-          //                     EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
-          //                 shape: RoundedRectangleBorder(
-          //                   borderRadius: BorderRadius.circular(
-          //                       SizeUtils.horizontalBlockSize * 3),
-          //                 ),
-          //               ),
-          //               onPressed: () {
-          //                 notifyParent();
-          //               },
-          //               child: Text(
-          //                 "Confirm location",
-          //                 style: TextStyle(
-          //                   fontSize: SizeUtils.horizontalBlockSize * 5,
-          //                   fontWeight: FontWeight.bold,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //         SizedBox(
-          //           width: SizeUtils.verticalBlockSize * 1,
-          //         ),
-          //         Expanded(
-          //           child: SizedBox(
-          //             height: 7.3.h,
-          //             child: ElevatedButton(
-          //               style: ElevatedButton.styleFrom(
-          //                 elevation: 0,
-          //                 primary: AppConst.kSecondaryColor,
-          //                 padding:
-          //                     EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
-          //                 shape: RoundedRectangleBorder(
-          //                   borderRadius: BorderRadius.circular(
-          //                       SizeUtils.horizontalBlockSize * 3),
-          //                 ),
-          //               ),
-          //               onPressed: () async {
-          //                 skipButton();
-          //               },
-          //               child: Text(
-          //                 "Skip",
-          //                 style: TextStyle(
-          //                   fontSize: SizeUtils.horizontalBlockSize * 5,
-          //                   fontWeight: FontWeight.bold,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   )
-          // else
-          Expanded(
-            child: SizedBox(
-              height: 7.3.h,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  primary: AppConst.kSecondaryColor,
-                  padding: EdgeInsets.all(SizeUtils.horizontalBlockSize * 3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        SizeUtils.horizontalBlockSize * 3),
-                  ),
-                ),
-                onPressed: () {
-                  notifyParent();
-                },
-                child: Text(
-                  "Confirm Location",
-                  style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 5,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+    return InkWell(
+      onTap: () {
+        notifyParent();
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 1.h),
+        height: 6.h,
+        decoration: BoxDecoration(
+            color: AppConst.darkGreen,
+            border: Border.all(width: 1.5, color: AppConst.darkGreen),
+            borderRadius: BorderRadius.circular(10)),
+        child: Center(
+          child: Text(
+            "Confirm Location",
+            style: TextStyle(
+              fontFamily: 'MuseoSans',
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.normal,
+              fontSize: SizeUtils.horizontalBlockSize * 4,
+              color: AppConst.white,
             ),
           ),
-        ],
+        ),
       ),
     );
   }

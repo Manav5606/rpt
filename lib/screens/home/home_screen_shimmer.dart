@@ -1,3 +1,4 @@
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +40,7 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
   int currentItems = 4;
   bool last = false;
   final HomeController _homeController = Get.put(HomeController());
+  final AddLocationController _addLocationController = Get.find();
 
   @override
   void initState() {
@@ -142,7 +144,7 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
                                     Row(
                                       children: [
                                         Text(
-                                          _homeController
+                                          _addLocationController
                                               .userAddressTitle.value,
                                           style: AppStyles.ADDRESS_STYLE,
                                           overflow: TextOverflow.ellipsis,
@@ -159,7 +161,8 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
                                     Container(
                                       width: 70.w,
                                       child: Text(
-                                        _homeController.userAddress.value,
+                                        _addLocationController
+                                            .userAddress.value,
                                         style: AppStyles.ADDRESS_STYLE,
                                         overflow: TextOverflow.ellipsis,
                                       ),

@@ -1,3 +1,4 @@
+import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
@@ -8,17 +9,17 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class BottomConfirmLocationSheetShimmer extends StatelessWidget {
-  final Function() notifyParent;
-  final Function() getUserLocation;
-  final String address;
-  final bool isFullAddesss;
+  // final Function() notifyParent;
+  // final Function() getUserLocation;
+  // final String address;
+  // final bool isFullAddesss;
 
   const BottomConfirmLocationSheetShimmer({
     Key? key,
-    required this.address,
-    required this.notifyParent,
-    required this.isFullAddesss,
-    required this.getUserLocation,
+    // required this.address,
+    // required this.notifyParent,
+    // required this.isFullAddesss,
+    // required this.getUserLocation,
   }) : super(key: key);
 
   @override
@@ -32,61 +33,56 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            InkWell(
-              onTap: getUserLocation,
-              child: Container(
-                height: 5.h,
-                width: 50.w,
-                margin: EdgeInsets.only(
-                  bottom: 3.h,
-                ),
-                decoration: BoxDecoration(
-                  // shape: BoxShape.circle,
-                  color: AppConst.white,
-                  borderRadius: BorderRadius.circular(12),
-                  // border: Border.all(
-                  //     // color: AppConst.black,
-                  //     // width: SizeUtils.horizontalBlockSize - 2.92
-                  //     ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppConst.grey,
-                      blurRadius: 1,
-                      offset: Offset(1, 1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  // height: 5.h,
+                  // width: 50.w,
+                  margin: EdgeInsets.only(
+                    bottom: 3.h,
+                  ),
+                  decoration: BoxDecoration(
+                    // shape: BoxShape.circle,
+                    color: AppConst.white,
+                    borderRadius: BorderRadius.circular(12),
+                    // border: Border.all(
+                    //     // color: AppConst.black,
+                    //     // width: SizeUtils.horizontalBlockSize - 2.92
+                    //     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppConst.grey,
+                        blurRadius: 3,
+                        offset: Offset(1, 1),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: ShimmerEffect(
+                        child: Icon(
+                          Icons.gps_fixed_rounded,
+                          color: AppConst.black,
+                          size: SizeUtils.horizontalBlockSize * 6.5,
+                        ),
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Center(
-                        child: ShimmerEffect(
-                          child: Icon(
-                            Icons.gps_fixed_rounded,
-                            color: AppConst.kSecondaryTextColor,
-                            size: SizeUtils.horizontalBlockSize * 6.5,
-                          ),
-                        ),
-                      ),
-                      // SizedBox(
-                      //   width: 2.w,
-                      // ),
-                      ShimmerEffect(
-                        child: Text(
-                          "Use current location",
-                          style: TextStyle(
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ]),
-              ),
+                SizedBox(
+                  width: 4.w,
+                )
+              ],
             ),
             Container(
               decoration: BoxDecoration(
                 color: AppConst.white,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: AppConst.grey,
@@ -104,38 +100,60 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 3.w),
-                          child: ShimmerEffect(
-                            child: Text(
-                              "Delivery Location",
-                              style: TextStyle(
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 5.2,
-                                fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            ShimmerEffect(
+                              child: Icon(
+                                Icons.location_on_rounded,
+                                color: AppConst.green,
+                                size: 3.5.h,
                               ),
                             ),
-                          ),
-                        ),
-                        InkWell(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 1.h),
-                            child: ShimmerEffect(
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            ShimmerEffect(
                               child: Container(
-                                width: 22.w,
-                                height: 4.h,
-                                decoration: BoxDecoration(
-                                    color: AppConst.lightYellow,
-                                    borderRadius: BorderRadius.circular(12)),
+                                color: AppConst.black,
+                                child: Text(
+                                  "Display the addresss",
+                                  style: TextStyle(
+                                    color: AppConst.black,
+                                    fontFamily: 'MuseoSans',
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4.2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
+                          child: ShimmerEffect(
+                            child: Container(
+                              // width: 20.w,
+                              // height: 4.h,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1, color: Color(0xff0082ab)),
+                                  color: Color(0xffe1f7ff),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.w, vertical: 0.5.h),
                                 child: Center(
                                   child: Text(
                                     "CHANGE",
                                     style: TextStyle(
-                                      color: AppConst.black,
+                                      color: Color(0xff003d51),
+                                      fontFamily: 'MuseoSans',
+                                      fontWeight: FontWeight.w700,
                                       fontSize:
-                                          SizeUtils.horizontalBlockSize * 4,
-                                      fontWeight: FontWeight.w500,
+                                          SizeUtils.horizontalBlockSize * 3,
                                     ),
                                   ),
                                 ),
@@ -145,50 +163,24 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                         )
                       ],
                     ),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 2.w, bottom: 1.h, right: 2.w),
+                      child: ShimmerEffect(
+                          child: Container(
+                        width: 80.w,
+                        height: 3.5.h,
+                        color: AppConst.black,
+                      )),
+                    ),
                     SizedBox(
                       height: 1.h,
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 2.h),
-                          child: ShimmerEffect(
-                            child: Icon(
-                              Icons.location_on_rounded,
-                              color: AppConst.kPrimaryColor,
-                              size: 3.4.h,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        ShimmerEffect(
-                          child: Container(
-                            width: 80.w,
-                            child: Text(
-                              this.address,
-                              maxLines: 2,
-                              overflow: TextOverflow.visible,
-                              style: TextStyle(
-                                color: AppConst.DarkColor,
-                                fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 3.h),
                     ShimmerEffect(
-                      child: ConfirmLocationWideButton(
-                        isHome: false,
-                        notifyParent: notifyParent,
-                        skipButton: () {},
+                      child: BottomWideButton(
+                        text: "Confirm Location",
                       ),
-                    ),
-                    SizedBox(height: 1.h),
+                    )
                   ],
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:customer_app/app/controller/account_controller.dart';
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +33,13 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
 
   final PaymentController _paymentController = Get.find();
   final MyAccountController _myaccount = Get.find();
+  final AddLocationController _addLocationController = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _homeController.checkPermission.listen((p0) async {
+    _addLocationController.checkPermission.listen((p0) async {
       _paymentController.latLng = LatLng(
           UserViewModel.currentLocation.value.latitude,
           UserViewModel.currentLocation.value.longitude);
@@ -50,15 +52,24 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
+        automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: AppConst.white,
             statusBarIconBrightness: Brightness.dark),
         // backgroundColor: Color(0xff005b41),
         title: Row(
           children: [
-            SizedBox(
-              width: 5.w,
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(AppRoutes.BaseScreen);
+              },
+              child: Icon(
+                Icons.arrow_back,
+                size: 3.h,
+                color: AppConst.black,
+              ),
             ),
+            Spacer(),
             SizedBox(
               height: 3.5.h,
               child: Image(
@@ -82,7 +93,8 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
             InkWell(
                 onTap: () async {
                   dynamic value = await Get.to(AddressModel(
-                    isHomeScreen: true,
+                    isHomeScreen: false,
+                    page: "redeem",
                   ));
                   _paymentController.latLng = LatLng(
                       UserViewModel.currentLocation.value.latitude,
@@ -125,63 +137,66 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
         //   ),
         // ),
       ),
-      body: Obx(
-        () => Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // _homeController.checkPermission.value
-              //     ? SizedBox()
-              //     : PermissionRaw(
-              //         onTap: () async {
-              //           bool isEnable =
-              //               await _homeController.getCurrentLocation();
-              //           if (isEnable) {
-              //             _paymentController.latLng = LatLng(
-              //                 UserViewModel.currentLocation.value.latitude,
-              //                 UserViewModel.currentLocation.value.longitude);
-              //             await _paymentController.getRedeemCashInStorePage();
-              //           }
-              //         },
-              //       ),
+      body:
+          // Obx(
+          //   () =>
+          Padding(
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // _homeController.checkPermission.value
+            //     ? SizedBox()
+            //     :
+            // PermissionRaw(
+            //     onTap: () async {
+            //       bool isEnable =
+            //           await _homeController.getCurrentLocation();
+            //       if (isEnable) {
+            //         _paymentController.latLng = LatLng(
+            //             UserViewModel.currentLocation.value.latitude,
+            //             UserViewModel.currentLocation.value.longitude);
+            //         await _paymentController.getRedeemCashInStorePage();
+            //       }
+            //     },
+            //   ),
 
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
-                child: Text(
-                    "The cashback you have earned from each stores are shown below. ",
-                    style: TextStyle(
-                      fontFamily: 'MuseoSans',
-                      color: AppConst.black,
-                      fontSize: SizeUtils.horizontalBlockSize * 4,
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.normal,
-                    )),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+              child: Text(
+                  "The cashback you have earned from each stores are shown below. ",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  )),
+            ),
+            // Container(
+            //     height: SizeUtils.horizontalBlockSize * 10,
+            //     width: SizeUtils.horizontalBlockSize * 65,
+            //     alignment: Alignment.topLeft,
+            //     child: FittedBox(
+            //       child: Text(
+            //         "Loyalty Cards",
+            //         style: TextStyle(
+            //             fontSize: SizeUtils.horizontalBlockSize * 8,
+            //             fontWeight: FontWeight.bold),
+            //       ),
+            //     )),
+            // SizedBox(
+            //   height: SizeUtils.horizontalBlockSize * 5,
+            // ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: loyaltyCardList(),
               ),
-              // Container(
-              //     height: SizeUtils.horizontalBlockSize * 10,
-              //     width: SizeUtils.horizontalBlockSize * 65,
-              //     alignment: Alignment.topLeft,
-              //     child: FittedBox(
-              //       child: Text(
-              //         "Loyalty Cards",
-              //         style: TextStyle(
-              //             fontSize: SizeUtils.horizontalBlockSize * 8,
-              //             fontWeight: FontWeight.bold),
-              //       ),
-              //     )),
-              // SizedBox(
-              //   height: SizeUtils.horizontalBlockSize * 5,
-              // ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: loyaltyCardList(),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+      // ),
     );
   }
 }

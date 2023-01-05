@@ -1,3 +1,4 @@
+import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
@@ -64,50 +65,24 @@ class _BottomFullAddressSheetShimmerState
 
   Widget _buildTags(int index) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (!isDisabled.value) {
-            _selectedTag = index;
-          }
-        });
-      },
       child: Row(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            decoration: BoxDecoration(
-                color: _selectedTag == index
-                    ? isDisabled.value
-                        ? AppConst.grey
-                        : AppConst.kSecondaryTextColor
-                    : AppConst.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                    color: isDisabled.value
-                        ? AppConst.grey
-                        : AppConst.kSecondaryTextColor)),
-            child: Row(
-              children: [
-                Text(
-                  "${_tags[index]} ",
-                  style: TextStyle(
-                      color: _selectedTag != index
-                          ? AppConst.kSecondaryTextColor
-                          : AppConst.white,
-                      fontFamily: 'Poppins',
-                      fontSize: SizeUtils.horizontalBlockSize * 4),
-                ),
-                if (_selectedTag == index)
-                  Icon(
-                    Icons.verified_outlined,
-                    color: AppConst.white,
-                    size: SizeUtils.horizontalBlockSize * 3.5,
-                  )
-              ],
+          ShimmerEffect(
+            child: Container(
+              margin: EdgeInsets.only(
+                left: 3.w,
+                top: 1.5.h,
+                bottom: 1.5.h,
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+              child: Row(
+                children: [
+                  Text(
+                    "",
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            width: 1.w,
           ),
         ],
       ),
@@ -117,53 +92,75 @@ class _BottomFullAddressSheetShimmerState
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppConst.white,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 2.h),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Row(
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        ShimmerEffect(
+          child: Container(
+            height: 28.h,
+            color: AppConst.black,
+          ),
+        ),
+        Container(
+          color: AppConst.white,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 1.5.h),
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Stores Count ",
-                          style: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 5,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            widget.storesCount.toString(),
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 5.5,
-                              color: AppConst.kSecondaryTextColor,
-                              fontWeight: FontWeight.w700,
+                        Row(
+                          children: [
+                            ShimmerEffect(
+                              child: Icon(
+                                Icons.location_on_rounded,
+                                color: AppConst.green,
+                                size: 3.5.h,
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            ShimmerEffect(
+                              child: Text(
+                                _addLocationController.SortByCharactor(
+                                    _addLocationController.currentAddress.value
+                                        .toString(),
+                                    ","),
+                                // parts[0],
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: AppConst.black,
+                                  fontFamily: 'MuseoSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              left: SizeUtils.horizontalBlockSize * 0.40),
-                          child: GestureDetector(
-                            onTap: () async {
-                              // await _addLocationController.getClaimRewardsPageData();
-                              Get.toNamed(AppRoutes.WalletOffer);
-                            },
+                              left: 2.w, bottom: 1.h, right: 2.w, top: 1.h),
+                          child: ShimmerEffect(
                             child: Text(
-                              'Edit',
+                              _addLocationController.currentAddress.value
+                                  .toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.visible,
                               style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontSize: SizeUtils.horizontalBlockSize * 5,
-                                color: AppConst.kSecondaryColor,
-                                fontWeight: FontWeight.w700,
+                                fontFamily: 'MuseoSans',
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                                color: AppConst.black,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.2,
                               ),
                             ),
                           ),
@@ -171,270 +168,89 @@ class _BottomFullAddressSheetShimmerState
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        "CashBack Count ",
-                        style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 5,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        widget.cashBackCount.toString(),
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 5.5,
-                          color: AppConst.kSecondaryTextColor,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            ShimmerEffect(child: Divider(height: 0)),
-            ShimmerEffect(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 1.h),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Enter address details",
-                        style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 5.5,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                        iconSize: SizeUtils.horizontalBlockSize * 6.33,
-                        padding: EdgeInsets.zero,
-                        splashRadius: 25,
-                        visualDensity: VisualDensity(horizontal: -4),
-                        onPressed: () {
-                          // widget.notifyParent();
-                        },
-                        icon: Icon(Icons.close))
-                  ],
                 ),
-              ),
-            ),
-            ShimmerEffect(child: Divider(height: 0)),
-            ShimmerEffect(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: 1.h,
-                ),
-                child: Text(
-                  "YOUR LOCATION",
-                  style: TextStyle(
-                    color: AppConst.grey,
-                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                  ),
-                ),
-              ),
-            ),
-            ShimmerEffect(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 0.5.h,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.verified_outlined,
-                      color: AppConst.blue,
-                      size: SizeUtils.horizontalBlockSize * 5.10,
-                    ),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    Expanded(
-                      child: Text(
-                        widget.address,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: AppConst.black,
-                          fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        dynamic value = await showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          useRootNavigator: true,
-                          builder: (context) {
-                            return AddressModel();
-                          },
-                        );
-                        if (value != null) {
-                          widget.notifyParent();
-                          widget.getCurrentLocation.call();
-                        }
-                      },
-                      child: Text(
-                        "CHANGE",
-                        style: TextStyle(
-                          color: AppConst.kSecondaryTextColor,
-                          fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ShimmerEffect(child: Divider()),
-            ShimmerEffect(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 1.h,
-                ),
-                child: Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Form(
-                      key: _key,
-                      child: TextFormField(
-                        controller: _completeAddressController,
-                        onChanged: (val) {
-                          setState(() {});
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter valid details';
-                          }
-                        },
-                        style: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 4.5),
-                        decoration: InputDecoration(
-                          // contentPadding: EdgeInsets.only(bottom: SizeUtils.horizontalBlockSize * 2, top: SizeUtils.horizontalBlockSize * 1.27),
-                          isDense: true,
-                          hintText: "Complete Address *",
-                          hintStyle: isDisabled.value
-                              ? TextStyle(
-                                  color: AppConst.lightGrey,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4.5)
-                              : TextStyle(
-                                  color: AppConst.grey,
-                                  fontSize:
-                                      SizeUtils.horizontalBlockSize * 4.5),
-                          errorStyle: TextStyle(
-                            color: AppConst.kPrimaryColor,
-                          ),
-                          enabled: !isDisabled.value,
-                          // floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIconConstraints: BoxConstraints.tightFor(),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: AppConst.kPrimaryColor),
-                          ),
-                          suffixIcon: _completeAddressController.text.length > 0
-                              ? TextFieldClearButton(
-                                  onTap: () {
-                                    _completeAddressController.clear();
-                                    setState(() {});
-                                  },
-                                )
-                              : null,
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 1.h, left: 3.w, right: 1.w, bottom: 1.h),
+                      child: ShimmerEffect(
+                        child: Container(
+                          width: 88.w,
+                          height: 5.h,
+                          color: AppConst.black,
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    TextFormField(
-                      onChanged: (val) {
-                        setState(() {});
-                      },
-                      controller: _floorController,
-                      style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4.5),
-                      decoration: InputDecoration(
-                        // contentPadding: EdgeInsets.only(bottom: SizeUtils.horizontalBlockSize * 2, top: SizeUtils.horizontalBlockSize * 3.82),
-                        isDense: true,
-                        hintText: "Floor (Optional)",
-                        hintStyle: isDisabled.value
-                            ? TextStyle(
-                                color: AppConst.lightGrey,
-                                fontSize: SizeUtils.horizontalBlockSize * 4.5)
-                            : TextStyle(
-                                color: AppConst.grey,
-                                fontSize: SizeUtils.horizontalBlockSize * 4.5),
-                        enabled: !isDisabled.value,
-                        // floatingLabelBehavior: FloatingLabelBehavior.always,
-                        suffixIconConstraints: BoxConstraints.tightFor(),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppConst.kPrimaryColor),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 1.h,
+                        left: 3.w,
+                        right: 1.w,
+                      ),
+                      child: ShimmerEffect(
+                        child: Container(
+                          width: 88.w,
+                          height: 5.h,
+                          color: AppConst.black,
                         ),
-                        suffixIcon: _floorController.text.length > 0
-                            ? TextFieldClearButton(
-                                onTap: () {
-                                  _floorController.clear();
-                                  setState(() {});
-                                },
-                              )
-                            : null,
                       ),
                     ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    TextFormField(
-                      controller: _howToReachController,
-                      onChanged: (val) {
-                        setState(() {});
-                      },
-                      style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4.5),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        hintText: "How to reach (Optional)",
-                        hintStyle: isDisabled.value
-                            ? TextStyle(
-                                color: AppConst.lightGrey,
-                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                              )
-                            : TextStyle(
-                                color: AppConst.grey,
-                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 1.h),
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 0.7.h, left: 3.w),
+                              child: ShimmerEffect(
+                                child: Text(
+                                  "How to Reach (Optional)",
+                                  style: TextStyle(
+                                    color: AppConst.grey,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.5,
+                                  ),
+                                ),
                               ),
-                        enabled: !isDisabled.value,
-                        // floatingLabelBehavior: FloatingLabelBehavior.always,
-                        suffixIconConstraints: BoxConstraints.tightFor(),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppConst.kPrimaryColor),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 0.5.h, left: 3.w, right: 1.w),
+                              child: Row(
+                                children: [
+                                  ShimmerEffect(
+                                    child: Container(
+                                      width: 88.w,
+                                      height: 12.h,
+                                      color: AppConst.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        suffixIcon: _howToReachController.text.length > 0
-                            ? TextFieldClearButton(
-                                onTap: () {
-                                  _howToReachController.clear();
-                                  setState(() {});
-                                },
-                              )
-                            : null,
                       ),
                     ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    Text(
-                      "Tag this location for later",
-                      style: TextStyle(
-                        color: AppConst.grey,
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
+                    Padding(
+                      padding: EdgeInsets.only(left: 2.w, top: 2.h),
+                      child: ShimmerEffect(
+                        child: Text(
+                          "Save this address as:",
+                          style: TextStyle(
+                            color: AppConst.black,
+                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                            fontFamily: 'MuseoSans',
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 0.5.h,
                     ),
                     Row(
                       children: _tags
@@ -445,87 +261,18 @@ class _BottomFullAddressSheetShimmerState
                     ),
                   ],
                 ),
-              ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                ShimmerEffect(child: BottomWideButton()),
+                SizedBox(
+                  height: 1.h,
+                ),
+              ],
             ),
-            ShimmerEffect(
-              child: SizedBox(
-                height: 1.h,
-              ),
-            ),
-            ShimmerEffect(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        primary: isDisabled.value
-                            ? AppConst.grey
-                            : AppConst.kSecondaryTextColor,
-                        padding: EdgeInsets.all(
-                            SizeUtils.horizontalBlockSize * 3.31),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              SizeUtils.horizontalBlockSize * 3),
-                        ),
-                      ),
-                      onPressed: () async {
-                        _addLocationController.isLoading.value = true;
-
-                        try {
-                          if (!isDisabled.value &&
-                              (_key.currentState?.validate() ?? false)) {
-                            // if (_addLocationController.storesCount.value !=
-                            //     _addLocationController.updatedStoresCount.value) {
-                            //   print("====>Changes");
-                            //
-                            //   /// Changes
-                            //   await _addLocationController.addMultipleStoreToWallet();
-                            // } else {
-                            //   print("====> No Changes");
-                            //
-                            //   /// No Changes
-                            //   // await _addLocationController.addMultipleStoreToWallet();
-                            // }
-                            // await _addLocationController.addCustomerAddress(
-                            //   lng: _addLocationController
-                            //           .middlePointOfScreenOnMap?.longitude ??
-                            //       0,
-                            //   lat: _addLocationController
-                            //           .middlePointOfScreenOnMap?.latitude ??
-                            //       0,
-                            //   address: _completeAddressController.text,
-                            //   title: _tags[_selectedTag],
-                            //   house: _floorController.text,
-                            //   apartment: '',
-                            //   directionToReach: _howToReachController.text,
-                            // );
-                          }
-                        } catch (e) {
-                          _addLocationController.isLoading.value = false;
-                        }
-                        _addLocationController.isLoading.value = false;
-                      },
-                      child: Text(
-                        "Confirm location",
-                        style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 5,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ShimmerEffect(
-              child: SizedBox(
-                height: 3.h,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+      ]),
     );
   }
 }

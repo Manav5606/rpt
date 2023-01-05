@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/constants/responsive.dart';
+import 'package:customer_app/app/ui/pages/location_picker/edit_address_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/bottom_confim_location.dart';
@@ -24,12 +25,15 @@ class AddLocationScreen extends StatefulWidget {
 class _AddLocationScreenState extends State<AddLocationScreen> {
   final AddLocationController _addLocationController = Get.find();
   bool isHome = false;
+  String page = "";
 
   @override
   Widget build(BuildContext context) {
     Map arg = Get.arguments ?? {};
     _addLocationController.isRecentAddress.value = arg['isFalse'] ?? true;
+
     isHome = arg['isHome'] ?? true;
+    page = arg['page'] ?? "";
     log("_addLocationController.isRecentAddress.value :${_addLocationController.isRecentAddress.value}");
     _addLocationController.initLocation();
     return Scaffold(
@@ -43,21 +47,30 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
           "Confirm Delivery Location",
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 5,
-              color: AppConst.black,
-              fontWeight: FontWeight.bold),
+            fontFamily: 'MuseoSans',
+            fontWeight: FontWeight.w700,
+            fontStyle: FontStyle.normal,
+            fontSize: SizeUtils.horizontalBlockSize * 4.5,
+            color: AppConst.black,
+          ),
         ),
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: _addLocationController.initialLocation.value,
-            myLocationEnabled: false,
-            myLocationButtonEnabled: false,
-            onCameraIdle: _addLocationController.onCameraIdle,
-            zoomControlsEnabled: false,
-            onCameraMove: _addLocationController.onCameraMove,
-            onMapCreated: _addLocationController.onMapCreated,
+          Container(
+            height: _addLocationController.isFullAddressBottomSheet.value
+                ? 26.h
+                : double.infinity,
+            child: GoogleMap(
+              initialCameraPosition:
+                  _addLocationController.initialLocation.value,
+              myLocationEnabled: false,
+              myLocationButtonEnabled: false,
+              onCameraIdle: _addLocationController.onCameraIdle,
+              zoomControlsEnabled: false,
+              onCameraMove: _addLocationController.onCameraMove,
+              onMapCreated: _addLocationController.onMapCreated,
+            ),
           ),
 
           Align(
@@ -68,6 +81,92 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
               child: Image.asset('assets/icons/pinsmall.png'),
             ),
           ),
+          Obx(
+            () => _addLocationController.isFullAddressBottomSheet.value
+                // ? _addLocationController.bottomFullAddressLoading.value
+                //     ? BottomFullAddressSheetShimmer(
+                //         address: _addLocationController.currentAddress.value
+                //             .toString(),
+                //         cashBackCount:
+                //             _addLocationController.totalCashBack.value,
+                //         storesCount: _addLocationController.storesCount.value,
+                //         notifyParent: () {
+                //           _addLocationController
+                //               .isFullAddressBottomSheet.value = false;
+
+                //         },
+                //         isFullAddesss: _addLocationController
+                //             .isFullAddressBottomSheet.value,
+                //         getCurrentLocation: () async {
+                //           await _addLocationController.getCurrentLocation();
+                //         },
+                //       )
+                // :
+                ? BottomFullAddressSheet(
+                    address:
+                        _addLocationController.currentAddress.value.toString(),
+                    cashBackCount: _addLocationController.totalCashBack.value,
+                    storesCount: _addLocationController.storesCount.value,
+                    notifyParent: () {
+                      _addLocationController.isFullAddressBottomSheet.value =
+                          false;
+                    },
+                    isFullAddesss:
+                        _addLocationController.isFullAddressBottomSheet.value,
+                    getCurrentLocation: () async {
+                      await _addLocationController.getCurrentLocation();
+                    },
+                    page: page,
+                  )
+                : _addLocationController.loading.value
+                    ? BottomConfirmLocationSheetShimmer(
+                        // address: _addLocationController.currentAddress.value
+                        //     .toString(),
+                        // notifyParent: _addLocationController.refresh,
+                        // isFullAddesss: _addLocationController
+                        //     .isFullAddressBottomSheet.value,
+                        // getUserLocation:
+                        //     _addLocationController.getCurrentAddress,
+                        )
+                    : BottomConfirmLocationSheet(
+                        address: _addLocationController.currentAddress.value
+                            .toString(),
+                        notifyParent: () async {
+                          await _addLocationController
+                              .getClaimRewardsPageCount();
+                          await _addLocationController
+                              .getClaimRewardsPageData();
+                          _addLocationController
+                              .isFullAddressBottomSheet.value = true;
+                        },
+                        isFullAddesss: _addLocationController
+                            .isFullAddressBottomSheet.value,
+                        getUserLocation:
+                            _addLocationController.getCurrentAddress,
+                        isHome: isHome,
+                        skipButton: () async {
+                          await _addLocationController.addCustomerAddress(
+                            lng: _addLocationController
+                                    .middlePointOfScreenOnMap?.longitude ??
+                                0,
+                            lat: _addLocationController
+                                    .middlePointOfScreenOnMap?.latitude ??
+                                0,
+                            address: _addLocationController.currentAddress.value
+                                .toString(),
+                            title: '',
+                            house: '',
+                            apartment: '',
+                            directionToReach: '',
+                          );
+                        },
+                        getCurrentLocation: () async {
+                          await _addLocationController.getCurrentLocation();
+                        },
+                        page: page,
+                      ),
+          ),
+
           // Positioned(
           //     top: 30,
           //     right: 10,
@@ -131,88 +230,6 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
           //         )),
           //   ),
           // ),
-          Obx(
-            () => _addLocationController.isFullAddressBottomSheet.value
-                ? _addLocationController.bottomFullAddressLoading.value
-                    ? BottomFullAddressSheetShimmer(
-                        address: _addLocationController.currentAddress.value
-                            .toString(),
-                        cashBackCount:
-                            _addLocationController.totalCashBack.value,
-                        storesCount: _addLocationController.storesCount.value,
-                        notifyParent: () {
-                          _addLocationController
-                              .isFullAddressBottomSheet.value = false;
-                        },
-                        isFullAddesss: _addLocationController
-                            .isFullAddressBottomSheet.value,
-                        getCurrentLocation: () async {
-                          await _addLocationController.getCurrentLocation();
-                        },
-                      )
-                    : BottomFullAddressSheet(
-                        address: _addLocationController.currentAddress.value
-                            .toString(),
-                        cashBackCount:
-                            _addLocationController.totalCashBack.value,
-                        storesCount: _addLocationController.storesCount.value,
-                        notifyParent: () {
-                          _addLocationController
-                              .isFullAddressBottomSheet.value = false;
-                        },
-                        isFullAddesss: _addLocationController
-                            .isFullAddressBottomSheet.value,
-                        getCurrentLocation: () async {
-                          await _addLocationController.getCurrentLocation();
-                        },
-                      )
-                : _addLocationController.loading.value
-                    ? BottomConfirmLocationSheetShimmer(
-                        address: _addLocationController.currentAddress.value
-                            .toString(),
-                        notifyParent: _addLocationController.refresh,
-                        isFullAddesss: _addLocationController
-                            .isFullAddressBottomSheet.value,
-                        getUserLocation:
-                            _addLocationController.getCurrentAddress,
-                      )
-                    : BottomConfirmLocationSheet(
-                        address: _addLocationController.currentAddress.value
-                            .toString(),
-                        notifyParent: () async {
-                          await _addLocationController
-                              .getClaimRewardsPageCount();
-                          await _addLocationController
-                              .getClaimRewardsPageData();
-                          _addLocationController
-                              .isFullAddressBottomSheet.value = true;
-                        },
-                        isFullAddesss: _addLocationController
-                            .isFullAddressBottomSheet.value,
-                        getUserLocation:
-                            _addLocationController.getCurrentAddress,
-                        isHome: isHome,
-                        skipButton: () async {
-                          await _addLocationController.addCustomerAddress(
-                            lng: _addLocationController
-                                    .middlePointOfScreenOnMap?.longitude ??
-                                0,
-                            lat: _addLocationController
-                                    .middlePointOfScreenOnMap?.latitude ??
-                                0,
-                            address: _addLocationController.currentAddress.value
-                                .toString(),
-                            title: '',
-                            house: '',
-                            apartment: '',
-                            directionToReach: '',
-                          );
-                        },
-                        getCurrentLocation: () async {
-                          await _addLocationController.getCurrentLocation();
-                        },
-                      ),
-          ),
           // Obx(
           //   () => Positioned(
           //     bottom: 0,
@@ -237,21 +254,21 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
           //                 },
           //               )
           //             : BottomFullAddressSheet(
-          //                 address: _addLocationController.currentAddress.value
-          //                     .toString(),
-          //                 cashBackCount:
-          //                     _addLocationController.totalCashBack.value,
-          //                 storesCount: _addLocationController.storesCount.value,
-          //                 notifyParent: () {
-          //                   _addLocationController
-          //                       .isFullAddressBottomSheet.value = false;
-          //                 },
-          //                 isFullAddesss: _addLocationController
-          //                     .isFullAddressBottomSheet.value,
-          //                 getCurrentLocation: () async {
-          //                   await _addLocationController.getCurrentLocation();
-          //                 },
-          //               )
+          //                 // address: _addLocationController.currentAddress.value
+          //                 //     .toString(),
+          //                 // cashBackCount:
+          //                 //     _addLocationController.totalCashBack.value,
+          //                 // storesCount: _addLocationController.storesCount.value,
+          //                 // notifyParent: () {
+          //                 //   _addLocationController
+          //                 //       .isFullAddressBottomSheet.value = false;
+          //                 // },
+          //                 // isFullAddesss: _addLocationController
+          //                 //     .isFullAddressBottomSheet.value,
+          //                 // getCurrentLocation: () async {
+          //                 //   await _addLocationController.getCurrentLocation();
+          //                 // },
+          //                 )
           //         : _addLocationController.loading.value
           //             ? BottomConfirmLocationSheetShimmer(
           //                 address: _addLocationController.currentAddress.value
@@ -263,24 +280,25 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
           //                     _addLocationController.getCurrentAddress,
           //               )
           //             : BottomConfirmLocationSheet(
-          //                 address: _addLocationController.currentAddress.value
-          //                     .toString(),
-          //                 notifyParent: () async {
-          //                   await _addLocationController
-          //                       .getClaimRewardsPageCount();
-          //                   await _addLocationController
-          //                       .getClaimRewardsPageData();
-          //                   _addLocationController
-          //                       .isFullAddressBottomSheet.value = true;
-          //                 },
-          //                 isFullAddesss: _addLocationController
-          //                     .isFullAddressBottomSheet.value,
-          //                 getUserLocation:
-          //                     _addLocationController.getCurrentAddress,
-          //                 getCurrentLocation: () async {
-          //                   await _addLocationController.getCurrentLocation();
-          //                 },
-          //               ),
+          //                 // isHome: isHome,
+          //                 // address: _addLocationController.currentAddress.value
+          //                 //     .toString(),
+          //                 // notifyParent: () async {
+          //                 //   await _addLocationController
+          //                 //       .getClaimRewardsPageCount();
+          //                 //   await _addLocationController
+          //                 //       .getClaimRewardsPageData();
+          //                 //   _addLocationController
+          //                 //       .isFullAddressBottomSheet.value = true;
+          //                 // },
+          //                 // isFullAddesss: _addLocationController
+          //                 //     .isFullAddressBottomSheet.value,
+          //                 // getUserLocation:
+          //                 //     _addLocationController.getCurrentAddress,
+          //                 // getCurrentLocation: () async {
+          //                 //   await _addLocationController.getCurrentLocation();
+          //                 // },
+          //                 ),
           //   ),
           // )
         ],
