@@ -10,7 +10,7 @@ class HomeAppBar extends StatelessWidget {
   final GestureTapCallback? onTapWallet;
   final String address;
   final bool isRedDot;
-  final double? balance;
+  final String? balance;
   final bool isHomeScreen;
 
   HomeAppBar(
@@ -26,7 +26,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 2.h, right: 1.5.h),
+      padding: EdgeInsets.only(left: 0.w, top: 1.h, bottom: 2.h, right: 2.w),
       color: Color(0xff005b41),
       child: GestureDetector(
         onTap: onTap,
@@ -56,7 +56,7 @@ class HomeAppBar extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: isHomeScreen ? 60.w : 40.w,
+                  width: isHomeScreen ? 65.w : 40.w,
                   child: Text(
                     address,
                     // maxLines: 1,
@@ -106,10 +106,10 @@ class HomeAppBar extends StatelessWidget {
                       ),
                       Text(
                         //\u{20B9}
-                        " ${balance?.toInt()}", //?.toStringAsFixed(2)
+                        " ${balance}", //?.toStringAsFixed(2)
                         maxLines: 1,
                         style: TextStyle(
-                          fontSize: 12.5.sp,
+                          fontSize: SizeUtils.horizontalBlockSize * 3.8,
                           color: AppConst.white,
                           fontWeight: FontWeight.bold,
                         ),

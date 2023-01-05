@@ -41,7 +41,7 @@ class SignupBs extends StatelessWidget {
               padding: EdgeInsets.only(
                   bottom: 1.5.h, left: 3.w, right: 2.w, top: 1.h),
               child: Text(
-                'Sign up now & earn ₹15 instantly',
+                'Sign up now & earn \u{20B9}15 instantly',
                 style: TextStyle(
                   fontSize: SizeUtils.horizontalBlockSize * 4.5,
                   fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class SignupBs extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '₹125 Extra Cashback earned',
+                    '\u{20B9}125 Extra Cashback earned',
                     style: TextStyle(
                       color: AppConst.darkGreen,
                       fontFamily: 'MuseoSans',
@@ -211,6 +211,9 @@ class SignupBs extends StatelessWidget {
                   child: BottomWideButton(
                     text: 'Save Changes',
                     color: (_signInController.checkBox.value == true)
+                        ? AppConst.darkGreen
+                        : AppConst.grey,
+                    borderColor: (_signInController.checkBox.value == true)
                         ? AppConst.darkGreen
                         : AppConst.grey,
                   ),

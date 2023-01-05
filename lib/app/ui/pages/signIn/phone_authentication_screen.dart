@@ -46,7 +46,7 @@ class _SignInScreenState extends State<SignInScreen> {
       } else {
         CurrentIndex = 3;
       }
-      super.initState();
+      // super.initState();
     });
   }
 
@@ -436,33 +436,19 @@ class BottomWideButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 1.h),
       height: 6.h,
-      child: Container(
-        decoration: new BoxDecoration(
-            // color: Colors.,
-            ),
-        child: Container(
-          decoration: BoxDecoration(
-              color:
-                  // Colors.green.shade700,
-                  color,
-              // Color(0xFFDF2A63),
-              // kSecondaryTextColor,
-              border: Border.all(width: 1.5, color: borderColor
-                  // kPrimaryColor
-                  ),
-              borderRadius: BorderRadius.circular(10)),
-          child: Center(
-            child: Text(
-              text ?? "LOGIN",
-              // "LOGIN",
-              style: TextStyle(
-                fontFamily: 'MuseoSans',
-                fontWeight: FontWeight.w600,
-                fontStyle: FontStyle.normal,
-                fontSize: SizeUtils.horizontalBlockSize * 4,
-                color: Textcolor,
-              ),
-            ),
+      decoration: BoxDecoration(
+          color: color,
+          border: Border.all(width: 1.5, color: borderColor),
+          borderRadius: BorderRadius.circular(10)),
+      child: Center(
+        child: Text(
+          text ?? "LOGIN",
+          style: TextStyle(
+            fontFamily: 'MuseoSans',
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.normal,
+            fontSize: SizeUtils.horizontalBlockSize * 4,
+            color: Textcolor,
           ),
         ),
       ),

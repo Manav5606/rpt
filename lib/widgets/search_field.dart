@@ -47,19 +47,19 @@ class SearchField extends StatelessWidget {
             textInputAction: TextInputAction.done,
             style: TextStyle(
               fontFamily: 'MuseoSans',
-              fontSize: SizeUtils.horizontalBlockSize * 4.5,
+              fontSize: SizeUtils.horizontalBlockSize * 4,
               // color: Colors.grey[400],
             ),
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: TextStyle(
                 fontFamily: 'MuseoSans',
-                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                fontSize: SizeUtils.horizontalBlockSize * 3.5,
                 color: AppConst.grey,
               ),
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
-              fillColor: AppConst.lightGrey,
+              fillColor: AppConst.veryLightGrey,
               filled: true,
               isDense: true,
               enabledBorder: OutlineInputBorder(

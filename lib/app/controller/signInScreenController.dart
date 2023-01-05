@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class SignInScreenController extends GetxController {
   UserModel? userModel;
   final HiveRepository hiveRepository = HiveRepository();
   final SignInRepository signInRepository = SignInRepository();
+  final AddLocationController _addLocationController = Get.find();
 
   RxString phoneNumbers = ''.obs;
 
@@ -180,10 +182,11 @@ class SignInScreenController extends GetxController {
           userModel = await signInRepository.customerLoginOrSignUp(
               phoneNumber: phoneNumberController.text,
               referID: referralController.text);
-          List<Wallet>? wallet = await signInRepository.getAllWallet();
-          userModel?.wallet = wallet;
+
           if (userModel != null) {
             UserViewModel.setUser(userModel!);
+            List<Wallet>? wallet = await signInRepository.getAllWallet();
+            userModel?.wallet = wallet;
             // try {
             //   await connectUserStream(
             //       userId: userModel?.id ?? '',
@@ -191,14 +194,16 @@ class SignInScreenController extends GetxController {
             // } catch (e) {
             //   print('e $e');
             // }
+
+            final box = Boxes.getCommonBoolBox();
+            final flag = box.get(HiveConstants.SIGNUP_FLAG);
+            log("flag :$flag");
             if (referralController.text.isNotEmpty) {
               UserViewModel.setReferFlag(true);
             }
-            await checkSession(false);
+            await checkSession(flag ?? false);
           }
-          // final box = Boxes.getCommonBoolBox();
-          // final flag = box.get(HiveConstants.SIGNUP_FLAG);
-          // log("flag :$flag");
+
           // if (flag!) {
           //   log("flag 00:");
           //   isLoading.value = false;
@@ -225,7 +230,7 @@ class SignInScreenController extends GetxController {
     var flag = await SignInRepository.updateCustomerInformation(
         firstName, lastName, email);
     if (flag) {
-      await checkSession(flag);
+      await checkSession(false);
     }
   }
 
@@ -260,44 +265,44 @@ class SignInScreenController extends GetxController {
 
   Future<void> checkSession(bool SignUp) async {
     try {
-      if (!SignUp) {
+      if (SignUp) {
         //check for siginupflag
-        final box = Boxes.getCommonBoolBox();
-        final flag = box.get(HiveConstants.SIGNUP_FLAG);
-        log("SiginUp :$flag");
-        if (flag!) {
-          return Get.to(SignUpScreen());
-        }
+        // final box = Boxes.getCommonBoolBox();
+        // final flag = box.get(HiveConstants.SIGNUP_FLAG);
+        // log("SiginUp :$flag");
+        // if (flag!) {
+        return Get.to(SignUpScreen());
+        // }
       }
 
       //location permission check
 
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      final checkPermission =
-          serviceEnabled && await Permission.location.isGranted;
-
-      if (checkPermission == true) {
-        WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      _addLocationController.getCurrentLocation1().then((value) {
+        if (value.latitude != 0.0 && value.longitude != 0.0) {
+          // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
           FireBaseNotification().firebaseCloudMessagingLSetup();
-          Future.delayed(Duration(seconds: 2),
-              () => Get.offAllNamed(AppRoutes.BaseScreen));
-        });
-      } else {
-        if ((userModel?.addresses?.length ?? 0) > 0) {
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
-            FireBaseNotification().firebaseCloudMessagingLSetup();
-            Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                arguments: {"locationListAvilable": true});
+          Future.delayed(Duration(seconds: 2), () {
+            Get.offAllNamed(AppRoutes.BaseScreen);
           });
+          // });
         } else {
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
-            FireBaseNotification().firebaseCloudMessagingLSetup();
-            Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                arguments: {"locationListAvilable": false});
-          });
+          if ((userModel?.addresses?.length ?? 0) > 0) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
+              FireBaseNotification().firebaseCloudMessagingLSetup();
+              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                  arguments: {"locationListAvilable": true});
+              // _addLocationController.getCurrentLocation();
+            });
+          } else {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
+              FireBaseNotification().firebaseCloudMessagingLSetup();
+              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                  arguments: {"locationListAvilable": false});
+              // _addLocationController.getCurrentLocation();
+            });
+          }
         }
-      }
-
+      });
       connectUserStream(
           userId: userModel!.id!,
           name: "${userModel?.firstName} ${userModel?.lastName}");

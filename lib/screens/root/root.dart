@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
@@ -23,6 +24,7 @@ import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:location/location.dart' as temp;
 
 class Root extends StatefulWidget {
   @override
@@ -33,6 +35,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   late bool error;
   final HiveRepository hiveRepository = HiveRepository();
   final AddLocationController _addLocationController = Get.find();
+  temp.Location location = new temp.Location();
   @override
   void initState() {
     checkNetwork();
@@ -73,6 +76,8 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   }
 
   Future<void> checkSession() async {
+    // final value;
+    // value = _addLocationController.getCurrentLocation1() as double;
     UserViewModel.setRefferralCode('');
     await DynamicLinkService().retrieveDynamicLink();
     final box = Boxes.getCommonBox();
@@ -82,6 +87,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
         // get customer info based upon token
         MyAccountRepository().getCurrentUser();
         final UserModel userModel = hiveRepository.getCurrentUser();
+
         //check for siginupflag
         final box = Boxes.getCommonBoolBox();
         final flag = box.get(HiveConstants.SIGNUP_FLAG);
@@ -89,78 +95,76 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
         if (flag!) {
           return Get.to(SignUpScreen());
         }
-        //location permission check
 
-        bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-        final checkPermission =
-            serviceEnabled && await Permission.location.isGranted;
-        if (checkPermission == true) {
-          WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+        // bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+        // final checkPermission =
+        //     serviceEnabled && await Permission.location.isGranted;
+
+        // var lat;
+        // var lng;
+        // try {
+        //   Position position = await Geolocator.getCurrentPosition();
+        //   lat = position.latitude;
+        //   lng = position.longitude;
+        // } catch (e) {
+        //   lng = 0.0;
+        // }
+        // value = _addLocationController.getCurrentLocation1() ;
+        // _addLocationController.checkLocationPermission();
+
+//         bool IsGpsOn = true;
+//         double value;
+//         checkGps() async {
+//           try {
+//  Position position = await Geolocator.getCurrentPosition();
+
+//             // value =  _addLocationController.getCurrentLocation1();
+
+//             IsGpsOn = true;
+//           } catch (e) {
+//             IsGpsOn = false;
+//           }
+//         }
+
+//         checkGps();
+
+//  Position position =
+//             await Geolocator.getCurrentPosition().then((position) {
+//           return position;
+//         });
+        // Future<Position> value = _addLocationController.getCurrentLocation1();
+
+        // bool isBothEnable = checkPermission;
+
+        _addLocationController.getCurrentLocation1().then((value) {
+          if (value.latitude != 0.0 && value.longitude != 0.0) {
+            // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
             FireBaseNotification().firebaseCloudMessagingLSetup();
             Future.delayed(Duration(seconds: 2), () {
               Get.offAllNamed(AppRoutes.BaseScreen);
             });
-          });
-        } else {
-          if ((userModel.addresses?.length ?? 0) > 0) {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
-              FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                  arguments: {"locationListAvilable": true});
-            });
+            // });
           } else {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
-              FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                  arguments: {"locationListAvilable": false});
-            });
-          }
-        }
-        connectUserStream(
-            userId: userModel.id!,
-            name: "${userModel.firstName} ${userModel.lastName}");
-      } catch (e) {
-        Future.delayed(Duration(seconds: 2),
-            () => Get.offAllNamed(AppRoutes.Authentication));
-      }
-    } else {
-      Future.delayed(Duration(seconds: 2),
-          () => Get.offAllNamed(AppRoutes.Authentication));
-    }
-  }
-
-  Future<void> checkSession1() async {
-    UserViewModel.setRefferralCode('');
-    await DynamicLinkService().retrieveDynamicLink();
-    if (hiveRepository.hasUser()) {
-      try {
-        final UserModel userModel = hiveRepository.getCurrentUser();
-        connectUserStream(
-            userId: userModel.id!,
-            name: "${userModel.firstName} ${userModel.lastName}");
-        if ((userModel.addresses?.length ?? 0) > 0) {
-          for (final AddressModel? addressModal
-              in (userModel.addresses ?? [])) {
-            if (addressModal?.status ?? false) {
-              WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-                Future.delayed(Duration(seconds: 2),
-                    () => Get.offAllNamed(AppRoutes.BaseScreen));
-                // Get.offAllNamed(AppRoutes.BaseScreen);
-                // Get.offAllNamed(AppRoutes.NewLocationScreen);
+            if ((userModel.addresses?.length ?? 0) > 0) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                FireBaseNotification().firebaseCloudMessagingLSetup();
+                Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                    arguments: {"locationListAvilable": true});
+                // _addLocationController.getCurrentLocation();
               });
-              break;
+            } else {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                FireBaseNotification().firebaseCloudMessagingLSetup();
+                Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                    arguments: {"locationListAvilable": false});
+                // _addLocationController.getCurrentLocation();
+              });
             }
           }
-          // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-          //   Get.offAllNamed(AppRoutes.BaseScreen);
-          // });
-        } else {
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
-            log("checkSession : 12121}");
-            Get.offAllNamed(AppRoutes.NewLocationScreen,
-                arguments: {"isFalse": false});
-          });
-        }
+        });
+        connectUserStream(
+            userId: userModel.id!,
+            name: "${userModel.firstName} ${userModel.lastName}");
       } catch (e) {
         Future.delayed(Duration(seconds: 2),
             () => Get.offAllNamed(AppRoutes.Authentication));
@@ -171,59 +175,6 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
     }
   }
 
-  // checkSession() async {
-  //   if (GetStorage().hasData('userInfo')) {
-  //     try {
-  //       var data = GetStorage().read('userInfo');
-  //       print(data['mobile']);
-  //       //error = await AuthRepo.requestLogin(data['mobile']);
-  //       error = await AuthRepo.requestLogin("9000084844");
-  //       if (error) {
-  //
-  //         Get.toNamed(AppRoutes.Authentication);
-  //       } else {
-  //         print(UserViewModel.token.value);
-  //
-  //         if (UserViewModel.user.value.addresses!.length == 0) {
-  //           Get.offAll(() => LocationPickerScreen());
-  //         } else {
-  //           Get.offAll(() => BaseScreen());
-  //         }
-  //         // if (UserViewModel.user.value.addresses.length > 0) {
-  //         //   bool hasActiveAddress = false;
-  //         //   int index = 0;
-  //         //   LatLng latLng;
-  //         //   UserViewModel.user.value.addresses.forEach((element) {
-  //         //     if (!hasActiveAddress) {
-  //         //       index = UserViewModel.user.value.addresses.indexOf(element);
-  //         //       latLng = LatLng(element.location.lat, element.location.lng);
-  //         //       hasActiveAddress = element.status;
-  //         //     }
-  //         //   });
-  //         //   if (hasActiveAddress) {
-  //         //     UserViewModel.setLocationIndex(index);
-  //         //     UserViewModel.setLocation(latLng, UserViewModel.user.value.addresses[index].id);
-  //         //     Get.offAll(() => Home());
-  //         //   } else {
-  //         //     Get.offAll(() => ManageAddressScreen());
-  //         //   }
-  //         // } else {
-  //         //   Get.offAll(() => LocationPickerScreen());
-  //         // }
-  //
-  //       }
-  //     } catch (e) {
-  //       print(e.toString());
-  //       error = true;
-  //       Future.delayed(
-  //           Duration(seconds: 2), () => Get.toNamed(AppRoutes.Authentication));
-  //     }
-  //   } else {
-  //     error = true;
-  //     print('Session Unavailable');
-  //     Future.delayed(Duration(seconds: 2), () => Get.toNamed(AppRoutes.Authentication));
-  //   }
-  // }
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
@@ -244,17 +195,9 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           height: double.infinity,
           width: double.infinity,
           child: FittedBox(
-            child: Center(
-                child: Image.asset(
-              "assets/images/splash.gif",
-            )),
+            child: Center(child: Bloyallogo()),
           ),
         ),
-        //     Center(
-        //         child: Lottie.asset(
-        //   'assets/lottie/splash1.json',
-        // )),
-        // )
       ),
     );
   }

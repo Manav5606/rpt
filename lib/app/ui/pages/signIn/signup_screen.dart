@@ -256,6 +256,7 @@
 // }
 
 import 'package:customer_app/app/constants/responsive.dart';
+import 'package:customer_app/app/controller/signInScreenController.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_bs.dart';
@@ -266,6 +267,7 @@ import 'package:customer_app/widgets/signup_feilds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class Bloyallogo extends StatelessWidget {
@@ -382,7 +384,10 @@ class SignupScreenShimmerEffect extends StatelessWidget {
 }
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  final SignInScreenController _signInController =
+      Get.put(SignInScreenController());
+
+  SignUpScreen({Key? key}) : super(key: key);
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -454,7 +459,7 @@ class SignUpBackground extends StatelessWidget {
                   onTap: () async {},
                   isRedDot: false,
                   address: 'Your Location',
-                  balance: 0,
+                  balance: "",
                   onTapWallet: () {},
                   isHomeScreen: true,
                 ),

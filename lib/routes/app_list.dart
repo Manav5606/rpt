@@ -1,6 +1,7 @@
 class AppRoutes {
   static const String BaseScreen = '/';
   static const String Root = '/root';
+  static const String SplashScreen = '/splashscreen';
   static const String MyAccount = '/myaccount';
   static const String Search = '/search';
   static const String SearchResult = '/searchresult';
@@ -14,7 +15,7 @@ class AppRoutes {
   static const String Wallet = '/wallet';
   static const String WalletDetails = '/walletdetails';
   static const String WalletOffer = '/walletoffer';
-  static const String MyAddresses = '/myddresses';
+  // static const String MyAddresses = '/myddresses';
   static const String AddLocationScreen = '/addlocation';
   static const String ConfirmLocation = "/confirmlocation";
   // static const String LocationPickerScreen = '/locationpicker';

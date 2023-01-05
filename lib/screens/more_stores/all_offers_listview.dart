@@ -432,7 +432,7 @@ class DisplayCashback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 32.w,
+      width: 33.w,
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Color(0xffebf7f3)),

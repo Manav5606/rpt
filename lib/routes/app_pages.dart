@@ -1,4 +1,5 @@
 import 'package:customer_app/app/ui/pages/my_account/about_screen.dart';
+import 'package:customer_app/screens/root/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/bindings/cartBindings.dart';
 import 'package:customer_app/app/bindings/home_binding.dart';
@@ -64,6 +65,7 @@ import '../screens/scanReceipt/myCartScreen.dart';
 class AppPages {
   static var list = [
     GetPage(name: AppRoutes.Root, page: () => Root(), binding: RootBinding()),
+    GetPage(name: AppRoutes.SplashScreen, page: () => SplashScreen()),
     GetPage(
       name: AppRoutes.Authentication,
       page: () => SignInScreen(),
@@ -109,7 +111,7 @@ class AppPages {
         page: () => WalletDetailsScreen(),
         binding: MyWalletBinding()),
     GetPage(name: AppRoutes.WalletOffer, page: () => WalletOfferScreen()),
-    GetPage(name: AppRoutes.MyAddresses, page: () => MyAddressesScreen()),
+    // GetPage(name: AppRoutes.MyAddresses, page: () => MyAddressesScreen()),
     // GetPage(
     //     name: AppRoutes.LocationPickerScreen,
     //     page: () => LocationPickerScreen()),
