@@ -290,6 +290,9 @@ class StoreDoc {
   int? billDiscountOfferAmount;
   int? billDiscountTargetAmount;
   String? store_type;
+  String? name;
+  String? id;
+  num? distance;
 
   StoreDoc(
       {this.actualWelcomeOffer,
@@ -297,7 +300,10 @@ class StoreDoc {
       this.billDiscountOfferStatus,
       this.billDiscountOfferAmount,
       this.billDiscountTargetAmount,
-      this.store_type});
+      this.store_type,
+      this.id,
+      this.name,
+      this.distance});
 
   StoreDoc.fromJson(Map<String, dynamic> json) {
     actualWelcomeOffer = json['actual_welcome_offer'];
@@ -306,6 +312,9 @@ class StoreDoc {
     billDiscountOfferStatus = json['bill_discount_offer_status'];
     billDiscountOfferAmount = json['bill_discount_offer_amount'];
     billDiscountTargetAmount = json['bill_discount_offer_target'];
+    id = json['_id'];
+    name = json['name'];
+    distance = json['distance'];
   }
 
   Map<String, dynamic> toJson() {
@@ -316,6 +325,9 @@ class StoreDoc {
     data['bill_discount_offer_status'] = this.billDiscountOfferStatus;
     data['bill_discount_offer_amount'] = this.billDiscountOfferAmount;
     data['bill_discount_offer_target'] = this.billDiscountTargetAmount;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['distance'] = this.distance;
     return data;
   }
 }

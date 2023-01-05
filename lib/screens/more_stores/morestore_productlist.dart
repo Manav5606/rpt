@@ -148,6 +148,7 @@ class MoreStoreProductView extends StatelessWidget {
                       _addCartController.store.value?.sId =
                           _moreStoreController.storeId.value;
                     }
+                    _addCartController.SelectedAddressForCart();
                   },
                   child: CartRibbn(
                       totalItemsCount: _moreStoreController

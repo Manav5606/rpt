@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/model/order_model.dart' as order_model;
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
@@ -90,6 +91,7 @@ class AddCartController extends GetxController {
   RxList<DeliverySlots?> deliverySlots = <DeliverySlots>[].obs;
   RxList<Slots>? remainingSlotForDay = <Slots>[].obs;
   RxList<Slots>? nextDaySlots = <Slots>[].obs;
+  final AddLocationController _addLocationController = Get.find();
 
   void getUserData() {
     if (hiveRepository.hasUser()) {
@@ -462,6 +464,40 @@ class AddCartController extends GetxController {
     }
     selectDay.value = weekDayList[selectedDayIndex.value].day ?? '';
     dayIndexForTimeSlot.value = weekDayList[selectedDayIndex.value].value ?? 0;
+  }
+
+  void SelectedAddressForCart() {
+    //Select the lat lng from user location
+    final userlocation = cartLocationModel.value?.addresses;
+
+    var deliveryAddLat;
+    var deliveryAddLng;
+
+    if (userlocation != null && (userlocation.length) > 0) {
+      for (var i = 0; i < userlocation.length; i++) {
+        if (_addLocationController.latitude.value ==
+            userlocation[i].location?.lat) {
+          deliveryAddLat = userlocation[i].address;
+
+          break;
+        }
+      }
+
+      for (var i = 0; i < userlocation.length; i++) {
+        if (_addLocationController.longitude.value ==
+            userlocation[i].location?.lng) {
+          deliveryAddLng = userlocation[i].address;
+
+          break;
+        }
+      }
+    }
+    // if (Lngpresent == true && Latpresent == true) {}
+    if ((deliveryAddLat != null && deliveryAddLng != null) &&
+        (deliveryAddLat == deliveryAddLng)) {
+      selectAddress.value = deliveryAddLng;
+      _addLocationController.userAddress.value = deliveryAddLng;
+    }
   }
 
   @override

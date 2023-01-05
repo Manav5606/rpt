@@ -1818,6 +1818,9 @@ data{
         bill_discount_offer_amount
         bill_discount_offer_target
         store_type
+        distance
+        _id
+        name
       }
       products{
         _id
@@ -2233,24 +2236,56 @@ data{
            type
           coordinates
 }
-          rawitems
+        
+         products
           {
-            item
-            quantity
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
-          products
+           inventories
           {
             name
-            quantity
-            deleted
-            modified
-            selling_price
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
           }
              rawitems{
+             logo
             item
             _id
-            quantity
+            quantity 
             modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
           }
         store
           {

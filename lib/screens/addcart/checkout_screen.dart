@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,6 +26,7 @@ class OrderCheckOutScreen extends StatefulWidget {
 
 class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
   final AddCartController _addCartController = Get.find();
+  final AddLocationController _addLocationController = Get.find();
   final HomeController _homeController = Get.find();
   late Razorpay _razorpay;
   late ScrollController _delivertTimeController;
@@ -95,9 +97,9 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         razorPayPaymentId: response?.paymentId ?? '',
         razorPayOrderId: response?.orderId ?? '',
         razorPaySignature: response?.signature ?? '',
-        lat: _addCartController.selectAddressIndex.value?.location?.lat ?? 0,
-        lng: _addCartController.selectAddressIndex.value?.location?.lng ?? 0,
-        address: _addCartController.selectAddressIndex.value?.address ?? '',
+        lat: _addCartController.selectAddressIndex.value?.location?.lat ?? _addLocationController.latitude.value,
+        lng: _addCartController.selectAddressIndex.value?.location?.lng ?? _addLocationController.longitude.value,
+        address: _addCartController.selectAddressIndex.value?.address ?? _addLocationController.userAddress.value,
         pickedup: _addCartController.pickedup.value);
 
     if (_addCartController.orderModel.value != null) {
@@ -227,10 +229,11 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                           CheckoutWalletCard(
                             name: storeName,
                             balance: _addCartController
-                                .getOrderConfirmPageDataModel
-                                .value
-                                ?.data
-                                ?.walletAmount,
+                                    .getOrderConfirmPageDataModel
+                                    .value
+                                    ?.data
+                                    ?.walletAmount ??
+                                0,
                             ID: storeID,
                           )
                         ],
