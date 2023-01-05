@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:customer_app/app/constants/responsive.dart';
+import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 
 import 'package:customer_app/widgets/screenLoader.dart';
-import 'package:freshchat_sdk/freshchat_sdk.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -12,6 +12,7 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 class ChattingScreen extends StatelessWidget {
   final Channel? channel;
   final String? titleName;
+  final freshChatController _freshChat = Get.find();
 
   ChattingScreen({Key? key, @required this.channel, this.titleName})
       : super(key: key);
@@ -33,6 +34,7 @@ class ChattingScreen extends StatelessWidget {
               channel: channel!,
               child: Scaffold(
                 appBar: ChannelHeader(
+                  backgroundColor: AppConst.darkGreen,
                   showTypingIndicator: true,
                   title: StreamBuilder<Map<String, dynamic>>(
                     stream: channel!.extraDataStream,
@@ -52,9 +54,12 @@ class ChattingScreen extends StatelessWidget {
                       return Text(
                         titleName ?? title.trim().capitalize!,
                         style: TextStyle(
-                            color: AppConst.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.5.sp),
+                          color: AppConst.white,
+                          fontFamily: 'MuseoSans',
+                          fontSize: SizeUtils.horizontalBlockSize * 4,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                        ),
                       );
                     },
                   ),
@@ -63,36 +68,63 @@ class ChattingScreen extends StatelessWidget {
                     onPressed: () => Get.back(),
                     icon: Icon(
                       Icons.arrow_back,
-                      color: AppConst.black,
+                      size: 3.h,
+                      color: AppConst.white,
                     ),
                   ),
                   actions: [
-                    PopupMenuButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: AppConst.grey,
-                      ),
-                      onSelected: (value) async {
-                        screenLoading();
-                        if (value == 'clear') {
-                          await channel!.truncate();
-                        } else {
-                          await channel!.delete();
-                          Get.back();
-                        }
-                        screenLoading();
-                      },
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          value: 'clear',
-                          child: Text('Clear chat'),
-                        ),
-                        PopupMenuItem(
-                          value: 'block',
-                          child: Text('Block user'),
-                        ),
-                      ],
-                    ),
+                    InkWell(
+                        highlightColor: AppConst.highLightColor,
+                        onTap: () async {
+                          _freshChat.initState();
+                          await _freshChat.showChatConversation(
+                              "Face issue with store chat \n");
+                        },
+                        child: Container(
+                          width: 15.w,
+                          child: Center(
+                              child: Icon(
+                            Icons.help_outline_outlined,
+                            color: AppConst.white,
+                            size: 3.5.h,
+                          )
+                              // Text(
+                              //   "HELP",
+                              //   style: TextStyle(
+                              //       fontSize: SizeUtils.horizontalBlockSize * 4,
+                              //       fontWeight: FontWeight.bold,
+                              //       color: AppConst.black,
+                              //       fontFamily: "MuseoSans",
+                              //       letterSpacing: 0.5),
+                              // ),
+                              ),
+                        ))
+                    // PopupMenuButton(
+                    //   icon: Icon(
+                    //     Icons.more_vert,
+                    //     color: AppConst.grey,
+                    //   ),
+                    //   onSelected: (value) async {
+                    //     screenLoading();
+                    //     if (value == 'clear') {
+                    //       await channel!.truncate();
+                    //     } else {
+                    //       await channel!.delete();
+                    //       Get.back();
+                    //     }
+                    //     screenLoading();
+                    //   },
+                    //   itemBuilder: (_) => [
+                    //     PopupMenuItem(
+                    //       value: 'clear',
+                    //       child: Text('Clear chat'),
+                    //     ),
+                    //     PopupMenuItem(
+                    //       value: 'block',
+                    //       child: Text('Block user'),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
                 //     AppBar(

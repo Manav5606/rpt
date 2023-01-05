@@ -97,7 +97,7 @@ class FireBaseNotification {
     if (fcmToken != null && fcmToken!.isNotEmpty) {
       final box = Boxes.getCommonBoolBox();
       final isLogin = box.get(HiveConstants.USER_TOKEN);
-      if (isLogin != null) {
+      if (isLogin != fcmToken) {
         addFirebaseToken(fcmToken);
       }
     }

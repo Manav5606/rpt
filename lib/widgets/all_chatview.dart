@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/routes/app_list.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/account_controller.dart';
@@ -12,6 +13,7 @@ import 'package:customer_app/app/ui/pages/chat/chat_controller.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/widgets/chatting_screen_custom.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -35,22 +37,29 @@ class _AllChatsState extends State<AllChats> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: AppConst.darkGreen,
+            statusBarIconBrightness: Brightness.light),
+        backgroundColor: AppConst.darkGreen,
         title: Text(
-          "Chats",
+          "Chats   ",
           style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 5.5,
-              fontWeight: FontWeight.bold,
-              color: AppConst.black),
+              fontSize: SizeUtils.horizontalBlockSize * 5,
+              fontFamily: 'MuseoSans',
+              fontWeight: FontWeight.w700,
+              fontStyle: FontStyle.normal,
+              color: AppConst.white),
         ),
-        leading: GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.BaseScreen);
-          },
-          child: Icon(
-            Icons.close_rounded,
-            size: 3.h,
-          ),
-        ),
+        // leading: GestureDetector(
+        //   onTap: () {
+        //     Get.toNamed(AppRoutes.BaseScreen);
+        //   },
+        //   child: Icon(
+        //     Icons.close_rounded,
+        //     size: 3.h,
+        //   ),
+        // ),
         actions: [
           InkWell(
               highlightColor: AppConst.highLightColor,
@@ -62,16 +71,21 @@ class _AllChatsState extends State<AllChats> {
               child: Container(
                 width: 15.w,
                 child: Center(
-                  child: Text(
-                    "HELP",
-                    style: TextStyle(
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontWeight: FontWeight.bold,
-                        color: AppConst.black,
-                        fontFamily: "MuseoSans",
-                        letterSpacing: 0.5),
-                  ),
-                ),
+                    child: Icon(
+                  Icons.help_outline_outlined,
+                  color: AppConst.white,
+                  size: 3.5.h,
+                )
+                    // Text(
+                    //   "HELP",
+                    //   style: TextStyle(
+                    //       fontSize: SizeUtils.horizontalBlockSize * 4,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: AppConst.black,
+                    //       fontFamily: "MuseoSans",
+                    //       letterSpacing: 0.5),
+                    // ),
+                    ),
               ))
         ],
       ),
@@ -88,21 +102,21 @@ class _AllChatsState extends State<AllChats> {
             //     fontWeight: FontWeight.bold,
             //   ),
             // ),
-            SizedBox(
-              height: 0.5.h,
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                height: 3.5.h,
-                width: MediaQuery.of(context).size.width,
-                color: AppConst.veryLightGrey,
-                child: Text(
-                  "Start chat with stores",
-                  style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5),
-                ),
-              ),
-            ),
+            // SizedBox(
+            //   height: 0.5.h,
+            // ),
+            // GestureDetector(
+            //   onTap: () {},
+            //   child: Container(
+            //     height: 3.5.h,
+            //     width: MediaQuery.of(context).size.width,
+            //     color: AppConst.veryLightGrey,
+            //     child: Text(
+            //       "Start chat with stores",
+            //       style: TextStyle(fontSize: SizeUtils.horizontalBlockSize * 5),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 1.h,
             ),
@@ -245,53 +259,57 @@ class _AllChatsState extends State<AllChats> {
                                   // color: Colors.yellow,
                                   child: Row(
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(bottom: 4.h),
-                                        child: Container(
-                                          height: 5.h,
-                                          width: 12.w,
-                                          decoration: BoxDecoration(
-                                            color: AppConst.kSecondaryColor,
-                                            shape: BoxShape.circle,
-                                            border: Border.all(width: 0.1),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppConst.black
-                                                    .withOpacity(0.1),
-                                                offset: Offset(
-                                                  0,
-                                                  1.h,
-                                                ),
-                                                blurRadius: 1.h,
-                                                spreadRadius: 1.0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Center(
-                                            child: (channel.extraData[
-                                                                "store_name"]
-                                                            .toString() ==
-                                                        null ||
-                                                    channel.extraData[
-                                                                "store_name"]
-                                                            .toString() ==
-                                                        "")
-                                                ? Icon(
-                                                    Icons.person,
-                                                    size: 4.h,
-                                                    color: AppConst.white,
-                                                  )
-                                                : Text(
-                                                    channel
-                                                        .extraData["store_name"]
-                                                        .toString()[0],
-                                                    style: TextStyle(
-                                                        color: AppConst.white,
-                                                        fontSize: 13.sp),
-                                                  ),
-                                          ),
-                                        ),
-                                        //  CircleAvatar(),
+                                      // Padding(
+                                      //   padding: EdgeInsets.only(bottom: 4.h),
+                                      //   child: Container(
+                                      //     height: 5.h,
+                                      //     width: 12.w,
+                                      //     decoration: BoxDecoration(
+                                      //       color: AppConst.kSecondaryColor,
+                                      //       shape: BoxShape.circle,
+                                      //       border: Border.all(width: 0.1),
+                                      //       boxShadow: [
+                                      //         BoxShadow(
+                                      //           color: AppConst.black
+                                      //               .withOpacity(0.1),
+                                      //           offset: Offset(
+                                      //             0,
+                                      //             1.h,
+                                      //           ),
+                                      //           blurRadius: 1.h,
+                                      //           spreadRadius: 1.0,
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //     child: Center(
+                                      //       child: (channel.extraData[
+                                      //                           "store_name"]
+                                      //                       .toString() ==
+                                      //                   null ||
+                                      //               channel.extraData[
+                                      //                           "store_name"]
+                                      //                       .toString() ==
+                                      //                   "")
+                                      //           ? Icon(
+                                      //               Icons.person,
+                                      //               size: 4.h,
+                                      //               color: AppConst.white,
+                                      //             )
+                                      //           : Text(
+                                      //               channel
+                                      //                   .extraData["store_name"]
+                                      //                   .toString()[0],
+                                      //               style: TextStyle(
+                                      //                   color: AppConst.white,
+                                      //                   fontSize: 13.sp),
+                                      //             ),
+                                      //     ),
+                                      //   ),
+                                      //   //  CircleAvatar(),
+                                      // ),
+                                      DispalyStoreLogo(
+                                        bottomPadding: 0,
+                                        height: 6,
                                       ),
                                       SizedBox(
                                         width: 2.w,
@@ -319,9 +337,15 @@ class _AllChatsState extends State<AllChats> {
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: TextStyle(
+                                                            fontFamily:
+                                                                'MuseoSans',
                                                             fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 13.sp,
+                                                                FontWeight.w700,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                4,
                                                             color: AppConst
                                                                 .black)),
                                                   ),
@@ -333,31 +357,37 @@ class _AllChatsState extends State<AllChats> {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12.sp,
-                                                          color:
-                                                              AppConst.green)),
+                                                        fontFamily: 'MuseoSans',
+                                                        color: AppConst.grey,
+                                                        fontSize: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            3.8,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
                                                 ],
                                               ),
                                               SizedBox(
                                                 height: 0.5.h,
                                               ),
-                                              // Text(
-                                              //     DateFormat()
-                                              //         // .add_yMMMMEEEEd()
-                                              //         .add_jm()
-                                              //         .format(localTime),
-                                              //     overflow:
-                                              //         TextOverflow.ellipsis,
-                                              //     style: TextStyle(
-                                              //         fontWeight:
-                                              //             FontWeight.w500,
-                                              //         fontSize: 12.5.sp,
-                                              //         color: AppConst.black)),
-                                              // SizedBox(
-                                              //   height: 0.5.h,
-                                              // ),
+                                              Text(
+                                                  "${channel.extraData["order_ID"]?.toString() ?? ""}",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.grey,
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        3.8,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  )),
+                                              SizedBox(
+                                                height: 0.5.h,
+                                              ),
                                               Row(
                                                 children: [
                                                   Container(
