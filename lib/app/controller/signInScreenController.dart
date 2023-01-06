@@ -182,11 +182,11 @@ class SignInScreenController extends GetxController {
           userModel = await signInRepository.customerLoginOrSignUp(
               phoneNumber: phoneNumberController.text,
               referID: referralController.text);
-
+          List<Wallet>? wallet = await signInRepository.getAllWallet();
+          userModel?.wallet = wallet;
           if (userModel != null) {
             UserViewModel.setUser(userModel!);
-            List<Wallet>? wallet = await signInRepository.getAllWallet();
-            userModel?.wallet = wallet;
+
             // try {
             //   await connectUserStream(
             //       userId: userModel?.id ?? '',

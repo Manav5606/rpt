@@ -56,7 +56,7 @@ class HomeAppBar extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: isHomeScreen ? 65.w : 40.w,
+                  width: isHomeScreen ? 63.w : 40.w,
                   child: Text(
                     address,
                     // maxLines: 1,
@@ -88,34 +88,31 @@ class HomeAppBar extends StatelessWidget {
               onTap: onTapWallet,
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  vertical: 0.5.h,
-                  // horizontal: 1.w,
+                  vertical: 0.7.h,
+                  horizontal: 1.w,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppConst.green,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.account_balance_wallet_rounded,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.account_balance_wallet_rounded,
+                      color: AppConst.white,
+                      size: 2.8.h,
+                    ),
+                    Text(
+                      //\u{20B9}
+                      " ${balance}", //?.toStringAsFixed(2)
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: SizeUtils.horizontalBlockSize * 3.8,
                         color: AppConst.white,
-                        size: 3.h,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        //\u{20B9}
-                        " ${balance}", //?.toStringAsFixed(2)
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                          color: AppConst.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )

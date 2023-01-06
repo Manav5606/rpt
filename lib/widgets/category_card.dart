@@ -21,7 +21,7 @@ class CategoryCard extends StatelessWidget {
       "assets/images/groceryImage.png",
       "assets/images/Nonveg.png",
       "assets/images/Pickup.png",
-      "assets/images/Premium.png",
+      "assets/images/petfood.png",
       "assets/images/Medics.png",
     ];
     return Container(
