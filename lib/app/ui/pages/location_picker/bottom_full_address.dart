@@ -1018,7 +1018,7 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
 
                                         _addLocationController
                                                 .userAddressTitle.value =
-                                            "${_tags[_selectedTag]}${_selectedTag == 3 ? _otherController.text : ""}";
+                                            "${_selectedTag == 3 ? _otherController.text : "${_tags[_selectedTag]}"}";
 
                                         _addLocationController.userHouse.value =
                                             _floorController.text;
@@ -1067,7 +1067,7 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                                     0,
                                                 address: widget.address,
                                                 title:
-                                                    "${_tags[_selectedTag]}${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}",
+                                                    "${_tags[_selectedTag]}${_selectedTag == 3 ? "${_otherController.text}" : ""}",
                                                 house: _floorController.text,
                                                 apartment:
                                                     _completeAddressController
