@@ -129,121 +129,215 @@ class _SignInScreenState extends State<SignInScreen> {
           statusBarColor: AppConst.transparent,
           statusBarIconBrightness: Brightness.dark),
       child: Scaffold(
-          // resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
 
-          bottomSheet: Container(
-            height: 24.h,
-            color: AppConst.white,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 4.w,
-                right: 4.w,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Sign in",
-                    style: TextStyle(
-                      color: AppConst.black,
-                      fontFamily: "MuseoSans",
-                      fontStyle: FontStyle.normal,
-                      fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                      fontWeight: FontWeight.bold,
+        bottomSheet: Obx(
+          () => _signInController.isLoading.value
+              ? Container(
+                  height: 24.h,
+                  color: AppConst.white,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 4.w,
+                      right: 4.w,
                     ),
-                  ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Text(
-                    "Enter your Mobile Number",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: AppConst.darkGrey,
-                      fontFamily: "MuseoSans",
-                      fontStyle: FontStyle.normal,
-                      fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                    ),
-                  ),
-                  Container(
-                    // height: 6.h,
-                    child: KeyboardActions(
-                      config: _buildConfig(context),
-                      autoScroll: false,
-                      disableScroll: true,
-                      child: Container(
-                        // height: 50,
-                        child: SignUpFeilds(
-                          prefixIcon:
-                              AddPlus91(signInController: _signInController),
-                          focusNode: _nodeText1,
-                          hinttext: "",
-                          keyboardtype: TextInputType.number,
-                          maxlength: 10,
-                          controller: _signInController.phoneNumberController,
-                          onChange: (value) {
-                            _signInController.phoneNumber.value = value;
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Obx(
-                    () => GestureDetector(
-                        onTap:
-                            (_signInController.phoneNumber.value.length == 10)
-                                ? () {
-                                    log("aavoooo :0");
-                                    try {
-                                      _signInController.submitPhoneNumber();
-                                    } catch (e) {
-                                      print(e);
-                                    }
-                                    log("aavoooo :1");
-                                  }
-                                : null,
-                        child: BottomWideButton(
-                          text: "Sign in",
-                          color:
-                              _signInController.phoneNumber.value.length == 10
-                                  ? AppConst.darkGreen
-                                  : AppConst.grey,
-                          borderColor:
-                              _signInController.phoneNumber.value.length == 10
-                                  ? AppConst.darkGreen
-                                  : AppConst.grey,
-                        )),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          body: Obx(
-            () => _signInController.isLoading.value
-                ? SignInScreenShimmer()
-                : SingleChildScrollView(
                     child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                            height: 75.h,
-                            child: PageView(
-                              controller: _controller,
-                              children: currentTabs,
-                              onPageChanged: (int index) {
-                                setState(() {
-                                  CurrentIndex = index;
-                                });
-                              },
-                            )),
+                        // ShimmerEffect(
+                        // child:
+                        Text(
+                          "Sign in",
+                          style: TextStyle(
+                            color: AppConst.black,
+                            fontFamily: "MuseoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // ),
                         SizedBox(
-                          height: 3.h,
-                        )
+                          height: 1.h,
+                        ),
+                        // ShimmerEffect(
+                        // child:
+                        Text(
+                          "Enter your Mobile Number",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppConst.darkGrey,
+                            fontFamily: "MuseoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                          ),
+                          // ),
+                        ),
+                        Container(
+                          // height: 6.h,
+                          child: KeyboardActions(
+                            config: _buildConfig(context),
+                            autoScroll: false,
+                            disableScroll: true,
+                            child: Container(
+                              // height: 50,
+                              child: ShimmerEffect(
+                                child: SignUpFeilds(
+                                  prefixIcon: AddPlus91(
+                                      signInController: _signInController),
+                                  focusNode: _nodeText1,
+                                  hinttext: "",
+                                  keyboardtype: TextInputType.number,
+                                  maxlength: 10,
+                                  controller:
+                                      _signInController.phoneNumberController,
+                                  onChange: (value) {
+                                    _signInController.phoneNumber.value = value;
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ShimmerEffect(
+                          child: BottomWideButton(
+                            text: "Sign in",
+                            color:
+                                _signInController.phoneNumber.value.length == 10
+                                    ? AppConst.darkGreen
+                                    : AppConst.grey,
+                            borderColor:
+                                _signInController.phoneNumber.value.length == 10
+                                    ? AppConst.darkGreen
+                                    : AppConst.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-          )),
+                )
+              : Container(
+                  height: 24.h,
+                  color: AppConst.white,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 4.w,
+                      right: 4.w,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Sign in",
+                          style: TextStyle(
+                            color: AppConst.black,
+                            fontFamily: "MuseoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        Text(
+                          "Enter your Mobile Number",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppConst.darkGrey,
+                            fontFamily: "MuseoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                          ),
+                        ),
+                        Container(
+                          // height: 6.h,
+                          child: KeyboardActions(
+                            config: _buildConfig(context),
+                            autoScroll: false,
+                            disableScroll: true,
+                            child: Container(
+                              // height: 50,
+                              child: SignUpFeilds(
+                                prefixIcon: AddPlus91(
+                                    signInController: _signInController),
+                                focusNode: _nodeText1,
+                                hinttext: "",
+                                keyboardtype: TextInputType.number,
+                                maxlength: 10,
+                                controller:
+                                    _signInController.phoneNumberController,
+                                onChange: (value) {
+                                  _signInController.phoneNumber.value = value;
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Obx(
+                          () => GestureDetector(
+                              onTap: (_signInController
+                                          .phoneNumber.value.length ==
+                                      10)
+                                  ? () {
+                                      log("aavoooo :0");
+                                      try {
+                                        _signInController.submitPhoneNumber();
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                      log("aavoooo :1");
+                                    }
+                                  : null,
+                              child: BottomWideButton(
+                                text: "Sign in",
+                                color: _signInController
+                                            .phoneNumber.value.length ==
+                                        10
+                                    ? AppConst.darkGreen
+                                    : AppConst.grey,
+                                borderColor: _signInController
+                                            .phoneNumber.value.length ==
+                                        10
+                                    ? AppConst.darkGreen
+                                    : AppConst.grey,
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
+        body:
+
+            // Obx(
+            //   () => _signInController.isLoading.value
+            //       ? SignInScreenShimmer()
+            //       :
+            SingleChildScrollView(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                  height: 75.h,
+                  child: PageView(
+                    controller: _controller,
+                    children: currentTabs,
+                    onPageChanged: (int index) {
+                      setState(() {
+                        CurrentIndex = index;
+                      });
+                    },
+                  )),
+              SizedBox(
+                height: 3.h,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 

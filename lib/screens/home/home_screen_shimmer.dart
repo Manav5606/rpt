@@ -1,4 +1,5 @@
 import 'package:customer_app/app/controller/add_location_controller.dart';
+import 'package:customer_app/widgets/all_offers_listview_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -103,271 +104,73 @@ class _HomeScreenShimmerState extends State<HomeScreenShimmer>
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShimmerEffect(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppConst.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppConst.grey.withOpacity(0.5),
-                          spreadRadius: -3,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.location_on_rounded,
-                                color: AppConst.kPrimaryColor,
-                                size: SizeUtils.horizontalBlockSize * 7,
-                              ),
-                              SizedBox(
-                                width: 1.w,
-                              ),
-                              Obx(
-                                () => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          _addLocationController
-                                              .userAddressTitle.value,
-                                          style: AppStyles.ADDRESS_STYLE,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        Icon(
-                                          Icons.keyboard_arrow_down_outlined,
-                                          size: 6.w,
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      width: 70.w,
-                                      child: Text(
-                                        _addLocationController
-                                            .userAddress.value,
-                                        style: AppStyles.ADDRESS_STYLE,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 2.h,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ShimmerEffect(
-                          child: CartWidget(
-                            onTap: () async {},
-                            count: _homeController
-                                    .getAllCartsModel.value?.cartItemsTotal
-                                    .toString() ??
-                                "",
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerEffect(
+                child: Container(
+                  width: 100.w,
+                  height: 6.h,
+                  color: AppConst.black,
                 ),
-                ShimmerEffect(
-                  child: SizedBox(
-                    height: 2.h,
-                  ),
-                ),
-                Expanded(
-                  child: ShimmerEffect(
-                    child: ListView(
-                      controller:
-                          _homeController.homePageFavoriteShopsScrollController,
-                      children: [
-                        Container(
-                          height: 12.h,
-                          width: double.infinity,
-                          child: ListView.builder(
-                            controller: _categoryController,
-                            itemCount: _homeController
-                                    .getHomePageFavoriteShopsModel
-                                    .value
-                                    ?.keywords
-                                    ?.length ??
-                                0,
-                            physics: PageScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemExtent: SizeUtils.horizontalBlockSize * 20,
-                            itemBuilder: (context, index) {
-                              //currentItems = index;
-                              return GestureDetector(
-                                  onTap: () async {
-                                    _homeController.storeDataList.clear();
-                                    _homeController.remoteConfigPageNumber = 1;
-                                    _homeController
-                                        .isRemoteConfigPageAvailable = true;
-                                    _homeController.keywordValue =
-                                        CategoryModel(
-                                      isProductAvailable: _homeController
-                                              .getHomePageFavoriteShopsModel
-                                              .value
-                                              ?.keywords?[index]
-                                              .isProductAvailable ??
-                                          false,
-                                      id: _homeController
-                                          .getHomePageFavoriteShopsModel
-                                          .value!
-                                          .keywords![index]
-                                          .id,
-                                      keywordHelper: _homeController
-                                          .getHomePageFavoriteShopsModel
-                                          .value!
-                                          .keywords![index]
-                                          .keywordHelper,
-                                      name: _homeController
-                                          .getHomePageFavoriteShopsModel
-                                          .value!
-                                          .keywords![index]
-                                          .name,
-                                      subtitle: '',
-                                      image: '',
-                                      title: '',
-                                    );
-                                    await _homeController
-                                        .homePageRemoteConfigData(
-                                      productFetch: _homeController
-                                              .getHomePageFavoriteShopsModel
-                                              .value
-                                              ?.keywords?[index]
-                                              .isProductAvailable ??
-                                          false,
-                                      keyword: _homeController
-                                          .getHomePageFavoriteShopsModel
-                                          .value!
-                                          .keywords![index]
-                                          .name,
-                                      keywordHelper: _homeController
-                                          .getHomePageFavoriteShopsModel
-                                          .value!
-                                          .keywords![index]
-                                          .keywordHelper,
-                                      id: _homeController
-                                          .getHomePageFavoriteShopsModel
-                                          .value!
-                                          .keywords![index]
-                                          .id,
-                                    );
-
-                                    (!(_homeController
-                                                .getHomePageFavoriteShopsModel
-                                                .value
-                                                ?.keywords?[index]
-                                                .isProductAvailable ??
-                                            false))
-                                        ? Get.to(() => InStoreScreen())
-                                        : Get.to(() => StoreListScreen());
-                                  },
-                                  child: CategoryCard(
-                                      index: index,
-                                      category: _homeController
-                                          .getHomePageFavoriteShopsModel
-                                          .value!
-                                          .keywords![index]));
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        YourStores(),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        Divider(
-                          thickness: 2.w,
-                        ),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        AllOffers(),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        AllOffersListView(
-                          controller: _scrollController,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 3.h),
-                          child: Container(
-                            width: double.infinity,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                StringContants.receipto,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 25.sp,
-                                  letterSpacing: 1,
-                                  color: AppConst.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Container(
+                height: 35.h,
+                child: GridView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 1.w,
+                      mainAxisSpacing: 2.h),
+                  children: [
+                    ShimmerEffect(
+                      child: Image.asset(
+                        "assets/images/Fresh.png",
+                      ),
                     ),
-                  ),
+                    ShimmerEffect(
+                      child: Image.asset(
+                        "assets/images/groceryImage.png",
+                      ),
+                    ),
+                    ShimmerEffect(
+                      child: Image.asset(
+                        "assets/images/Nonveg.png",
+                      ),
+                    ),
+                    ShimmerEffect(
+                      child: Image.asset(
+                        "assets/images/Pickup.png",
+                      ),
+                    ),
+                    ShimmerEffect(
+                      child: Image.asset(
+                        "assets/images/Premium.png",
+                      ),
+                    ),
+                    ShimmerEffect(
+                      child: Image.asset(
+                        "assets/images/Medics.png",
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: ShimmerEffect(
+                  child: AllOffersListViewShimmer(
+                      // controller: _scrollController,
+                      ),
+                ),
+              ),
+            ],
           ),
         ),
-        // floatingActionButton: FadeTransition(
-        //   opacity: _hideFabAnimController,
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.end,
-        //     children: [
-        //       // SizedBox(
-        //       //   height: 50,
-        //       //   width: 50,
-        //       //   child: FloatingActionButton(
-        //       //     heroTag: '1',
-        //       //     elevation: 1,
-        //       //     onPressed: () {
-        //       //       Get.to(() => LocationPickerScreen());
-        //       //     },
-        //       //     backgroundColor: kSecondaryColor,
-        //       //   child: SvgPicture.asset(AssetsContants.cartLogo,
-        //       //       color: Colors.white, semanticsLabel: 'Acme Logo'),
-        //       // ),
-        //       // ),
-        //       FloatingActionButton(
-        //         heroTag: '2',
-        //         elevation: 1,
-        //         backgroundColor: AppConst.kPrimaryColor,
-        //         onPressed: () {},
-        //         child: Icon(Icons.camera_alt_outlined),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

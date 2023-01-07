@@ -38,9 +38,9 @@ class AllOffersListView extends StatelessWidget {
       itemBuilder: (context, index) {
         return Obx(() => _homeController.isPageLoading.value
             ? ListViewChildShimmer(
-                inStoreModel: _homeController.homePageFavoriteShopsList[index],
-                color: colorList[index],
-              )
+                // inStoreModel: _homeController.homePageFavoriteShopsList[index],
+                // color: colorList[index],
+                )
             : ListViewChild(
                 inStoreModel: _homeController.homePageFavoriteShopsList[index],
                 color: colorList[index],

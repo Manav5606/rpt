@@ -261,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen>
                             children: [
                               ((_myAccountController.activeOrdersModel.value
                                               ?.data?.length ??
-                                          0) >
+                                          1) >
                                       0)
                                   ? Container(
                                       height: 16.h,
@@ -790,123 +790,156 @@ class _HomeScreenState extends State<HomeScreen>
                               SizedBox(
                                 height: 2.h,
                               ),
-                              Divider(
-                                thickness: 2.w,
-                                color: AppConst.veryLightGrey,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      height: 5.5.h,
-                                      width: 30.w,
-                                      child: FittedBox(
-                                        child: SvgPicture.asset(
-                                          "assets/icons/reciptologo.svg",
-                                          fit: BoxFit.fill,
-                                          color: AppConst.grey,
-                                        ),
-                                      ))
-                                ],
-                              ),
+                              // Divider(
+                              //   thickness: 2.w,
+                              //   color: AppConst.veryLightGrey,
+                              // ),
 
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                              Container(
+                                color: AppConst.veryLightGrey,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Can't find your store ?",
-                                      style: TextStyle(
-                                        fontFamily: 'MuseoSans',
-                                        color: AppConst.black,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 4,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
+                                    SizedBox(
+                                      height: 3.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            height: 5.5.h,
+                                            width: 30.w,
+                                            child: FittedBox(
+                                              child: SvgPicture.asset(
+                                                "assets/icons/reciptologo.svg",
+                                                fit: BoxFit.fill,
+                                                color: AppConst.grey,
+                                              ),
+                                            ))
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 2.w, vertical: 1.h),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Can't find your store ?",
+                                            style: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              color: AppConst.grey,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  3.5,
+                                              fontWeight: FontWeight.w700,
+                                              fontStyle: FontStyle.normal,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 0.5.h,
+                                          ),
+                                          // Text(
+                                          //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
+                                          //   maxLines: 2,
+                                          //   style: TextStyle(
+                                          //     fontFamily: 'MuseoSans',
+                                          //     color: AppConst.grey,
+                                          //     fontSize:
+                                          //         SizeUtils.horizontalBlockSize * 3.5,
+                                          //     fontWeight: FontWeight.w500,
+                                          //     fontStyle: FontStyle.normal,
+                                          //   ),
+                                          // ),
+                                          // RichText(
+                                          //     text: TextSpan(children: [
+                                          //   TextSpan(
+                                          //     text:
+                                          //         "currently showing the stores in ",
+                                          //     style: TextStyle(
+                                          //       fontFamily: 'MuseoSans',
+                                          //       color: AppConst.grey,
+                                          //       fontSize:
+                                          //           SizeUtils.horizontalBlockSize *
+                                          //               3.5,
+                                          //       fontWeight: FontWeight.w500,
+                                          //       fontStyle: FontStyle.normal,
+                                          //     ),
+                                          //   ),
+                                          //   TextSpan(
+                                          //     text:
+                                          //         "${_addLocationController.userAddress.value}. ",
+                                          //     style: TextStyle(
+                                          //       fontFamily: 'MuseoSans',
+                                          //       color: AppConst.darkGrey,
+                                          //       fontSize:
+                                          //           SizeUtils.horizontalBlockSize *
+                                          //               3.5,
+                                          //       fontWeight: FontWeight.w500,
+                                          //       fontStyle: FontStyle.normal,
+                                          //     ),
+                                          //   ),
+                                          //   TextSpan(
+                                          //     text:
+                                          //         "Please change the location to see local store.",
+                                          //     style: TextStyle(
+                                          //       fontFamily: 'MuseoSans',
+                                          //       color: AppConst.grey,
+                                          //       fontSize:
+                                          //           SizeUtils.horizontalBlockSize *
+                                          //               3.5,
+                                          //       fontWeight: FontWeight.w500,
+                                          //       fontStyle: FontStyle.normal,
+                                          //     ),
+                                          //   ),
+                                          // ])),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              dynamic value =
+                                                  Get.to(AddressModel(
+                                                // isSavedAddress: false,
+                                                isHomeScreen: true,
+                                                page: "home",
+                                              ));
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Click here to change the location",
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontFamily: 'MuseoSans',
+                                                      fontSize: SizeUtils
+                                                              .horizontalBlockSize *
+                                                          3.5,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      color: AppConst.darkGreen,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons.location_on_sharp,
+                                                    color: AppConst.darkGreen,
+                                                    size: 2.h,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    // Text(
-                                    //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
-                                    //   maxLines: 2,
-                                    //   style: TextStyle(
-                                    //     fontFamily: 'MuseoSans',
-                                    //     color: AppConst.grey,
-                                    //     fontSize:
-                                    //         SizeUtils.horizontalBlockSize * 3.5,
-                                    //     fontWeight: FontWeight.w500,
-                                    //     fontStyle: FontStyle.normal,
-                                    //   ),
-                                    // ),
-                                    RichText(
-                                        text: TextSpan(children: [
-                                      TextSpan(
-                                        text:
-                                            "currently showing the stores in ",
-                                        style: TextStyle(
-                                          fontFamily: 'MuseoSans',
-                                          color: AppConst.grey,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize *
-                                                  3.5,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                            "${_addLocationController.userAddress.value}. ",
-                                        style: TextStyle(
-                                          fontFamily: 'MuseoSans',
-                                          color: AppConst.darkGrey,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize *
-                                                  3.5,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                            "Please change the location to see local store.",
-                                        style: TextStyle(
-                                          fontFamily: 'MuseoSans',
-                                          color: AppConst.grey,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize *
-                                                  3.5,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                    ])),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        dynamic value = Get.to(AddressModel(
-                                          // isSavedAddress: false,
-                                          isHomeScreen: true,
-                                          page: "home",
-                                        ));
-                                      },
-                                      child: Text(
-                                        "Click here to change the location.",
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          fontFamily: 'MuseoSans',
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize *
-                                                  3.5,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle: FontStyle.normal,
-                                          color: AppConst.green,
-                                        ),
-                                      ),
+                                    SizedBox(
+                                      height: 7.h,
                                     ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 7.h,
                               ),
                             ],
                           ),

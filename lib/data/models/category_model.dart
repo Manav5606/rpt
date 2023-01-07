@@ -49,7 +49,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "61f95fcd0a984e3d1c8f9ec9",
       name: "Grocery",
-      title: "Grocery  stores Near you",
+      title: "Grocery stores Near you",
       subtitle: "new",
       keywordHelper: "business_type",
       image: "assets/images/groceryImage.png",
@@ -73,7 +73,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "63a689eff5416c5c5b0ab0a4",
       name: "PetFood",
-      title: "",
+      title: "PetFood stores Near you",
       subtitle: "",
       keywordHelper: "business_type",
       image: "assets/images/petfood.png",
@@ -81,7 +81,7 @@ List<CategoryModel> category = [
   CategoryModel(
       id: "63a68a03f5416c5c5b0ab0a5",
       name: "Medics",
-      title: "Delivery within 30 mins",
+      title: "Medical Stores Near you",
       subtitle: "new",
       keywordHelper: "business_type",
       image: "assets/images/Medics.png",

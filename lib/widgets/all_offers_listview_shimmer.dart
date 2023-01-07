@@ -1,3 +1,5 @@
+import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
@@ -23,14 +25,14 @@ class AllOffersListViewShimmer extends StatelessWidget {
       controller: this.controller,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: _homeController.homePageFavoriteShopsList.length,
+      itemCount: 4,
       //data.length,
       itemBuilder: (context, index) {
         return ShimmerEffect(
           child: ListViewChildShimmer(
-            inStoreModel: _homeController.homePageFavoriteShopsList[index],
-            color: colorList[index],
-          ),
+              // inStoreModel: _homeController.homePageFavoriteShopsList[index],
+              // color: colorList[index],
+              ),
         );
       },
       separatorBuilder: (context, index) {
@@ -44,127 +46,69 @@ class AllOffersListViewShimmer extends StatelessWidget {
 }
 
 class ListViewChildShimmer extends StatelessWidget {
-  final HomeFavModel? inStoreModel;
-  final Color color;
-
-  ListViewChildShimmer(
-      {Key? key, required this.color, required this.inStoreModel})
-      : super(key: key);
+  ListViewChildShimmer({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        // await _exploreController.getStoreData(id: inStoreModel?.id ?? '');
-        // _exploreController.getStoreDataModel.refresh();
-      },
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
       child: Row(
         children: [
-          inStoreModel!.logo!.isEmpty
-              ? ShimmerEffect(
-                  child: CircleAvatar(
-                    child: Text(inStoreModel?.name?.substring(0, 1) ?? "",
-                        style: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 5)),
-                    backgroundColor: color,
-                    radius: SizeUtils.horizontalBlockSize * 7,
-                  ),
-                )
-              : ShimmerEffect(
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(inStoreModel?.logo ?? ''),
-                    backgroundColor: AppConst.white,
-                    radius: SizeUtils.horizontalBlockSize * 7,
-                  ),
-                ),
+          ShimmerEffect(child: DispalyStoreLogo()),
           SizedBox(
-            width: 3.w,
+            width: 4.w,
           ),
-          Expanded(
+          Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ((inStoreModel?.premium ?? false) == true)
-                    ? ShimmerEffect(
-                        child: Text(
-                          StringContants.latest,
-                          style: TextStyle(
-                              color: AppConst.kPrimaryColor,
-                              fontSize: SizeUtils.horizontalBlockSize * 4),
-                        ),
-                      )
-                    : ShimmerEffect(child: Container()),
                 ShimmerEffect(
-                  child: Text(
-                    inStoreModel?.name ?? '',
-                    style: AppStyles.STORE_NAME_STYLE,
+                  child: Container(
+                    width: 73.w,
+                    color: AppConst.black,
+                    child: Text(
+                      '',
+                    ),
                   ),
                 ),
-                if (inStoreModel?.storeType?.isNotEmpty ?? false)
-                  if ((inStoreModel?.storeType ?? '') == 'online')
-                    ShimmerEffect(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Pickup/", style: AppStyles.BOLD_STYLE),
-                          Text(
-                            "Delivery",
-                            style: AppStyles.BOLD_STYLE_GREEN,
-                          ),
-                        ],
-                      ),
-                    )
-                  else
-                    ShimmerEffect(
-                        child: Text(StringContants.pickUp,
-                            style: AppStyles.BOLD_STYLE)),
+                SizedBox(
+                  height: 0.5.h,
+                ),
                 ShimmerEffect(
-                  child: Text(
-                    "${StringContants.instoreprice}",
-                    style: AppStyles.BOLD_STYLE,
+                  child: Container(
+                    width: 55.w,
+                    color: AppConst.black,
+                    child: Text(
+                      '',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                Row(
+                  children: [ShimmerEffect(child: DisplayPreminumStore())],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
+                  child: ShimmerEffect(
+                    child: Container(
+                        width: 68.w, height: 1, color: Color(0xffcacaca)),
                   ),
                 ),
                 ShimmerEffect(
-                  child: Row(
-                    children: [
-                      (inStoreModel?.calculateDistance != null)
-                          ? Container(
-                              margin: EdgeInsets.all(1.w),
-                              padding: EdgeInsets.all(1.w),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      SizeUtils.horizontalBlockSize * 1.5),
-                                  border: Border.all(color: AppConst.grey)),
-                              child: Text(
-                                "${inStoreModel!.calculateDistance!.toStringAsFixed(2)} mi away",
-                                style: AppStyles.STORES_SUBTITLE_STYLE,
-                              ),
-                            )
-                          : SizedBox(),
-                      Container(
-                        margin: EdgeInsets.all(1.w),
-                        padding: EdgeInsets.all(1.w),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                SizeUtils.horizontalBlockSize * 1.5),
-                            border: Border.all(color: AppConst.grey)),
-                        child: Text(
-                          "In-Stores prices",
-                          style: AppStyles.STORES_SUBTITLE_STYLE,
-                        ),
-                      ),
-                    ],
+                  child: Container(
+                    width: 73.w,
+                    color: AppConst.black,
+                    child: Text(
+                      '',
+                    ),
                   ),
-                ),
+                )
               ],
-            ),
-          ),
-          ShimmerEffect(
-            child: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppConst.grey,
-              size: SizeUtils.horizontalBlockSize * 5,
             ),
           ),
         ],
