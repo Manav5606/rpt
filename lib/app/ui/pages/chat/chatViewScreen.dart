@@ -215,8 +215,9 @@ class ChattingScreen extends StatelessWidget {
                                     padding: EdgeInsets.only(
                                         left: 10.w, bottom: 2.5.h),
                                     child: Icon(
-                                      Icons.chat_bubble_outline,
+                                      Icons.notifications_none,
                                       color: AppConst.grey,
+                                      size: 2.5.h,
                                     ),
                                   )
                                 : Padding(
@@ -297,17 +298,40 @@ class ChattingScreen extends StatelessWidget {
                     MessageInput(
                       attachmentButtonBuilder: (context, defaultActionButton) {
                         return defaultActionButton.copyWith(
-                          color: Colors.black, // attachment color
-                          // icon: Icon(Icons.camera_alt), // attachment icon
+                          constraints: BoxConstraints(minWidth: 8.w),
+                          color: AppConst.darkGreen, // attachment color
+                          icon: Icon(
+                            Icons.camera_alt,
+                          ), // attachment icon
+                          iconSize: 4.h,
                         );
                       },
+                      showCommandsButton: false,
 
                       commandButtonBuilder: (context, IconButton) {
                         return Center(); // it will remove the instants commands options
                       },
-                      actionsLocation: ActionsLocation.leftInside,
-                      sendButtonLocation: SendButtonLocation.inside,
+                      actionsLocation: ActionsLocation.left,
+                      sendButtonLocation: SendButtonLocation.outside,
+
                       // disableAttachments: true,
+
+                      activeSendButton: Padding(
+                        padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                        child: Icon(
+                          Icons.send,
+                          color: AppConst.green,
+                          size: 3.5.h,
+                        ),
+                      ),
+                      idleSendButton: Padding(
+                        padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                        child: Icon(
+                          Icons.send,
+                          color: AppConst.green,
+                          size: 3.5.h,
+                        ),
+                      ),
                     )
                   ],
                 ),

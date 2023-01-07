@@ -255,188 +255,215 @@ class _AllChatsState extends State<AllChats> {
                                     channel: channel,
                                   ));
                                 },
-                                child: Container(
-                                  // color: Colors.yellow,
-                                  child: Row(
-                                    children: [
-                                      // Padding(
-                                      //   padding: EdgeInsets.only(bottom: 4.h),
-                                      //   child: Container(
-                                      //     height: 5.h,
-                                      //     width: 12.w,
-                                      //     decoration: BoxDecoration(
-                                      //       color: AppConst.kSecondaryColor,
-                                      //       shape: BoxShape.circle,
-                                      //       border: Border.all(width: 0.1),
-                                      //       boxShadow: [
-                                      //         BoxShadow(
-                                      //           color: AppConst.black
-                                      //               .withOpacity(0.1),
-                                      //           offset: Offset(
-                                      //             0,
-                                      //             1.h,
-                                      //           ),
-                                      //           blurRadius: 1.h,
-                                      //           spreadRadius: 1.0,
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //     child: Center(
-                                      //       child: (channel.extraData[
-                                      //                           "store_name"]
-                                      //                       .toString() ==
-                                      //                   null ||
-                                      //               channel.extraData[
-                                      //                           "store_name"]
-                                      //                       .toString() ==
-                                      //                   "")
-                                      //           ? Icon(
-                                      //               Icons.person,
-                                      //               size: 4.h,
-                                      //               color: AppConst.white,
-                                      //             )
-                                      //           : Text(
-                                      //               channel
-                                      //                   .extraData["store_name"]
-                                      //                   .toString()[0],
-                                      //               style: TextStyle(
-                                      //                   color: AppConst.white,
-                                      //                   fontSize: 13.sp),
-                                      //             ),
-                                      //     ),
-                                      //   ),
-                                      //   //  CircleAvatar(),
-                                      // ),
-                                      DispalyStoreLogo(
-                                        bottomPadding: 0,
-                                        height: 6,
-                                      ),
-                                      SizedBox(
-                                        width: 2.w,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    width: 60.w,
-                                                    child: Text(
-                                                        channel.extraData[
-                                                                    "store_name"]
-                                                                ?.toString() ??
-                                                            "store_name is not gettting ",
-                                                        //  user.extraData["email"]?.stringValue ?? ""
-                                                        // "Store Name",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'MuseoSans',
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            fontSize: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                4,
-                                                            color: AppConst
-                                                                .black)),
-                                                  ),
-                                                  Text(
-                                                      DateFormat()
-                                                          // .add_yMMMMEEEEd()
-                                                          .add_jm()
-                                                          .format(localTime),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        fontFamily: 'MuseoSans',
-                                                        color: AppConst.grey,
-                                                        fontSize: SizeUtils
-                                                                .horizontalBlockSize *
-                                                            3.8,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                      )),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 0.5.h,
-                                              ),
-                                              Text(
-                                                  "${channel.extraData["order_ID"]?.toString() ?? ""}",
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: AppConst.grey,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.8,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                  )),
-                                              SizedBox(
-                                                height: 0.5.h,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    width: 70.w,
-                                                    // height: 3.h,
-                                                    child: Text(text!,
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                            fontSize: 12.sp,
-                                                            color:
-                                                                AppConst.grey)),
-                                                  ),
-                                                  (channel.state!.unreadCount >
-                                                          0)
-                                                      ? Container(
-                                                          padding:
-                                                              EdgeInsets.all(3),
-                                                          decoration: BoxDecoration(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 1.h),
+                                  child: Container(
+                                    // color: Colors.yellow,
+                                    child: Row(
+                                      children: [
+                                        // Padding(
+                                        //   padding: EdgeInsets.only(bottom: 4.h),
+                                        //   child: Container(
+                                        //     height: 5.h,
+                                        //     width: 12.w,
+                                        //     decoration: BoxDecoration(
+                                        //       color: AppConst.kSecondaryColor,
+                                        //       shape: BoxShape.circle,
+                                        //       border: Border.all(width: 0.1),
+                                        //       boxShadow: [
+                                        //         BoxShadow(
+                                        //           color: AppConst.black
+                                        //               .withOpacity(0.1),
+                                        //           offset: Offset(
+                                        //             0,
+                                        //             1.h,
+                                        //           ),
+                                        //           blurRadius: 1.h,
+                                        //           spreadRadius: 1.0,
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //     child: Center(
+                                        //       child: (channel.extraData[
+                                        //                           "store_name"]
+                                        //                       .toString() ==
+                                        //                   null ||
+                                        //               channel.extraData[
+                                        //                           "store_name"]
+                                        //                       .toString() ==
+                                        //                   "")
+                                        //           ? Icon(
+                                        //               Icons.person,
+                                        //               size: 4.h,
+                                        //               color: AppConst.white,
+                                        //             )
+                                        //           : Text(
+                                        //               channel
+                                        //                   .extraData["store_name"]
+                                        //                   .toString()[0],
+                                        //               style: TextStyle(
+                                        //                   color: AppConst.white,
+                                        //                   fontSize: 13.sp),
+                                        //             ),
+                                        //     ),
+                                        //   ),
+                                        //   //  CircleAvatar(),
+                                        // ),
+                                        DispalyStoreLogo(
+                                          bottomPadding: 0,
+                                          height: 6.5,
+                                        ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 1.h,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: 67.w,
+                                                      child: Text(
+                                                          channel.extraData[
+                                                                      "store_name"]
+                                                                  ?.toString() ??
+                                                              "store_name is not gettting ",
+                                                          //  user.extraData["email"]?.stringValue ?? ""
+                                                          // "Store Name",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'MuseoSans',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontStyle: FontStyle
+                                                                  .normal,
+                                                              fontSize: SizeUtils
+                                                                      .horizontalBlockSize *
+                                                                  3.8,
                                                               color: AppConst
-                                                                  .green,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                          child: Text(
-                                                            " ${channel.state!.unreadCount} ",
-
-                                                            // "1",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        )
-                                                      : SizedBox(),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 2.h,
-                                      )
-                                    ],
+                                                                  .black)),
+                                                    ),
+                                                    Text(
+                                                        DateFormat()
+                                                            // .add_yMMMMEEEEd()
+                                                            .add_Hm()
+                                                            .format(localTime),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'MuseoSans',
+                                                          color: AppConst.grey,
+                                                          fontSize: SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              3.5,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        )),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 0.5.h,
+                                                ),
+                                                // Text(
+                                                //     "${channel.extraData["order_ID"]?.toString() ?? ""}",
+                                                //     overflow:
+                                                //         TextOverflow.ellipsis,
+                                                //     style: TextStyle(
+                                                //       fontFamily: 'MuseoSans',
+                                                //       color: AppConst.grey,
+                                                //       fontSize: SizeUtils
+                                                //               .horizontalBlockSize *
+                                                //           3.8,
+                                                //       fontWeight: FontWeight.w500,
+                                                //       fontStyle: FontStyle.normal,
+                                                //     )),
+                                                // SizedBox(
+                                                //   height: 0.5.h,
+                                                // ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 70.w,
+                                                      // height: 3.h,
+                                                      child: Text(text!,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontSize: SizeUtils
+                                                                      .horizontalBlockSize *
+                                                                  3.5,
+                                                              fontFamily:
+                                                                  'MuseoSans',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              color: AppConst
+                                                                  .grey)),
+                                                    ),
+                                                    (channel.state!
+                                                                .unreadCount >
+                                                            0)
+                                                        ? Container(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    3),
+                                                            decoration: BoxDecoration(
+                                                                color: AppConst
+                                                                    .green,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20)),
+                                                            child: Text(
+                                                                " ${channel.state!.unreadCount} ",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      'MuseoSans',
+                                                                  color: AppConst
+                                                                      .white,
+                                                                  fontSize:
+                                                                      SizeUtils
+                                                                              .horizontalBlockSize *
+                                                                          3.5,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                )),
+                                                          )
+                                                        : SizedBox(),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
