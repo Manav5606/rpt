@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/widgets/copied/confirm_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -125,15 +126,29 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                   fontWeight: FontWeight.w700,
                   fontStyle: FontStyle.normal,
                 )),
-            Text(
-                "${_addCartController.reviewCart.value?.data?.storeDoc?.name ?? storeName}",
-                style: TextStyle(
-                  fontFamily: 'MuseoSans',
-                  color: Color(0xff9e9e9e),
-                  fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
-                )),
+            Obx(
+              () => _addCartController.isLoading.value
+                  ? ShimmerEffect(
+                      child: Text(
+                          "${_addCartController.reviewCart.value?.data?.storeDoc?.name ?? storeName}",
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: Color(0xff9e9e9e),
+                            fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
+                          )),
+                    )
+                  : Text(
+                      "${_addCartController.reviewCart.value?.data?.storeDoc?.name ?? storeName}",
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: Color(0xff9e9e9e),
+                        fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      )),
+            ),
           ],
         ),
       ),
