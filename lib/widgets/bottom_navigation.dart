@@ -81,8 +81,8 @@ class BottomNavigation extends StatelessWidget {
                       //       )
                       //     :
                       Badge(
-                    position: BadgePosition.topEnd(top: -8, end: -6),
-                    badgeColor: AppConst.orange,
+                    position: BadgePosition.topEnd(top: -10, end: -8),
+                    badgeColor: AppConst.red,
                     //  Color(0xff5764da),
                     badgeContent: Text(""),
                     child: (value == 1)

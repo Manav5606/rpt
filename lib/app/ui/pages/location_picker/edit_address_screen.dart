@@ -147,11 +147,16 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     child: Obx(
                                       () => Text(
                                         // "kkhp",
-                                        _addLocationController.SortByCharactor(
-                                            _addLocationController
-                                                .currentAddress.value
-                                                .toString(),
-                                            ","),
+                                        _addLocationController
+                                                    .currentAddress.value !=
+                                                -1
+                                            ? _addLocationController
+                                                .SortByCharactor(
+                                                    _addLocationController
+                                                        .currentAddress.value
+                                                        .toString(),
+                                                    ",")
+                                            : "",
                                         // parts[0],
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
@@ -177,8 +182,12 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                   child: Obx(
                                     () => Text(
                                       _addLocationController
-                                          .currentAddress.value
-                                          .toString(),
+                                                  .currentAddress.value !=
+                                              -1
+                                          ? _addLocationController
+                                              .currentAddress.value
+                                              .toString()
+                                          : "",
                                       // '${addressModel?.address ?? ''}',
                                       maxLines: 1,
                                       overflow: TextOverflow.visible,
