@@ -292,7 +292,7 @@ class DispalyStoreLogo extends StatelessWidget {
     return Container(
       child: logo != null && logo != ""
           ? Padding(
-              padding: EdgeInsets.only(bottom: 6.h),
+              padding: EdgeInsets.only(bottom: (bottomPadding ?? 6).h),
               child: CircleAvatar(
                 backgroundImage: NetworkImage(logo ?? ''),
                 backgroundColor: AppConst.white,

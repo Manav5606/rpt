@@ -1,11 +1,13 @@
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 
 import 'package:customer_app/widgets/screenLoader.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -196,58 +198,147 @@ class ChattingScreen extends StatelessWidget {
                 // ),
                 body: Column(
                   children: [
-                    Expanded(child: MessageListView(
+                    Expanded(
+                        child: MessageListView(
                       // systemMessageBuilder: (BuildContext, Message) {
                       //   return Container();
                       // },
+                      showFloatingDateDivider: false,
+                      // headerBuilder: (context) {
+                      //   return Padding(
+                      //     padding: EdgeInsets.symmetric(
+                      //       horizontal: 5.w,
+                      //     ),
+                      //     child: Column(
+                      //       mainAxisSize: MainAxisSize.min,
+                      //       children: [
+                      //         SizedBox(
+                      //           height: 2.h,
+                      //         ),
+                      //         DispalyStoreLogo(
+                      //           bottomPadding: 2,
+                      //           logo:
+                      //               channel?.extraData['store_logo'].toString(),
+                      //         ),
+                      //         // Container(
+                      //         //     height: 6.h,
+                      //         //     width: 12.w,
+                      //         //     decoration: BoxDecoration(
+                      //         //       shape: BoxShape.circle,
+                      //         //       color: AppConst.black,
+                      //         //     ),
+                      //         //     child: Center(
+                      //         //       child: Text(
+                      //         //         // defaultImpl.message.user?.name
+                      //         //         //         .substring(0, 1) ??
+                      //         //         'S',
+                      //         //         style: TextStyle(
+                      //         //           color: Colors.white,
+                      //         //           fontSize:
+                      //         //               SizeUtils.horizontalBlockSize * 5,
+                      //         //           fontFamily: 'MuseoSans',
+                      //         //           fontWeight: FontWeight.w700,
+                      //         //         ),
+                      //         //       ),
+                      //         //     )),
 
+                      //         Text(
+                      //             "${channel?.extraData['store_name'] ?? Storename}",
+                      //             textAlign: TextAlign.center,
+                      //             style: TextStyle(
+                      //               fontFamily: 'MuseoSans',
+                      //               color: AppConst.black,
+                      //               fontSize:
+                      //                   SizeUtils.horizontalBlockSize * 3.8,
+                      //               fontWeight: FontWeight.w700,
+                      //               fontStyle: FontStyle.normal,
+                      //             )),
+                      //         SizedBox(
+                      //           height: 0.5.h,
+                      //         ),
+                      //         // Text(
+                      //         //     "NSL Centrum Mall, KPHB Colony, Phase 5, Kukatpally, Hyderabad, Telangana",
+                      //         //     textAlign: TextAlign.center,
+                      //         //     style: TextStyle(
+                      //         //       fontFamily: 'MuseoSans',
+                      //         //       color: AppConst.grey,
+                      //         //       fontSize:
+                      //         //           SizeUtils.horizontalBlockSize * 3.2,
+                      //         //       fontWeight: FontWeight.w500,
+                      //         //       fontStyle: FontStyle.normal,
+                      //         //     ))
+                      //       ],
+                      //     ),
+                      //   );
+                      // },
                       messageBuilder:
                           (context, details, messageList, defaultImpl) {
                         return defaultImpl.copyWith(
-                          // messageTheme: MessageThemeData(
-                          //   messageTextStyle:
-                          //      TextStyle(fontWeight: FontWeight.bold),
-                          // ),
-                          // padding: EdgeInsets.only(left: 0,),
+                          padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                          borderSide: BorderSide(
+                            width: 0.5,
+                            color: (defaultImpl
+                                        .message.user?.extraData['userType'] ==
+                                    "customer")
+                                ? Color(0xffcbc7ed)
+                                : AppConst.grey,
+                          ),
+                          borderRadiusGeometry: BorderRadius.circular(12),
+
                           userAvatarBuilder: (BuildContext, user) {
                             return (defaultImpl.message.user?.role == "admin")
                                 ? Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 10.w, bottom: 2.5.h),
+                                    padding: EdgeInsets.only(bottom: 5.h),
                                     child: Icon(
                                       Icons.notifications_none,
                                       color: AppConst.grey,
-                                      size: 2.5.h,
+                                      size: 3.h,
                                     ),
                                   )
                                 : Padding(
                                     padding: EdgeInsets.only(bottom: 1.h),
-                                    child: CircleAvatar(
-                                      backgroundColor: (defaultImpl
-                                                  .message.user?.extraData[0] ==
-                                              "customer")
-                                          ? AppConst.kSecondaryColor
-                                          : AppConst.kSecondaryColor,
-                                      child: Icon(
-                                        Icons.person,
-                                        color: AppConst.white,
-                                      ),
-                                      // Text(defaultImpl.message.user?.name
-                                      //         .substring(0, 1) ??
-                                      //     '')
-                                    ),
+                                    child: Container(
+                                        height: 4.h,
+                                        width: 8.w,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: (defaultImpl.message.user
+                                                      ?.extraData['userType'] ==
+                                                  "customer")
+                                              ? AppConst.green
+                                              : Colors.amber,
+                                        ),
+                                        child: (defaultImpl.message.user
+                                                    ?.extraData['userType'] ==
+                                                "customer")
+                                            ? Center(
+                                                child: Icon(
+                                                  Icons.person,
+                                                  color: AppConst.white,
+                                                ),
+                                              )
+                                            : Center(
+                                                child: Text(
+                                                  defaultImpl.message.user?.name
+                                                          .substring(0, 1) ??
+                                                      '',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        4.5,
+                                                    fontFamily: 'MuseoSans',
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              )),
                                   );
                           },
-                          // textPadding:
-                          //     (defaultImpl.message.user?.role == "admin")
-                          //         ? EdgeInsets.only(left: 10.w)
-                          //         : EdgeInsets.symmetric(
-                          //             horizontal: 3.w, vertical: 1.h),
 
                           showUserAvatar:
                               (defaultImpl.message.user?.role == "admin")
-                                  ? (DisplayWidget.show)
-                                  : (DisplayWidget.hide),
+                                  ? (DisplayWidget.gone)
+                                  : (DisplayWidget.gone),
                           showUsername: false,
                           // (defaultImpl.message.user?.role == "admin")
                           //     ? false
@@ -266,10 +357,10 @@ class ChattingScreen extends StatelessWidget {
                               (defaultImpl.message.user?.role == "admin")
                                   ? false
                                   : true,
-                          showEditMessage:
-                              (defaultImpl.message.user?.role == "admin")
-                                  ? false
-                                  : true,
+                          showEditMessage: false,
+                          // (defaultImpl.message.user?.role == "admin")
+                          //     ? false
+                          //     : true,
                           showCopyMessage:
                               (defaultImpl.message.user?.role == "admin")
                                   ? false
@@ -278,10 +369,10 @@ class ChattingScreen extends StatelessWidget {
                               (defaultImpl.message.user?.role == "admin")
                                   ? false
                                   : true,
-                          showReactions:
-                              (defaultImpl.message.user?.role == "admin")
-                                  ? false
-                                  : true,
+                          showReactions: false,
+                          // (defaultImpl.message.user?.role == "admin")
+                          //     ? false
+                          //     : true,
 
                           // shape of the message
                           shape: (defaultImpl.message.user?.role == "admin")
@@ -289,9 +380,114 @@ class ChattingScreen extends StatelessWidget {
                               : null,
 
                           // username and storeId
+                          textPadding: EdgeInsets.symmetric(
+                              vertical: 1.5.h, horizontal: 3.w),
 
-                          // messageTheme: MessageThemeData(
-                          //     messageBackgroundColor: Colors.red),
+                          //text builder
+                          textBuilder: (Context, Message) {
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                (Message.user?.role == "admin")
+                                    ? DispalyStoreLogo(
+                                        bottomPadding: 1,
+                                        logo: channel?.extraData['store_logo']
+                                            .toString(),
+                                      )
+                                    : SizedBox(),
+                                (Message.user?.role == "admin")
+                                    ? Padding(
+                                        padding: EdgeInsets.only(bottom: 0.h),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                                "Order ID: #${channel?.id?.substring(0, 10)}",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.black,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      3.8,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontStyle: FontStyle.normal,
+                                                )),
+                                          ],
+                                        ),
+                                      )
+                                    : SizedBox(),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      (Message.user?.role == "admin")
+                                          ? MainAxisAlignment.start
+                                          : MainAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                        child: Text(Message.text ?? "",
+                                            textAlign:
+                                                (Message.user?.role == "admin")
+                                                    ? TextAlign.center
+                                                    : TextAlign.start,
+                                            style: (Message.user?.role ==
+                                                    "admin")
+                                                ? TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.grey,
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        3.2,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  )
+                                                : TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.black,
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        3.5,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  ))),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                          messageTheme: (defaultImpl.message.user?.role ==
+                                  "admin")
+                              ? MessageThemeData(
+                                  messageTextStyle: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.grey,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                ))
+                              : MessageThemeData(
+                                  messageBackgroundColor: (defaultImpl.message
+                                              .user?.extraData['userType'] ==
+                                          "customer")
+                                      ? Color(0xffeceaff)
+                                      : AppConst.white,
+                                  messageTextStyle: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.black,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.5,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  createdAtStyle: TextStyle(
+                                    color: AppConst.grey,
+                                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'MuseoSans',
+                                  ),
+                                ),
                         );
                       },
                     )),

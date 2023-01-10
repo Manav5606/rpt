@@ -226,6 +226,7 @@ class _AllChatsState extends State<AllChats> {
                                   DateTime.fromMicrosecondsSinceEpoch(
                                       lastMessage
                                           .createdAt.microsecondsSinceEpoch);
+                              final currentDay = DateTime.now();
                               final localTime = utcTime.toLocal();
                               if (lastMessage.isDeleted) {
                                 text = 'This message was deleted.';
@@ -330,12 +331,12 @@ class _AllChatsState extends State<AllChats> {
                                                       MainAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      width: 67.w,
+                                                      width: 58.w,
                                                       child: Text(
                                                           channel.extraData[
                                                                       "store_name"]
                                                                   ?.toString() ??
-                                                              "store_name is not gettting ",
+                                                              "",
                                                           //  user.extraData["email"]?.stringValue ?? ""
                                                           // "Store Name",
                                                           overflow: TextOverflow
@@ -355,10 +356,18 @@ class _AllChatsState extends State<AllChats> {
                                                                   .black)),
                                                     ),
                                                     Text(
-                                                        DateFormat()
-                                                            // .add_yMMMMEEEEd()
-                                                            .add_Hm()
-                                                            .format(localTime),
+                                                        currentDay.day !=
+                                                                localTime.day
+                                                            ? DateFormat()
+                                                                // .add_yMMMMEEEEd()
+                                                                .add_yMd()
+                                                                .format(
+                                                                    localTime)
+                                                            : DateFormat()
+                                                                // .add_yMMMMEEEEd()
+                                                                .add_jm()
+                                                                .format(
+                                                                    localTime),
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: TextStyle(
