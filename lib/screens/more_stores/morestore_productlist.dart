@@ -2,9 +2,11 @@ import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/utils/app_constants.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
@@ -104,10 +106,10 @@ class MoreStoreProductView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? colorinversion =
-        _moreStoreController.getStoreDataModel.value?.data?.store?.color;
-    Color updatedColor = hexToColor(
-        (_moreStoreController.getStoreDataModel.value?.data?.store?.color)!);
+    // String? colorinversion =
+    //     _moreStoreController.getStoreDataModel.value?.data?.store?.color;
+    // Color updatedColor = hexToColor(
+    //     (_moreStoreController.getStoreDataModel.value?.data?.store?.color)!);
     return Obx(
       () => Scaffold(
         bottomSheet: ((_moreStoreController
@@ -162,37 +164,32 @@ class MoreStoreProductView extends StatelessWidget {
             return <Widget>[
               SliverAppBar(
                 systemOverlayStyle: SystemUiOverlayStyle(
-                    statusBarColor: updatedColor,
-                    statusBarIconBrightness: (colorinversion == "#FFFFFF")
-                        ? Brightness.dark
-                        : Brightness.light),
+                    statusBarColor: AppConst.white, // updatedColor,
+                    statusBarIconBrightness:
+
+                        // (colorinversion == "#FFFFFF")
+                        //     ?
+                        Brightness.dark
+                    // : Brightness.light
+                    ),
                 expandedHeight: 18.h,
                 centerTitle: true,
                 pinned: true,
                 stretch: true,
                 floating: true,
-                iconTheme: (colorinversion == "#FFFFFF")
-                    ? IconThemeData(color: AppConst.black)
-                    : IconThemeData(color: AppConst.white),
-                backgroundColor:
-                    //  AppConst.yellow,
-                    updatedColor,
+                iconTheme:
+                    // (colorinversion == "#FFFFFF")
+                    //     ?
+                    IconThemeData(color: AppConst.black)
+                // : IconThemeData(color: AppConst.white)
+                ,
+                backgroundColor: AppConst.white,
+                // updatedColor,
                 title: (innerBoxIsScrolled)
                     ? Obx(
                         () => Row(
                           // mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            // InkWell(
-                            //     onTap: (() {
-                            //       Get.back();
-                            //     }),
-                            //     child: Padding(
-                            //       padding: EdgeInsets.symmetric(horizontal: 1.w),
-                            //       child: Icon(Icons.arrow_back),
-                            //     )),
-                            // SizedBox(
-                            //   width: 2.w,
-                            // ),
                             Container(
                               width: 75.w,
                               // color: AppConst.red,
@@ -204,9 +201,11 @@ class MoreStoreProductView extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: TextStyle(
-                                  color: (colorinversion == "#FFFFFF")
-                                      ? AppConst.black
-                                      : AppConst.white,
+                                  color: AppConst.black,
+
+                                  // (colorinversion == "#FFFFFF")
+                                  //     ? AppConst.black
+                                  //     : AppConst.white,
                                   fontFamily: 'MuseoSans',
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
@@ -234,9 +233,11 @@ class MoreStoreProductView extends StatelessWidget {
                           Text(
                             "",
                             style: TextStyle(
-                                color: (colorinversion == "#FFFFFF")
-                                    ? AppConst.black
-                                    : AppConst.white,
+                                color: AppConst.black,
+
+                                // (colorinversion == "#FFFFFF")
+                                //     ? AppConst.black
+                                //     : AppConst.white,
                                 fontSize: SizeUtils.horizontalBlockSize * 4),
                           ),
                         ],
@@ -333,9 +334,10 @@ class MoreStoreProductView extends StatelessWidget {
                                         .toString() ??
                                     "",
                                 style: TextStyle(
-                                  color: (colorinversion == "#FFFFFF")
-                                      ? AppConst.black
-                                      : AppConst.white,
+                                  color: AppConst.black,
+                                  // (colorinversion == "#FFFFFF")
+                                  //     ? AppConst.black
+                                  //     : AppConst.white,
                                   fontFamily: 'MuseoSans',
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
@@ -360,9 +362,10 @@ class MoreStoreProductView extends StatelessWidget {
                                   TextSpan(
                                     text: "CasBack ",
                                     style: TextStyle(
-                                      color: (colorinversion == "#FFFFFF")
-                                          ? AppConst.grey
-                                          : AppConst.white,
+                                      color: AppConst.grey,
+                                      // (colorinversion == "#FFFFFF")
+                                      //     ? AppConst.grey
+                                      //     : AppConst.white,
                                       fontFamily: 'MuseoSans',
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
@@ -374,9 +377,10 @@ class MoreStoreProductView extends StatelessWidget {
                                     text:
                                         "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback ?? 0}%",
                                     style: TextStyle(
-                                      color: (colorinversion == "#FFFFFF")
-                                          ? AppConst.black
-                                          : AppConst.white,
+                                      color: AppConst.grey,
+                                      //  (colorinversion == "#FFFFFF")
+                                      //     ? AppConst.black
+                                      //     : AppConst.white,
                                       fontFamily: 'MuseoSans',
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FontStyle.normal,
@@ -394,9 +398,10 @@ class MoreStoreProductView extends StatelessWidget {
                                     TextSpan(
                                       text: "Ready by ",
                                       style: TextStyle(
-                                        color: (colorinversion == "#FFFFFF")
-                                            ? AppConst.grey
-                                            : AppConst.white,
+                                        color: AppConst.grey,
+                                        //  (colorinversion == "#FFFFFF")
+                                        //     ? AppConst.grey
+                                        //     : AppConst.white,
                                         fontFamily: 'MuseoSans',
                                         fontWeight: FontWeight.w500,
                                         fontStyle: FontStyle.normal,
@@ -408,9 +413,11 @@ class MoreStoreProductView extends StatelessWidget {
                                       text:
                                           "${_moreStoreController.displayHour}",
                                       style: TextStyle(
-                                        color: (colorinversion == "#FFFFFF")
-                                            ? AppConst.black
-                                            : AppConst.white,
+                                        color: AppConst.grey,
+
+                                        // (colorinversion == "#FFFFFF")
+                                        //     ? AppConst.black
+                                        //     : AppConst.white,
                                         fontFamily: 'MuseoSans',
                                         fontWeight: FontWeight.w600,
                                         fontStyle: FontStyle.normal,
@@ -447,7 +454,7 @@ class MoreStoreProductView extends StatelessWidget {
               children: [
                 // BannerWidget(),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  padding: EdgeInsets.symmetric(horizontal: 0.w),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -525,9 +532,91 @@ class MoreStoreProductView extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 3.w),
                         child: MoewStoreViewProductsList(),
                       ),
-                      SizedBox(
-                        height: 10.h,
-                      )
+                      Container(
+                        height: 40.h,
+                        color: AppConst.veryLightGrey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                    height: 5.5.h,
+                                    width: 30.w,
+                                    child: FittedBox(
+                                      child: SvgPicture.asset(
+                                        "assets/icons/reciptologo.svg",
+                                        fit: BoxFit.fill,
+                                        color: AppConst.grey,
+                                      ),
+                                    ))
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w, vertical: 1.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Struggling to find items? \nChat with store & place orders instantly.",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.grey,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.5,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 0.5.h,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      Get.to(ChatOrderScreen(
+                                        isNewStore: true,
+                                      ));
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Click here to Place a chat order",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  3.5,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.normal,
+                                              color: AppConst.darkGreen,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.chat,
+                                            color: AppConst.darkGreen,
+                                            size: 2.h,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 7.h,
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -1130,12 +1219,20 @@ class MoewStoreViewProductsList extends StatelessWidget {
                 );
               },
             )
-          : Center(
-              child: Text(
-                'No data Found',
-                style: TextStyle(
-                  fontSize: SizeUtils.horizontalBlockSize * 5,
-                ),
+          : Container(
+              height: 55.h,
+              child: Center(
+                child: EmptyHistoryPage(
+                    icon: Icons.shopping_cart,
+                    text1: "No products found ",
+                    text2: "search in different stores",
+                    text3: ""),
+                // Text(
+                //   'No data Found',
+                //   style: TextStyle(
+                //     fontSize: SizeUtils.horizontalBlockSize * 5,
+                //   ),
+                // ),
               ),
             ),
     );
