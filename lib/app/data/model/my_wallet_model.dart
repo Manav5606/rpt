@@ -52,7 +52,7 @@ class WalletData {
   String? sId;
   int? welcomeOffer;
   int? welcomeOfferAmount;
-  int? earnedCashback;
+  num? earnedCashback;
   String? user;
   String? password;
   String? name;
