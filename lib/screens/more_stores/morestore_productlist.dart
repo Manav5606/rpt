@@ -2,6 +2,7 @@ import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/utils/app_constants.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
+import 'package:customer_app/screens/base_screen.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/widgets/search_text_field/search_field_button.dart';
 import 'package:flutter/material.dart';
@@ -100,9 +101,24 @@ import 'package:toggle_switch/toggle_switch.dart';
 //   }
 // }
 
-class MoreStoreProductView extends StatelessWidget {
+class MoreStoreProductView extends StatefulWidget {
+  @override
+  State<MoreStoreProductView> createState() => _MoreStoreProductViewState();
+}
+
+class _MoreStoreProductViewState extends State<MoreStoreProductView> {
   final MoreStoreController _moreStoreController = Get.find();
+
   final AddCartController _addCartController = Get.find();
+  String businessID = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Map arg = Get.arguments ?? {};
+
+    businessID = arg['businessID'] ?? "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +148,7 @@ class MoreStoreProductView extends StatelessWidget {
                                 .getCartIDModel.value?.totalItemsCount
                                 .toString() ??
                             "",
+                        "businessID": businessID
                       },
                     );
                     await _addCartController.getReviewCartData(
@@ -173,6 +190,7 @@ class MoreStoreProductView extends StatelessWidget {
                     // : Brightness.light
                     ),
                 expandedHeight: 18.h,
+                automaticallyImplyLeading: false,
                 centerTitle: true,
                 pinned: true,
                 stretch: true,
@@ -190,6 +208,18 @@ class MoreStoreProductView extends StatelessWidget {
                         () => Row(
                           // mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            InkWell(
+                                onTap: () {
+                                  Get.back();
+                                  // Get.toNamed(AppRoutes.BaseScreen);
+                                },
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  size: 3.h,
+                                )),
+                            SizedBox(
+                              width: 2.w,
+                            ),
                             Container(
                               width: 75.w,
                               // color: AppConst.red,
@@ -222,14 +252,15 @@ class MoreStoreProductView extends StatelessWidget {
                     //     child: Image.asset("assets/images/image4.png"))
                     : Row(
                         children: [
-                          // InkWell(
-                          //     onTap: (() {
-                          //       Get.back();
-                          //     }),
-                          //     child: Padding(
-                          //       padding: EdgeInsets.symmetric(horizontal: 1.w),
-                          //       child: Icon(Icons.arrow_back),
-                          //     )),
+                          InkWell(
+                              onTap: () {
+                                Get.back();
+                                // Get.toNamed(AppRoutes.BaseScreen);
+                              },
+                              child: Icon(
+                                Icons.arrow_back,
+                                size: 3.h,
+                              )),
                           Text(
                             "",
                             style: TextStyle(
@@ -461,8 +492,7 @@ class MoreStoreProductView extends StatelessWidget {
                       InkWell(
                         onTap: (() {
                           Get.to(ChatOrderScreen(
-                            isNewStore: true,
-                          ));
+                              isNewStore: true, businessID: businessID));
                         }),
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -957,6 +987,16 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                                             0) {
                                                           product
                                                               .quntity!.value++;
+                                                          if (_moreStoreController
+                                                                  .getCartIDModel
+                                                                  .value
+                                                                  ?.totalItemsCount ==
+                                                              0) {
+                                                            _moreStoreController
+                                                                .getCartIDModel
+                                                                .value
+                                                                ?.sId = "";
+                                                          }
                                                           _moreStoreController.addToCart(
                                                               store_id:
                                                                   _moreStoreController

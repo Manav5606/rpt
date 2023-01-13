@@ -24,6 +24,7 @@ class ChatOrderController extends GetxController {
   final TextEditingController itemController = TextEditingController();
   RxBool isLoading = false.obs;
   RxBool isEdit = false.obs;
+  RxString IsEditId = "".obs;
   List<String> quntityList = [
     '1',
     '2',
@@ -97,6 +98,7 @@ class ChatOrderController extends GetxController {
     required String cartId,
     required bool isEdit,
     required String newValueItem,
+    required String store_id,
   }) async {
     try {
       isLoading.value = true;
@@ -104,10 +106,12 @@ class ChatOrderController extends GetxController {
           rawItem: rawItem,
           cartId: cartId,
           isEdit: isEdit,
+          store_id: store_id,
           newValueItem: newValueItem);
       print('cart.value :${cart.value?.toJson()}');
       cartIndex.value?.totalItemsCount?.value =
           cart.value?.totalItemsCount?.value ?? 0;
+      cartIndex.value?.sId = cart.value?.sId ?? "";
       cartIndex.value?.rawItems = cart.value?.rawItems;
       print('cartIndex.value?.rawItems :${cartIndex.value?.toJson()}');
       if (!isNewStore) {

@@ -142,7 +142,7 @@ class RawItems {
     unit = json['unit'];
     logo = json['logo'];
     quantity?.value = json['quantity'] ?? 0;
-    sId = json['_id'];
+    sId = json['_id'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -151,7 +151,7 @@ class RawItems {
     data['unit'] = this.unit;
     data['logo'] = this.logo;
     data['quantity'] = this.quantity?.value ?? 0;
-    // data['_id'] = this.sId;
+    data['_id'] = this.sId ?? "";
     return data;
   }
 }

@@ -20,8 +20,10 @@ import '../../../../../screens/home/models/GetAllCartsModel.dart';
 
 class ChatOrderScreen extends StatefulWidget {
   final bool isNewStore;
+  String? businessID = "";
 
-  ChatOrderScreen({Key? key, this.isNewStore = false}) : super(key: key);
+  ChatOrderScreen({Key? key, this.isNewStore = false, this.businessID})
+      : super(key: key);
 
   @override
   State<ChatOrderScreen> createState() => _ChatOrderScreenState();
@@ -174,7 +176,9 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                             chatOrderController.cartIndex.value?.store?.name,
                         'totalCount': chatOrderController
                             .cartIndex.value?.totalItemsCount?.value
-                            .toString()
+                            .toString(),
+                        'id': chatOrderController.cartIndex.value?.store?.sId,
+                        "businessID": widget.businessID
                       },
                     );
                     await _addCartController.getReviewCartData(
@@ -512,19 +516,21 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
               if (chatOrderController.itemController.text != null &&
                   chatOrderController.itemController.text != "") {
                 RawItems rawItems = RawItems(
-                  item: chatOrderController.isEdit.value
-                      ? chatOrderController.oldItem.value
-                      : chatOrderController.itemController.text,
-                  quantity: chatOrderController.isEdit.value
-                      ? chatOrderController.oldQuntity
-                      : 1.obs,
-                  unit: chatOrderController
-                      .unitList[chatOrderController.selectUnitIndex.value],
-                  logo: chatOrderController.logo.value,
-                );
+                    item: chatOrderController.isEdit.value
+                        ? chatOrderController.oldItem.value
+                        : chatOrderController.itemController.text,
+                    quantity: chatOrderController.isEdit.value
+                        ? chatOrderController.oldQuntity
+                        : 1.obs,
+                    unit: chatOrderController
+                        .unitList[chatOrderController.selectUnitIndex.value],
+                    logo: chatOrderController.logo.value,
+                    sId: chatOrderController.IsEditId.value);
                 await chatOrderController.addToCart(
                     newValueItem: chatOrderController.itemController.text,
                     cartId: chatOrderController.cartIndex.value?.sId ?? '',
+                    store_id:
+                        chatOrderController.cartIndex.value?.store?.sId ?? "",
                     rawItem: rawItems,
                     isEdit: chatOrderController.isEdit.value);
                 chatOrderController.imagePath.value = '';
@@ -532,6 +538,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                 chatOrderController.isEdit.value = false;
                 chatOrderController.itemController.clear();
                 chatOrderController.oldItem.isEmpty;
+                chatOrderController.IsEditId.value = "";
               }
               // else {
               //   Get.snackbar("", "",
@@ -602,7 +609,9 @@ class StoreChatRawItem extends StatelessWidget {
                             chatOrderController.cartIndex.value
                                     ?.rawItems?[index].quantity?.value ??
                                 0;
-
+                        chatOrderController.IsEditId.value = chatOrderController
+                                .cartIndex.value?.rawItems?[index].sId ??
+                            "";
                         chatOrderController.isEdit.value = true;
                       },
                       child: DisplayProductName(
@@ -641,14 +650,24 @@ class StoreChatRawItem extends StatelessWidget {
                           chatOrderController.cartIndex.value?.rawItems?[index]
                               .quantity?.value = value;
                           RawItems rawItems = RawItems(
-                              item: chatOrderController
-                                      .cartIndex.value?.rawItems?[index].item ??
-                                  '',
-                              quantity: chatOrderController
-                                  .cartIndex.value?.rawItems?[index].quantity,
-                              unit: chatOrderController
-                                      .cartIndex.value?.rawItems?[index].unit ??
-                                  '');
+                            item: chatOrderController
+                                    .cartIndex.value?.rawItems?[index].item ??
+                                '',
+                            quantity: chatOrderController
+                                .cartIndex.value?.rawItems?[index].quantity,
+                            unit: chatOrderController
+                                    .cartIndex.value?.rawItems?[index].unit ??
+                                '',
+                            sId: chatOrderController
+                                    .cartIndex.value?.rawItems?[index].sId ??
+                                '',
+                            logo: chatOrderController
+                                    .cartIndex.value?.rawItems?[index].logo ??
+                                '',
+                          );
+                          var isID = chatOrderController
+                              .cartIndex.value?.rawItems?[index].sId;
+
                           await chatOrderController.addToCart(
                               newValueItem: chatOrderController
                                       .cartIndex.value?.rawItems?[index].item ??
@@ -657,7 +676,11 @@ class StoreChatRawItem extends StatelessWidget {
                                   chatOrderController.cartIndex.value?.sId ??
                                       '',
                               rawItem: rawItems,
-                              isEdit: true);
+                              store_id: chatOrderController
+                                      .cartIndex.value?.store?.sId ??
+                                  "",
+                              isEdit:
+                                  isID != null && isID != "" ? true : false);
                         },
                         list: chatOrderController.quntityList,
                       );

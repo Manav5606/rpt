@@ -1834,7 +1834,7 @@ data{
         unit
       }
     rawitems
-      {
+      {_id
         item
         quantity
         logo
@@ -2527,26 +2527,45 @@ mutation{
   static final addToCartNewRawItem = new GraphQLQuery(
     name: 'cart',
     query: r'''
- mutation($cart_id :ID $raw_item : CartRawItemInput){
+ mutation($cart_id :ID $raw_item : CartRawItemInput $newValueItem :String $store_id: ID){
   cart(cartInput: {
     flag: "addToCart",
     raw_or_product: "raw",
+    newValueItem:$newValueItem,
+    store_id: $store_id,
     cart_id:$cart_id,
-    raw_item: $raw_item
-    }
-    )
+    raw_item: $raw_item })
     {
     error
     msg
     data
     {
-  total_items_count
+ _id
+      total_items_count
       rawitems
-      {
+      {_id
         item
         quantity
         unit
         logo
+      }
+          products
+        {
+          mrp
+          _id
+          name
+          selling_price
+          cashback
+          quantity
+          mrp
+          gst_amount
+        }
+        inventories
+      {
+        mrp
+        name
+        _id
+        quantity
       }
     }
   }}
@@ -2555,12 +2574,13 @@ mutation{
   static final addToCartEditRawItem = new GraphQLQuery(
     name: 'cart',
     query: r'''
- mutation($cart_id :ID $raw_item : CartRawItemInput $newValueItem :String ){
+ mutation($cart_id :ID $raw_item : CartRawItemInput $newValueItem :String $store_id: ID){
   cart(cartInput: {
     flag: "addToCart",
     raw_or_product: "raw",
-    updateRawItem:true
-    newValueItem:$newValueItem
+    updateRawItem:true,
+    newValueItem:$newValueItem,
+    store_id: $store_id,
     cart_id:$cart_id,
     raw_item:$raw_item
     }
@@ -2570,13 +2590,32 @@ mutation{
     msg
     data
     {
-  total_items_count
+  _id
+      total_items_count
       rawitems
-      {
+      {_id
         item
         quantity
         unit
         logo
+      }
+         products
+        {
+          mrp
+          _id
+          name
+          selling_price
+          cashback
+          quantity
+          mrp
+          gst_amount
+        }
+        inventories
+      {
+        mrp
+        name
+        _id
+        quantity
       }
     }
   }}

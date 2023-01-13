@@ -4,15 +4,21 @@ import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/model/order_model.dart' as order_model;
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
+import 'package:customer_app/app/ui/pages/search/models/getCartId_model.dart';
+import 'package:customer_app/app/ui/pages/search/service/exploreService.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatorder_service.dart';
+import 'package:customer_app/models/addcartmodel.dart';
 import 'package:customer_app/screens/addcart/models/cartLocation_model.dart';
 import 'package:customer_app/screens/addcart/models/cartPageInfo_model.dart';
 import 'package:customer_app/screens/addcart/models/create_razorpay_model.dart';
 import 'package:customer_app/screens/addcart/models/getOrderConfirmModel.dart';
 import 'package:customer_app/screens/addcart/models/weekday_model.dart';
+import 'package:customer_app/screens/more_stores/morestore_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../app/ui/pages/search/models/GetStoreDataModel.dart'
+    as getStoreDataModel;
 import '../../home/models/GetAllCartsModel.dart';
 import '../models/review_cart_model.dart';
 import '../services/addcart_service.dart';
@@ -61,6 +67,9 @@ class AddCartController extends GetxController {
   RxString selectWalletMode = 'yes'.obs;
   RxString totalCount = '0'.obs;
   Rx<Carts?> cart = Carts().obs;
+  Rx<GetCartIDModel?> getCartIDModel = GetCartIDModel().obs;
+  Rx<AddToCartModel?> addToCartModel = AddToCartModel().obs;
+  Rx<Carts?> cartIndex = Carts().obs;
 
   List<String> quntityList = [
     '1',
@@ -296,6 +305,7 @@ class AddCartController extends GetxController {
     required String cartId,
     required bool isEdit,
     required String newValueItem,
+    required String store_id,
   }) async {
     try {
       isLoading.value = true;
@@ -303,11 +313,91 @@ class AddCartController extends GetxController {
           rawItem: rawItem,
           cartId: cartId,
           isEdit: isEdit,
+          store_id: store_id,
           newValueItem: newValueItem);
       reviewCart.value?.data?.rawItems = cart.value?.rawItems;
       totalCount.value = cart.value?.totalItemsCount?.value.toString() ?? '';
       log('totalCount.value :${totalCount.value}');
       reviewCart.refresh();
+      isLoading.value = false;
+    } catch (e, st) {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addToCartProduct({
+    // var product,
+    required String store_id,
+    required String cart_id,
+    required bool increment,
+    required int index,
+    required String name,
+    required String sId,
+    required int quntity,
+  }) async {
+    try {
+      var products = ProductsClass(
+        name: name,
+        sId: sId,
+        quantity: quntity.obs,
+      );
+      isLoading.value = true;
+      addToCartModel.value = await ExploreService.addToCart(
+          product: products,
+          store_id: store_id,
+          increment: increment,
+          index: index,
+          cart_id: cart_id);
+
+      cartIndex.value?.totalItemsCount?.value =
+          addToCartModel.value?.totalItemsCount ?? 0;
+      cartIndex.refresh();
+      isLoading.value = false;
+    } catch (e, st) {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addToCartInventory({
+    required String store_id,
+    required String cart_id,
+    required String name,
+    required String sId,
+    required int quntity,
+  }) async {
+    try {
+      var products = ProductsClass(
+        name: name,
+        sId: sId,
+        quantity: quntity.obs,
+      );
+      isLoading.value = true;
+      getCartIDModel.value = await MoreStoreService.addToCartInventory(
+        inventory: products,
+        store_id: store_id,
+        cart_id: cart_id,
+      );
+      // for (GetCartIdProducts allCartProducts
+      //     in getCartIDModel.value?.products ?? []) {
+      //   for (getStoreDataModel.MainProducts mainProducts
+      //       in getStoreDataModel.value?.data?.mainProducts ?? []) {
+      //     int index = (mainProducts.products ?? []).indexWhere(
+      //         (mainProductsElement) =>
+      //             mainProductsElement.sId == allCartProducts.sId);
+      //     if (index != -1) {
+      //       // getCartIDModel.value?.totalItemsCount =
+      //       //     addToCartModel.value?.totalItemsCount;
+      //       // totalItemsCount.value = addToCartModel.value?.totalItemsCount ?? 0;
+
+      //       mainProducts.products?[index].quntity!.value =
+      //           allCartProducts.quantity ?? 0;
+      //       mainProducts.products?[index].isQunitityAdd!.value = true;
+      //       // rawItemsList.value = getCartIDModel.value?.rawitems ?? []; //56
+      //     }
+      //   }
+      // }
+      getCartIDModel.refresh();
+      log("addToCartInventory.addToCartModel ${getCartIDModel.toJson()}");
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -512,5 +602,38 @@ class AddCartController extends GetxController {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+  }
+}
+
+class ProductsClass {
+  String? sId;
+
+  String? name;
+
+  RxInt? quantity = 0.obs;
+
+  ProductsClass({
+    this.sId,
+    this.name,
+    this.quantity,
+  });
+
+  ProductsClass.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+
+    name = json['name'];
+
+    quantity?.value = json['quantity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+
+    data['name'] = this.name;
+
+    data['quantity'] = this.quantity?.value;
+
+    return data;
   }
 }

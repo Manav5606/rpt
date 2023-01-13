@@ -92,7 +92,8 @@ class MoreStoreController extends GetxController {
       // }
       formatDate();
       getStoreDataModel.refresh();
-      await Get.toNamed(AppRoutes.MoreStoreProductView);
+      await Get.toNamed(AppRoutes.MoreStoreProductView,
+          arguments: {"businessId": businessId});
       // if (isNeedToNevigate) {
       //   bool isGrocery = Constants.grocery == businessId;
       //   await Get.toNamed(AppRoutes.MoreStoreProductScreen,
