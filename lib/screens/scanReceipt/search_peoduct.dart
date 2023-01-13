@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
@@ -13,6 +14,7 @@ import 'package:customer_app/screens/scanReceipt/storeview_screen.dart';
 import 'package:customer_app/screens/wallet/controller/paymentController.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../app/ui/pages/search/controller/exploreContoller.dart';
 import '../../constants/app_const.dart';
@@ -39,27 +41,7 @@ class SearchList extends StatelessWidget {
             : Column(
                 children: [
                   _paymentController.isLoading.value
-                      ? ListView.separated(
-                          shrinkWrap: true,
-                          primary: false,
-                          itemCount: storeSearchData.length,
-                          itemBuilder: (context, index) {
-                            return _listViewChildShimmer(
-                                name:
-                                    storeSearchData[index].storeName.toString(),
-                                logo: storeSearchData[index]
-                                    .storeImage
-                                    .toString(),
-                                icon: Icons.arrow_forward_ios_rounded,
-                                color: colorList[index],
-                                onTap: () {});
-                          },
-                          separatorBuilder: (context, index) {
-                            return SizedBox(
-                              height: SizeUtils.horizontalBlockSize * 2.55,
-                            );
-                          },
-                        )
+                      ? shimmereffectsearch()
                       : ListView.separated(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -119,32 +101,34 @@ class SearchList extends StatelessWidget {
           onTap: onTap,
           child: Row(
             children: [
-              logo.isEmpty
-                  ? CircleAvatar(
-                      child: Text(name.substring(0, 1),
-                          style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 5)),
-                      backgroundColor: color,
-                      radius: SizeUtils.horizontalBlockSize * 5.3,
-                    )
-                  : CircleAvatar(
-                      backgroundImage: NetworkImage(logo),
-                      backgroundColor: AppConst.white,
-                      radius: SizeUtils.horizontalBlockSize * 5.3,
-                    ),
+              DispalyStoreLogo(
+                logo: logo,
+                bottomPadding: 1,
+              ),
               SizedBox(
-                width: SizeUtils.horizontalBlockSize * 2.55,
+                width: 3.w,
               ),
-              Expanded(
-                child: Text(
-                  name,
-                  style: AppStyles.BOLD_STYLE,
-                ),
+              Container(
+                width: 68.w,
+                child: Text(name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: AppConst.black,
+                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+                    )),
               ),
+              Spacer(),
               Icon(
                 icon,
                 color: AppConst.grey,
                 size: SizeUtils.horizontalBlockSize * 5.3,
+              ),
+              SizedBox(
+                width: 2.w,
               ),
             ],
           ),
@@ -152,54 +136,80 @@ class SearchList extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _listViewChildShimmer(
-      {required String logo,
-      required String name,
-      required IconData icon,
-      required Color color,
-      required GestureTapCallback onTap}) {
+class singleshimmer1 extends StatelessWidget {
+  const singleshimmer1({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Row(
-            children: [
-              logo.isEmpty
-                  ? ShimmerEffect(
-                      child: CircleAvatar(
-                        child: Text(name.substring(0, 1),
-                            style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 5)),
-                        backgroundColor: color,
-                        radius: SizeUtils.horizontalBlockSize * 5.3,
-                      ),
-                    )
-                  : ShimmerEffect(
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(logo),
-                        backgroundColor: AppConst.white,
-                        radius: SizeUtils.horizontalBlockSize * 5.3,
-                      ),
-                    ),
-              SizedBox(
-                width: SizeUtils.horizontalBlockSize * 2.55,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ShimmerEffect(
+              child: DispalyStoreLogo(
+                bottomPadding: 1,
               ),
-              ShimmerEffect(
-                child: Text(
-                  name,
-                  style: AppStyles.BOLD_STYLE,
-                ),
+            ),
+            SizedBox(
+              width: 3.w,
+            ),
+            ShimmerEffect(
+                child: Container(
+              height: 3.5.h,
+              width: 70.w,
+              color: AppConst.black,
+            )),
+            Spacer(),
+            ShimmerEffect(
+              child: Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: AppConst.grey,
+                size: SizeUtils.horizontalBlockSize * 5.3,
               ),
-              ShimmerEffect(
-                child: Icon(
-                  icon,
-                  color: AppConst.grey,
-                  size: SizeUtils.horizontalBlockSize * 5.3,
-                ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              width: 2.w,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class shimmereffectsearch extends StatelessWidget {
+  const shimmereffectsearch({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        singleshimmer1(),
+        SizedBox(
+          height: 1.h,
+        ),
+        singleshimmer1(),
+        SizedBox(
+          height: 1.h,
+        ),
+        singleshimmer1(),
+        SizedBox(
+          height: 1.h,
+        ),
+        singleshimmer1(),
+        SizedBox(
+          height: 1.h,
+        ),
+        singleshimmer1(),
+        SizedBox(
+          height: 1.h,
         ),
       ],
     );

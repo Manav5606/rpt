@@ -317,7 +317,7 @@ class Inventories extends StatelessWidget {
       },
       separatorBuilder: (context, index) {
         return SizedBox(
-          height: SizeUtils.horizontalBlockSize * 2.55,
+          height: 1.h,
         );
       },
     );
