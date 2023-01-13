@@ -32,7 +32,7 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreen extends State<ExploreScreen> {
   List<StoreSearchModel>? foundStores;
   List<PopularSearchModel> recentSearch = popularSearchData;
-  List<StoreSearchModel> storeSearch = storeSearchData;
+  // List<StoreSearchModel> storeSearch = storeSearchData;
 
   // TextEditingController searchController = TextEditingController();
 

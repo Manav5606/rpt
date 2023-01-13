@@ -106,7 +106,8 @@ class _SearchListState extends State<SearchList> {
                                         ? ListView.separated(
                                             shrinkWrap: true,
                                             primary: false,
-                                            itemCount: storeSearchData.length,
+                                            itemCount:
+                                                1, //storeSearchData.length,
                                             itemBuilder: (context, index) {
                                               return LoadingWidget();
                                             },

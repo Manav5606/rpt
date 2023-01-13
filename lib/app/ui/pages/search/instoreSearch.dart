@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
+import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/screens/more_stores/morestore_productlist.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -279,52 +281,44 @@ class _InstoreSearch extends State<InstoreSearch> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Obx(() => (_moreStoreController
-                                .autoCompleteProductsByStoreModel
-                                .value
-                                ?.data
-                                ?.products
-                                ?.isNotEmpty ??
-                            false)
-                        ? StoreProductSearchList(
-                            foundedStores: _moreStoreController
-                                .autoCompleteProductsByStoreModel
-                                .value
-                                ?.data
-                                ?.products,
-                          )
-                        : SizedBox()),
+                    Obx(() => (_moreStoreController.isLoadingGetProducts.value)
+                        ? shimmereffectForSearch()
+                        : (_moreStoreController.autoCompleteProductsByStoreModel
+                                    .value?.data?.products?.isNotEmpty ??
+                                false)
+                            ? StoreProductSearchList(
+                                foundedStores: _moreStoreController
+                                    .autoCompleteProductsByStoreModel
+                                    .value
+                                    ?.data
+                                    ?.products,
+                              )
+                            : SizedBox()),
                     SizedBox(
                       height: 2.h,
                     ),
                     Obx(
-                      () => (_moreStoreController
-                                  .autoCompleteProductsByStoreModel
-                                  .value
-                                  ?.data
-                                  ?.inventories
-                                  ?.isNotEmpty ??
-                              false)
-                          ? Column(
-                              children: [
-                                // Padding(
-                                //   padding: EdgeInsets.all(
-                                //       SizeUtils.horizontalBlockSize * 2),
-                                //   child: Text(
-                                //     "Inventories",
-                                //     style: AppStyles.BOLD_STYLE,
-                                //   ),
-                                // ),
-                                Inventories(
-                                  inventoriesModel: _moreStoreController
+                      () => (_moreStoreController.isLoadingGetProducts.value)
+                          ? shimmereffectForSearch()
+                          : (_moreStoreController
                                       .autoCompleteProductsByStoreModel
                                       .value
                                       ?.data
-                                      ?.inventories,
+                                      ?.inventories
+                                      ?.isNotEmpty ??
+                                  false)
+                              ? Column(
+                                  children: [
+                                    Inventories(
+                                      inventoriesModel: _moreStoreController
+                                          .autoCompleteProductsByStoreModel
+                                          .value
+                                          ?.data
+                                          ?.inventories,
+                                    )
+                                  ],
                                 )
-                              ],
-                            )
-                          : SizedBox(),
+                              : SizedBox(),
                     ),
                   ],
                 ),
@@ -334,5 +328,86 @@ class _InstoreSearch extends State<InstoreSearch> {
         ),
       ),
     ));
+  }
+}
+
+class shimmereffectForSearch extends StatelessWidget {
+  const shimmereffectForSearch({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        singleshimmer(),
+        SizedBox(
+          height: 1.h,
+        ),
+        singleshimmer(),
+        SizedBox(
+          height: 1.h,
+        ),
+        singleshimmer(),
+        SizedBox(
+          height: 1.h,
+        ),
+      ],
+    );
+  }
+}
+
+class singleshimmer extends StatelessWidget {
+  const singleshimmer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ShimmerEffect(
+          child: DisplayProductImage(),
+        ),
+        SizedBox(
+          width: 2.w,
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ShimmerEffect(
+              child: Container(
+                width: 60.w,
+                height: 3.h,
+                color: AppConst.black,
+              ),
+            ),
+            SizedBox(
+              height: 0.5.h,
+            ),
+            ShimmerEffect(
+              child: Container(
+                width: 30.w,
+                height: 3.5.h,
+                color: AppConst.black,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          width: 2.w,
+        ),
+        ShimmerEffect(
+          child: Container(
+            width: 15.w,
+            height: 4.h,
+            color: AppConst.black,
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -30,16 +30,21 @@ class ImageHelper {
     try {
       Dio dio = Dio();
       String fileName = image.path.split('/').last;
-      FormData formData = FormData.fromMap({"file": await MultipartFile.fromFile(image.path, filename: fileName)});
-      Response response = await dio.post("${GqlConfig.BASE_URL_Upload}/api/upload", data: formData);
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(image.path, filename: fileName)
+      });
+      Response response = await dio
+          .post("${GqlConfig.BASE_URL_Upload}/api/upload", data: formData);
       if (response.data['error']) {
-        return 'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg';
+        return "";
+        // 'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg';
       } else {
         return response.data['data']['img'];
       }
     } catch (e) {
       print(e.toString());
-      return 'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg';
+      return "";
+      // 'https://www.denofgeek.com/wp-content/uploads/2019/02/mcu-1-iron-man.jpg';
     }
   }
 }

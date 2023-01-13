@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class AppConstants {
   // Server and Subscription URL
   static String server = 'https://backend.recipto.in/graphql';
+  // "https://df26-2405-201-c039-70c2-4d94-3680-9bc0-d8a7.in.ngrok.io/graphql"; //
   static String subscription = 'wss://backend.recipto.in/graphql';
+  // "wss://df26-2405-201-c039-70c2-4d94-3680-9bc0-d8a7.in.ngrok.io/graphql"; //
   static String gMapApiKey = 'AIzaSyAVKjCxMvk5Nymx6VYSlhc4iOasFoTxuCk';
   static Color primaryColor = Color(0xFF42458A);
   static Color secondaryColor = Color(0xFF2D4F69);
