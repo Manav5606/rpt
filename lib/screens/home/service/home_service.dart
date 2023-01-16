@@ -59,6 +59,7 @@ class HomeService {
           variables: {
             '_id': id,
             'keyword': keyword,
+            'keyword_helper': keywordHelper,
             'product_fetch': productFetch,
             'lat': UserViewModel.currentLocation.value.latitude,
             'lng': UserViewModel.currentLocation.value.longitude,
