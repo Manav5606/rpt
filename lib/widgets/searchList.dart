@@ -46,6 +46,9 @@ class _SearchListState extends State<SearchList> {
       () {
         NearMePageData? data =
             _exploreController.getNearMePageDataModel.value?.data;
+
+        int totalProducts =
+            (data?.products?.length ?? 0) + (data?.inventories?.length ?? 0);
         return (((data?.products?.isEmpty ?? true) &&
                 (data?.stores?.isEmpty ?? true)))
             ? Center(
@@ -76,8 +79,7 @@ class _SearchListState extends State<SearchList> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                'Products  (${data?.products?.length ?? 0})',
+                            child: Text('Products  (${totalProducts})',
                                 style: TextStyle(
                                   fontFamily: 'MuseoSans',
                                   color: AppConst.black,

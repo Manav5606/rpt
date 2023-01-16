@@ -49,8 +49,8 @@ class freshChatController extends GetxController {
     if (restoreId != null) {
       Clipboard.setData(new ClipboardData(text: restoreId));
     }
-    scaffoldKey!.currentState!.showSnackBar(
-        new SnackBar(content: new Text("Restore ID copied: $restoreId")));
+    // scaffoldKey!.currentState!.showSnackBar(
+    //     new SnackBar(content: new Text("Restore ID copied: $restoreId")));
   }
 
   void initState() {

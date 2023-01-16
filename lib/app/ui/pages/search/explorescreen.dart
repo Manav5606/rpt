@@ -2,6 +2,7 @@ import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/ui/pages/search/models/recentProductsData.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/widgets/homescreen_appbar.dart';
 import 'package:flutter/material.dart';
@@ -240,17 +241,23 @@ class _ExploreScreen extends State<ExploreScreen> {
                                     true)))
                             ? _exploreController.searchText.value.isNotEmpty
                                 ? Center(
-                                    child: Text('No Results found !',
-                                        style: TextStyle(
-                                          fontFamily: 'MuseoSans',
-                                          color: AppConst.black,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize *
-                                                  3.5,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        )),
-                                  )
+                                    child: EmptyHistoryPage(
+                                        icon: Icons.shopping_cart,
+                                        text1: "No Product/Store found !",
+                                        text2: "",
+                                        text3: "")
+
+                                    // Text('No Results found !',
+                                    //     style: TextStyle(
+                                    //       fontFamily: 'MuseoSans',
+                                    //       color: AppConst.black,
+                                    //       fontSize:
+                                    //           SizeUtils.horizontalBlockSize *
+                                    //               3.5,
+                                    //       fontWeight: FontWeight.w500,
+                                    //       fontStyle: FontStyle.normal,
+                                    //     )),
+                                    )
                                 : Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,

@@ -260,9 +260,13 @@ class _HomeScreenState extends State<HomeScreen>
                                 .homePageFavoriteShopsScrollController,
                             children: [
                               ((_myAccountController.activeOrdersModel.value
-                                              ?.data?.length ??
-                                          1) >
-                                      0)
+                                                  ?.data?.length ??
+                                              1) >
+                                          0 ||
+                                      ((_homeController.getAllCartsModel.value
+                                                  ?.carts?.length) ??
+                                              0) >
+                                          0)
                                   ? Container(
                                       height: 16.h,
                                       width: double.infinity,

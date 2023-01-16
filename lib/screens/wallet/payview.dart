@@ -186,8 +186,8 @@ class _PayViewState extends State<PayView> {
                             SizedBox(
                               height: 3.h,
                             ),
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2.w),
                               child: Text(
                                   paycontroller.redeemCashInStorePageDataIndex
                                           .value.name ??
@@ -206,54 +206,55 @@ class _PayViewState extends State<PayView> {
                             SizedBox(
                               height: 5.h,
                             ),
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text("You are Paying",
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.grey,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 5.2,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                            ),
+                            Text("You are Paying",
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.grey,
+                                  fontSize: SizeUtils.horizontalBlockSize * 5.2,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                )),
                             SizedBox(
                               height: 0.5.h,
                             ),
-                            TextFormField(
-                              validator: (value) => ((value != null &&
-                                      value.isEmpty)
-                                  ? 'Amount cannot be blank'
-                                  : (int.parse(value!) >
-                                          (paycontroller
-                                                  .redeemCashInStorePageDataIndex
-                                                  .value
-                                                  .earnedCashback ??
-                                              0))
-                                      ? "Amount can not be greater than wallet balance"
-                                      : null),
-                              controller: amountController,
-                              cursorHeight: 45,
-                              maxLines: 1,
-                              maxLength: 11,
-                              textDirection: TextDirection.ltr,
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                paycontroller.amountText.value = value;
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: -1),
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                hintText: "\u20b90",
-                                hintTextDirection: TextDirection.ltr,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3.w),
+                              child: TextFormField(
+                                validator: (value) => ((value != null &&
+                                        value.isEmpty)
+                                    ? 'Amount cannot be blank'
+                                    : (int.parse(value!) >
+                                            (paycontroller
+                                                    .redeemCashInStorePageDataIndex
+                                                    .value
+                                                    .earnedCashback ??
+                                                0))
+                                        ? "Amount can not be greater than wallet balance"
+                                        : null),
+                                controller: amountController,
+                                cursorHeight: 35,
+                                cursorColor: AppConst.black,
+                                maxLines: 1,
+                                maxLength: 6,
+                                textDirection: TextDirection.ltr,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                onChanged: (value) {
+                                  paycontroller.amountText.value = value;
+                                },
+                                decoration: InputDecoration(
+                                  counterText: "",
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 1),
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  hintText: "\u20b90",
+                                  hintTextDirection: TextDirection.ltr,
+                                ),
+                                style: TextStyle(
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 7),
                               ),
-                              style: TextStyle(
-                                  fontSize: SizeUtils.horizontalBlockSize * 10),
                             ),
                             SizedBox(
                               height: 4.h,

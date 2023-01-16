@@ -1,3 +1,4 @@
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -15,15 +16,41 @@ class SearchRecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          '',
-          style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: AppConst.black),
-        ),
-      ),
+          elevation: 0,
+          title: Row(
+            children: [
+              SizedBox(
+                width: 4.w,
+              ),
+              SizedBox(
+                height: 3.5.h,
+                child: Image(
+                  image: AssetImage(
+                    'assets/images/Scan.png',
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 4.w,
+              ),
+              Text("Scan any Stores",
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    color: AppConst.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                  )),
+            ],
+          )
+          // Text(
+          //   '',
+          //   style: TextStyle(
+          //       fontSize: 16.sp,
+          //       fontWeight: FontWeight.bold,
+          //       color: AppConst.black),
+          // ),
+          ),
       body: Obx(
         () => Padding(
           padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -113,11 +140,17 @@ class SearchRecipeScreen extends StatelessWidget {
                     ? _paymentController.searchText.value != null &&
                             _paymentController.searchText.value != ""
                         ? Center(
-                            child: Text(
-                              'No Results found !',
-                              style: AppStyles.STORE_NAME_STYLE,
-                            ),
-                          )
+                            child: EmptyHistoryPage(
+                                icon: Icons.shopping_cart,
+                                text1: "Nothing Here !",
+                                text2: "",
+                                text3: "")
+
+                            // Text(
+                            //   'No Results found !',
+                            //   style: AppStyles.STORE_NAME_STYLE,
+                            // ),
+                            )
                         : Text(
                             'Recently Searched',
                             style: AppStyles.STORE_NAME_STYLE,

@@ -67,15 +67,16 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
         subTitle: "You Want to go back.",
         onCancel: () => Get.back(),
         onConfirm: () async {
-          _moreStoreController.storeId.value = storeID;
-          await _moreStoreController.getStoreData(
-              id: _addCartController.reviewCart.value?.data?.storeDoc?.id ??
-                  storeID,
-              businessId: businessID);
+          // _moreStoreController.storeId.value = storeID;
+          // await _moreStoreController.getStoreData(
+          //     id: _addCartController.reviewCart.value?.data?.storeDoc?.id ??
+          //         storeID,
+          //     businessId: businessID);
           //exit the dialog;
           Get.back();
           //exit this screen
-          Get.back();
+          Get.offAllNamed(AppRoutes.BaseScreen);
+          // Get.back();
         }).show(context);
     return false;
   }

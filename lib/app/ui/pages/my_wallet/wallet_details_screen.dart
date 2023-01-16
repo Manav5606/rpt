@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:customer_app/app/constants/colors.dart';
+import 'package:customer_app/app/utils/utils.dart';
+import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -47,6 +50,8 @@ class WalletTransactionCard extends StatelessWidget {
   final MyWalletController _myWalletController = Get.find();
   final PaymentController _paymentController = Get.find();
   final ExploreController _exploreController = Get.find();
+  final MoreStoreController _moreStoreController = Get.find();
+
   final WalletData? walletData;
   final RedeemCashInStorePageData storeSearchModel;
   @override
@@ -231,7 +236,8 @@ class WalletTransactionCard extends StatelessWidget {
 
                           // _paymentController.redeemCashInStorePageDataIndex
                           //     .value = storeSearchModel;
-                          Get.toNamed(AppRoutes.PayView);
+                          Get.toNamed(AppRoutes.PayView,
+                              arguments: {"color": randomGenerator()});
                         },
                         child: CircleAvatar(
                           radius: 6.w,
@@ -255,15 +261,15 @@ class WalletTransactionCard extends StatelessWidget {
                       InkWell(
                         onTap: () async {
                           // Get.to(() => StoreScreen());
-                          _exploreController.isLoadingStoreData.value = true;
+                          // _exploreController.isLoadingStoreData.value = true;
 
-                          await _exploreController.getStoreData(
+                          await _moreStoreController.getStoreData(
                               id: '${walletData?.sId}');
-                          Get.back();
-                          (_exploreController.getStoreDataModel.value?.error ??
-                                  false)
-                              ? null
-                              : Get.toNamed(AppRoutes.StoreScreen);
+                          // Get.back();
+                          // (_exploreController.getStoreDataModel.value?.error ??
+                          //         false)
+                          //     ? null
+                          //     : Get.toNamed(AppRoutes.MoreStoreProductView);
                         },
                         child: CircleAvatar(
                           radius: 6.w,
