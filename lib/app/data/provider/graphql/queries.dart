@@ -899,8 +899,8 @@ query($lat: Float, $lng: Float) {
   static final homePageRemoteConfigData = new GraphQLQuery(
     name: 'homePageRemoteConfigData',
     query:
-        r'''query($_id : ID $keyword:String $product_fetch: Boolean  $lat: Float $lng: Float $pageNumber: Int){
-  homePageRemoteConfigData(_id:$_id ,keyword: $keyword, product_fetch:$product_fetch, lat: $lat, lng:$lng , pageNumber:$pageNumber){
+        r'''query($_id : ID $keyword:String $keyword_helper: String $product_fetch: Boolean  $lat: Float $lng: Float $pageNumber: Int){
+  homePageRemoteConfigData(_id:$_id ,keyword: $keyword,keyword_helper:$keyword_helper, product_fetch:$product_fetch, lat: $lat, lng:$lng , pageNumber:$pageNumber){
     error
     msg
     data{
