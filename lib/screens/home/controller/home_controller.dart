@@ -250,7 +250,7 @@ class HomeController extends GetxController {
         subtitle: "new",
         keywordHelper: "",
         image: "assets/images/Pickup.png",
-        isProductAvailable: true),
+        isProductAvailable: false),
     CategoryModel(
         id: "63a689eff5416c5c5b0ab0a4",
         name: "petfood",
