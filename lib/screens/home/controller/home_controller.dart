@@ -41,6 +41,7 @@ class HomeController extends GetxController {
   int remoteConfigPageNumber = 1;
   bool isRemoteConfigPageAvailable = true;
   bool isRemoteConfigPageLoading = false;
+  RxBool isRemoteConfigPageLoading1 = false.obs;
   RxList<HomeFavModel> homePageFavoriteShopsList = <HomeFavModel>[].obs;
   RxList<Data> storeDataList = <Data>[].obs;
   final HiveRepository hiveRepository = HiveRepository();
@@ -100,6 +101,7 @@ class HomeController extends GetxController {
     }
     try {
       isRemoteConfigPageLoading = true;
+      isRemoteConfigPageLoading1.value = true;
       homePageRemoteConfigModel.value =
           await HomeService.homePageRemoteConfigData(
               keyword, productFetch, keywordHelper, id, remoteConfigPageNumber);
@@ -112,10 +114,12 @@ class HomeController extends GetxController {
         isRemoteConfigPageAvailable = false;
       }
       storeDataList.addAll(homePageRemoteConfigModel.value?.data ?? []);
+      isRemoteConfigPageLoading1.value = true;
     } catch (e) {
       print(e);
     } finally {
       isRemoteConfigPageLoading = false;
+      isRemoteConfigPageLoading1.value = false;
     }
   }
 

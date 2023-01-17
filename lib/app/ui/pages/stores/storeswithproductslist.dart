@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/my_wallet/wallet_details_screen.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
@@ -8,6 +9,7 @@ import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/screens/more_stores/morestore_productlist.dart';
 import 'package:customer_app/widgets/custom_popupmenu.dart';
+import 'package:customer_app/widgets/instorelist.dart';
 import 'package:customer_app/widgets/snack.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -30,29 +32,134 @@ class StoreWithProductsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => (_homeController.storeDataList.isEmpty)
-          ? Center(
-              child: Text(StringContants.noData),
+      () => (_homeController.isRemoteConfigPageLoading1.value)
+          ? Column(
+              children: [
+                SizedBox(
+                  height: 2.h,
+                ),
+                InstoreListViewChildShimmer(),
+                ShimmerContainer(),
+                InstoreListViewChildShimmer(),
+                ShimmerContainer(),
+                InstoreListViewChildShimmer(),
+                ShimmerContainer(),
+              ],
             )
-          : ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: _homeController.storeDataList.length,
-              //data.length,
-              itemBuilder: (context, index) {
-                return ListViewChild(
-                  storesWithProductsModel: _homeController.storeDataList[index],
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox();
-                // Divider(
-                //   thickness: 1,
-                //   height: 2.h,
-                // );
-              },
-            ),
+          : (_homeController.storeDataList.isEmpty)
+              ? Center(
+                  child: Text(StringContants.noData),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: _homeController.storeDataList.length,
+                  //data.length,
+                  itemBuilder: (context, index) {
+                    return ListViewChild(
+                      storesWithProductsModel:
+                          _homeController.storeDataList[index],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox();
+                  },
+                ),
+    );
+  }
+
+  Container ShimmerContainer() {
+    return Container(
+      // height: 30.h,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 45.w,
+                height: 25.h,
+                child: Column(children: [
+                  ShimmerEffect(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppConst.black,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      height: 11.h,
+                      width: 30.w,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  ShimmerEffect(
+                    child: Container(
+                      width: 35.w,
+                      height: 2.h,
+                      color: AppConst.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  ShimmerEffect(
+                    child: Container(
+                      width: 35.w,
+                      height: 2.h,
+                      color: AppConst.black,
+                    ),
+                  ),
+                ]),
+              ),
+              SizedBox(
+                width: 3.w,
+              ),
+              Container(
+                width: 45.w,
+                height: 25.h,
+                child: Column(children: [
+                  ShimmerEffect(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppConst.black,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      height: 11.h,
+                      width: 30.w,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  ShimmerEffect(
+                    child: Container(
+                      width: 35.w,
+                      height: 2.h,
+                      color: AppConst.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  ShimmerEffect(
+                    child: Container(
+                      width: 35.w,
+                      height: 2.h,
+                      color: AppConst.black,
+                    ),
+                  ),
+                ]),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

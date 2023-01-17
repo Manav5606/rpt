@@ -342,6 +342,21 @@ class _HomeScreenState extends State<HomeScreen>
                                                   title: _homeController
                                                       .category[index].title,
                                                 );
+                                                _homeController
+                                                    .isRemoteConfigPageLoading1
+                                                    .value = true;
+                                                if (!(_homeController
+                                                    .category[index]
+                                                    .isProductAvailable)) {
+                                                  Get.to(() => InStoreScreen(
+                                                      category: _homeController
+                                                          .category[index]));
+                                                } else {
+                                                  Get.to(() => StoreListScreen(
+                                                      category: _homeController
+                                                          .category[index]));
+                                                }
+
                                                 await _homeController
                                                     .homePageRemoteConfigData(
                                                   productFetch: _homeController
@@ -377,21 +392,6 @@ class _HomeScreenState extends State<HomeScreen>
                                                   //     .keywords![index]
                                                   //     .id,
                                                 );
-                                                (!(_homeController
-                                                        .category[index]
-                                                        .isProductAvailable))
-                                                    ? await Get.to(() =>
-                                                        InStoreScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]))
-                                                    : await Get.to(() =>
-                                                        StoreListScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]));
                                                 //      (!(_homeController
                                                 //         .getHomePageFavoriteShopsModel
                                                 //         .value

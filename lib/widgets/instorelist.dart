@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,39 +29,40 @@ class InStoreList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => (_homeController.storeDataList.isEmpty)
-          ? Center(
-              child: Text(
-                StringContants.noData,
-              ),
-            )
-          : ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: _homeController.storeDataList.length,
-              itemBuilder: (context, index) {
-                return ListViewChild(
-                  inStoreModel: _homeController.storeDataList[index],
-                  color: colorList[index],
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox();
-                // Divider(
-                //   thickness: 1,
-                //   height: 2.5.h,
-                // );
-              },
-            ),
+      () => (_homeController.isRemoteConfigPageLoading1.value)
+          ? InstoreListShimmer()
+          : (_homeController.storeDataList.isEmpty)
+              ? Center(
+                  child: Text(
+                    StringContants.noData,
+                  ),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _homeController.storeDataList.length,
+                  itemBuilder: (context, index) {
+                    return ListViewChild(
+                      inStoreModel: _homeController.storeDataList[index],
+                      // color: colorList[index],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox();
+                  },
+                ),
     );
   }
 }
 
 class ListViewChild extends StatelessWidget {
   final Data? inStoreModel;
-  final Color color;
+  // final Color color;
 
-  ListViewChild({Key? key, required this.color, required this.inStoreModel})
+  ListViewChild(
+      {Key? key,
+      // required this.color,
+      required this.inStoreModel})
       : super(key: key);
   final MoreStoreController _moreStoreController = Get.find();
 
@@ -179,6 +181,106 @@ class ListViewChild extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class InstoreListShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      InstoreListViewChildShimmer(),
+      InstoreListViewChildShimmer(),
+      InstoreListViewChildShimmer(),
+      InstoreListViewChildShimmer(),
+      InstoreListViewChildShimmer(),
+      InstoreListViewChildShimmer(),
+      InstoreListViewChildShimmer(),
+    ]);
+  }
+}
+
+class InstoreListViewChildShimmer extends StatelessWidget {
+  InstoreListViewChildShimmer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ShimmerEffect(
+            child: DispalyStoreLogo(),
+          ),
+          SizedBox(
+            width: 2.w,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  ShimmerEffect(
+                    child: Container(
+                      width: 72.w,
+                      height: 2.5.h,
+                      color: AppConst.black,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  ShimmerEffect(
+                    child: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppConst.black,
+                      size: SizeUtils.horizontalBlockSize * 3.5,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 0.7.h,
+              ),
+              Row(
+                children: [
+                  ShimmerEffect(
+                    child: Container(
+                      width: 55.w,
+                      height: 2.5.h,
+                      color: AppConst.black,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 0.7.h,
+              ),
+              Row(
+                children: [
+                  ShimmerEffect(
+                    child: Container(
+                      width: 20.w,
+                      height: 2.5.h,
+                      color: AppConst.black,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
+                child: ShimmerEffect(
+                  child: Container(
+                      width: 68.w, height: 1, color: Color(0xffcacaca)),
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
