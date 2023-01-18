@@ -38,6 +38,9 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
   @override
   void initState() {
     chatOrderController.setValue(widget.isNewStore);
+    Map arg = Get.arguments ?? {};
+
+    chatOrderController.itemController.text = arg['text'] ?? "";
     super.initState();
   }
 
@@ -382,6 +385,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Obx(
             () => (chatOrderController.imagePath.value.isNotEmpty)
@@ -433,8 +437,8 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                 Obx(
                   () => SizedBox(
                     width: (chatOrderController.imagePath.value.isNotEmpty)
-                        ? 56.w
-                        : 65.w,
+                        ? 50.w
+                        : 62.w,
                     child: TextFormField(
                       inputFormatters: [
                         NoLeadingSpaceFormatter(),
@@ -839,15 +843,18 @@ class DisplayProductName extends StatelessWidget {
 }
 
 class DisplayProductImage extends StatelessWidget {
-  DisplayProductImage({Key? key, this.logo}) : super(key: key);
+  DisplayProductImage({Key? key, this.logo, this.height, this.width})
+      : super(key: key);
 
   String? logo;
+  var height;
+  var width;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 8.h,
-      width: 16.w,
+      height: height ?? 8.h,
+      width: width ?? 16.w,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
       child: (logo == null || logo == "")
           ? Image.asset("assets/images/noproducts.png")

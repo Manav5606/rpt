@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -232,7 +233,7 @@ class ListViewChild extends StatelessWidget {
                               width: 2.w,
                             ),
                             Text(
-                                "Get \u{20B9}${inStoreModel?.bill_discount_offer_amount} off for orders avove \u{20B9}${inStoreModel?.bill_discount_offer_target}",
+                                "Get \u{20B9}${inStoreModel?.bill_discount_offer_amount} off for orders above \u{20B9}${inStoreModel?.bill_discount_offer_target}",
                                 style: TextStyle(
                                   fontFamily: 'MuseoSans',
                                   color: AppConst.black,

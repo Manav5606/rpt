@@ -52,6 +52,8 @@ class MoreStoreController extends GetxController {
     try {
       // addToCartModel.value?.sId = '';
       isLoadingStoreData.value = true;
+      Get.toNamed(AppRoutes.MoreStoreProductView,
+          arguments: {"businessId": businessId});
 
       try {
         getCartIDModel.value = await MoreStoreService.getcartID(id);
@@ -92,8 +94,8 @@ class MoreStoreController extends GetxController {
       // }
       formatDate();
       getStoreDataModel.refresh();
-      await Get.toNamed(AppRoutes.MoreStoreProductView,
-          arguments: {"businessId": businessId});
+      // Get.toNamed(AppRoutes.MoreStoreProductView,
+      //     arguments: {"businessId": businessId});
       // if (isNeedToNevigate) {
       //   bool isGrocery = Constants.grocery == businessId;
       //   await Get.toNamed(AppRoutes.MoreStoreProductScreen,

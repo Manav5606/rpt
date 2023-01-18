@@ -39,11 +39,11 @@ class StoreWithProductsList extends StatelessWidget {
                   height: 2.h,
                 ),
                 InstoreListViewChildShimmer(),
-                ShimmerContainer(),
+                ProductShimmerEffect(),
                 InstoreListViewChildShimmer(),
-                ShimmerContainer(),
+                ProductShimmerEffect(),
                 InstoreListViewChildShimmer(),
-                ShimmerContainer(),
+                ProductShimmerEffect(),
               ],
             )
           : (_homeController.storeDataList.isEmpty)
@@ -68,8 +68,15 @@ class StoreWithProductsList extends StatelessWidget {
                 ),
     );
   }
+}
 
-  Container ShimmerContainer() {
+class ProductShimmerEffect extends StatelessWidget {
+  const ProductShimmerEffect({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       // height: 30.h,
       child: Column(
@@ -83,7 +90,7 @@ class StoreWithProductsList extends StatelessWidget {
             children: [
               Container(
                 width: 45.w,
-                height: 25.h,
+                height: 22.h,
                 child: Column(children: [
                   ShimmerEffect(
                     child: Container(
@@ -122,7 +129,7 @@ class StoreWithProductsList extends StatelessWidget {
               ),
               Container(
                 width: 45.w,
-                height: 25.h,
+                height: 22.h,
                 child: Column(children: [
                   ShimmerEffect(
                     child: Container(

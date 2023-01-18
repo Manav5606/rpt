@@ -1,5 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/colors.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
+import 'package:customer_app/app/ui/pages/stores/storeswithproductslist.dart';
 import 'package:customer_app/app/utils/app_constants.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/base_screen.dart';
@@ -128,53 +130,60 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
     //     (_moreStoreController.getStoreDataModel.value?.data?.store?.color)!);
     return Obx(
       () => Scaffold(
-        bottomSheet: ((_moreStoreController
-                        .getCartIDModel.value?.totalItemsCount ??
-                    0) >
-                0)
-            ? Obx(
-                () => InkWell(
-                  onTap: () async {
-                    Get.toNamed(
-                      AppRoutes.CartReviewScreen,
-                      arguments: {
-                        'logo': _moreStoreController
-                            .getStoreDataModel.value?.data?.store?.logo,
-                        'id': _moreStoreController
-                            .getStoreDataModel.value?.data?.store?.sId,
-                        'storeName': _moreStoreController
-                            .getStoreDataModel.value?.data?.store?.name,
-                        'totalCount': _moreStoreController
-                                .getCartIDModel.value?.totalItemsCount
-                                .toString() ??
-                            "",
-                        "businessID": businessID
-                      },
-                    );
-                    await _addCartController.getReviewCartData(
-                        cartId:
-                            _moreStoreController.getCartIDModel.value?.sId ??
-                                "");
-                    // await _addCartController.getCartPageInformation(storeId: _moreStoreController.addToCartModel.value?.store ?? "");
-                    await _addCartController.getCartLocation(
-                        storeId: _moreStoreController.storeId.value,
-                        cartId:
-                            _moreStoreController.getCartIDModel.value?.sId ??
-                                "");
-                    _addCartController.cartId.value =
-                        _moreStoreController.getCartIDModel.value?.sId ?? "";
-                    if (_addCartController.store.value?.sId == null) {
-                      _addCartController.store.value?.sId =
-                          _moreStoreController.storeId.value;
-                    }
-                    _addCartController.SelectedAddressForCart();
-                  },
-                  child: CartRibbn(
-                      totalItemsCount: _moreStoreController
-                          .getCartIDModel.value?.totalItemsCount),
-                ),
-              )
-            : SizedBox(),
+        bottomSheet:
+            ((_moreStoreController.getCartIDModel.value?.totalItemsCount ?? 0) >
+                    0)
+                ? Obx(
+                    () => (_moreStoreController.isLoadingStoreData.value)
+                        ? SizedBox()
+                        : InkWell(
+                            onTap: () async {
+                              Get.toNamed(
+                                AppRoutes.CartReviewScreen,
+                                arguments: {
+                                  'logo': _moreStoreController.getStoreDataModel
+                                      .value?.data?.store?.logo,
+                                  'id': _moreStoreController.getStoreDataModel
+                                      .value?.data?.store?.sId,
+                                  'storeName': _moreStoreController
+                                      .getStoreDataModel
+                                      .value
+                                      ?.data
+                                      ?.store
+                                      ?.name,
+                                  'totalCount': _moreStoreController
+                                          .getCartIDModel.value?.totalItemsCount
+                                          .toString() ??
+                                      "",
+                                  "businessID": businessID
+                                },
+                              );
+                              await _addCartController.getReviewCartData(
+                                  cartId: _moreStoreController
+                                          .getCartIDModel.value?.sId ??
+                                      "");
+                              // await _addCartController.getCartPageInformation(storeId: _moreStoreController.addToCartModel.value?.store ?? "");
+                              await _addCartController.getCartLocation(
+                                  storeId: _moreStoreController.storeId.value,
+                                  cartId: _moreStoreController
+                                          .getCartIDModel.value?.sId ??
+                                      "");
+                              _addCartController.cartId.value =
+                                  _moreStoreController
+                                          .getCartIDModel.value?.sId ??
+                                      "";
+                              if (_addCartController.store.value?.sId == null) {
+                                _addCartController.store.value?.sId =
+                                    _moreStoreController.storeId.value;
+                              }
+                              _addCartController.SelectedAddressForCart();
+                            },
+                            child: CartRibbn(
+                                totalItemsCount: _moreStoreController
+                                    .getCartIDModel.value?.totalItemsCount),
+                          ),
+                  )
+                : SizedBox(),
         body: NestedScrollView(
           physics: BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -205,46 +214,55 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                 // updatedColor,
                 title: (innerBoxIsScrolled)
                     ? Obx(
-                        () => Row(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  Get.back();
-                                  // Get.toNamed(AppRoutes.BaseScreen);
-                                },
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  size: 3.h,
-                                )),
-                            SizedBox(
-                              width: 2.w,
-                            ),
-                            Container(
-                              width: 75.w,
-                              // color: AppConst.red,
-                              child: Text(
-                                _moreStoreController.getStoreDataModel.value
-                                        ?.data?.store?.name
-                                        .toString() ??
-                                    "",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
+                        () => (_moreStoreController.isLoadingStoreData.value)
+                            ? ShimmerEffect(
+                                child: Container(
+                                  width: 75.w,
+                                  height: 2.5.h,
                                   color: AppConst.black,
-
-                                  // (colorinversion == "#FFFFFF")
-                                  //     ? AppConst.black
-                                  //     : AppConst.white,
-                                  fontFamily: 'MuseoSans',
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4,
                                 ),
+                              )
+                            : Row(
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        Get.back();
+                                        // Get.toNamed(AppRoutes.BaseScreen);
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_back,
+                                        size: 3.h,
+                                      )),
+                                  SizedBox(
+                                    width: 2.w,
+                                  ),
+                                  Container(
+                                    width: 75.w,
+                                    // color: AppConst.red,
+                                    child: Text(
+                                      _moreStoreController.getStoreDataModel
+                                              .value?.data?.store?.name
+                                              .toString() ??
+                                          "",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: AppConst.black,
+
+                                        // (colorinversion == "#FFFFFF")
+                                        //     ? AppConst.black
+                                        //     : AppConst.white,
+                                        fontFamily: 'MuseoSans',
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
                       )
 
                     // CircleAvatar(
@@ -353,28 +371,39 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                       SizedBox(
                         height: 4.h,
                       ),
+
                       Padding(
                         padding: EdgeInsets.only(left: 5.w, top: 6.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Obx(
-                              () => Text(
-                                _moreStoreController.getStoreDataModel.value
-                                        ?.data?.store?.name
-                                        .toString() ??
-                                    "",
-                                style: TextStyle(
-                                  color: AppConst.black,
-                                  // (colorinversion == "#FFFFFF")
-                                  //     ? AppConst.black
-                                  //     : AppConst.white,
-                                  fontFamily: 'MuseoSans',
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                                ),
-                              ),
+                              () => (_moreStoreController
+                                      .isLoadingStoreData.value)
+                                  ? ShimmerEffect(
+                                      child: Container(
+                                        width: 75.w,
+                                        height: 2.5.h,
+                                        color: AppConst.black,
+                                      ),
+                                    )
+                                  : Text(
+                                      _moreStoreController.getStoreDataModel
+                                              .value?.data?.store?.name
+                                              .toString() ??
+                                          "",
+                                      style: TextStyle(
+                                        color: AppConst.black,
+                                        // (colorinversion == "#FFFFFF")
+                                        //     ? AppConst.black
+                                        //     : AppConst.white,
+                                        fontFamily: 'MuseoSans',
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4.5,
+                                      ),
+                                    ),
                             ),
                           ],
                         ),
@@ -385,80 +414,99 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
 
                       Padding(
                         padding: EdgeInsets.only(left: 5.w, bottom: 2.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Obx(() => RichText(
-                                    text: TextSpan(children: [
-                                  TextSpan(
-                                    text: "CasBack ",
-                                    style: TextStyle(
-                                      color: AppConst.grey,
-                                      // (colorinversion == "#FFFFFF")
-                                      //     ? AppConst.grey
-                                      //     : AppConst.white,
-                                      fontFamily: 'MuseoSans',
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3.7,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback ?? 0}%",
-                                    style: TextStyle(
-                                      color: AppConst.grey,
-                                      //  (colorinversion == "#FFFFFF")
-                                      //     ? AppConst.black
-                                      //     : AppConst.white,
-                                      fontFamily: 'MuseoSans',
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3.7,
-                                    ),
-                                  )
-                                ]))),
-                            SizedBox(
-                              width: 3.w,
-                            ),
-                            _moreStoreController.displayHour.isNotEmpty
-                                ? RichText(
-                                    text: TextSpan(children: [
-                                    TextSpan(
-                                      text: "Ready by ",
-                                      style: TextStyle(
-                                        color: AppConst.grey,
-                                        //  (colorinversion == "#FFFFFF")
-                                        //     ? AppConst.grey
-                                        //     : AppConst.white,
-                                        fontFamily: 'MuseoSans',
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 3.7,
+                        child: Obx(
+                          () => (_moreStoreController.isLoadingStoreData.value)
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ShimmerEffect(
+                                      child: Container(
+                                        width: 60.w,
+                                        height: 2.h,
+                                        color: AppConst.black,
                                       ),
                                     ),
-                                    TextSpan(
-                                      text:
-                                          "${_moreStoreController.displayHour}",
-                                      style: TextStyle(
-                                        color: AppConst.grey,
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Obx(() => RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                            text: "Cashback ",
+                                            style: TextStyle(
+                                              color: AppConst.grey,
+                                              // (colorinversion == "#FFFFFF")
+                                              //     ? AppConst.grey
+                                              //     : AppConst.white,
+                                              fontFamily: 'MuseoSans',
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  3.7,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback ?? 0}%",
+                                            style: TextStyle(
+                                              color: AppConst.grey,
+                                              //  (colorinversion == "#FFFFFF")
+                                              //     ? AppConst.black
+                                              //     : AppConst.white,
+                                              fontFamily: 'MuseoSans',
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  3.7,
+                                            ),
+                                          )
+                                        ]))),
+                                    SizedBox(
+                                      width: 3.w,
+                                    ),
+                                    _moreStoreController.displayHour.isNotEmpty
+                                        ? RichText(
+                                            text: TextSpan(children: [
+                                            TextSpan(
+                                              text: "Ready by ",
+                                              style: TextStyle(
+                                                color: AppConst.grey,
+                                                //  (colorinversion == "#FFFFFF")
+                                                //     ? AppConst.grey
+                                                //     : AppConst.white,
+                                                fontFamily: 'MuseoSans',
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    3.7,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  "${_moreStoreController.displayHour}",
+                                              style: TextStyle(
+                                                color: AppConst.grey,
 
-                                        // (colorinversion == "#FFFFFF")
-                                        //     ? AppConst.black
-                                        //     : AppConst.white,
-                                        fontFamily: 'MuseoSans',
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 3.7,
-                                      ),
-                                    )
-                                  ]))
-                                : SizedBox(),
-                          ],
+                                                // (colorinversion == "#FFFFFF")
+                                                //     ? AppConst.black
+                                                //     : AppConst.white,
+                                                fontFamily: 'MuseoSans',
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    3.7,
+                                              ),
+                                            )
+                                          ]))
+                                        : SizedBox(),
+                                  ],
+                                ),
                         ),
                       )
                       // InkWell(
@@ -483,172 +531,198 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // BannerWidget(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.w),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InkWell(
-                        onTap: (() {
-                          Get.to(ChatOrderScreen(
-                              isNewStore: true, businessID: businessID));
-                        }),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2.w),
-                          child: Bubble(
-                            color: AppConst.lightSkyBlue,
-                            margin: BubbleEdges.only(top: 1.h),
-                            stick: true,
-                            nip: BubbleNip.leftTop,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 2.h, horizontal: 2.w),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 50.w,
-                                    child: Text(
-                                      "Struggling to find items? \nChat with store & place orders instantly.",
-                                      style: TextStyle(
-                                        color: AppConst.darkGreen,
-                                        // Color(0xff003d29),
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 3.7,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 28.w,
-                                    height: 5.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(85),
-                                        color: AppConst.darkGreen),
-                                    child: Center(
-                                      child: Text(
-                                        "Chat ",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3.7,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                Obx(
+                  () => (_moreStoreController.isLoadingStoreData.value)
+                      ? Column(
+                          children: [
+                            ShimmerEffect(child: StoreChatBubble()),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            ShimmerEffect(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                                child: StoreSearchField(),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 2.h),
-                      InkWell(
-                        highlightColor: AppConst.highLightColor,
-                        onTap: () {
-                          Get.toNamed(AppRoutes.InStoreSearch, arguments: {
-                            'storeId': _moreStoreController.storeId.value
-                          });
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.w),
-                          child: StoreSearchField(),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: MoewStoreViewProductsList(),
-                      ),
-                      Container(
-                        height: 40.h,
-                        color: AppConst.veryLightGrey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
                             SizedBox(
-                              height: 3.h,
+                              height: 2.h,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                    height: 5.5.h,
-                                    width: 30.w,
-                                    child: FittedBox(
-                                      child: SvgPicture.asset(
-                                        "assets/icons/reciptologo.svg",
-                                        fit: BoxFit.fill,
-                                        color: AppConst.grey,
-                                      ),
-                                    ))
-                              ],
+                            ProductShimmerEffect(),
+                            ProductShimmerEffect(),
+                            ProductShimmerEffect(),
+                          ],
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: (() {
+                                Get.to(ChatOrderScreen(
+                                    isNewStore: true, businessID: businessID));
+                              }),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                                child: Bubble(
+                                  color: AppConst.lightSkyBlue,
+                                  margin: BubbleEdges.only(top: 1.h),
+                                  stick: true,
+                                  nip: BubbleNip.leftTop,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 2.h, horizontal: 2.w),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 50.w,
+                                          child: Text(
+                                            "Struggling to find items? \nChat with store & place orders instantly.",
+                                            style: TextStyle(
+                                              color: AppConst.darkGreen,
+                                              // Color(0xff003d29),
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  3.7,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 28.w,
+                                          height: 5.h,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(85),
+                                              color: AppConst.darkGreen),
+                                          child: Center(
+                                            child: Text(
+                                              "Chat ",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      3.7,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 2.h),
+                            InkWell(
+                              highlightColor: AppConst.highLightColor,
+                              onTap: () {
+                                Get.toNamed(AppRoutes.InStoreSearch,
+                                    arguments: {
+                                      'storeId':
+                                          _moreStoreController.storeId.value
+                                    });
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                                child: StoreSearchField(),
+                              ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 2.w, vertical: 1.h),
+                              padding: EdgeInsets.symmetric(horizontal: 3.w),
+                              child: MoewStoreViewProductsList(),
+                            ),
+                            Container(
+                              height: 40.h,
+                              color: AppConst.veryLightGrey,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Struggling to find items? \nChat with store & place orders instantly.",
-                                    style: TextStyle(
-                                      fontFamily: 'MuseoSans',
-                                      color: AppConst.grey,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3.5,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          height: 5.5.h,
+                                          width: 30.w,
+                                          child: FittedBox(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/reciptologo.svg",
+                                              fit: BoxFit.fill,
+                                              color: AppConst.grey,
+                                            ),
+                                          ))
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 2.w, vertical: 1.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Struggling to find items? \nChat with store & place orders instantly.",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: AppConst.grey,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    3.5,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 0.5.h,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            Get.to(ChatOrderScreen(
+                                              isNewStore: true,
+                                            ));
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Click here to Place a chat order",
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        3.5,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: AppConst.darkGreen,
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  Icons.chat,
+                                                  color: AppConst.darkGreen,
+                                                  size: 2.h,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 0.5.h,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      Get.to(ChatOrderScreen(
-                                        isNewStore: true,
-                                      ));
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "Click here to Place a chat order",
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  3.5,
-                                              fontWeight: FontWeight.w600,
-                                              fontStyle: FontStyle.normal,
-                                              color: AppConst.darkGreen,
-                                            ),
-                                          ),
-                                          Icon(
-                                            Icons.chat,
-                                            color: AppConst.darkGreen,
-                                            size: 2.h,
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                    height: 7.h,
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: 7.h,
-                            ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
@@ -901,33 +975,39 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Center(
-                                          child: (product.logo != null &&
-                                                  product.logo != "")
-                                              ? Image.network(
-                                                  product.logo!,
-                                                  fit: BoxFit.cover,
-                                                  height: 10.h,
-                                                  width: 24.w,
-                                                )
-                                              : Container(
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        AppConst.veryLightGrey,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    // border: Border.all(
-                                                    //     width: 0.1,
-                                                    //     color:
-                                                    //         AppConst.grey)
-                                                  ),
-                                                  height: 10.h,
-                                                  width: 30.w,
-                                                  child: Center(
-                                                      child: Image.asset(
-                                                          "assets/images/noimage.png")),
-                                                ),
-                                        ),
+                                            child: DisplayProductImage(
+                                          logo: product.logo,
+                                          height: 10.h,
+                                          width: 30.w,
+                                        )
+
+                                            //  (product.logo != null &&
+                                            //         product.logo != "")
+                                            //     ? Image.network(
+                                            //         product.logo!,
+                                            //         fit: BoxFit.cover,
+                                            //         height: 10.h,
+                                            //         width: 24.w,
+                                            //       )
+                                            //     : Container(
+                                            //         decoration: BoxDecoration(
+                                            //           color:
+                                            //               AppConst.veryLightGrey,
+                                            //           borderRadius:
+                                            //               BorderRadius.circular(
+                                            //                   8),
+                                            //           // border: Border.all(
+                                            //           //     width: 0.1,
+                                            //           //     color:
+                                            //           //         AppConst.grey)
+                                            //         ),
+                                            //         height: 10.h,
+                                            //         width: 30.w,
+                                            //         child: Center(
+                                            //             child: Image.asset(
+                                            //                 "assets/images/noimage.png")),
+                                            //       ),
+                                            ),
                                         Container(
                                           // color: AppConst.red,
                                           // height: 4.5.h,
