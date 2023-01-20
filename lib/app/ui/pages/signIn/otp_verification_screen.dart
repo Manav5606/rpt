@@ -201,31 +201,15 @@ class _OtpScreenState extends State<OtpScreen> {
                               fontSize: SizeUtils.horizontalBlockSize * 3.5,
                               fontWeight: FontWeight.bold),
                         ),
-                        Obx(
-                          () => _signInScreenController.isLoading.value
-                              ? ShimmerEffect(
-                                  child: SignUpFeilds(
-                                    hinttext: "Enter OTP",
-                                    keyboardtype: TextInputType.number,
-                                    controller:
-                                        _signInScreenController.otpController,
-                                    onChange: (pin) async {
-                                      // _signInScreenController.submitOTP();
-                                      // _signInScreenController.otpController.clear();
-                                    },
-                                  ),
-                                )
-                              : SignUpFeilds(
-                                  hinttext: "Enter OTP",
-                                  keyboardtype: TextInputType.number,
-                                  maxlength: 6,
-                                  controller:
-                                      _signInScreenController.otpController,
-                                  // onChange: (pin) async {
-                                  //   _signInScreenController.submitOTP();
-                                  //   // _signInScreenController.otpController.clear();
-                                  // },
-                                ),
+                        SignUpFeilds(
+                          hinttext: "Enter OTP",
+                          keyboardtype: TextInputType.number,
+                          maxlength: 6,
+                          controller: _signInScreenController.otpController,
+                          // onChange: (pin) async {
+                          //   _signInScreenController.submitOTP();
+                          //   // _signInScreenController.otpController.clear();
+                          // },
                         ),
 
                         SizedBox(
@@ -235,29 +219,42 @@ class _OtpScreenState extends State<OtpScreen> {
                           () => Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              RichText(
-                                  text: TextSpan(children: [
-                                TextSpan(
-                                  text: "Didn't get the code?   ",
-                                  style: TextStyle(
-                                      color: AppConst.black,
-                                      fontFamily: "MuseoSans",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3.5,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                TextSpan(
-                                  text: "RESEND IN 00:${Constants.start.value}",
-                                  style: TextStyle(
-                                      color: AppConst.green,
-                                      fontFamily: "MuseoSans",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3.8,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ])),
+                              InkWell(
+                                onTap: Constants.start.value == 0
+                                    ? () {
+                                        _signInScreenController
+                                            .submitPhoneNumber();
+                                        _signInScreenController.startTimer();
+                                      }
+                                    : null,
+                                child: RichText(
+                                    text: TextSpan(children: [
+                                  TextSpan(
+                                    text: "Didn't get the code?   ",
+                                    style: TextStyle(
+                                        color: AppConst.black,
+                                        fontFamily: "MuseoSans",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.5,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        "RESEND IN 00:${Constants.start.value}",
+                                    style: TextStyle(
+                                        color: _signInScreenController
+                                                .isResendEnable.value
+                                            ? AppConst.green
+                                            : AppConst.red,
+                                        fontFamily: "MuseoSans",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.8,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ])),
+                              ),
                             ],
                           ),
                         ),
@@ -470,11 +467,11 @@ class _OtpScreenState extends State<OtpScreen> {
                         //                   // Colors.green
                         //                   //  kSecondaryTextColor
                         //                   ),
-                        //               color: _signInScreenController
-                        //                       .isResendEnable.value
-                        //                   ? AppConst
-                        //                       .kSecondaryColor //Colors.green //kSecondaryTextColor
-                        //                   : AppConst.transparent,
+                        // color: _signInScreenController
+                        //         .isResendEnable.value
+                        //     ? AppConst
+                        //         .kSecondaryColor //Colors.green //kSecondaryTextColor
+                        //     : AppConst.transparent,
                         //             ),
                         //             child: Center(
                         //               child: Row(
