@@ -242,13 +242,13 @@ class Transaction {
   String? debitOrCredit;
   String? comment;
   String? createdAt;
-  Store? store;
+  // Store? store;
 
   Transaction(
       {this.amount,
       this.debitOrCredit,
       this.comment,
-      this.store,
+      // this.store,
       this.createdAt});
 
   Transaction.fromJson(Map<String, dynamic> json) {
@@ -256,7 +256,7 @@ class Transaction {
     debitOrCredit = json['debit_or_credit'];
     comment = json['comment'];
     createdAt = json['createdAt'];
-    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
+    // store = json['store'] != null ? new Store.fromJson(json['store']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -265,29 +265,29 @@ class Transaction {
     data['debit_or_credit'] = this.debitOrCredit;
     data['comment'] = this.comment;
     data['createdAt'] = this.createdAt;
-    if (this.store != null) {
-      data['store'] = this.store!.toJson();
-    }
+    // if (this.store != null) {
+    //   data['store'] = this.store!.toJson();
+    // }
 
     return data;
   }
 }
 
-class Store {
-  String? name;
-  String? logo;
+// class Store {
+//   String? name;
+//   String? logo;
 
-  Store({this.name, this.logo});
+//   Store({this.name, this.logo});
 
-  Store.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    logo = json['logo'];
-  }
+//   Store.fromJson(Map<String, dynamic> json) {
+//     name = json['name'];
+//     logo = json['logo'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['logo'] = this.logo;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['name'] = this.name;
+//     data['logo'] = this.logo;
+//     return data;
+//   }
+// }

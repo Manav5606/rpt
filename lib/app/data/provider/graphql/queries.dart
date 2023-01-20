@@ -625,15 +625,7 @@ class GraphQLQueries {
           debit_or_credit
           comment
            createdAt
-          store{
-           name
-            _id
-            logo
-            address{
-              address
-            }
-                
-          }
+          
       
          
         }

@@ -54,8 +54,14 @@ class WalletTransactionCard extends StatelessWidget {
 
   final WalletData? walletData;
   final RedeemCashInStorePageData storeSearchModel;
+
   @override
   Widget build(BuildContext context) {
+    dynamic argumentData = Get.arguments;
+    Color color = argumentData['color'];
+    String name = argumentData['name'] ?? "S";
+    String logo = argumentData['logo'] ?? "";
+
     return Scaffold(
       body: SafeArea(
         child: Obx(
@@ -74,44 +80,22 @@ class WalletTransactionCard extends StatelessWidget {
                           SizedBox(
                             width: 2.w,
                           ),
-                          // Container(
-                          //   decoration: BoxDecoration(
-                          //       shape: BoxShape.circle,
-                          //       border:
-                          //           Border.all(color: Colors.grey.shade400)),
-                          //   child: ClipRRect(
-                          //     borderRadius: BorderRadius.circular(50),
-                          //     child: CachedNetworkImage(
-                          //       width: 12.w,
-                          //       height: 6.h,
-                          //       fit: BoxFit.fill,
-                          //       imageUrl: walletData?.logo ??
-                          //           'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
-                          //       progressIndicatorBuilder:
-                          //           (context, url, downloadProgress) => Center(
-                          //               child: CircularProgressIndicator(
-                          //                   value: downloadProgress.progress)),
-                          //       errorWidget: (context, url, error) => Image.network(
-                          //           'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
-                          //     ),
-                          //   ),
-                          // ),
-
-                          (walletData?.logo)!.isEmpty
+                          (logo).isEmpty
                               ? CircleAvatar(
-                                  child: Text(
-                                      walletData?.name?.substring(0, 1) ?? "",
+                                  child: Text(name.substring(0, 1),
                                       style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: AppConst.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle: FontStyle.normal,
                                           fontSize:
                                               SizeUtils.horizontalBlockSize *
                                                   6)),
-                                  backgroundColor: Colors.primaries[Random()
-                                      .nextInt(Colors.primaries.length)],
+                                  backgroundColor: color,
                                   radius: SizeUtils.horizontalBlockSize * 6.5,
                                 )
                               : CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(walletData?.logo ?? ''),
+                                  backgroundImage: NetworkImage(logo),
                                   backgroundColor: AppConst.white,
                                   radius: SizeUtils.horizontalBlockSize * 6.5,
                                 ),
@@ -120,7 +104,7 @@ class WalletTransactionCard extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              "${walletData?.name ?? 'My Store Name'}",
+                              "${name}",
                               style: TextStyle(
                                   color: AppConst.black,
                                   fontSize: SizeUtils.horizontalBlockSize * 5),
@@ -129,7 +113,7 @@ class WalletTransactionCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    WalletDetailCard(),
+                    WalletDetailCard(color),
                     SizedBox(
                       height: 3.h,
                       child: Center(
@@ -164,14 +148,14 @@ class WalletTransactionCard extends StatelessWidget {
     );
   }
 
-  Padding WalletDetailCard() {
+  Padding WalletDetailCard(Color color) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
       child: Container(
         height: 25.h,
         width: double.infinity,
         decoration: BoxDecoration(
-            color: AppConst.kSecondaryColor,
+            color: color,
             border: Border.all(),
             borderRadius: BorderRadius.circular(12)),
         child: Column(
