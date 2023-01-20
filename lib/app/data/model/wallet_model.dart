@@ -41,7 +41,7 @@ class Wallet {
   @HiveField(4)
   late final int welcomeOfferAmount;
   @HiveField(5)
-  late final int? earnedCashback;
+  late final num? earnedCashback;
   @HiveField(6)
   late final String? user;
   @HiveField(7)

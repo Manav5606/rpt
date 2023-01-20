@@ -21,7 +21,7 @@ class WalletAdapter extends TypeAdapter<Wallet> {
       id: fields[2] as String?,
       welcomeOffer: fields[3] as int?,
       welcomeOfferAmount: fields[4] as int,
-      earnedCashback: fields[5] as int?,
+      earnedCashback: fields[5] as num?,
       user: fields[6] as String?,
       password: fields[7] as String?,
       name: fields[8] as String?,
