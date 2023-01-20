@@ -1,14 +1,16 @@
 import 'package:customer_app/constants/assets_constants.dart';
+import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
-import 'package:customer_app/app/ui/pages/location_picker/address_model.dart';
+import 'package:customer_app/app/data/model/address_model.dart' as addressmodel;
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/widgets/textfield_clear_button.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 class BottomFullAddressSheet extends StatefulWidget {
@@ -590,8 +592,11 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                 width: 80.w,
                                 // color: AppConst.yellow,
                                 child: Text(
-                                  _addLocationController.SortByCharactor(
-                                      widget.address.toString(), ","),
+                                  (widget.address != null &&
+                                          widget.address != "")
+                                      ? _addLocationController.SortByCharactor(
+                                          widget.address.toString(), ",")
+                                      : "",
                                   // parts[0],
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -875,8 +880,8 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                         setState(() {});
                                       },
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Enter valid details';
+                                        if (value == null || value.length > 2) {
+                                          return 'Enter Your tag';
                                         }
                                       },
                                       style: TextStyle(
@@ -966,7 +971,13 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                               ),
                             ),
                             onPressed: (_completeAddressController
-                                    .value.text.isNotEmpty)
+                                        .value.text.isNotEmpty) &&
+                                    ((_selectedTag == 3)
+                                        ? ((_otherController.value.text.length >
+                                                2)
+                                            ? true
+                                            : false)
+                                        : true)
                                 ? () async {
                                     _addLocationController
                                         .bottomFullAddressLoading.value = true;
@@ -1004,7 +1015,7 @@ class _BottomFullAddressSheetState extends State<BottomFullAddressSheet> {
                                                     0,
                                                 address: widget.address,
                                                 title:
-                                                    "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}",
+                                                    "${_tags[_selectedTag]}${_selectedTag == 3 ? "${_otherController.text}" : ""}",
                                                 house: _floorController.text,
                                                 apartment:
                                                     _completeAddressController

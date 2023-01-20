@@ -103,21 +103,38 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           ],
                         ),
                       ),
-                      // SizedBox(
-                      //   height: 1.h,
-                      // ),
-                      Container(
-                        height: 28.h,
-                        child: GoogleMap(
-                          initialCameraPosition:
-                              _addLocationController.initialLocation.value,
-                          myLocationEnabled: false,
-                          myLocationButtonEnabled: false,
-                          onCameraIdle: _addLocationController.onCameraIdle,
-                          zoomControlsEnabled: false,
-                          onCameraMove: _addLocationController.onCameraMove,
-                          onMapCreated: _addLocationController.onMapCreated,
-                        ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            height: 28.h,
+                            child: GoogleMap(
+                              initialCameraPosition:
+                                  _addLocationController.initialLocation.value,
+                              myLocationEnabled: false,
+                              myLocationButtonEnabled: false,
+                              onCameraIdle: _addLocationController.onCameraIdle,
+                              zoomControlsEnabled: false,
+                              onCameraMove: _addLocationController.onCameraMove,
+                              onMapCreated: _addLocationController.onMapCreated,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.h, left: 45.w),
+                            child: Container(
+                              height: 7.h,
+                              width: 10.w,
+                              child: Image.asset('assets/icons/pinsmall.png'),
+                            ),
+                          ),
+                          Container(
+                            height: 28.h,
+                            width: double.infinity,
+                            color: AppConst.transparent,
+                          )
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -147,9 +164,12 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     child: Obx(
                                       () => Text(
                                         // "kkhp",
-                                        _addLocationController
-                                                    .currentAddress.value !=
-                                                -1
+                                        (_addLocationController
+                                                        .currentAddress.value !=
+                                                    null &&
+                                                _addLocationController
+                                                        .currentAddress.value !=
+                                                    "")
                                             ? _addLocationController
                                                 .SortByCharactor(
                                                     _addLocationController
@@ -181,9 +201,12 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                   width: 80.w,
                                   child: Obx(
                                     () => Text(
-                                      _addLocationController
-                                                  .currentAddress.value !=
-                                              -1
+                                      (_addLocationController
+                                                      .currentAddress.value !=
+                                                  null &&
+                                              _addLocationController
+                                                      .currentAddress.value !=
+                                                  "")
                                           ? _addLocationController
                                               .currentAddress.value
                                               .toString()
@@ -567,14 +590,21 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     SizeUtils.horizontalBlockSize * 3),
                               ),
                             ),
-                            onPressed: (_floorController.value.text.isNotEmpty)
+                            onPressed: (_completeAddressController
+                                        .value.text.isNotEmpty) &&
+                                    ((_selectedTag == 3)
+                                        ? ((_otherController.value.text.length >
+                                                2)
+                                            ? true
+                                            : false)
+                                        : true)
                                 ? () {
                                     addressModel?.address =
                                         _addLocationController
                                             .currentAddress.value;
 
                                     addressModel?.title =
-                                        "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+                                        "${_selectedTag == 3 ? "${_tags[_selectedTag]} ${_otherController.text}" : "${_tags[_selectedTag]}"}";
 
                                     addressModel?.apartment =
                                         _completeAddressController.text;
@@ -590,6 +620,39 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                         .replaceCustomerAddress(addressModel);
                                     UserViewModel.setUser(
                                         _addLocationController.userModel!);
+
+                                    if (!((_addLocationController.userModel
+                                                    ?.addresses?.length ??
+                                                0) >
+                                            1 &&
+                                        _addLocationController
+                                                .userAddress.value !=
+                                            addressModel?.address)) {
+                                      _addLocationController.userAddress.value =
+                                          _addLocationController
+                                              .currentAddress.value;
+                                      _addLocationController
+                                              .userAddressTitle.value =
+                                          "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+
+                                      _addLocationController.userHouse.value =
+                                          _floorController.text;
+                                      _addLocationController
+                                              .userAppartment.value =
+                                          _completeAddressController.text;
+
+                                      _addLocationController.latitude.value =
+                                          _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.latitude ??
+                                              0.0;
+
+                                      _addLocationController.longitude.value =
+                                          _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.longitude ??
+                                              0;
+                                    }
                                     Get.back();
                                   }
                                 : null,
