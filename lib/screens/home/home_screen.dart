@@ -208,8 +208,9 @@ class _HomeScreenState extends State<HomeScreen>
                 if (_homeController.isLoading.value)
                   HomeScreenShimmer()
                 else
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Flex(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    direction: Axis.vertical,
                     children: [
                       Obx(
                         () => HomeAppBar(
@@ -254,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen>
                       //         },
                       //       ),
                       Obx(
-                        () => Expanded(
+                        () => Flexible(
                           child: ListView(
                             controller: _homeController
                                 .homePageFavoriteShopsScrollController,
@@ -441,89 +442,85 @@ class _HomeScreenState extends State<HomeScreen>
                                         ),
                                       ),
                                     )
-                                  : Container(
-                                      height: 38.h,
-                                      child: GridView(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 3,
-                                                crossAxisSpacing: 2.w,
-                                                mainAxisSpacing: 2.h),
-                                        children: List.generate(
-                                            (_homeController.category.length),
-                                            (index) {
-                                          return GestureDetector(
-                                              onTap: () async {
-                                                _homeController.storeDataList
-                                                    .clear();
-                                                _homeController
-                                                    .remoteConfigPageNumber = 1;
-                                                _homeController
-                                                        .isRemoteConfigPageAvailable =
-                                                    true;
+                                  : GridView(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              crossAxisSpacing: 2.w,
+                                              mainAxisSpacing: 2.h),
+                                      children: List.generate(
+                                          (_homeController.category.length),
+                                          (index) {
+                                        return GestureDetector(
+                                            onTap: () async {
+                                              _homeController.storeDataList
+                                                  .clear();
+                                              _homeController
+                                                  .remoteConfigPageNumber = 1;
+                                              _homeController
+                                                      .isRemoteConfigPageAvailable =
+                                                  true;
 
-                                                _homeController.keywordValue =
-                                                    CategoryModel(
-                                                  isProductAvailable:
-                                                      _homeController
-                                                          .category[index]
-                                                          .isProductAvailable,
-                                                  id: _homeController
-                                                      .category[index].id,
-                                                  keywordHelper: _homeController
-                                                      .category[index]
-                                                      .keywordHelper,
-                                                  name: _homeController
-                                                      .category[index].name,
-                                                  subtitle: _homeController
-                                                      .category[index].subtitle,
-                                                  image: _homeController
-                                                      .category[index].image,
-                                                  title: _homeController
-                                                      .category[index].title,
-                                                );
-                                                await _homeController
-                                                    .homePageRemoteConfigData(
-                                                  productFetch: _homeController
-                                                      .category[index]
-                                                      .isProductAvailable,
-                                                  keyword: _homeController
-                                                      .category[index].name,
-                                                  keywordHelper: _homeController
-                                                      .category[index]
-                                                      .keywordHelper,
-                                                  id: _homeController
-                                                      .category[index].id,
-                                                );
-                                                (!(_homeController
+                                              _homeController.keywordValue =
+                                                  CategoryModel(
+                                                isProductAvailable:
+                                                    _homeController
                                                         .category[index]
-                                                        .isProductAvailable))
-                                                    ? await Get.to(() =>
-                                                        InStoreScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]))
-                                                    : await Get.to(() =>
-                                                        StoreListScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]));
+                                                        .isProductAvailable,
+                                                id: _homeController
+                                                    .category[index].id,
+                                                keywordHelper: _homeController
+                                                    .category[index]
+                                                    .keywordHelper,
+                                                name: _homeController
+                                                    .category[index].name,
+                                                subtitle: _homeController
+                                                    .category[index].subtitle,
+                                                image: _homeController
+                                                    .category[index].image,
+                                                title: _homeController
+                                                    .category[index].title,
+                                              );
+                                              await _homeController
+                                                  .homePageRemoteConfigData(
+                                                productFetch: _homeController
+                                                    .category[index]
+                                                    .isProductAvailable,
+                                                keyword: _homeController
+                                                    .category[index].name,
+                                                keywordHelper: _homeController
+                                                    .category[index]
+                                                    .keywordHelper,
+                                                id: _homeController
+                                                    .category[index].id,
+                                              );
+                                              (!(_homeController.category[index]
+                                                      .isProductAvailable))
+                                                  ? await Get.to(() =>
+                                                      InStoreScreen(
+                                                          category:
+                                                              _homeController
+                                                                      .category[
+                                                                  index]))
+                                                  : await Get.to(() =>
+                                                      StoreListScreen(
+                                                          category:
+                                                              _homeController
+                                                                      .category[
+                                                                  index]));
 
-                                                if (Constants.isAbleToCallApi)
-                                                  await _homeController
-                                                      .getAllCartsData();
-                                              },
-                                              child: CategoryCard(
-                                                  index: index,
-                                                  category: _homeController
-                                                      .category[index]));
-                                        }),
-                                      ),
+                                              if (Constants.isAbleToCallApi)
+                                                await _homeController
+                                                    .getAllCartsData();
+                                            },
+                                            child: CategoryCard(
+                                                index: index,
+                                                category: _homeController
+                                                    .category[index]));
+                                      }),
                                     ),
                               // SizedBox(
                               //   height: 2.h,
@@ -836,16 +833,20 @@ class _HomeScreenState extends State<HomeScreen>
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Container(
-                                            height: 5.5.h,
-                                            width: 30.w,
-                                            child: FittedBox(
-                                              child: SvgPicture.asset(
-                                                "assets/icons/reciptologo.svg",
-                                                fit: BoxFit.fill,
-                                                color: AppConst.grey,
-                                              ),
-                                            ))
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 1.h),
+                                          child: Container(
+                                              height: 5.5.h,
+                                              width: 30.w,
+                                              child: FittedBox(
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/logoname1.svg",
+                                                  fit: BoxFit.fill,
+                                                  color: AppConst.grey,
+                                                ),
+                                              )),
+                                        )
                                       ],
                                     ),
                                     Padding(

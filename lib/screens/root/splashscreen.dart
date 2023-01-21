@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 3), () {
         Get.toNamed(AppRoutes.Root);
       });
     });
@@ -32,17 +33,19 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Container(
           decoration: BoxDecoration(
             color: AppConst.white,
-            image: DecorationImage(
-                image: AssetImage("assets/images/splashbg.png"),
-                fit: BoxFit.fill),
+            // image: DecorationImage(
+            //     image: AssetImage("assets/images/splashbg.png"),
+            //     fit: BoxFit.fill),
           ),
           height: double.infinity,
           width: double.infinity,
           child: FittedBox(
             child: Center(
-                child: Image.asset(
-              "assets/images/splash.gif",
-            )),
+              child: Lottie.asset('assets/lottie/splash11.json'),
+            ),
+            //      Image.asset(
+            //   "assets/images/splash11.gif",
+            // )
           ),
         ),
       ),

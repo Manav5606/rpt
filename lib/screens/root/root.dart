@@ -189,14 +189,14 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           decoration: BoxDecoration(
             color: AppConst.white,
             image: DecorationImage(
-                image: AssetImage("assets/images/splashbg.png"),
+                image: AssetImage("assets/images/logoname.png"),
                 fit: BoxFit.fill),
           ),
           height: double.infinity,
           width: double.infinity,
-          child: FittedBox(
-            child: Center(child: Bloyallogo()),
-          ),
+          // child: FittedBox(
+          //   child: Center(child: Bloyallogo()),
+          // ),
         ),
       ),
     );

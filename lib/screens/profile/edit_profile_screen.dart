@@ -52,6 +52,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           onTap: () async {
             _signInController.UpdateInfo(firstNameController.text,
                 lastNameController.text, mobileNumberController.text);
+            _Controller.getUserData();
           },
 
           // onTap: (_signInController

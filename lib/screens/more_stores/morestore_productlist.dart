@@ -646,16 +646,20 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Container(
-                                          height: 5.5.h,
-                                          width: 30.w,
-                                          child: FittedBox(
-                                            child: SvgPicture.asset(
-                                              "assets/icons/reciptologo.svg",
-                                              fit: BoxFit.fill,
-                                              color: AppConst.grey,
-                                            ),
-                                          ))
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 2.w, vertical: 1.h),
+                                        child: Container(
+                                            height: 5.5.h,
+                                            width: 30.w,
+                                            child: FittedBox(
+                                              child: SvgPicture.asset(
+                                                "assets/icons/logoname1.svg",
+                                                fit: BoxFit.fill,
+                                                color: AppConst.grey,
+                                              ),
+                                            )),
+                                      )
                                     ],
                                   ),
                                   Padding(

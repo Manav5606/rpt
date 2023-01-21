@@ -94,25 +94,25 @@ class _SignInScreenState extends State<SignInScreen> {
     var currentTabs = [
       DisplayAppInfo(
           context,
-          "assets/images/order1.png",
+          "assets/images/order11.png",
           "Order",
           " from your Nearby Stores",
           "Order from your Nearby Stores Order from your Nearby Stores  "),
       DisplayAppInfo(
           context,
-          "assets/images/scan2.png",
+          "assets/images/scan22.png",
           "Scan",
           " the Receipts",
           "Scan the receipts after purchasing the products to get more "),
       DisplayAppInfo(
           context,
-          "assets/images/cashback3.png",
+          "assets/images/cashback33.png",
           "Earn",
           " Cashbacks from the Store",
           "Get Cashback instantly to your E-Wallet "),
       DisplayAppInfo(
           context,
-          "assets/images/redeem4.png",
+          "assets/images/redeem44.png",
           "Redeem",
           " in your next purchase",
           " Use your E-Wallet in your next purchase get more Rewards")
