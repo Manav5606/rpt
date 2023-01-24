@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
+import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/widgets/snack.dart';
@@ -541,9 +542,9 @@ class _PayViewState extends State<PayView> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            HistoryOrderTrackingScreen(
-                                          // displayHour: _addCartController.displayHour.value,
+                                            OrderSucessScreen(
                                           order: paycontroller.orderModel.value,
+                                          type: "redeem",
                                         ),
                                       ),
                                       (Route<dynamic> route) => route.isFirst);

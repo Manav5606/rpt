@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
+import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/widgets/imagePicker.dart';
@@ -145,8 +146,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        HistoryOrderTrackingScreen(
-                                      // displayHour: _addCartController.displayHour.value,
+                                        OrderSucessScreen(
+                                      type: "scan",
                                       order: order,
                                     ),
                                   ),

@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +87,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                 .getOrderConfirmPageDataModel.value?.data?.previousTotalAmount
                 ?.toStringAsFixed(2) ??
             "0.0"),
-        store: _addCartController.store.value,
+        store: _addCartController.reviewCart.value?.data?.storeDoc?.id ?? storeID,
         cartId: _addCartController.cartId.value,
         products: _addCartController.reviewCart.value?.data?.products,
         rawItem: _addCartController.reviewCart.value?.data?.rawItems,
@@ -104,15 +106,29 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
     if (_addCartController.orderModel.value != null) {
       _addCartController.formatDate();
+
+      // Get.back();
+      // Get.to(
+      //   HistoryOrderTrackingScreen(
+      //     // displayHour: _addCartController.displayHour.value,
+      //     order: _addCartController.orderModel.value!,
+      //   ),
+      // );
       await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => HistoryOrderTrackingScreen(
-              // displayHour: _addCartController.displayHour.value,
-              order: _addCartController.orderModel.value!,
-            ),
-          ),
+              builder: (BuildContext context) => OrderSucessScreen(
+                    order: _addCartController.orderModel.value!,
+                    type: "order",
+                  )
+
+              // HistoryOrderTrackingScreen(
+              //   // displayHour: _addCartController.displayHour.value,
+              //   order: _addCartController.orderModel.value!,
+              // ),
+              ),
           (Route<dynamic> route) => route.isFirst);
+      _addCartController.refresh();
       _homeController.apiCall();
     }
   }
@@ -137,16 +153,31 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                   fontWeight: FontWeight.w700,
                   fontStyle: FontStyle.normal,
                 )),
-            Text(storeName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontFamily: 'MuseoSans',
-                  color: Color(0xff9e9e9e),
-                  fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
-                )),
+            Obx(
+              () => _addCartController.isLoading.value
+                  ? ShimmerEffect(
+                      child: Text(storeName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: Color(0xff9e9e9e),
+                            fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
+                          )),
+                    )
+                  : Text(storeName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: Color(0xff9e9e9e),
+                        fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      )),
+            )
           ],
         ),
       ),
@@ -155,184 +186,332 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           Expanded(
             child: SingleChildScrollView(
               child: Obx(
-                () => Column(
-                  key: Key(
-                      'builder ${_addCartController.selectExpendTile.value.toString()}'),
-                  children: [
-                    // _buildPlayerModelList(
-                    //   iconData: Icons.location_on_rounded,
-                    //   title: _addCartController
-                    //               .selectAddressHouse.value.isNotEmpty ||
-                    //           _addCartController
-                    //               .selectAddress.value.isNotEmpty
-                    //       ? "${_addCartController.selectAddressHouse.value} ${_addCartController.selectAddress.value}"
-                    //       : StringContants.addDeliveryAddresses,
-                    //   bottomWidget: addressView(context),
-                    //   isEnable: true,
-                    //   key: 0,
-                    // ),
-                    // _buildPlayerModelList(
-                    //   iconData: Icons.account_balance_wallet_outlined,
-                    //   title: StringContants.walletAmount,
-                    //   bottomWidget: walletAmountView(context),
-                    //   isEnable: _addCartController
-                    //           .selectAddressHouse.value.isNotEmpty ||
-                    //       _addCartController.selectAddress.value.isNotEmpty,
-                    //   key: 1,
-                    // ),
-                    _buildPlayerModelList(
-                      iconData: Icons.access_time_filled,
-                      title: _addCartController.deliveryMessage.value.isNotEmpty
-                          ? _addCartController.deliveryMessage.value
-                          : "Delivery Time",
-                      bottomWidget: timeSheetView(context),
-                      isEnable: _addCartController
-                              .selectAddressHouse.value.isNotEmpty ||
-                          _addCartController.selectAddress.value.isNotEmpty,
-                      key: 2,
-                    ),
-                    // _buildPlayerModelList(
-                    //     iconData: Icons.payment,
-                    //     title: StringContants.paymentMode,
-                    //     bottomWidget: paymentMode(),
-                    //     key: 3,
-                    //     isEnable: _addCartController
-                    //         .deliveryMessage.value.isNotEmpty),
-                    DisplayGuaranteeCard(),
-
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                () => _addCartController.isLoading.value
+                    ? Column(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: 2.w,
-                              bottom: 2.h,
+                          ShimmerEffect(
+                            child: _buildPlayerModelList(
+                              iconData: Icons.access_time_filled,
+                              title: _addCartController
+                                      .deliveryMessage.value.isNotEmpty
+                                  ? _addCartController.deliveryMessage.value
+                                  : "Select Delivery Time",
+                              bottomWidget: timeSheetView(context),
+                              isEnable: _addCartController
+                                      .selectAddressHouse.value.isNotEmpty ||
+                                  _addCartController
+                                      .selectAddress.value.isNotEmpty,
+                              key: 2,
                             ),
-                            child: Row(
+                          ),
+                          ShimmerEffect(child: DisplayGuaranteeCard()),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2.w, vertical: 1.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'View Order Details',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 4.5,
-                                    fontFamily: 'MuseoSans',
-                                    fontWeight: FontWeight.w700,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 2.w,
+                                    bottom: 2.h,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      ShimmerEffect(
+                                        child: Text(
+                                          'View Order Details',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    4.5,
+                                            fontFamily: 'MuseoSans',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                                ShimmerEffect(
+                                  child: CheckoutWalletCard(
+                                    name: storeName,
+                                    balance: _addCartController
+                                            .getOrderConfirmPageDataModel
+                                            .value
+                                            ?.data
+                                            ?.walletAmount ??
+                                        0,
+                                    ID: storeID,
+                                  ),
+                                )
                               ],
                             ),
                           ),
-                          CheckoutWalletCard(
-                            name: storeName,
-                            balance: _addCartController
-                                    .getOrderConfirmPageDataModel
-                                    .value
-                                    ?.data
-                                    ?.walletAmount ??
-                                0,
-                            ID: storeID,
-                          )
+                          ShimmerEffect(child: payView()),
+                        ],
+                      )
+                    : Column(
+                        key: Key(
+                            'builder ${_addCartController.selectExpendTile.value.toString()}'),
+                        children: [
+                          // _buildPlayerModelList(
+                          //   iconData: Icons.location_on_rounded,
+                          //   title: _addCartController
+                          //               .selectAddressHouse.value.isNotEmpty ||
+                          //           _addCartController
+                          //               .selectAddress.value.isNotEmpty
+                          //       ? "${_addCartController.selectAddressHouse.value} ${_addCartController.selectAddress.value}"
+                          //       : StringContants.addDeliveryAddresses,
+                          //   bottomWidget: addressView(context),
+                          //   isEnable: true,
+                          //   key: 0,
+                          // ),
+                          // _buildPlayerModelList(
+                          //   iconData: Icons.account_balance_wallet_outlined,
+                          //   title: StringContants.walletAmount,
+                          //   bottomWidget: walletAmountView(context),
+                          //   isEnable: _addCartController
+                          //           .selectAddressHouse.value.isNotEmpty ||
+                          //       _addCartController.selectAddress.value.isNotEmpty,
+                          //   key: 1,
+                          // ),
+                          _buildPlayerModelList(
+                            iconData: Icons.access_time_filled,
+                            title: (_addCartController.deliveryMessage.value !=
+                                        null &&
+                                    _addCartController.deliveryMessage.value !=
+                                        "")
+                                ? _addCartController.deliveryMessage.value
+                                : "Select Delivery Time",
+                            bottomWidget: timeSheetView(context),
+                            isEnable: _addCartController
+                                    .selectAddressHouse.value.isNotEmpty ||
+                                _addCartController
+                                    .selectAddress.value.isNotEmpty,
+                            key: 2,
+                          ),
+                          // _buildPlayerModelList(
+                          //     iconData: Icons.payment,
+                          //     title: StringContants.paymentMode,
+                          //     bottomWidget: paymentMode(),
+                          //     key: 3,
+                          //     isEnable: _addCartController
+                          //         .deliveryMessage.value.isNotEmpty),
+                          DisplayGuaranteeCard(),
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2.w, vertical: 1.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 2.w,
+                                    bottom: 2.h,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'View Order Details',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  4.5,
+                                          fontFamily: 'MuseoSans',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                CheckoutWalletCard(
+                                  name: storeName,
+                                  balance: _addCartController
+                                          .getOrderConfirmPageDataModel
+                                          .value
+                                          ?.data
+                                          ?.walletAmount ??
+                                      0,
+                                  ID: storeID,
+                                )
+                              ],
+                            ),
+                          ),
+                          payView(),
                         ],
                       ),
-                    ),
-                    payView(),
-                  ],
-                ),
               ),
             ),
           ),
           Obx(
-            () => Container(
-              height: 10.h,
-              decoration: BoxDecoration(color: Color(0xffe6faf1)),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50.w,
-                      height: 9.h,
-                      child: paymentMode(),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        if (_addCartController.isTodaySlotsAvailable.value ||
-                            _addCartController.isTomorrowSlotsAvailable.value) {
-                          if (_addCartController.selectPaymentMode.value ==
-                              'paynow') {
-                            await _addCartController.createRazorPayOrder(
-                                storeId:
-                                    _addCartController.store.value?.sId ?? '',
-                                amount: double.parse(_addCartController
-                                        .getOrderConfirmPageDataModel
-                                        .value
-                                        ?.data
-                                        ?.total
-                                        ?.toStringAsFixed(2) ??
-                                    "0.0"));
-                            if (_addCartController
-                                    .createRazorpayResponseModel.value !=
-                                null) {
-                              launchPayment(
-                                  _addCartController
-                                          .getOrderConfirmPageDataModel
-                                          .value
-                                          ?.data
-                                          ?.total
-                                          ?.toInt() ??
-                                      00,
-                                  _addCartController.createRazorpayResponseModel
-                                          .value?.orderId ??
-                                      '');
-                            } else {
-                              Get.showSnackbar(GetBar(
-                                message: "failed to create razor order",
-                                duration: Duration(seconds: 2),
-                              ));
-                            }
-                          } else {
-                            finalPlaceOrder();
-                          }
-                        }
-                      },
-                      child: Container(
-                        width: 40.w,
-                        height: 6.h,
-                        decoration: BoxDecoration(
-                          color:
-                              (_addCartController.isTodaySlotsAvailable.value ||
-                                      _addCartController
-                                          .isTomorrowSlotsAvailable.value)
-                                  ? AppConst.darkGreen
-                                  : AppConst.grey,
-                          border:
-                              Border.all(width: 0.5, color: AppConst.darkGreen),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(
-                            child: Text(
-                          (_addCartController.selectPaymentMode.value ==
-                                  "paybycash")
-                              ? "Pay Cash \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}"
-                              : "Pay \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}",
-                          style: TextStyle(
-                            fontFamily: 'MuseoSans',
-                            color: AppConst.white,
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.normal,
+            () => _addCartController.isLoading.value
+                ? Container(
+                    height: 10.h,
+                    decoration: BoxDecoration(color: AppConst.white),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 2.w),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                            height: 9.h,
+                            child: ShimmerEffect(child: paymentMode()),
                           ),
-                        )),
+                          ShimmerEffect(
+                            child: Container(
+                              width: 40.w,
+                              height: 6.h,
+                              decoration: BoxDecoration(
+                                color: (_addCartController
+                                            .isTodaySlotsAvailable.value ||
+                                        _addCartController
+                                            .isTomorrowSlotsAvailable.value)
+                                    ? AppConst.darkGreen
+                                    : AppConst.grey,
+                                border: Border.all(
+                                    width: 0.5, color: AppConst.darkGreen),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-            ),
+                    ),
+                  )
+                : Container(
+                    height: 10.h,
+                    decoration: BoxDecoration(color: Color(0xffe6faf1)),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 2.w),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                            height: 9.h,
+                            child: paymentMode(),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              if (_addCartController
+                                      .isTodaySlotsAvailable.value ||
+                                  _addCartController
+                                      .isTomorrowSlotsAvailable.value) {
+                                if (_addCartController
+                                        .selectPaymentMode.value ==
+                                    'paynow') {
+                                  if (_addCartController
+                                              .dayTimeSlots.value?.day !=
+                                          null &&
+                                      _addCartController
+                                              .dayTimeSlots.value?.startTime !=
+                                          null) {
+                                    await _addCartController.createRazorPayOrder(
+                                        storeId: _addCartController
+                                                .store.value?.sId ??
+                                            '',
+                                        amount: double.parse(_addCartController
+                                                .getOrderConfirmPageDataModel
+                                                .value
+                                                ?.data
+                                                ?.total
+                                                ?.toStringAsFixed(2) ??
+                                            "0.0"));
+                                    _addCartController.deliveryMessage.value ==
+                                        "";
+                                  } else {
+                                    _addCartController.selectExpendTile.value =
+                                        2;
+                                  }
+                                  if (_addCartController
+                                          .createRazorpayResponseModel.value !=
+                                      null) {
+                                    if (_addCartController
+                                                .dayTimeSlots.value?.day !=
+                                            null &&
+                                        _addCartController.dayTimeSlots.value
+                                                ?.startTime !=
+                                            null) {
+                                      launchPayment(
+                                          _addCartController
+                                                  .getOrderConfirmPageDataModel
+                                                  .value
+                                                  ?.data
+                                                  ?.total
+                                                  ?.toInt() ??
+                                              00,
+                                          _addCartController
+                                                  .createRazorpayResponseModel
+                                                  .value
+                                                  ?.orderId ??
+                                              '');
+                                      _addCartController
+                                              .deliveryMessage.value ==
+                                          "";
+                                    } else {
+                                      _addCartController
+                                          .selectExpendTile.value = 2;
+                                    }
+                                  } else {
+                                    Get.showSnackbar(GetBar(
+                                      message: "failed to create razor order",
+                                      duration: Duration(seconds: 2),
+                                    ));
+                                  }
+                                } else {
+                                  if (_addCartController
+                                              .dayTimeSlots.value?.day !=
+                                          null &&
+                                      _addCartController
+                                              .dayTimeSlots.value?.startTime !=
+                                          null) {
+                                    finalPlaceOrder();
+                                    _addCartController.deliveryMessage.value ==
+                                        "";
+                                  } else {
+                                    _addCartController.selectExpendTile.value =
+                                        2;
+                                  }
+                                }
+                              }
+                            },
+                            child: Container(
+                              width: 40.w,
+                              height: 6.h,
+                              decoration: BoxDecoration(
+                                color: (_addCartController
+                                            .isTodaySlotsAvailable.value ||
+                                        _addCartController
+                                            .isTomorrowSlotsAvailable.value)
+                                    ? AppConst.darkGreen
+                                    : AppConst.grey,
+                                border: Border.all(
+                                    width: 0.5, color: AppConst.darkGreen),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Center(
+                                  child: Text(
+                                (_addCartController.selectPaymentMode.value ==
+                                        "paybycash")
+                                    ? "Pay Cash \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}"
+                                    : "Pay \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}",
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.white,
+                                  fontSize: SizeUtils.horizontalBlockSize * 4,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              )),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
           ),
           // Obx(
           //   () => GestureDetector(
@@ -1994,10 +2173,10 @@ class CheckoutWalletCard extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Text("Your Wallet has been applied. Tap to unselect",
+            Text("Your Wallet has been applied.",
                 style: TextStyle(
                   fontFamily: 'MuseoSans',
-                  color: Color(0xffdd2863),
+                  color: AppConst.green,
                   fontSize: SizeUtils.horizontalBlockSize * 3.5,
                   fontWeight: FontWeight.w700,
                   fontStyle: FontStyle.normal,

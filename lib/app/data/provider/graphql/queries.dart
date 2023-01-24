@@ -2204,6 +2204,7 @@ data{
           address
           createdAt
           total_cashback
+          final_payable_wallet_amount
           wallet_amount
           delivery_slot
           {

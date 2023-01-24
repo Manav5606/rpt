@@ -162,15 +162,15 @@ class AddCartService {
   }) async {
     try {
       final variables = {
-        'order_type': store.storeType,
+        'order_type': "online",
         'products': List.from(products.map((e) => e.toJson())),
         'rawitems': List.from(rawItem.map((e) => e.toJson())),
         'inventories': List.from(inventories.map((e) => e.toJson())),
         'order_type': order_type,
-        'storeId': store.sId,
+        'storeId': store,
         'total': total,
         'delivery_slot': deliveryTimeSlot?.toJson(),
-        'cashback': store.earnedCashback?.toInt() ?? 0,
+        // 'cashback': store.earnedCashback?.toInt() ?? 0,
         'wallet_amount': walletAmount,
         'razor_signature': razorPaySignature,
         'razor_order_id': razorPayOrderId,
