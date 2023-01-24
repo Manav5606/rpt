@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,16 @@ void main() async {
   await FireBaseNotification().setUpLocalNotification();
   await GetStorage.init();
   await FirebaseRemoteConfigUtils().initMethod();
+  await FirebaseAppCheck.instance.activate(
+      // webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+      androidDebugProvider: true
+      // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
+      // your preferred provider. Choose from:
+      // 1. debug provider
+      // 2. safety net provider
+      // 3. play integrity provider
+      // androidProvider: AndroidProvider.debug,
+      );
   await HiveHelper.init();
   // DynamicLinkHelper.init();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
