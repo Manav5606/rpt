@@ -5,7 +5,9 @@ import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
+import 'package:customer_app/app/ui/pages/my_wallet/wallet_details_screen.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/widgets/copied/confirm_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -348,6 +350,15 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                         ),
                                       ),
                                     ),
+                                    (_addCartController
+                                                .reviewCart.value?.data ==
+                                            null)
+                                        ? EmptyHistoryPage(
+                                            text1: "Cart is Empty",
+                                            text2: "Add products to cart ",
+                                            icon: Icons.shopping_cart,
+                                            text3: "")
+                                        : SizedBox(),
                                     Obx(
                                       () => ListView.builder(
                                         itemCount: _addCartController

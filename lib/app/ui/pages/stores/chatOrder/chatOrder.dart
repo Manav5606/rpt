@@ -169,34 +169,43 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
             children: [
               Obx(
                 () => GestureDetector(
-                  onTap: () async {
-                    Get.toNamed(
-                      AppRoutes.CartReviewScreen,
-                      arguments: {
-                        'logo':
-                            chatOrderController.cartIndex.value?.store?.logo,
-                        'storeName':
-                            chatOrderController.cartIndex.value?.store?.name,
-                        'totalCount': chatOrderController
-                            .cartIndex.value?.totalItemsCount?.value
-                            .toString(),
-                        'id': chatOrderController.cartIndex.value?.store?.sId,
-                        "businessID": widget.businessID
-                      },
-                    );
-                    await _addCartController.getReviewCartData(
-                        cartId: chatOrderController.cartIndex.value?.sId ?? "");
-                    // await _addCartController.getCartPageInformation(storeId: chatOrderController.cartIndex.value?.store?.sId ?? "");
-                    await _addCartController.getCartLocation(
-                        storeId:
-                            chatOrderController.cartIndex.value?.store?.sId ??
-                                "",
-                        cartId: chatOrderController.cartIndex.value?.sId ?? "");
-                    _addCartController.store.value =
-                        chatOrderController.cartIndex.value?.store;
-                    _addCartController.cartId.value =
-                        chatOrderController.cartIndex.value?.sId ?? "";
-                  },
+                  onTap: (chatOrderController
+                              .cartIndex.value?.totalItemsCount?.value !=
+                          0)
+                      ? () async {
+                          Get.toNamed(
+                            AppRoutes.CartReviewScreen,
+                            arguments: {
+                              'logo': chatOrderController
+                                  .cartIndex.value?.store?.logo,
+                              'storeName': chatOrderController
+                                  .cartIndex.value?.store?.name,
+                              'totalCount': chatOrderController
+                                  .cartIndex.value?.totalItemsCount?.value
+                                  .toString(),
+                              'id': chatOrderController
+                                  .cartIndex.value?.store?.sId,
+                              "businessID": widget.businessID
+                            },
+                          );
+                          await _addCartController.getReviewCartData(
+                              cartId:
+                                  chatOrderController.cartIndex.value?.sId ??
+                                      "");
+                          // await _addCartController.getCartPageInformation(storeId: chatOrderController.cartIndex.value?.store?.sId ?? "");
+                          await _addCartController.getCartLocation(
+                              storeId: chatOrderController
+                                      .cartIndex.value?.store?.sId ??
+                                  "",
+                              cartId:
+                                  chatOrderController.cartIndex.value?.sId ??
+                                      "");
+                          _addCartController.store.value =
+                              chatOrderController.cartIndex.value?.store;
+                          _addCartController.cartId.value =
+                              chatOrderController.cartIndex.value?.sId ?? "";
+                        }
+                      : null,
                   child: Padding(
                     padding: EdgeInsets.only(left: 4.w, right: 3.w),
                     child: Row(
@@ -218,7 +227,12 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                               fontStyle: FontStyle.normal,
                             )),
                         Spacer(),
-                        Text("View Cart",
+                        Text(
+                            (chatOrderController.cartIndex.value
+                                        ?.totalItemsCount?.value !=
+                                    0)
+                                ? "View Cart"
+                                : "",
                             style: TextStyle(
                               fontFamily: 'MuseoSans',
                               color: AppConst.green,
@@ -226,11 +240,15 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                               fontWeight: FontWeight.w600,
                               fontStyle: FontStyle.normal,
                             )),
-                        Icon(
-                          Icons.arrow_forward_ios_outlined,
-                          color: AppConst.green,
-                          size: 2.2.h,
-                        ),
+                        (chatOrderController
+                                    .cartIndex.value?.totalItemsCount?.value !=
+                                0)
+                            ? Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                color: AppConst.green,
+                                size: 2.2.h,
+                              )
+                            : SizedBox(),
                       ],
                     ),
                   ),
