@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -552,8 +553,17 @@ class _PayViewState extends State<PayView> {
                                   amountController.clear();
                                   paycontroller.isLoading.value = false;
                                 } else {
-                                  Snack.bottom(
-                                      'Error', 'Failed to Redeem the Cash');
+                                  Get.to(
+                                      OrderFailScreen(
+                                        type: "scan",
+                                      ),
+                                      transition: Transition.fadeIn);
+                                  Timer(Duration(seconds: 2), () {
+                                    Get.back();
+                                    Get.back();
+                                  });
+                                  // Snack.bottom(
+                                  //     'Error', 'Failed to Redeem the Cash');
                                   paycontroller.isLoading.value = false;
                                 }
                               } else {

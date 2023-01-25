@@ -36,6 +36,7 @@ class Data {
   int? billDiscountOfferAmount;
   bool? billDiscountOfferStatus;
   int? billDiscountOfferTarget;
+  int? omit_bill_amount;
   // BillDiscountOfferDate? billDiscountOfferDate;
 
   Data(
@@ -51,7 +52,8 @@ class Data {
       this.walletAmount,
       this.billDiscountOfferAmount,
       this.billDiscountOfferStatus,
-      this.billDiscountOfferTarget
+      this.billDiscountOfferTarget,
+      this.omit_bill_amount
       // this.billDiscountOfferDate
       });
 
@@ -74,6 +76,7 @@ class Data {
     billDiscountOfferAmount = json['bill_discount_offer_amount'];
     billDiscountOfferStatus = json['bill_discount_offer_status'];
     billDiscountOfferTarget = json['bill_discount_offer_target'];
+    omit_bill_amount = json['omit_bill_amount'];
     // billDiscountOfferDate = json['bill_discount_offer_date'] != null
     //     ? new BillDiscountOfferDate.fromJson(json['bill_discount_offer_date'])
     //     : null;
@@ -97,6 +100,7 @@ class Data {
     data['bill_discount_offer_amount'] = this.billDiscountOfferAmount;
     data['bill_discount_offer_status'] = this.billDiscountOfferStatus;
     data['bill_discount_offer_target'] = this.billDiscountOfferTarget;
+    data['omit_bill_amount'] = this.omit_bill_amount;
     // if (this.billDiscountOfferDate != null) {
     //   data['bill_discount_offer_date'] = this.billDiscountOfferDate!.toJson();
     // }

@@ -1888,9 +1888,10 @@ data{
   static final getOrderConfirmPageData = new GraphQLQuery(
     name: 'getOrderConfirmPageData',
     query: r'''
-    query($store: ID  $products: [OrderProduct] $distance: Int $wallet_amount :Int $inventories: [OrderInventory]){
+    query($store: ID  $products: [OrderProduct] $distance: Int $wallet_amount :Int $pickedup :Boolean $inventories: [OrderInventory]){
       getOrderConfirmPageData(
         store: $store
+        pickedup: $pickedup
         products: $products
         distance: $distance
         wallet_amount: $wallet_amount
@@ -1906,6 +1907,11 @@ data{
       total
       gst_and_packaging
       packaging_fee
+      wallet_amount
+      bill_discount_offer_amount
+      bill_discount_offer_status
+      bill_discount_offer_target
+      omit_bill_amount
       delivery_fee
          delivery_slots{
         _id
@@ -1930,10 +1936,7 @@ data{
         }
       }
      
-      wallet_amount
-      bill_discount_offer_amount
-      bill_discount_offer_status
-      bill_discount_offer_target
+      
      
     }
       }
@@ -2206,6 +2209,7 @@ data{
           total_cashback
           final_payable_wallet_amount
           wallet_amount
+          iPayment
           delivery_slot
           {
           day

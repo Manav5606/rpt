@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
@@ -11,6 +12,7 @@ import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/widgets/imagePicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
 import 'package:customer_app/app/ui/pages/stores/StoreViewProductList.dart';
@@ -155,7 +157,19 @@ class _MyCartScreenState extends State<MyCartScreen> {
                               _homeController.apiCall();
                               _exploreController.isLoadingSubmit.value = false;
                             } else {
-                              Snack.bottom('Error', 'Failed to send receipt');
+                              Get.to(
+                                  OrderFailScreen(
+                                    type: "scan",
+                                    order: order,
+                                  ),
+                                  transition: Transition.fadeIn);
+                              Timer(Duration(seconds: 2), () {
+                                Get.back();
+                                Get.back();
+                                Get.back();
+                                Get.back();
+                              });
+                              // Snack.bottom('Error', 'Failed to send receipt');
                               _exploreController.isLoadingSubmit.value = false;
                             }
                           }

@@ -87,7 +87,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                 .getOrderConfirmPageDataModel.value?.data?.previousTotalAmount
                 ?.toStringAsFixed(2) ??
             "0.0"),
-        store: _addCartController.reviewCart.value?.data?.storeDoc?.id ?? storeID,
+        store:
+            _addCartController.reviewCart.value?.data?.storeDoc?.id ?? storeID,
         cartId: _addCartController.cartId.value,
         products: _addCartController.reviewCart.value?.data?.products,
         rawItem: _addCartController.reviewCart.value?.data?.rawItems,
@@ -96,6 +97,10 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         walletAmount: double.parse(_addCartController.getOrderConfirmPageDataModel.value?.data?.usedWalletAmount?.toStringAsFixed(2) ?? "0.0"),
         deliveryFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.deliveryFee ?? 0,
         packagingFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.packagingFee ?? 0,
+        // bill_discount_offer_amount: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferAmount ?? 0,
+        // bill_discount_offer_status: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferStatus ?? false,
+        // bill_discount_offer_target: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferTarget ?? 0,
+        // omit_bill_amount: _addCartController.getOrderConfirmPageDataModel.value?.data?.omit_bill_amount ?? 0,
         razorPayPaymentId: response?.paymentId ?? '',
         razorPayOrderId: response?.orderId ?? '',
         razorPaySignature: response?.signature ?? '',
@@ -854,68 +859,68 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
     );
   }
 
-  Widget walletAmountView(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RadioListTile(
-          title: Text("Any offers around you"),
-          value: "offer",
-          groupValue: _addCartController.selectPaymentMode.value,
-          onChanged: (value) {
-            _addCartController.selectPaymentMode.value = value.toString();
-          },
-        ),
-        Row(
-          children: [
-            Expanded(child: Text("Wallet Amount")),
-            Text(
-                "${_addCartController.getOrderConfirmPageDataModel.value?.data?.usedWalletAmount ?? 0}"),
-          ],
-        ),
-        Obx(
-          () => Row(
-            children: [
-              Flexible(
-                child: RadioListTile(
-                  title: Text("Yes"),
-                  value: "yes",
-                  groupValue: _addCartController.selectWalletMode.value,
-                  onChanged: (value) {
-                    _addCartController.selectWalletMode.value =
-                        value.toString();
-                  },
-                ),
-              ),
-              Flexible(
-                child: RadioListTile(
-                  title: Text("No"),
-                  value: "no",
-                  groupValue: _addCartController.selectWalletMode.value,
-                  onChanged: (value) {
-                    _addCartController.selectWalletMode.value =
-                        value.toString();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        button(
-            onTap: () async {
-              await _addCartController.getOrderConfirmPageData(
-                  storeId: _addCartController.store.value?.sId ?? '',
-                  distance: 0,
-                  products: _addCartController.reviewCart.value?.data?.products,
-                  inventories:
-                      _addCartController.reviewCart.value?.data?.inventories,
-                  walletAmount: 0);
-              _addCartController.selectExpendTile.value = 2;
-            },
-            text: "Choose Wallet")
-      ],
-    );
-  }
+  // Widget walletAmountView(BuildContext context) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       RadioListTile(
+  //         title: Text("Any offers around you"),
+  //         value: "offer",
+  //         groupValue: _addCartController.selectPaymentMode.value,
+  //         onChanged: (value) {
+  //           _addCartController.selectPaymentMode.value = value.toString();
+  //         },
+  //       ),
+  //       Row(
+  //         children: [
+  //           Expanded(child: Text("Wallet Amount")),
+  //           Text(
+  //               "${_addCartController.getOrderConfirmPageDataModel.value?.data?.usedWalletAmount ?? 0}"),
+  //         ],
+  //       ),
+  //       Obx(
+  //         () => Row(
+  //           children: [
+  //             Flexible(
+  //               child: RadioListTile(
+  //                 title: Text("Yes"),
+  //                 value: "yes",
+  //                 groupValue: _addCartController.selectWalletMode.value,
+  //                 onChanged: (value) {
+  //                   _addCartController.selectWalletMode.value =
+  //                       value.toString();
+  //                 },
+  //               ),
+  //             ),
+  //             Flexible(
+  //               child: RadioListTile(
+  //                 title: Text("No"),
+  //                 value: "no",
+  //                 groupValue: _addCartController.selectWalletMode.value,
+  //                 onChanged: (value) {
+  //                   _addCartController.selectWalletMode.value =
+  //                       value.toString();
+  //                 },
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       button(
+  //           onTap: () async {
+  //             await _addCartController.getOrderConfirmPageData(
+  //                 storeId: _addCartController.store.value?.sId ?? '',
+  //                 distance: 0,
+  //                 products: _addCartController.reviewCart.value?.data?.products,
+  //                 inventories:
+  //                     _addCartController.reviewCart.value?.data?.inventories,
+  //                 walletAmount: 0);
+  //             _addCartController.selectExpendTile.value = 2;
+  //           },
+  //           text: "Choose Wallet")
+  //     ],
+  //   );
+  // }
 
   Widget timeSheetView(BuildContext context) {
     return Column(
@@ -993,7 +998,21 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
             ),
           ),
           bottomRow(
-              'bill Discount ',
+              'Delivery Fee',
+              (_addCartController.getOrderConfirmPageDataModel.value?.data
+                          ?.deliveryFee ??
+                      '0')
+                  .toString(),
+              true),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.5.h),
+            child: Container(
+              height: 1,
+              color: AppConst.lightGrey,
+            ),
+          ),
+          bottomRow(
+              'Bill Discount ',
               (_addCartController.getOrderConfirmPageDataModel.value?.data
                           ?.billDiscountOfferAmount ??
                       '0')

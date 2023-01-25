@@ -458,8 +458,12 @@ class AddCartController extends GetxController {
     required double lat,
     required double lng,
     required int packagingFee,
+    // required int bill_discount_offer_amount,
+    // required int bill_discount_offer_target,
+    // required int omit_bill_amount,
     required int deliveryFee,
     required bool pickedup,
+    // required bool bill_discount_offer_status,
     required var deliveryTimeSlot,
   }) async {
     try {
@@ -482,6 +486,10 @@ class AddCartController extends GetxController {
           lat: lat,
           lng: lng,
           packagingFee: packagingFee,
+          // bill_discount_offer_amount: bill_discount_offer_amount,
+          // bill_discount_offer_status: bill_discount_offer_status,
+          // bill_discount_offer_target: bill_discount_offer_target,
+          // omit_bill_amount: omit_bill_amount,
           deliveryFee: deliveryFee,
           deliveryTimeSlot: deliveryTimeSlot,
           pickedup: pickedup);
@@ -516,6 +524,7 @@ class AddCartController extends GetxController {
 
   Future<void> getOrderConfirmPageData(
       {required String storeId,
+      required bool pickedup,
       required double distance,
       required int walletAmount,
       var products,
@@ -526,6 +535,7 @@ class AddCartController extends GetxController {
       getOrderConfirmPageDataModel.value =
           await AddCartService.getOrderConfirmPageData(
               storeId: storeId,
+              pickedup: pickedup,
               distance: distance,
               walletAmount: 0,
               products: products,

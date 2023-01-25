@@ -38,6 +38,7 @@ class OrderData {
   num? total_cashback;
   int? cashback_percentage;
   num? wallet_amount;
+  num? iPayment;
   num? previous_total;
   String? createdAt;
   String? address;
@@ -56,6 +57,7 @@ class OrderData {
       this.total,
       this.total_cashback,
       this.wallet_amount,
+      this.iPayment,
       this.previous_total,
       this.cashback_percentage,
       this.createdAt,
@@ -83,6 +85,7 @@ class OrderData {
     cashback_percentage = json['cashback_percentage'];
     total_cashback = json['total_cashback'];
     wallet_amount = json['wallet_amount'];
+    iPayment = json['iPayment'];
     createdAt = json['createdAt'];
     address = json['address'];
     location = json['LocationCoordinates'] != null
@@ -126,6 +129,7 @@ class OrderData {
     data['cashback_percentage'] = this.cashback_percentage;
     data['total_cashback'] = this.total_cashback;
     data['wallet_amount'] = this.wallet_amount;
+    data['iPayment'] = this.iPayment;
     data['createdAt'] = this.createdAt;
     data['rider'] = this.rider;
     data['address'] = this.address;

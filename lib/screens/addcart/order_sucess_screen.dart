@@ -92,6 +92,83 @@ class _OrderSucessScreenState extends State<OrderSucessScreen> {
   }
 }
 
+class OrderFailScreen extends StatefulWidget {
+  final OrderData? order;
+  final String? type;
+
+  OrderFailScreen({Key? key, this.order, this.type = "order"})
+      : super(key: key);
+
+  @override
+  State<OrderFailScreen> createState() => _OrderFailScreenState();
+}
+
+class _OrderFailScreenState extends State<OrderFailScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      Future.delayed(Duration(seconds: 3), () {
+        Get.off(
+            HistoryOrderTrackingScreen(
+              // displayHour: _addCartController.displayHour.value,
+              order: widget.order,
+            ),
+            transition: Transition.fade);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: AppConst.white,
+          statusBarIconBrightness: Brightness.dark),
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            color: AppConst.white,
+          ),
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Lottie.asset('assets/lottie/paymentfail.json'),
+              ),
+              Text(
+                (widget.type == "order")
+                    ? "Order Placed "
+                    : (widget.type == "scan")
+                        ? "Scan Receipt "
+                        : "Refunded",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 7,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1),
+              ),
+              Text(
+                "UnSuccessful",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 5,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class OrderSucessScreen2 extends StatefulWidget {
   final OrderData? order;
 
@@ -162,7 +239,8 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
                   ),
                 ),
                 TextSpan(
-                  text: "${widget.order?.final_payable_wallet_amount ?? 0}",
+                  text:
+                      "${widget.order?.final_payable_wallet_amount?.toStringAsFixed(2) ?? 0}",
                   style: TextStyle(
                     color: AppConst.black,
                     fontSize: SizeUtils.horizontalBlockSize * 12,

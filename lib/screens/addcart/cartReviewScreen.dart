@@ -1775,6 +1775,19 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                           },
                                                         );
                                                         // );
+
+                                                        if (_addCartController
+                                                                .cartLocationModel
+                                                                .value
+                                                                ?.storeAddress
+                                                                ?.address ==
+                                                            _addCartController
+                                                                .selectAddress
+                                                                .value) {
+                                                          _addCartController
+                                                              .pickedup
+                                                              .value = true;
+                                                        }
                                                         await _addCartController.getOrderConfirmPageData(
                                                             storeId: _addCartController
                                                                     .reviewCart
@@ -1783,6 +1796,10 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                     ?.storeDoc
                                                                     ?.id ??
                                                                 storeID,
+                                                            pickedup:
+                                                                _addCartController
+                                                                    .pickedup
+                                                                    .value,
                                                             distance: 0,
                                                             products:
                                                                 _addCartController

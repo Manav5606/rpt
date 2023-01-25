@@ -1020,7 +1020,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   (order?.orderType ==
                                                           "receipt")
                                                       ? "Cashback - \u{20B9} ${order?.cashback_percentage ?? 0}%"
-                                                      : "Cashback- \u{20B9} ${order?.total_cashback ?? 0}",
+                                                      : "Cashback- \u{20B9} ${order?.final_payable_wallet_amount?.toStringAsFixed(2) ?? 0}", //final
                                                   style: TextStyle(
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
@@ -1036,7 +1036,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   (order?.orderType ==
                                                           "receipt")
                                                       ? "Earned Cashback- \u{20B9} ${order?.total_cashback ?? 0}"
-                                                      : "Amount Paid- \u{20B9} ${order?.total ?? 0}",
+                                                      : "Amount Paid- \u{20B9} ${order?.iPayment ?? 0}", //ipayment
                                                   style: TextStyle(
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
@@ -1204,7 +1204,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                         (modifiedOrReplacedItemCount >
                                                                 0)
                                                             ? "Verify Items and Pay \u{20B9} ${order?.total ?? 0}"
-                                                            : "Pay \u{20B9} ${order?.total ?? 0}",
+                                                            : "Pay \u{20B9} ${order?.final_payable_amount ?? 0}", //pay 0 disable the button
                                                         style: TextStyle(
                                                           color: AppConst
                                                               .ContainerColor,
