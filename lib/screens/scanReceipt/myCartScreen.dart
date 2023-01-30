@@ -144,17 +144,26 @@ class _MyCartScreenState extends State<MyCartScreen> {
                             _exploreController.addCartProduct.clear();
                             total();
                             if (order != null) {
-                              await Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        OrderSucessScreen(
-                                      type: "scan",
-                                      order: order,
-                                    ),
+                              Get.to(
+                                  OrderFailScreen(
+                                    type: "scan",
+                                    order: order,
                                   ),
-                                  (Route<dynamic> route) => route.isFirst);
-                              _homeController.apiCall();
+                                  transition: Transition.fadeIn);
+                              Timer(Duration(seconds: 2), () {
+                                Get.offAllNamed(AppRoutes.BaseScreen);
+                              });
+                              // await Navigator.pushAndRemoveUntil(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (BuildContext context) =>
+                              //           OrderSucessScreen(
+                              //         type: "scan",
+                              //         order: order,
+                              //       ),
+                              //     ),
+                              //     (Route<dynamic> route) => route.isFirst);
+                              // _homeController.apiCall();
                               _exploreController.isLoadingSubmit.value = false;
                             } else {
                               Get.to(
@@ -164,10 +173,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                   ),
                                   transition: Transition.fadeIn);
                               Timer(Duration(seconds: 2), () {
-                                Get.back();
-                                Get.back();
-                                Get.back();
-                                Get.back();
+                                Get.offAllNamed(AppRoutes.BaseScreen);
                               });
                               // Snack.bottom('Error', 'Failed to send receipt');
                               _exploreController.isLoadingSubmit.value = false;

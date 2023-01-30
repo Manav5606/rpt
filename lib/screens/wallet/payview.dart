@@ -5,6 +5,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
@@ -48,6 +49,12 @@ class _PayViewState extends State<PayView> {
   @override
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
+    var balance =
+        (paycontroller.redeemCashInStorePageDataIndex.value.earnedCashback ??
+                0) +
+            (paycontroller
+                    .redeemCashInStorePageDataIndex.value.welcomeOfferAmount ??
+                0);
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -82,7 +89,151 @@ class _PayViewState extends State<PayView> {
         () => Form(
           key: _formKey,
           child: paycontroller.isLoading.value
-              ? Center(child: CircularProgressIndicator())
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            ShimmerEffect(
+                              child: Container(
+                                height: 22.h,
+                                width: 76.w,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: AppConst.black,
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: AppConst.grey)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2.w),
+                              child: ShimmerEffect(
+                                child: Text(
+                                    paycontroller.redeemCashInStorePageDataIndex
+                                            .value.name ??
+                                        '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.black,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 5,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing: -0.36,
+                                    )),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            ShimmerEffect(
+                              child: Text("You are Paying",
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.grey,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 5.2,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 0.5.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3.w),
+                              child: ShimmerEffect(
+                                child: TextFormField(
+                                  // validator: (value) => ((value != null &&
+                                  //         value.isEmpty)
+                                  //     ? 'Amount cannot be blank'
+                                  //     : (int.parse(value!) > (balance))
+                                  //         ? "Amount can not be greater than wallet balance"
+                                  //         : null),
+                                  // controller: amountController,
+                                  cursorHeight: 35,
+                                  cursorColor: AppConst.black,
+                                  maxLines: 1,
+                                  maxLength: 6,
+                                  textDirection: TextDirection.ltr,
+                                  keyboardType: TextInputType.number,
+                                  textAlign: TextAlign.center,
+                                  // onChanged: (value) {
+                                  //   paycontroller.amountText.value = value;
+                                  // },
+                                  decoration: InputDecoration(
+                                    counterText: "",
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 1),
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: "\u20b90",
+                                    hintTextDirection: TextDirection.ltr,
+                                  ),
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 7),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ShimmerEffect(
+                          child: Text("Paying from Wallet Balance",
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.grey,
+                                fontSize: SizeUtils.horizontalBlockSize * 4,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: -0.48,
+                              )),
+                        ),
+                        ShimmerEffect(
+                          child: Text(" \u20b9${balance}",
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.black,
+                                fontSize: SizeUtils.horizontalBlockSize * 4,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: -0.48,
+                              )),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ShimmerEffect(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: AppConst.black,
+                              borderRadius: BorderRadius.circular(12)),
+                          height: 7.h,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -225,12 +376,7 @@ class _PayViewState extends State<PayView> {
                                 validator: (value) => ((value != null &&
                                         value.isEmpty)
                                     ? 'Amount cannot be blank'
-                                    : (int.parse(value!) >
-                                            (paycontroller
-                                                    .redeemCashInStorePageDataIndex
-                                                    .value
-                                                    .earnedCashback ??
-                                                0))
+                                    : (int.parse(value!) > (balance))
                                         ? "Amount can not be greater than wallet balance"
                                         : null),
                                 controller: amountController,
@@ -509,8 +655,7 @@ class _PayViewState extends State<PayView> {
                               fontStyle: FontStyle.normal,
                               letterSpacing: -0.48,
                             )),
-                        Obx(() => Text(
-                            " \u20b9${paycontroller.redeemCashInStorePageDataIndex.value.earnedCashback ?? 0.0}",
+                        Text(" \u20b9${balance}",
                             style: TextStyle(
                               fontFamily: 'MuseoSans',
                               color: AppConst.black,
@@ -518,7 +663,7 @@ class _PayViewState extends State<PayView> {
                               fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.normal,
                               letterSpacing: -0.48,
-                            ))),
+                            )),
                       ],
                     ),
                     Padding(
@@ -559,8 +704,7 @@ class _PayViewState extends State<PayView> {
                                       ),
                                       transition: Transition.fadeIn);
                                   Timer(Duration(seconds: 2), () {
-                                    Get.back();
-                                    Get.back();
+                                    Get.offAllNamed(AppRoutes.BaseScreen);
                                   });
                                   // Snack.bottom(
                                   //     'Error', 'Failed to Redeem the Cash');

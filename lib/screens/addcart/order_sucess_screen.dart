@@ -108,16 +108,16 @@ class _OrderFailScreenState extends State<OrderFailScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      Future.delayed(Duration(seconds: 3), () {
-        Get.off(
-            HistoryOrderTrackingScreen(
-              // displayHour: _addCartController.displayHour.value,
-              order: widget.order,
-            ),
-            transition: Transition.fade);
-      });
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    //   Future.delayed(Duration(seconds: 3), () {
+    //     Get.off(
+    //         HistoryOrderTrackingScreen(
+
+    //           order: widget.order,
+    //         ),
+    //         transition: Transition.fade);
+    //   });
+    // });
   }
 
   @override

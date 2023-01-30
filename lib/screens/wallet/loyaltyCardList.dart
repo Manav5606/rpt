@@ -78,7 +78,8 @@ class ListViewChild extends StatelessWidget {
                 StoreID: "${storeSearchModel.sId ?? ""}",
                 StoreName: "${storeSearchModel.name ?? ""}",
                 distanceOrOffer: storeSearchModel.distance ?? 0,
-                Balance: storeSearchModel.earnedCashback ?? 0),
+                Balance: (storeSearchModel.earnedCashback ?? 0) +
+                    (storeSearchModel.welcomeOfferAmount ?? 0)),
           ),
         ],
       ),

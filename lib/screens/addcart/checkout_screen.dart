@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
@@ -111,30 +112,28 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
     if (_addCartController.orderModel.value != null) {
       _addCartController.formatDate();
-
-      // Get.back();
-      // Get.to(
-      //   HistoryOrderTrackingScreen(
-      //     // displayHour: _addCartController.displayHour.value,
-      //     order: _addCartController.orderModel.value!,
-      //   ),
-      // );
       await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => OrderSucessScreen(
                     order: _addCartController.orderModel.value!,
                     type: "order",
-                  )
-
-              // HistoryOrderTrackingScreen(
-              //   // displayHour: _addCartController.displayHour.value,
-              //   order: _addCartController.orderModel.value!,
-              // ),
-              ),
+                  )),
           (Route<dynamic> route) => route.isFirst);
       _addCartController.refresh();
       _homeController.apiCall();
+    } else {
+      Get.to(
+          OrderFailScreen(
+            order: _addCartController.orderModel.value!,
+            type: "order",
+          ),
+          transition: Transition.fadeIn);
+      Timer(Duration(seconds: 2), () {
+        Get.offAllNamed(AppRoutes.BaseScreen);
+      });
+      // Snack.bottom('Error', 'Failed to send receipt');
+
     }
   }
 
