@@ -269,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen>
                                               0) >
                                           0)
                                   ? Container(
-                                      height: 16.h,
+                                      height: 18.h,
                                       width: double.infinity,
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.horizontal,
@@ -546,9 +546,10 @@ class _HomeScreenState extends State<HomeScreen>
                                               0) >
                                           0
                                   ? Container(
-                                      height: 24.h,
+                                      height: 23.h,
                                       decoration: BoxDecoration(
-                                          color: Color(0xfff2f3f7)),
+                                          // color: Color(0xfff2f3f7)
+                                          ),
                                       child: Padding(
                                         padding: EdgeInsets.only(
                                             left: 2.w, top: 1.h, right: 1.w),
@@ -610,10 +611,10 @@ class _HomeScreenState extends State<HomeScreen>
                                               ],
                                             ),
                                             SizedBox(
-                                              height: 1.5.h,
+                                              height: 1.h,
                                             ),
                                             Container(
-                                              height: 17.h,
+                                              height: 16.h,
                                               // color: AppConst.yellow,
                                               width: double.infinity,
                                               child: SingleChildScrollView(
@@ -647,7 +648,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                             shrinkWrap: true,
                                                             itemExtent: SizeUtils
                                                                     .horizontalBlockSize *
-                                                                28,
+                                                                30,
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
@@ -691,7 +692,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                             shrinkWrap: true,
                                                             itemExtent: SizeUtils
                                                                     .horizontalBlockSize *
-                                                                28,
+                                                                30,
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
@@ -1609,6 +1610,18 @@ class RecentCarts extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(right: 1.w),
         child: Container(
+          margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+          decoration: BoxDecoration(
+            color: AppConst.white,
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            boxShadow: [
+              BoxShadow(
+                  color: AppConst.lightGrey, //New
+                  blurRadius: 2,
+                  spreadRadius: 2,
+                  offset: Offset(1, 1))
+            ],
+          ),
           child: Column(
             children: [
               Container(
@@ -1616,13 +1629,13 @@ class RecentCarts extends StatelessWidget {
                   left: 1.w,
                 ),
                 width: 26.w,
-                height: 12.h,
+                height: 10.h,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(12),
                     color: AppConst.white),
                 child: Padding(
                   padding: EdgeInsets.only(
-                      bottom: 1.h, top: 1.h, right: 1.w, left: 1.w),
+                      bottom: 0.5.h, top: 1.h, right: 1.w, left: 1.w),
                   child: Column(
                     children: [
                       Container(
@@ -1651,9 +1664,6 @@ class RecentCarts extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 1.h,
-              ),
               Text(
                   "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
                   style: TextStyle(
@@ -1663,6 +1673,9 @@ class RecentCarts extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
                   )),
+              SizedBox(
+                height: 0.5.h,
+              ),
             ],
           ),
         ),
@@ -1680,103 +1693,166 @@ class RecentActiveOrders extends StatelessWidget {
         super(key: key);
 
   final MyAccountController _myAccountController;
+  final HomeController _homeController = Get.find();
+
   int itemIndex;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ActiveOrderTrackingScreen(
-              activeOrder: (_myAccountController
-                  .activeOrdersModel.value?.data![itemIndex]),
-            ),
+        Get.to(
+          ActiveOrderTrackingScreen(
+            activeOrder: (_myAccountController
+                .activeOrdersModel.value?.data![itemIndex]),
           ),
         );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        // builder: (context) => ActiveOrderTrackingScreen(
+        //   activeOrder: (_myAccountController
+        //       .activeOrdersModel.value?.data![itemIndex]),
+        // ),
+
+        //   ),
+        // );
       },
-      child: Padding(
-        padding: EdgeInsets.only(right: 1.w),
-        child: Container(
-          child: Column(
-            children: [
-              Container(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
+        decoration: BoxDecoration(
+          color: AppConst.white,
+          // border: Border.all(width: 0.5, color: AppConst.lightGrey),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          boxShadow: [
+            BoxShadow(
+                color: AppConst.veryLightGrey, //New
+                blurRadius: 2,
+                spreadRadius: 3,
+                offset: Offset(0, 2)),
+            // BoxShadow(
+            //     color: AppConst.white, //New
+            //     blurRadius: 2,
+            //     spreadRadius: 3,
+            //     offset: Offset(-2, -2)),
+            // BoxShadow(
+            //     color: AppConst.lightGrey, //New
+            //     blurRadius: 2,
+            //     spreadRadius: 3,
+            //     offset: Offset(2, 0)),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                left: 1.w,
+              ),
+              width: 26.w,
+              height: 9.h,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppConst.white),
+              child: Padding(
                 padding: EdgeInsets.only(
-                  left: 1.w,
-                ),
-                width: 26.w,
-                height: 12.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: AppConst.white),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 1.h, top: 1.h, right: 1.w, left: 1.w),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 3.5.h,
-                        child: Image(
-                          image: AssetImage(
-                            'assets/images/CART.png',
-                          ),
+                    bottom: 0.5.h, top: 0.5.h, right: 1.w, left: 1.w),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 4.h,
+                      width: 8.w,
+                      child: Image(
+                        image: AssetImage(
+                          'assets/images/CART.png',
                         ),
                       ),
-                      Spacer(),
-                      Text(
-                        "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? "Go to Order"}",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: 'MuseoSans',
-                          color: AppConst.black,
-                          fontSize: SizeUtils.horizontalBlockSize * 3.2,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              (_myAccountController.activeOrdersModel.value?.data![itemIndex]
-                              .status ==
-                          "pending" ||
-                      (_myAccountController.activeOrdersModel.value
-                              ?.data![itemIndex].orderType ==
-                          "receipt"))
-                  ? Text(
-                      "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status ?? "Pending"}",
+                    ),
+                    Spacer(),
+                    Text(
+                      "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? "Go to Order"}",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: 'MuseoSans',
-                        color: Color(0xff0082ab),
-                        fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                        color: AppConst.black,
+                        fontSize: SizeUtils.horizontalBlockSize * 3,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
-                      ))
-                  : Container(
-                      width: 12.w,
-                      padding: EdgeInsets.symmetric(vertical: 0.5.h),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: AppConst.green),
-                      child: Center(
-                        child: Text("Pay",
-                            style: TextStyle(
-                              fontFamily: 'MuseoSans',
-                              color: AppConst.white,
-                              fontSize: SizeUtils.horizontalBlockSize * 3.2,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                            )),
                       ),
                     )
-            ],
-          ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 0.5.h,
+            ),
+            (_myAccountController
+                            .activeOrdersModel.value?.data![itemIndex].status ==
+                        "pending" ||
+                    (_myAccountController.activeOrdersModel.value
+                            ?.data![itemIndex].orderType ==
+                        "receipt"))
+                ? Text(
+                    "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status ?? "Pending"}",
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: Color(0xff0082ab),
+                      fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ))
+                : (((_myAccountController.activeOrdersModel.value
+                                    ?.data![itemIndex].status ==
+                                "picked_up") ||
+                            (_myAccountController.activeOrdersModel.value
+                                    ?.data![itemIndex].status ==
+                                "accepted") ||
+                            (_myAccountController.activeOrdersModel.value
+                                    ?.data![itemIndex].status ==
+                                "ready")) &&
+                        ((_myAccountController.activeOrdersModel.value
+                                    ?.data![itemIndex].final_payable_amount ??
+                                0) >
+                            0) &&
+                        (_myAccountController.activeOrdersModel.value
+                                ?.data![itemIndex].orderType !=
+                            "receipt")
+                    ? Container(
+                        width: 12.w,
+                        padding: EdgeInsets.symmetric(vertical: 0.5.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: AppConst.green),
+                        child: Center(
+                          child: Text("Pay",
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.white,
+                                fontSize: SizeUtils.horizontalBlockSize * 3,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                              )),
+                        ),
+                      )
+                    : Container(
+                        width: 12.w,
+                        padding: EdgeInsets.symmetric(vertical: 0.5.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: AppConst.grey),
+                        child: Center(
+                          child: Text("Paid",
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.white,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                              )),
+                        ),
+                      )),
+          ],
         ),
       ),
     );

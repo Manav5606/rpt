@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/utils/utils.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'package:customer_app/screens/scanReceipt/storeview_screen.dart';
 import 'package:customer_app/screens/wallet/controller/paymentController.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:customer_app/widgets/backButton.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -58,74 +60,104 @@ class WalletTransactionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
-    Color color = argumentData['color'];
+    // Color color = argumentData['color'];
+    Color color = Color(0xff0a3453);
     String name = argumentData['name'] ?? "S";
     String logo = argumentData['logo'] ?? "";
 
-    return Scaffold(
-      body: SafeArea(
-        child: Obx(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: color, statusBarIconBrightness: Brightness.light),
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: color,
+          title: Text("Sreeja Kirana & General Stores",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: AppConst.white,
+                fontSize: SizeUtils.horizontalBlockSize * 4,
+                fontWeight: FontWeight.w700,
+                fontStyle: FontStyle.normal,
+              )),
+          iconTheme: IconThemeData(color: AppConst.white),
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: color, statusBarIconBrightness: Brightness.light),
+        ),
+        body: Obx(
           () => _myWalletController.isTransactionLoading.value
               ? Center(child: WalletDetailScreenShimmer())
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Padding(
+                    //   padding:
+                    //       EdgeInsets.symmetric(horizontal: 0.w, vertical: 1.h),
+                    //   child: Row(
+                    //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       BackButtonWidget(),
+                    //       SizedBox(
+                    //         width: 2.w,
+                    //       ),
+                    //       (logo).isEmpty
+                    //           ? CircleAvatar(
+                    //               child: Text(name.substring(0, 1),
+                    //                   style: TextStyle(
+                    //                       fontFamily: 'Poppins',
+                    //                       color: AppConst.white,
+                    //                       fontWeight: FontWeight.w600,
+                    //                       fontStyle: FontStyle.normal,
+                    //                       fontSize:
+                    //                           SizeUtils.horizontalBlockSize *
+                    //                               6)),
+                    //               backgroundColor: color,
+                    //               radius: SizeUtils.horizontalBlockSize * 6.5,
+                    //             )
+                    //           : CircleAvatar(
+                    //               backgroundImage: NetworkImage(logo),
+                    //               backgroundColor: AppConst.white,
+                    //               radius: SizeUtils.horizontalBlockSize * 6.5,
+                    //             ),
+                    //       SizedBox(
+                    //         width: 2.w,
+                    //       ),
+                    //       Expanded(
+                    //         child: Text(
+                    //           "${name}",
+                    //           style: TextStyle(
+                    //               color: AppConst.black,
+                    //               fontSize: SizeUtils.horizontalBlockSize * 5),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+
+                    WalletDetailCard(color),
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
                       child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          BackButtonWidget(),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          (logo).isEmpty
-                              ? CircleAvatar(
-                                  child: Text(name.substring(0, 1),
-                                      style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: AppConst.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle: FontStyle.normal,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize *
-                                                  6)),
-                                  backgroundColor: color,
-                                  radius: SizeUtils.horizontalBlockSize * 6.5,
-                                )
-                              : CircleAvatar(
-                                  backgroundImage: NetworkImage(logo),
-                                  backgroundColor: AppConst.white,
-                                  radius: SizeUtils.horizontalBlockSize * 6.5,
-                                ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Expanded(
-                            child: Text(
-                              "${name}",
-                              style: TextStyle(
-                                  color: AppConst.black,
-                                  fontSize: SizeUtils.horizontalBlockSize * 5),
+                          Center(
+                            child: Container(
+                              child: Text(
+                                " My Transactions", //Transactions
+                                style: TextStyle(
+                                    color: AppConst.black,
+                                    fontFamily: 'MuseoSans',
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing: -0.36,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4.5),
+                              ),
+                              // color: Colors.red,
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    WalletDetailCard(color),
-                    SizedBox(
-                      height: 3.h,
-                      child: Center(
-                        child: Container(
-                          child: Text(
-                            " ", //Transactions
-                            style: TextStyle(
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 4),
-                          ),
-                          // color: Colors.red,
-                        ),
                       ),
                     ),
                     Flexible(
@@ -150,14 +182,16 @@ class WalletTransactionCard extends StatelessWidget {
 
   Padding WalletDetailCard(Color color) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
+      padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
       child: Container(
         height: 25.h,
         width: double.infinity,
         decoration: BoxDecoration(
             color: color,
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(12)),
+            // border: Border.all(),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -168,13 +202,19 @@ class WalletTransactionCard extends StatelessWidget {
                   style: TextStyle(
                     color: AppConst.white,
                     fontSize: SizeUtils.horizontalBlockSize * 8,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
                   ),
                 ),
                 Text(
-                  "Main wallet",
+                  "Your available Balance",
                   style: TextStyle(
-                    color: AppConst.grey,
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                    color: AppConst.white,
+                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
                   ),
                 )
               ],
@@ -196,20 +236,34 @@ class WalletTransactionCard extends StatelessWidget {
                               .value = storeSearchModel;
                           Get.to(() => ScanStoreViewScreen());
                         },
-                        child: CircleAvatar(
-                          radius: 6.w,
-                          foregroundImage: NetworkImage(
-                              "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
+                        child: Container(
+                          padding: const EdgeInsets.all(12.0),
+                          height: 12.h,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            width: 0.1,
+                          )),
+                          child: Image(
+                            image: AssetImage(
+                              'assets/images/scanme.png',
+                            ),
+                          ),
                         ),
+
+                        // CircleAvatar(
+                        //   radius: 6.w,
+                        //   foregroundImage: NetworkImage(
+                        //       "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
+                        // ),
                       ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Text("Scan",
-                          style: TextStyle(
-                            color: AppConst.white,
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
-                          ))
+                      // SizedBox(
+                      //   height: 1.h,
+                      // ),
+                      // Text("Scan",
+                      //     style: TextStyle(
+                      //       color: AppConst.white,
+                      //       fontSize: SizeUtils.horizontalBlockSize * 4,
+                      //     ))
                     ],
                   ),
                   Column(
@@ -223,21 +277,35 @@ class WalletTransactionCard extends StatelessWidget {
                           Get.toNamed(AppRoutes.PayView,
                               arguments: {"color": randomGenerator()});
                         },
-                        child: CircleAvatar(
-                          radius: 6.w,
-                          backgroundColor: AppConst.white,
-                          foregroundImage: NetworkImage(
-                              "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
+                        child: Container(
+                          padding: const EdgeInsets.all(12.0),
+                          height: 12.h,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            width: 0.1,
+                          )),
+                          child: Image(
+                            image: AssetImage(
+                              'assets/images/refund.png',
+                            ),
+                          ),
                         ),
+
+                        // CircleAvatar(
+                        //   radius: 6.w,
+                        //   backgroundColor: AppConst.white,
+                        //   foregroundImage: NetworkImage(
+                        //       "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
+                        // ),
                       ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Text("Refund",
-                          style: TextStyle(
-                            color: AppConst.white,
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
-                          ))
+                      // SizedBox(
+                      //   height: 1.h,
+                      // ),
+                      // Text("Refund",
+                      //     style: TextStyle(
+                      //       color: AppConst.white,
+                      //       fontSize: SizeUtils.horizontalBlockSize * 4,
+                      //     ))
                     ],
                   ),
                   Column(
@@ -255,22 +323,35 @@ class WalletTransactionCard extends StatelessWidget {
                           //     ? null
                           //     : Get.toNamed(AppRoutes.MoreStoreProductView);
                         },
-                        child: CircleAvatar(
-                          radius: 6.w,
-                          backgroundColor: AppConst.white,
-                          foregroundImage: NetworkImage(
-                              "https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg"),
+                        child: Container(
+                          padding: const EdgeInsets.all(12.0),
+                          height: 12.h,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            width: 0.1,
+                          )),
+                          child: Image(
+                            image: AssetImage(
+                              'assets/images/storevisit.png',
+                            ),
+                          ),
                         ),
+                        // CircleAvatar(
+                        //   radius: 6.w,
+                        //   backgroundColor: AppConst.white,
+                        //   foregroundImage: NetworkImage(
+                        //       "https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg"),
+                        // ),
                       ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Text(
-                        "Store",
-                        style: TextStyle(
-                            color: AppConst.white,
-                            fontSize: SizeUtils.horizontalBlockSize * 4),
-                      )
+                      // SizedBox(
+                      //   height: 1.h,
+                      // ),
+                      // Text(
+                      //   "Store",
+                      //   style: TextStyle(
+                      //       color: AppConst.white,
+                      //       fontSize: SizeUtils.horizontalBlockSize * 4),
+                      // )
                     ],
                   ),
                 ],
@@ -390,21 +471,21 @@ class TransactionList extends StatelessWidget {
                               "DEBIT")
                           ? CircleAvatar(
                               child: Icon(
-                                CupertinoIcons.arrow_down_left,
+                                CupertinoIcons.arrow_up_right,
                                 color: AppConst.white,
-                                size: 3.h,
+                                size: 3.5.h,
                               ),
                               backgroundColor: AppConst.blue,
-                              radius: SizeUtils.horizontalBlockSize * 6.5,
+                              radius: SizeUtils.horizontalBlockSize * 6,
                             )
                           : CircleAvatar(
                               child: Icon(
-                                CupertinoIcons.arrow_up_right,
+                                CupertinoIcons.arrow_down_left,
                                 color: AppConst.white,
-                                size: 3.h,
+                                size: 3.5.h,
                               ),
-                              backgroundColor: AppConst.orange,
-                              radius: SizeUtils.horizontalBlockSize * 6.5,
+                              backgroundColor: AppConst.green,
+                              radius: SizeUtils.horizontalBlockSize * 6,
                             ),
                       SizedBox(
                         width: 3.w,
@@ -429,7 +510,10 @@ class TransactionList extends StatelessWidget {
                             ),
                             style: TextStyle(
                               fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                              fontFamily: 'MuseoSans',
+                              color: Color(0xff3a3a3a),
                               fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
                             ),
                           ),
                           Container(
@@ -438,8 +522,10 @@ class TransactionList extends StatelessWidget {
                               '${_myWalletController.myWalletTransactionModel.value?.data?[index].comment ?? 'no comment'}',
                               overflow: TextOverflow.visible,
                               style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 4,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                color: Color(0xff888888),
                                 fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
                               ),
                             ),
                           ),
@@ -449,15 +535,30 @@ class TransactionList extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            ' ₹ ${_myWalletController.myWalletTransactionModel.value?.data?[index].amount ?? '0.0'}',
-                            style: AppStyles.BOLD_STYLE_GREEN,
-                          ),
+                              '\u{20b9} ${_myWalletController.myWalletTransactionModel.value?.data?[index].amount ?? '0.0'}',
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: ((_myWalletController
+                                                .myWalletTransactionModel
+                                                .value
+                                                ?.data?[index]
+                                                .debitOrCredit)
+                                            ?.toUpperCase() ==
+                                        "DEBIT")
+                                    ? AppConst.orange
+                                    : AppConst.green,
+                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              )),
                           Text(
                             ' ${_myWalletController.myWalletTransactionModel.value?.data?[index].debitOrCredit ?? '---'}',
                             style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                              fontWeight: FontWeight.w500,
-                            ),
+                                fontSize: SizeUtils.horizontalBlockSize * 4,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'MuseoSans',
+                                fontStyle: FontStyle.normal,
+                                color: AppConst.black),
                           ),
                         ],
                       ),
@@ -469,11 +570,8 @@ class TransactionList extends StatelessWidget {
                       .myWalletTransactionModel.value?.data?.length ??
                   0,
               separatorBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.only(left: 15.w),
-                  child: Divider(
-                    color: AppConst.black,
-                  ),
+                return SizedBox(
+                  height: 1.h,
                 );
               },
             )),
