@@ -37,12 +37,12 @@ class _SignInScreenState extends State<SignInScreen> {
     _controller = PageController(initialPage: 0);
     Timer.periodic(Duration(seconds: 3), (Timer timer) {
       if (CurrentIndex < 3) {
-        CurrentIndex++;
         _controller.animateToPage(
           CurrentIndex,
           duration: Duration(milliseconds: 500),
           curve: Curves.easeIn,
         );
+        CurrentIndex++;
       } else {
         CurrentIndex = 3;
       }

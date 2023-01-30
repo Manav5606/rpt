@@ -24,6 +24,14 @@ class _OtpScreenState extends State<OtpScreen> {
   final SignInScreenController _signInScreenController = Get.find()
     ..startTimer();
 
+  TextEditingController otpController = TextEditingController();
+  @override
+  void dispose() {
+    otpController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -35,6 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
+          automaticallyImplyLeading: false,
           // title: Text(
           //   'OTP Verification',
           //   style: TextStyle(
@@ -45,7 +54,7 @@ class _OtpScreenState extends State<OtpScreen> {
           leading: GestureDetector(
             onTap: () {
               _signInScreenController.isFromOTP.value = false;
-              Get.back();
+              _signInScreenController.isLoading.value ? null : (Get.back());
             },
             child: Icon(
               Icons.arrow_back,
@@ -71,9 +80,13 @@ class _OtpScreenState extends State<OtpScreen> {
                   height: 8.h,
                   child: InkWell(
                     onTap: () async {
-                      _signInScreenController.otpController.text.length == 6
+                      _signInScreenController.otpController.text =
+                          otpController.text;
+                      otpController.text.length == 6
                           ? _signInScreenController.submitOTP()
                           : null;
+
+                      _signInScreenController.isLoading.value = true;
                       // _signInScreenController.otpController.clear();
 
                       // _signInScreenController.startTimer();
@@ -117,7 +130,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                         ShimmerEffect(
                           child: Text(
-                            'Enter the OTP code sent to +91 ${_signInScreenController.phoneNumberController.text}',
+                            'Enter the OTP code sent to +91 ${_signInScreenController.phoneNumber.value}',
                             style: TextStyle(
                                 color: AppConst.grey,
                                 fontFamily: "MuseoSans",
@@ -180,6 +193,9 @@ class _OtpScreenState extends State<OtpScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(
+                          height: 2.h,
+                        ),
                         Text(
                           'OTP Verification',
                           style: TextStyle(
@@ -190,10 +206,10 @@ class _OtpScreenState extends State<OtpScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
-                          height: 1.h,
+                          height: 2.h,
                         ),
                         Text(
-                          'Enter the OTP code sent to +91 ${_signInScreenController.phoneNumberController.text}',
+                          'Enter the OTP code sent to +91 ${_signInScreenController.phoneNumber.value}',
                           style: TextStyle(
                               color: AppConst.grey,
                               fontFamily: "MuseoSans",
@@ -201,11 +217,15 @@ class _OtpScreenState extends State<OtpScreen> {
                               fontSize: SizeUtils.horizontalBlockSize * 3.5,
                               fontWeight: FontWeight.bold),
                         ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+
                         SignUpFeilds(
                           hinttext: "Enter OTP",
                           keyboardtype: TextInputType.number,
                           maxlength: 6,
-                          controller: _signInScreenController.otpController,
+                          controller: otpController,
                           // onChange: (pin) async {
                           //   _signInScreenController.submitOTP();
                           //   // _signInScreenController.otpController.clear();
@@ -213,7 +233,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
 
                         SizedBox(
-                          height: 6.h,
+                          height: 2.h,
                         ),
                         Obx(
                           () => Row(
