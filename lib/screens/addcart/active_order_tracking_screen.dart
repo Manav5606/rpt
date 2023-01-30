@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:badges/badges.dart';
@@ -10,9 +11,11 @@ import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:customer_app/app/ui/pages/stores/storedetailscreen.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/addcart/my_order_item_page.dart';
+import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,18 +23,87 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ActiveOrderTrackingScreen extends StatelessWidget {
+class ActiveOrderTrackingScreen extends StatefulWidget {
   final ActiveOrderData? activeOrder;
-  final ChatController _chatController = Get.find();
-  final freshChatController _freshChat = Get.find();
-  final AddCartController _addCartController = Get.find();
+
   ActiveOrderTrackingScreen({
     Key? key,
     this.activeOrder,
   }) : super(key: key);
+
+  @override
+  State<ActiveOrderTrackingScreen> createState() =>
+      _ActiveOrderTrackingScreenState();
+}
+
+class _ActiveOrderTrackingScreenState extends State<ActiveOrderTrackingScreen> {
+  final ChatController _chatController = Get.find();
+
+  final freshChatController _freshChat = Get.find();
+
+  final AddCartController _addCartController = Get.find();
+
+  late Razorpay _razorpay;
+
+  @override
+  void initState() {
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    super.initState();
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    //todo handle paymentError
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    //if the payment is success checkout
+    postOrderCustomerCollectAmount(response: response);
+    //todo handle PaymentSuccess
+  }
+
+  void postOrderCustomerCollectAmount(
+      {PaymentSuccessResponse? response}) async {
+    await _addCartController.postOrderCustomerCollectAmount(
+        razorPayPaymentId: response?.paymentId ?? '',
+        razorPayOrderId: response?.orderId ?? '',
+        razorPaySignature: response?.signature ?? '',
+        orderId: widget.activeOrder?.Id ?? "");
+
+    if (_addCartController.orderModel.value != null) {
+      // _addCartController.formatDate();
+      // await Navigator.pushAndRemoveUntil(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (BuildContext context) => OrderSucessScreen(
+      //               order: _addCartController.orderModel.value!,
+      //               type: "order",
+      //             )),
+      //     (Route<dynamic> route) => route.isFirst);
+      // _addCartController.refresh();
+      // _homeController.apiCall();
+    } else {
+      Get.to(
+          OrderFailScreen(
+            order: _addCartController.orderModel.value!,
+            type: "order",
+          ),
+          transition: Transition.fadeIn);
+      Timer(Duration(seconds: 2), () {
+        Get.offAllNamed(AppRoutes.BaseScreen);
+      });
+    }
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    //todo handle external wallets
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,47 +115,48 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
       return day;
     }
 
-    var date0 = "${activeOrder?.deliverySlot?.day ?? 0}";
+    var date0 = "${widget.activeOrder?.deliverySlot?.day ?? 0}";
     var DayName = DaySelection(int.parse(date0));
     var date1 =
-        "${((activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 12 ? ((activeOrder?.deliverySlot?.startTime?.hour ?? 0) - 12) : activeOrder?.deliverySlot?.startTime?.hour ?? 0)}${(activeOrder?.deliverySlot?.startTime?.minute == 0) ? "" : (":${activeOrder?.deliverySlot?.startTime?.minute ?? ""}")}";
+        "${((widget.activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 12 ? ((widget.activeOrder?.deliverySlot?.startTime?.hour ?? 0) - 12) : widget.activeOrder?.deliverySlot?.startTime?.hour ?? 0)}${(widget.activeOrder?.deliverySlot?.startTime?.minute == 0) ? "" : (":${widget.activeOrder?.deliverySlot?.startTime?.minute ?? ""}")}";
 
-    var date2 = (activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 12
+    var date2 = (widget.activeOrder?.deliverySlot?.startTime?.hour ?? 0) > 12
         ? "pm - "
         : "am - ";
     var date3 =
-        "${((activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? ((activeOrder?.deliverySlot?.endTime?.hour ?? 0) - 12) : activeOrder?.deliverySlot?.endTime?.hour ?? 0)}${(activeOrder?.deliverySlot?.endTime?.minute == 0) ? "" : (":${activeOrder?.deliverySlot?.endTime?.minute ?? ""}")}";
-    var date4 =
-        (activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? "pm" : "am";
+        "${((widget.activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12 ? ((widget.activeOrder?.deliverySlot?.endTime?.hour ?? 0) - 12) : widget.activeOrder?.deliverySlot?.endTime?.hour ?? 0)}${(widget.activeOrder?.deliverySlot?.endTime?.minute == 0) ? "" : (":${widget.activeOrder?.deliverySlot?.endTime?.minute ?? ""}")}";
+    var date4 = (widget.activeOrder?.deliverySlot?.endTime?.hour ?? 0) > 12
+        ? "pm"
+        : "am";
 
     var TimeSlot = DayName + " " + date1 + date2 + date3 + date4;
 
-    var modifiedOrReplacedItemCount = ((activeOrder?.products
+    var modifiedOrReplacedItemCount = ((widget.activeOrder?.products
                 ?.where((c) => c.status == "modified")
                 .toList()
                 .length ??
             0) +
-        (activeOrder?.rawItems
+        (widget.activeOrder?.rawItems
                 ?.where((c) => c.status == "modified")
                 .toList()
                 .length ??
             0) +
-        (activeOrder?.inventories
+        (widget.activeOrder?.inventories
                 ?.where((c) => c.status == "modified")
                 .toList()
                 .length ??
             0) +
-        (activeOrder?.products
+        (widget.activeOrder?.products
                 ?.where((c) => c.status == "replaced")
                 .toList()
                 .length ??
             0) +
-        (activeOrder?.rawItems
+        (widget.activeOrder?.rawItems
                 ?.where((c) => c.status == "replaced")
                 .toList()
                 .length ??
             0) +
-        (activeOrder?.inventories
+        (widget.activeOrder?.inventories
                 ?.where((c) => c.status == "replaced")
                 .toList()
                 .length ??
@@ -103,7 +176,30 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircularCloseButton(),
+                      InkWell(
+                          onTap: (() {
+                            Get.toNamed(AppRoutes.BaseScreen);
+                          }),
+                          child: Container(
+                            width: 36,
+                            height: 36,
+                            child: Icon(
+                              Icons.close,
+                              size: SizeUtils.horizontalBlockSize * 5.5,
+                              color: AppConst.black,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0x19000000),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                              color: AppConst.white,
+                            ),
+                          )),
                       SizedBox(width: 3.w),
                       Container(
                         width: 65.w,
@@ -114,13 +210,13 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "Order ID: xxx${activeOrder?.Id?.substring((activeOrder?.Id?.length ?? 10) - 10) ?? ""}",
+                                "Order ID: xxx${widget.activeOrder?.Id?.substring((widget.activeOrder?.Id?.length ?? 10) - 10) ?? ""}",
                                 style: TextStyle(
                                     fontSize: SizeUtils.horizontalBlockSize * 4,
                                     fontWeight: FontWeight.bold,
                                     color: AppConst.black)),
                             SizedBox(height: 0.5.h),
-                            (activeOrder?.orderType == "receipt")
+                            (widget.activeOrder?.orderType == "receipt")
                                 ? SizedBox()
                                 : RichText(
                                     text: TextSpan(
@@ -152,7 +248,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                         onTap: () async {
                           _freshChat.initState();
                           await _freshChat.showChatConversation(
-                              "Have a problem with order \n${activeOrder?.Id}\n${activeOrder?.status}\n${activeOrder?.createdAt}\n${activeOrder?.address}\n");
+                              "Have a problem with order \n${widget.activeOrder?.Id}\n${widget.activeOrder?.status}\n${widget.activeOrder?.createdAt}\n${widget.activeOrder?.address}\n");
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -178,7 +274,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                   Column(
                     children: [
                       SizedBox(
-                        height: (activeOrder?.rider != null) ? 5.h : 3.h,
+                        height: (widget.activeOrder?.rider != null) ? 5.h : 3.h,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -197,7 +293,8 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                           color: AppConst.black)),
                                   TextSpan(
-                                      text: "${activeOrder?.status ?? ""}",
+                                      text:
+                                          "${widget.activeOrder?.status ?? ""}",
                                       style: TextStyle(
                                         color: AppConst.green,
                                         fontSize:
@@ -210,7 +307,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      ((activeOrder?.status == "accepted")
+                      ((widget.activeOrder?.status == "accepted")
                           ? Padding(
                               padding: EdgeInsets.only(left: 5.w, bottom: 1.h),
                               child: Row(
@@ -227,7 +324,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                 ],
                               ),
                             )
-                          : (activeOrder?.rider != null)
+                          : (widget.activeOrder?.rider != null)
                               ? SizedBox()
                               : Padding(
                                   padding:
@@ -251,8 +348,9 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                             horizontal: 2.w, vertical: 0.5.h),
                         child: Container(
-                          height:
-                              (activeOrder?.status != "pending") ? 31.h : 28.h,
+                          height: (widget.activeOrder?.status != "pending")
+                              ? 31.h
+                              : 28.h,
                           decoration: BoxDecoration(
                               color: AppConst.ContainerColor,
                               border: Border.all(),
@@ -262,11 +360,11 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                 left: 3.w, right: 3.w, top: 1.h),
                             child: Column(
                               children: [
-                                (activeOrder?.status != "pending")
+                                (widget.activeOrder?.status != "pending")
                                     ? InkWell(
                                         onTap: () {
                                           Get.to(MyOrderItems(
-                                            activeOrder: activeOrder,
+                                            activeOrder: widget.activeOrder,
                                             TimeSlot: TimeSlot,
                                           ));
                                         },
@@ -321,7 +419,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                             height: 1.5.h,
                                           ),
                                           Text(
-                                            "Total Amount- \u{20B9} ${activeOrder?.total ?? 0}",
+                                            "Total Amount- \u{20B9} ${widget.activeOrder?.total ?? 0}",
                                             style: TextStyle(
                                                 fontSize: SizeUtils
                                                         .horizontalBlockSize *
@@ -333,10 +431,10 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                             height: 0.5.h,
                                           ),
                                           Text(
-                                            (activeOrder?.orderType ==
+                                            (widget.activeOrder?.orderType ==
                                                     "receipt")
-                                                ? "Cashback - ${activeOrder?.cashback_percentage ?? 0}%"
-                                                : "Cashback- \u{20B9} ${activeOrder?.total_cashback ?? 0}",
+                                                ? "Cashback - ${widget.activeOrder?.cashback_percentage ?? 0}%"
+                                                : "Cashback- \u{20B9} ${widget.activeOrder?.total_cashback ?? 0}",
                                             style: TextStyle(
                                                 fontSize: SizeUtils
                                                         .horizontalBlockSize *
@@ -348,10 +446,10 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                             height: 0.5.h,
                                           ),
                                           Text(
-                                            (activeOrder?.orderType ==
+                                            (widget.activeOrder?.orderType ==
                                                     "receipt")
-                                                ? "Earned Cashback- \u{20B9} ${activeOrder?.total_cashback ?? 0}"
-                                                : "Amount Paid- \u{20B9} ${activeOrder?.total ?? 0}",
+                                                ? "Earned Cashback- \u{20B9} ${widget.activeOrder?.total_cashback ?? 0}"
+                                                : "Amount Paid- \u{20B9} ${widget.activeOrder?.total ?? 0}",
                                             style: TextStyle(
                                                 fontSize: SizeUtils
                                                         .horizontalBlockSize *
@@ -394,7 +492,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                                       ),
                                                       imageProvider:
                                                           CachedNetworkImageProvider(
-                                                              activeOrder
+                                                              widget.activeOrder
                                                                       ?.receipt ??
                                                                   ""),
                                                       tightMode: true,
@@ -418,10 +516,12 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                             },
                                             child: Container(
                                                 width: double.infinity,
-                                                child: (activeOrder?.receipt) !=
+                                                child: (widget.activeOrder
+                                                            ?.receipt) !=
                                                         null
                                                     ? CachedNetworkImage(
-                                                        imageUrl: activeOrder
+                                                        imageUrl: widget
+                                                                .activeOrder
                                                                 ?.receipt ??
                                                             "",
                                                         fit: BoxFit.cover,
@@ -443,19 +543,64 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   highlightColor: AppConst.grey,
-                                  onTap: (() {
-                                    if (activeOrder?.status == "pending" ||
-                                        (activeOrder?.orderType == "receipt")) {
+                                  onTap: (() async {
+                                    if (widget.activeOrder?.status ==
+                                            "pending" ||
+                                        (widget.activeOrder?.orderType ==
+                                            "receipt")) {
                                       Get.to(MyOrderItems(
-                                        activeOrder: activeOrder,
+                                        activeOrder: widget.activeOrder,
                                         TimeSlot: TimeSlot,
                                       ));
-                                    } else if ((activeOrder?.status ==
-                                            "picked_up" ||
-                                        (activeOrder?.status == "accepted") ||
-                                        (activeOrder?.status == "ready") &&
-                                            (activeOrder?.total ?? 0) > 0)) {
+                                    } else if (((widget.activeOrder?.status ==
+                                                "picked_up") ||
+                                            (widget.activeOrder?.status ==
+                                                "accepted") ||
+                                            (widget.activeOrder?.status ==
+                                                "ready")) &&
+                                        ((widget.activeOrder
+                                                    ?.final_payable_amount ??
+                                                0) >
+                                            0) &&
+                                        (widget.activeOrder?.orderType !=
+                                            "receipt")) {
                                       log("payment method ontap");
+                                      await _addCartController
+                                          .createRazorPayOrder(
+                                              storeId: widget.activeOrder?.store
+                                                      ?.sId ??
+                                                  '',
+                                              amount: double.parse(widget
+                                                      .activeOrder
+                                                      ?.final_payable_amount
+                                                      ?.toStringAsFixed(2) ??
+                                                  "0.0"));
+                                      if (_addCartController
+                                              .createRazorpayResponseModel
+                                              .value !=
+                                          null) {
+                                        await launchPayment(
+                                                widget.activeOrder
+                                                        ?.final_payable_amount
+                                                        ?.toInt() ??
+                                                    00,
+                                                _addCartController
+                                                        .createRazorpayResponseModel
+                                                        .value
+                                                        ?.orderId ??
+                                                    '')
+                                            .then((value) {
+                                          if (value == true) {
+                                            postOrderCustomerCollectAmount();
+                                          }
+                                        });
+                                      } else {
+                                        Get.showSnackbar(GetBar(
+                                          message:
+                                              "failed to create razor order",
+                                          duration: Duration(seconds: 2),
+                                        ));
+                                      }
                                     } else {
                                       log("order paid ");
                                     }
@@ -465,31 +610,34 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                     height: 6.h,
                                     margin: EdgeInsets.only(top: 1.h),
                                     decoration: BoxDecoration(
-                                        color: (activeOrder?.status ==
-                                                    "pending" ||
-                                                (activeOrder?.orderType ==
+                                        color: ((widget.activeOrder?.status ==
+                                                    "pending") ||
+                                                (widget.activeOrder?.orderType ==
                                                     "receipt"))
                                             ? AppConst.lightGreen
-                                            : ((activeOrder?.status ==
-                                                            "picked_up" ||
-                                                        (activeOrder?.status ==
+                                            : (((widget.activeOrder?.status ==
+                                                            "picked_up") ||
+                                                        (widget.activeOrder
+                                                                ?.status ==
                                                             "accepted") ||
-                                                        (activeOrder?.status ==
-                                                                "ready") &&
-                                                            (activeOrder?.total ??
-                                                                    0) >
-                                                                0) &&
-                                                    (activeOrder?.orderType !=
+                                                        (widget.activeOrder
+                                                                ?.status ==
+                                                            "ready")) &&
+                                                    ((widget.activeOrder
+                                                                ?.final_payable_amount ??
+                                                            0) >
+                                                        0) &&
+                                                    (widget.activeOrder
+                                                            ?.orderType !=
                                                         "receipt")
                                                 ? AppConst.lightGreen
                                                 : AppConst.grey),
                                         border: Border.all(),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                        borderRadius: BorderRadius.circular(10)),
                                     child: Center(
-                                      child: (activeOrder?.status ==
+                                      child: (widget.activeOrder?.status ==
                                                   "pending" ||
-                                              (activeOrder?.orderType ==
+                                              (widget.activeOrder?.orderType ==
                                                   "receipt"))
                                           ? Text(
                                               "View Items",
@@ -501,22 +649,26 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             )
-                                          : ((activeOrder?.status ==
-                                                          "picked_up" ||
-                                                      (activeOrder?.status ==
+                                          : (((widget.activeOrder?.status ==
+                                                          "picked_up") ||
+                                                      (widget.activeOrder
+                                                              ?.status ==
                                                           "accepted") ||
-                                                      (activeOrder?.status ==
-                                                              "ready") &&
-                                                          (activeOrder?.total ??
-                                                                  0) >
-                                                              0) &&
-                                                  (activeOrder?.orderType !=
+                                                      (widget.activeOrder
+                                                              ?.status ==
+                                                          "ready")) &&
+                                                  ((widget.activeOrder
+                                                              ?.final_payable_amount ??
+                                                          0) >
+                                                      0) &&
+                                                  (widget.activeOrder
+                                                          ?.orderType !=
                                                       "receipt")
                                               ? Text(
                                                   (modifiedOrReplacedItemCount >
                                                           0)
-                                                      ? "Verify Items and Pay \u{20B9} ${activeOrder?.total ?? 0}"
-                                                      : "Pay \u{20B9} ${activeOrder?.total ?? 0}",
+                                                      ? "Verify Items and Pay \u{20B9} ${widget.activeOrder?.final_payable_amount ?? 0}"
+                                                      : "Pay \u{20B9} ${widget.activeOrder?.final_payable_amount ?? 0}",
                                                   style: TextStyle(
                                                     color:
                                                         AppConst.ContainerColor,
@@ -564,7 +716,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                       SizedBox(
                         height: 2.h,
                       ),
-                      (activeOrder?.rider != null)
+                      (widget.activeOrder?.rider != null)
                           ? Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 3.w, vertical: 1.h),
@@ -576,7 +728,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                     width: 12.w,
                                     child: Center(
                                         child: Text(
-                                      "${activeOrder?.rider?.firstName?.substring(0, 1) ?? "R"}",
+                                      "${widget.activeOrder?.rider?.firstName?.substring(0, 1) ?? "R"}",
                                       style: TextStyle(
                                           color: AppConst.white,
                                           fontSize:
@@ -599,7 +751,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "${activeOrder?.rider?.firstName ?? ""} ${activeOrder?.rider?.last_name ?? ""}", // add rider last name
+                                            "${widget.activeOrder?.rider?.firstName ?? ""} ${widget.activeOrder?.rider?.last_name ?? ""}", // add rider last name
                                             style: TextStyle(
                                                 color: AppConst.black,
                                                 fontSize: SizeUtils
@@ -627,14 +779,14 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                   InkWell(
                                       onTap: (() {
                                         _launchURL(
-                                            "tel:${activeOrder?.rider?.mobile ?? ''}");
+                                            "tel:${widget.activeOrder?.rider?.mobile ?? ''}");
                                       }),
                                       child: CallLogo())
                                 ],
                               ),
                             )
                           : SizedBox(),
-                      (activeOrder?.rider != null)
+                      (widget.activeOrder?.rider != null)
                           ? Padding(
                               padding: EdgeInsets.symmetric(horizontal: 1.w),
                               child: Divider(
@@ -645,8 +797,9 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                       InkWell(
                         highlightColor: AppConst.highLightColor,
                         onTap: () {
-                          _chatController.launchChat('${activeOrder?.Id}',
-                              "${activeOrder?.store?.name}");
+                          _chatController.launchChat(
+                              '${widget.activeOrder?.Id}',
+                              "${widget.activeOrder?.store?.name}");
                         },
                         child: StoreChatBubble(
                           text: "Facing any issues?\nTell us your issue.",
@@ -654,11 +807,12 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                         ),
                       ),
                       StoreNameCallLogoWidget(
-                        logoLetter: activeOrder?.store?.name?.substring(0, 1),
-                        storeName: activeOrder?.store?.name,
-                        totalAmount: activeOrder?.total,
+                        logoLetter:
+                            widget.activeOrder?.store?.name?.substring(0, 1),
+                        storeName: widget.activeOrder?.store?.name,
+                        totalAmount: widget.activeOrder?.total,
                         paymentStatus: "Paid", // updated the status to Dynamic
-                        mobile: activeOrder?.store?.mobile,
+                        mobile: widget.activeOrder?.store?.mobile,
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 9.w),
@@ -723,7 +877,7 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
                                     Container(
                                       width: 70.w,
                                       child: Text(
-                                        "${activeOrder?.address ?? ""}", // add cutomer full address that we selct at the time of placing the order
+                                        "${widget.activeOrder?.address ?? ""}", // add cutomer full address that we selct at the time of placing the order
                                         // "Address, ABC Colony, Hyderabad, Telangana ",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -751,6 +905,25 @@ class ActiveOrderTrackingScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> launchPayment(int amount, String orderId) async {
+    var options = {
+      'key': 'rzp_test_n1q5GFiD3BLkNw', //'rzp_test_K5F950Y92Z3p6X',
+      'amount': (amount * 100),
+      'order_id': orderId,
+      'name': 'Seeya',
+      'prefill': {'contact': '9876543210', 'email': 'ujjwolmainali7@gmail.com'},
+      'external': {'wallets': []}
+    };
+
+    try {
+      _razorpay.open(options);
+      return true;
+    } catch (e) {
+      log('e :$e');
+      return false;
+    }
   }
 }
 

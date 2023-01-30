@@ -8,7 +8,7 @@ class AllOffers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

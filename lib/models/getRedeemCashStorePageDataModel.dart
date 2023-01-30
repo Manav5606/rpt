@@ -38,6 +38,7 @@ class RedeemCashInStorePageData {
   String? businesstype;
   bool? premium;
   num? actual_cashback;
+  int? welcomeOfferAmount;
 
   RedeemCashInStorePageData(
       {this.name,
@@ -49,7 +50,8 @@ class RedeemCashInStorePageData {
       this.logo,
       this.businesstype,
       this.actual_cashback,
-      this.premium});
+      this.premium,
+      this.welcomeOfferAmount});
 
   RedeemCashInStorePageData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -62,6 +64,7 @@ class RedeemCashInStorePageData {
     businesstype = json['businesstype'];
     actual_cashback = json['actual_cashback'];
     premium = json['premium'];
+    welcomeOfferAmount = json['welcome_offer_amount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +79,7 @@ class RedeemCashInStorePageData {
     data['businesstype'] = this.businesstype;
     data['actual_cashback'] = this.actual_cashback;
     data['premium'] = this.premium;
+    data['welcome_offer_amount'] = this.welcomeOfferAmount;
     return data;
   }
 }

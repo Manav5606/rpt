@@ -1150,6 +1150,7 @@ wallet_amount
           _id
           status
           order_type
+          final_payable_amount
           cashback_percentage
           address
           createdAt
@@ -1261,6 +1262,7 @@ wallet_amount
           _id
           status
           order_type
+          final_payable_amount
           address
           createdAt
           receipt
@@ -1414,6 +1416,7 @@ getAllcarts{
       distance
       logo
       businesstype
+      welcome_offer_amount
     }
 }
 }''',
@@ -2138,7 +2141,7 @@ data{
   static final createRazorPayOrder = new GraphQLQuery(
     name: 'createRazorPayOrder',
     query: r'''
-    mutation($amount: Int, $store:ID){
+    mutation($amount: Float, $store:ID){
       createRazorPayOrder(amount : $amount store_id: $store){
         error
         msg
@@ -2208,6 +2211,121 @@ data{
           createdAt
           total_cashback
           final_payable_wallet_amount
+          wallet_amount
+          iPayment
+          delivery_slot
+          {
+          day
+          cut_off_time{
+            hour
+            minute
+          }
+            start_time
+            {
+              hour
+              minute
+            }
+            end_time{
+              hour
+              minute
+}
+}
+          total
+        location
+          {
+           type
+          coordinates
+}
+        
+         products
+          {
+          name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+           inventories
+          {
+            name
+          quantity
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          }
+             rawitems{
+             logo
+            item
+            _id
+            quantity 
+            modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
+          }
+        store
+          {
+           _id
+              mobile
+              name
+              logo
+              address{
+                address
+              }
+          }
+          rider
+          {
+            mobile
+            _id
+            first_name
+            bank_document_photo
+          }
+        }
+      }
+    }
+    ''',
+  );
+  static final postOrderCustomerCollectAmount = new GraphQLQuery(
+    name: 'postOrderCustomerCollectAmount',
+    query: r'''
+       mutation($_id:ID,$razorpay_order_id:String,$razorpay_payment_id:String,$razorpay_signature:String){
+  postOrderCustomerCollectAmount(_id:$_id,razorpay_order_id:$razorpay_order_id,razorpay_signature:$razorpay_signature,razorpay_payment_id:$razorpay_payment_id){
+    error
+    msg
+        data
+        {
+          _id
+          status
+          order_type
+          address
+          createdAt
+          total_cashback
+          final_payable_wallet_amount
+          final_payable_amount
           wallet_amount
           iPayment
           delivery_slot

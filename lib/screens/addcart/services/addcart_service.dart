@@ -209,6 +209,34 @@ class AddCartService {
     }
   }
 
+  static Future<order_model.OrderData> postOrderCustomerCollectAmount({
+    required String orderId,
+    required String razorPayOrderId,
+    required String razorPaySignature,
+    required String razorPayPaymentId,
+  }) async {
+    try {
+      final variables = {
+        'razorpay_signature': razorPaySignature,
+        'razorpay_order_id': razorPayOrderId,
+        'razorpay_payment_id': razorPayPaymentId,
+        '_id': orderId
+      };
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.postOrderCustomerCollectAmount,
+          variables: variables);
+      if (result['error'] == false) {
+        final order_model.OrderData _getAllActiveOrders =
+            order_model.OrderData.fromJson(result['data']);
+        return _getAllActiveOrders;
+      }
+      return result['error'];
+    } catch (e, st) {
+      log("$e , $st");
+      rethrow;
+    }
+  }
+
   static Future<bool> placeOrderActive({
     required String storeId,
     required String razorPayOrderId,

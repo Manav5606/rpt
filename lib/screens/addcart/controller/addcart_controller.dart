@@ -500,6 +500,27 @@ class AddCartController extends GetxController {
     }
   }
 
+  Future<void> postOrderCustomerCollectAmount({
+    required String razorPayOrderId,
+    required String razorPaySignature,
+    required String razorPayPaymentId,
+    required String orderId,
+  }) async {
+    try {
+      isLoading.value = true;
+      orderModel.value = await AddCartService.postOrderCustomerCollectAmount(
+        razorPayOrderId: razorPayOrderId,
+        razorPaySignature: razorPaySignature,
+        razorPayPaymentId: razorPayPaymentId,
+        orderId: orderId,
+      );
+      isLoading.value = false;
+    } catch (e, st) {
+      isLoading.value = false;
+      // return false;
+    }
+  }
+
   Future<bool> placeOrderActive({
     required String store,
     required String razorPayOrderId,

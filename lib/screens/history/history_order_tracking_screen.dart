@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:badges/badges.dart';
@@ -11,9 +12,11 @@ import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:customer_app/app/ui/pages/stores/storedetailscreen.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/addcart/my_order_item_page.dart';
+import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_order_items_page.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,18 +25,87 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HistoryOrderTrackingScreen extends StatelessWidget {
+class HistoryOrderTrackingScreen extends StatefulWidget {
   final OrderData? order;
-  final ChatController _chatController = Get.find();
-  final freshChatController _freshChat = Get.find();
-  final AddCartController _addCartController = Get.find();
+
   HistoryOrderTrackingScreen({
     Key? key,
     this.order,
   }) : super(key: key);
+
+  @override
+  State<HistoryOrderTrackingScreen> createState() =>
+      _HistoryOrderTrackingScreenState();
+}
+
+class _HistoryOrderTrackingScreenState
+    extends State<HistoryOrderTrackingScreen> {
+  final ChatController _chatController = Get.find();
+
+  final freshChatController _freshChat = Get.find();
+
+  final AddCartController _addCartController = Get.find();
+  late Razorpay _razorpay;
+  @override
+  void initState() {
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    super.initState();
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    //todo handle paymentError
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    //if the payment is success checkout
+    postOrderCustomerCollectAmount(response: response);
+    //todo handle PaymentSuccess
+  }
+
+  void postOrderCustomerCollectAmount(
+      {PaymentSuccessResponse? response}) async {
+    await _addCartController.postOrderCustomerCollectAmount(
+        razorPayPaymentId: response?.paymentId ?? '',
+        razorPayOrderId: response?.orderId ?? '',
+        razorPaySignature: response?.signature ?? '',
+        orderId: widget.order?.Id ?? "");
+
+    if (_addCartController.orderModel.value != null) {
+      // _addCartController.formatDate();
+      // await Navigator.pushAndRemoveUntil(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (BuildContext context) => OrderSucessScreen(
+      //               order: _addCartController.orderModel.value!,
+      //               type: "order",
+      //             )),
+      //     (Route<dynamic> route) => route.isFirst);
+      // _addCartController.refresh();
+      // _homeController.apiCall();
+      // Get.back();
+    } else {
+      Get.to(
+          OrderFailScreen(
+            order: _addCartController.orderModel.value!,
+            type: "order",
+          ),
+          transition: Transition.fadeIn);
+      Timer(Duration(seconds: 2), () {
+        Get.offAllNamed(AppRoutes.BaseScreen);
+      });
+    }
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    //todo handle external wallets
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,46 +119,48 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
 
     List Weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-    var date0 = "${order?.deliverySlot?.day ?? 0}";
+    var date0 = "${widget.order?.deliverySlot?.day ?? 0}";
     // var DayName = DaySelection(int.parse(date0));
     var DayName = Weekdays[int.parse(date0)];
     var date1 =
-        "${((order?.deliverySlot?.startTime?.hour ?? 0) > 12 ? ((order?.deliverySlot?.startTime?.hour ?? 0) - 12) : order?.deliverySlot?.startTime?.hour ?? 0)}${(order?.deliverySlot?.startTime?.minute == 0) ? "" : (":${order?.deliverySlot?.startTime?.minute ?? ""}")}";
+        "${((widget.order?.deliverySlot?.startTime?.hour ?? 0) > 12 ? ((widget.order?.deliverySlot?.startTime?.hour ?? 0) - 12) : widget.order?.deliverySlot?.startTime?.hour ?? 0)}${(widget.order?.deliverySlot?.startTime?.minute == 0) ? "" : (":${widget.order?.deliverySlot?.startTime?.minute ?? ""}")}";
 
-    var date2 =
-        (order?.deliverySlot?.startTime?.hour ?? 0) > 12 ? "pm - " : "am - ";
+    var date2 = (widget.order?.deliverySlot?.startTime?.hour ?? 0) > 12
+        ? "pm - "
+        : "am - ";
     var date3 =
-        "${((order?.deliverySlot?.endTime?.hour ?? 0) > 12 ? ((order?.deliverySlot?.endTime?.hour ?? 0) - 12) : order?.deliverySlot?.endTime?.hour ?? 0)}${(order?.deliverySlot?.endTime?.minute == 0) ? "" : (":${order?.deliverySlot?.endTime?.minute ?? ""}")}";
-    var date4 = (order?.deliverySlot?.endTime?.hour ?? 0) > 12 ? "pm" : "am";
+        "${((widget.order?.deliverySlot?.endTime?.hour ?? 0) > 12 ? ((widget.order?.deliverySlot?.endTime?.hour ?? 0) - 12) : widget.order?.deliverySlot?.endTime?.hour ?? 0)}${(widget.order?.deliverySlot?.endTime?.minute == 0) ? "" : (":${widget.order?.deliverySlot?.endTime?.minute ?? ""}")}";
+    var date4 =
+        (widget.order?.deliverySlot?.endTime?.hour ?? 0) > 12 ? "pm" : "am";
 
     var TimeSlot = DayName + " " + date1 + date2 + date3 + date4;
 
-    var modifiedOrReplacedItemCount = ((order?.products
+    var modifiedOrReplacedItemCount = ((widget.order?.products
                 ?.where((c) => c.status == "modified")
                 .toList()
                 .length ??
             0) +
-        (order?.rawItems
+        (widget.order?.rawItems
                 ?.where((c) => c.status == "modified")
                 .toList()
                 .length ??
             0) +
-        (order?.inventories
+        (widget.order?.inventories
                 ?.where((c) => c.status == "modified")
                 .toList()
                 .length ??
             0) +
-        (order?.products
+        (widget.order?.products
                 ?.where((c) => c.status == "replaced")
                 .toList()
                 .length ??
             0) +
-        (order?.rawItems
+        (widget.order?.rawItems
                 ?.where((c) => c.status == "replaced")
                 .toList()
                 .length ??
             0) +
-        (order?.inventories
+        (widget.order?.inventories
                 ?.where((c) => c.status == "replaced")
                 .toList()
                 .length ??
@@ -102,10 +176,10 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
               child: Column(
                 children: [
-                  ((order?.orderType == "receipt" &&
-                              order?.status == "completed") ||
-                          (order?.orderType == "redeem_cash" &&
-                              order?.status == "completed"))
+                  ((widget.order?.orderType == "receipt" &&
+                              widget.order?.status == "completed") ||
+                          (widget.order?.orderType == "redeem_cash" &&
+                              widget.order?.status == "completed"))
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,7 +192,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               onTap: () async {
                                 _freshChat.initState();
                                 await _freshChat.showChatConversation(
-                                    "Have a problem with order \n${order?.Id}\n${order?.status}\n${order?.createdAt}\n${order?.address}\n");
+                                    "Have a problem with order \n${widget.order?.Id}\n${widget.order?.status}\n${widget.order?.createdAt}\n${widget.order?.address}\n");
                               },
                               child: Container(
                                 width: 20.w,
@@ -174,14 +248,14 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      "Order ID: xxx${order?.Id?.substring((order?.Id?.length ?? 10) - 10) ?? ""}",
+                                      "Order ID: xxx${widget.order?.Id?.substring((widget.order?.Id?.length ?? 10) - 10) ?? ""}",
                                       style: TextStyle(
                                           fontSize:
                                               SizeUtils.horizontalBlockSize * 4,
                                           fontWeight: FontWeight.bold,
                                           color: AppConst.black)),
                                   SizedBox(height: 0.5.h),
-                                  (order?.orderType == "receipt")
+                                  (widget.order?.orderType == "receipt")
                                       ? SizedBox()
                                       : RichText(
                                           text: TextSpan(
@@ -214,7 +288,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               onTap: () async {
                                 _freshChat.initState();
                                 await _freshChat.showChatConversation(
-                                    "Have a problem with order \n${order?.Id}\n${order?.status}\n${order?.createdAt}\n${order?.address}\n");
+                                    "Have a problem with order \n${widget.order?.Id}\n${widget.order?.status}\n${widget.order?.createdAt}\n${widget.order?.address}\n");
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -238,18 +312,18 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                  (order?.status == "delivered" ||
-                          ((order?.orderType == "receipt" &&
-                                  order?.status == "completed") ||
-                              (order?.orderType == "redeem_cash" &&
-                                  order?.status == "completed")))
+                  (widget.order?.status == "delivered" ||
+                          ((widget.order?.orderType == "receipt" &&
+                                  widget.order?.status == "completed") ||
+                              (widget.order?.orderType == "redeem_cash" &&
+                                  widget.order?.status == "completed")))
                       ? Column(
                           children: [
                             SizedBox(
                               height: 3.h,
                             ),
-                            (order?.orderType == "redeem_cash" &&
-                                    order?.status == "completed")
+                            (widget.order?.orderType == "redeem_cash" &&
+                                    widget.order?.status == "completed")
                                 ? Text("Refunded Successfully",
                                     style: TextStyle(
                                         fontSize:
@@ -259,8 +333,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                         fontStyle: FontStyle.normal,
                                         color: AppConst.black))
                                 : Text(
-                                    (order?.orderType == "receipt" &&
-                                            order?.status == "completed")
+                                    (widget.order?.orderType == "receipt" &&
+                                            widget.order?.status == "completed")
                                         ? "Receipt accepted Successfully"
                                         : "Order Delivered Successfully",
                                     style: TextStyle(
@@ -274,7 +348,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               height: 0.5.h,
                             ),
                             Text(
-                              "Order ID: xxx${order?.Id?.substring((order?.Id?.length ?? 10) - 10) ?? ""}",
+                              "Order ID: xxx${widget.order?.Id?.substring((widget.order?.Id?.length ?? 10) - 10) ?? ""}",
                               style: TextStyle(
                                 fontSize: SizeUtils.horizontalBlockSize * 3.7,
                                 fontWeight: FontWeight.w500,
@@ -315,7 +389,9 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                 fontStyle: FontStyle.normal,
                                               ),
                                             ),
-                                            ((order?.total_cashback ?? 0) > 0)
+                                            ((widget.order?.total_cashback ??
+                                                        0) >
+                                                    0)
                                                 ? TextSpan(
                                                     text: "\nWe've added ",
                                                     style: TextStyle(
@@ -331,10 +407,12 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                     ),
                                                   )
                                                 : TextSpan(),
-                                            ((order?.total_cashback ?? 0) > 0)
+                                            ((widget.order?.total_cashback ??
+                                                        0) >
+                                                    0)
                                                 ? TextSpan(
                                                     text:
-                                                        "\u{20B9}${order?.total_cashback ?? 0} cashback",
+                                                        "\u{20B9}${widget.order?.total_cashback ?? 0} cashback",
                                                     style: TextStyle(
                                                       color: Color(0xff003d29),
                                                       fontSize: SizeUtils
@@ -348,7 +426,9 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                     ),
                                                   )
                                                 : TextSpan(),
-                                            ((order?.total_cashback ?? 0) > 0)
+                                            ((widget.order?.total_cashback ??
+                                                        0) >
+                                                    0)
                                                 ? TextSpan(
                                                     text: " to your\nwallet.",
                                                     style: TextStyle(
@@ -373,28 +453,29 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               ),
                             ),
                             StoreNameCallLogoWidget(
-                              logoLetter: order?.store?.name?.substring(0, 1),
-                              storeName: order?.store?.name,
-                              totalAmount: order?.wallet_amount,
+                              logoLetter:
+                                  widget.order?.store?.name?.substring(0, 1),
+                              storeName: widget.order?.store?.name,
+                              totalAmount: widget.order?.wallet_amount,
                               paymentStatus:
                                   "Redeem", // updated the status to Dynamic
-                              mobile: order?.store?.mobile,
+                              mobile: widget.order?.store?.mobile,
                               callLogo: false,
                             ),
                             SizedBox(
                               height: 2.h,
                             ),
-                            (order?.orderType == "receipt" &&
-                                    order?.status == "completed")
+                            (widget.order?.orderType == "receipt" &&
+                                    widget.order?.status == "completed")
                                 ? SizedBox()
                                 : Container(
                                     height: 0.7.h,
                                     color: AppConst.veryLightGrey,
                                   ),
-                            ((order?.orderType == "receipt" &&
-                                        order?.status == "completed") ||
-                                    (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed"))
+                            ((widget.order?.orderType == "receipt" &&
+                                        widget.order?.status == "completed") ||
+                                    (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed"))
                                 ? SizedBox()
                                 : Padding(
                                     padding: EdgeInsets.only(
@@ -426,7 +507,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   text: TextSpan(children: [
                                                     TextSpan(
                                                       text:
-                                                          "${order?.store?.name ?? ""}  ",
+                                                          "${widget.order?.store?.name ?? ""}  ",
                                                       style: TextStyle(
                                                         fontFamily: 'MuseoSans',
                                                         overflow: TextOverflow
@@ -443,7 +524,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                     ),
                                                     TextSpan(
                                                         text:
-                                                            "${order?.store?.address?.address ?? ""}",
+                                                            "${widget.order?.store?.address?.address ?? ""}",
                                                         style: TextStyle(
                                                           fontFamily:
                                                               'MuseoSans',
@@ -485,7 +566,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                     ),
                                                     TextSpan(
                                                         text:
-                                                            "${order?.address ?? ""}",
+                                                            "${widget.order?.address ?? ""}",
                                                         style: TextStyle(
                                                           fontFamily:
                                                               'MuseoSans',
@@ -509,19 +590,19 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                            ((order?.orderType == "receipt" &&
-                                        order?.status == "completed") ||
-                                    (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed"))
+                            ((widget.order?.orderType == "receipt" &&
+                                        widget.order?.status == "completed") ||
+                                    (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed"))
                                 ? SizedBox()
                                 : Container(
                                     height: 0.7.h,
                                     color: AppConst.veryLightGrey,
                                   ),
-                            ((order?.orderType == "receipt" &&
-                                        order?.status == "completed") ||
-                                    (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed"))
+                            ((widget.order?.orderType == "receipt" &&
+                                        widget.order?.status == "completed") ||
+                                    (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed"))
                                 ? SizedBox()
                                 : Padding(
                                     padding: EdgeInsets.symmetric(
@@ -535,7 +616,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                           width: 12.w,
                                           child: Center(
                                               child: Text(
-                                            "${order?.rider?.firstName?.substring(0, 1) ?? "R"}",
+                                            "${widget.order?.rider?.firstName?.substring(0, 1) ?? "R"}",
                                             style: TextStyle(
                                                 color: AppConst.white,
                                                 fontSize: SizeUtils
@@ -560,7 +641,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${order?.rider?.firstName ?? "Rider"} ${order?.rider?.last_name ?? ""}", // add rider last name
+                                                  "${widget.order?.rider?.firstName ?? "Rider"} ${widget.order?.rider?.last_name ?? ""}", // add rider last name
                                                   style: TextStyle(
                                                     color: AppConst.black,
                                                     fontSize: SizeUtils
@@ -616,8 +697,10 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      (order?.orderType == "redeem_cash" &&
-                                              order?.status == "completed")
+                                      (widget.order?.orderType ==
+                                                  "redeem_cash" &&
+                                              widget.order?.status ==
+                                                  "completed")
                                           ? Text(
                                               "View Refund",
                                               style: TextStyle(
@@ -632,8 +715,9 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                               ),
                                             )
                                           : Text(
-                                              (order?.orderType == "receipt" &&
-                                                      order?.status ==
+                                              (widget.order?.orderType ==
+                                                          "receipt" &&
+                                                      widget.order?.status ==
                                                           "completed")
                                                   ? "View Order Items"
                                                   : "View Order Details",
@@ -651,52 +735,52 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed")
+                                (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed")
                                     ? ViewOrderDetailsTextfeilds(
                                         "Previous Amount",
-                                        "\u{20B9}${order?.previous_total ?? 0}")
-                                    : (order?.orderType == "receipt" &&
-                                            order?.status == "completed")
+                                        "\u{20B9}${widget.order?.previous_total ?? 0}")
+                                    : (widget.order?.orderType == "receipt" &&
+                                            widget.order?.status == "completed")
                                         ? ViewOrderDetailsTextfeilds(
                                             "Total Amount",
-                                            "\u{20B9}${order?.total ?? 0}")
+                                            "\u{20B9}${widget.order?.total ?? 0}")
                                         : ViewOrderDetailsTextfeilds(
                                             "Total Amount",
-                                            "\u{20B9}${order?.total ?? 0}"),
+                                            "\u{20B9}${widget.order?.total ?? 0}"),
                                 Container(
                                   height: 0.5,
                                   color: AppConst.lightGrey,
                                 ),
-                                (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed")
+                                (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed")
                                     ? ViewOrderDetailsTextfeilds(
                                         "Redeem Amount",
-                                        "\u{20B9}${order?.wallet_amount ?? 0}")
-                                    : (order?.orderType == "receipt" &&
-                                            order?.status == "completed")
+                                        "\u{20B9}${widget.order?.wallet_amount ?? 0}")
+                                    : (widget.order?.orderType == "receipt" &&
+                                            widget.order?.status == "completed")
                                         ? ViewOrderDetailsTextfeilds(
                                             "Cashback percentage",
-                                            "${order?.cashback_percentage ?? 0}%")
+                                            "${widget.order?.cashback_percentage ?? 0}%")
                                         : ViewOrderDetailsTextfeilds("CashBack",
-                                            "\u{20B9}${order?.total_cashback ?? 0}"),
+                                            "\u{20B9}${widget.order?.total_cashback ?? 0}"),
                                 Container(
                                   height: 0.5,
                                   color: AppConst.lightGrey,
                                 ),
-                                (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed")
+                                (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed")
                                     ? ViewOrderDetailsTextfeilds(
                                         "Current Amount",
-                                        "\u{20B9}${order?.total ?? 0}")
-                                    : (order?.orderType == "receipt" &&
-                                            order?.status == "completed")
+                                        "\u{20B9}${widget.order?.total ?? 0}")
+                                    : (widget.order?.orderType == "receipt" &&
+                                            widget.order?.status == "completed")
                                         ? ViewOrderDetailsTextfeilds(
                                             "Earned Cashback",
-                                            "\u{20B9}${order?.total_cashback ?? 0}")
+                                            "\u{20B9}${widget.order?.total_cashback ?? 0}")
                                         : ViewOrderDetailsTextfeilds(
                                             "Amount Paid",
-                                            "\u{20B9}${order?.total_cashback ?? 0}"),
+                                            "\u{20B9}${widget.order?.total_cashback ?? 0}"),
                                 Container(
                                   height: 0.5,
                                   color: AppConst.lightGrey,
@@ -705,13 +789,13 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                   height: 0.5,
                                   color: AppConst.lightGrey,
                                 ),
-                                (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed")
+                                (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed")
                                     ? SizedBox()
                                     : InkWell(
                                         onTap: () {
                                           Get.to(HistoryOrderItems(
-                                            order: order,
+                                            order: widget.order,
                                             TimeSlot: TimeSlot,
                                           ));
                                         },
@@ -749,8 +833,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                (order?.orderType == "redeem_cash" &&
-                                        order?.status == "completed")
+                                (widget.order?.orderType == "redeem_cash" &&
+                                        widget.order?.status == "completed")
                                     ? SizedBox()
                                     : Padding(
                                         padding: EdgeInsets.only(
@@ -779,7 +863,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                             ),
                                                             imageProvider:
                                                                 CachedNetworkImageProvider(
-                                                                    order?.receipt ??
+                                                                    widget.order
+                                                                            ?.receipt ??
                                                                         ""),
                                                             tightMode: true,
                                                             customSize: Size(
@@ -846,7 +931,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                       : Column(
                           children: [
                             SizedBox(
-                              height: (order?.rider != null) ? 5.h : 3.h,
+                              height: (widget.order?.rider != null) ? 5.h : 3.h,
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
@@ -866,7 +951,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.bold,
                                                 color: AppConst.black)),
                                         TextSpan(
-                                            text: "${order?.status ?? ""}",
+                                            text:
+                                                "${widget.order?.status ?? ""}",
                                             style: TextStyle(
                                               color: AppConst.green,
                                               fontSize: SizeUtils
@@ -880,7 +966,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            ((order?.status == "accepted")
+                            ((widget.order?.status == "accepted")
                                 ? Padding(
                                     padding:
                                         EdgeInsets.only(left: 5.w, bottom: 1.h),
@@ -900,7 +986,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                       ],
                                     ),
                                   )
-                                : (order?.rider != null)
+                                : (widget.order?.rider != null)
                                     ? SizedBox()
                                     : Padding(
                                         padding: EdgeInsets.only(
@@ -925,8 +1011,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 2.w, vertical: 0.5.h),
                               child: Container(
-                                height: (order?.status != "pending" &&
-                                        order?.orderType != "receipt")
+                                height: (widget.order?.status != "pending" &&
+                                        widget.order?.orderType != "receipt")
                                     ? 31.h
                                     : 28.h,
                                 decoration: BoxDecoration(
@@ -938,12 +1024,13 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                       left: 3.w, right: 3.w, top: 1.h),
                                   child: Column(
                                     children: [
-                                      (order?.status != "pending" &&
-                                              order?.orderType != "receipt")
+                                      (widget.order?.status != "pending" &&
+                                              widget.order?.orderType !=
+                                                  "receipt")
                                           ? InkWell(
                                               onTap: () {
                                                 Get.to(HistoryOrderItems(
-                                                  order: order,
+                                                  order: widget.order,
                                                   TimeSlot: TimeSlot,
                                                 ));
                                               },
@@ -1004,7 +1091,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   height: 1.5.h,
                                                 ),
                                                 Text(
-                                                  "Total Amount- \u{20B9} ${order?.total ?? 0}",
+                                                  "Total Amount- \u{20B9} ${widget.order?.total ?? 0}",
                                                   style: TextStyle(
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
@@ -1017,10 +1104,10 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   height: 0.5.h,
                                                 ),
                                                 Text(
-                                                  (order?.orderType ==
+                                                  (widget.order?.orderType ==
                                                           "receipt")
-                                                      ? "Cashback - \u{20B9} ${order?.cashback_percentage ?? 0}%"
-                                                      : "Cashback- \u{20B9} ${order?.final_payable_wallet_amount?.toStringAsFixed(2) ?? 0}", //final
+                                                      ? "Cashback - \u{20B9} ${widget.order?.cashback_percentage ?? 0}%"
+                                                      : "Cashback- \u{20B9} ${widget.order?.final_payable_wallet_amount?.toStringAsFixed(2) ?? 0}", //final
                                                   style: TextStyle(
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
@@ -1033,10 +1120,10 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   height: 0.5.h,
                                                 ),
                                                 Text(
-                                                  (order?.orderType ==
+                                                  (widget.order?.orderType ==
                                                           "receipt")
-                                                      ? "Earned Cashback- \u{20B9} ${order?.total_cashback ?? 0}"
-                                                      : "Amount Paid- \u{20B9} ${order?.iPayment ?? 0}", //ipayment
+                                                      ? "Earned Cashback- \u{20B9} ${widget.order?.total_cashback ?? 0}"
+                                                      : "Amount Paid- \u{20B9} ${widget.order?.iPayment ?? 0}", //ipayment
                                                   style: TextStyle(
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
@@ -1081,7 +1168,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                             ),
                                                             imageProvider:
                                                                 CachedNetworkImageProvider(
-                                                                    order?.receipt ??
+                                                                    widget.order
+                                                                            ?.receipt ??
                                                                         ""),
                                                             tightMode: true,
                                                             customSize: Size(
@@ -1104,10 +1192,12 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   },
                                                   child: Container(
                                                       width: double.infinity,
-                                                      child: (order?.receipt) !=
+                                                      child: (widget.order
+                                                                  ?.receipt) !=
                                                               null
                                                           ? CachedNetworkImage(
-                                                              imageUrl: order
+                                                              imageUrl: widget
+                                                                      .order
                                                                       ?.receipt ??
                                                                   "",
                                                               fit: BoxFit.cover,
@@ -1129,19 +1219,67 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                       ),
                                       InkWell(
                                         highlightColor: AppConst.grey,
-                                        onTap: (() {
-                                          if (order?.status == "pending" ||
-                                              (order?.orderType == "receipt")) {
+                                        onTap: (() async {
+                                          if (widget.order?.status ==
+                                                  "pending" ||
+                                              (widget.order?.orderType ==
+                                                  "receipt")) {
                                             Get.to(HistoryOrderItems(
-                                              order: order,
+                                              order: widget.order,
                                               TimeSlot: TimeSlot,
                                             ));
-                                          } else if ((order?.status ==
-                                                  "picked_up" ||
-                                              (order?.status == "accepted") ||
-                                              (order?.status == "ready") &&
-                                                  (order?.total ?? 0) > 0)) {
+                                          } else if (((widget.order?.status ==
+                                                      "picked_up") ||
+                                                  (widget.order?.status ==
+                                                      "accepted") ||
+                                                  (widget.order?.status ==
+                                                      "ready")) &&
+                                              ((widget.order
+                                                          ?.final_payable_amount ??
+                                                      0) >
+                                                  0) &&
+                                              (widget.order?.orderType !=
+                                                  "receipt")) {
                                             log("payment method ontap");
+                                            await _addCartController
+                                                .createRazorPayOrder(
+                                                    storeId: widget.order?.store
+                                                            ?.sId ??
+                                                        '',
+                                                    amount: double.parse(widget
+                                                            .order
+                                                            ?.final_payable_amount
+                                                            ?.toStringAsFixed(
+                                                                2) ??
+                                                        "0.0"));
+                                            if (_addCartController
+                                                    .createRazorpayResponseModel
+                                                    .value !=
+                                                null) {
+                                              await launchPayment(
+                                                      widget.order
+                                                              ?.final_payable_amount
+                                                              ?.toInt() ??
+                                                          00,
+                                                      _addCartController
+                                                              .createRazorpayResponseModel
+                                                              .value
+                                                              ?.orderId ??
+                                                          '')
+                                                  .then((value) {
+                                                if (value == true) {
+                                                  postOrderCustomerCollectAmount();
+                                                }
+                                              });
+                                            } else {
+                                              Get.showSnackbar(GetBar(
+                                                message:
+                                                    "failed to create razor order",
+                                                duration: Duration(seconds: 2),
+                                              ));
+                                            }
+
+                                            // postOrderCustomerCollectAmount();
                                           } else {
                                             log("order paid ");
                                           }
@@ -1151,21 +1289,25 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                           height: 6.h,
                                           margin: EdgeInsets.only(top: 1.h),
                                           decoration: BoxDecoration(
-                                              color: (order?.status ==
+                                              color: (widget.order?.status ==
                                                           "pending" ||
-                                                      (order?.orderType ==
+                                                      (widget.order?.orderType ==
                                                           "receipt"))
                                                   ? AppConst.lightGreen
-                                                  : ((order?.status ==
-                                                                  "picked_up" ||
-                                                              (order?.status ==
+                                                  : (((widget.order?.status ==
+                                                                  "picked_up") ||
+                                                              (widget.order
+                                                                      ?.status ==
                                                                   "accepted") ||
-                                                              (order?.status ==
-                                                                      "ready") &&
-                                                                  (order?.total ??
-                                                                          0) >
-                                                                      0) &&
-                                                          (order?.orderType !=
+                                                              (widget.order
+                                                                      ?.status ==
+                                                                  "ready")) &&
+                                                          ((widget.order
+                                                                      ?.final_payable_amount ??
+                                                                  0) >
+                                                              0) &&
+                                                          (widget.order
+                                                                  ?.orderType !=
                                                               "receipt")
                                                       ? AppConst.lightGreen
                                                       : AppConst.grey),
@@ -1173,9 +1315,9 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(10)),
                                           child: Center(
-                                            child: (order?.status ==
+                                            child: (widget.order?.status ==
                                                         "pending" ||
-                                                    (order?.orderType ==
+                                                    (widget.order?.orderType ==
                                                         "receipt"))
                                                 ? Text(
                                                     "View Items",
@@ -1189,22 +1331,30 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                           FontWeight.w500,
                                                     ),
                                                   )
-                                                : ((order?.status ==
-                                                                "picked_up" ||
-                                                            (order?.status ==
+                                                : (((widget.order?.status ==
+                                                                "picked_up") ||
+                                                            (widget.order
+                                                                    ?.status ==
                                                                 "accepted") ||
-                                                            (order?.status ==
-                                                                    "ready") &&
-                                                                (order?.total ??
-                                                                        0) >
-                                                                    0) &&
-                                                        (order?.orderType !=
+                                                            (widget.order
+                                                                    ?.status ==
+                                                                "ready")) &&
+                                                        ((widget.order
+                                                                    ?.final_payable_amount ??
+                                                                0) >
+                                                            0) &&
+                                                        (widget.order
+                                                                ?.orderType !=
                                                             "receipt")
                                                     ? Text(
                                                         (modifiedOrReplacedItemCount >
-                                                                0)
-                                                            ? "Verify Items and Pay \u{20B9} ${order?.total ?? 0}"
-                                                            : "Pay \u{20B9} ${order?.final_payable_amount ?? 0}", //pay 0 disable the button
+                                                                    0 ||
+                                                                (widget.order
+                                                                            ?.final_payable_amount ??
+                                                                        0) >
+                                                                    0)
+                                                            ? "Verify Items and Pay \u{20B9} ${widget.order?.final_payable_amount ?? 0}"
+                                                            : "Pay \u{20B9} ${widget.order?.final_payable_amount ?? 0}", //pay 0 disable the button
                                                         style: TextStyle(
                                                           color: AppConst
                                                               .ContainerColor,
@@ -1258,7 +1408,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                             SizedBox(
                               height: 2.h,
                             ),
-                            (order?.rider != null)
+                            (widget.order?.rider != null)
                                 ? Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 3.w, vertical: 1.h),
@@ -1271,7 +1421,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                           width: 12.w,
                                           child: Center(
                                               child: Text(
-                                            "${order?.rider?.firstName?.substring(0, 1) ?? "R"}",
+                                            "${widget.order?.rider?.firstName?.substring(0, 1) ?? "R"}",
                                             style: TextStyle(
                                                 color: AppConst.white,
                                                 fontSize: SizeUtils
@@ -1296,7 +1446,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${order?.rider?.firstName ?? ""} ${order?.rider?.last_name ?? ""}", // add rider last name
+                                                  "${widget.order?.rider?.firstName ?? ""} ${widget.order?.rider?.last_name ?? ""}", // add rider last name
                                                   style: TextStyle(
                                                       color: AppConst.black,
                                                       fontSize: SizeUtils
@@ -1326,14 +1476,14 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                         InkWell(
                                             onTap: (() {
                                               _launchURL(
-                                                  "tel:${order?.rider?.mobile ?? ''}");
+                                                  "tel:${widget.order?.rider?.mobile ?? ''}");
                                             }),
                                             child: CallLogo())
                                       ],
                                     ),
                                   )
                                 : SizedBox(),
-                            (order?.rider != null)
+                            (widget.order?.rider != null)
                                 ? Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 1.w),
@@ -1346,7 +1496,8 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               highlightColor: AppConst.highLightColor,
                               onTap: () {
                                 _chatController.launchChat(
-                                    '${order?.Id}', "${order?.store?.name}");
+                                    '${widget.order?.Id}',
+                                    "${widget.order?.store?.name}");
                               },
                               child: StoreChatBubble(
                                 text: "Facing any issues?\nTell us your issue.",
@@ -1354,12 +1505,13 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                               ),
                             ),
                             StoreNameCallLogoWidget(
-                              logoLetter: order?.store?.name?.substring(0, 1),
-                              storeName: order?.store?.name,
-                              totalAmount: order?.total,
+                              logoLetter:
+                                  widget.order?.store?.name?.substring(0, 1),
+                              storeName: widget.order?.store?.name,
+                              totalAmount: widget.order?.total,
                               paymentStatus:
                                   "Paid", // updated the status to Dynamic
-                              mobile: order?.store?.mobile,
+                              mobile: widget.order?.store?.mobile,
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 9.w),
@@ -1427,7 +1579,7 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
                                           Container(
                                             width: 70.w,
                                             child: Text(
-                                              "${order?.address ?? ""}", // add cutomer full address that we selct at the time of placing the order
+                                              "${widget.order?.address ?? ""}", // add cutomer full address that we selct at the time of placing the order
                                               // "Address, ABC Colony, Hyderabad, Telangana ",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -1482,6 +1634,25 @@ class HistoryOrderTrackingScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<bool> launchPayment(int amount, String orderId) async {
+    var options = {
+      'key': 'rzp_test_n1q5GFiD3BLkNw', //'rzp_test_K5F950Y92Z3p6X',
+      'amount': (amount * 100),
+      'order_id': orderId,
+      'name': 'Seeya',
+      'prefill': {'contact': '9876543210', 'email': 'ujjwolmainali7@gmail.com'},
+      'external': {'wallets': []}
+    };
+
+    try {
+      _razorpay.open(options);
+      return true;
+    } catch (e) {
+      log('e :$e');
+      return false;
+    }
   }
 }
 

@@ -33,6 +33,7 @@ class ActiveOrderData {
   String? receipt;
   String? orderType;
   int? total;
+  num? final_payable_amount;
   int? cashback_percentage;
   num? total_cashback;
   num? wallet_amount;
@@ -46,24 +47,26 @@ class ActiveOrderData {
   List<InventoriesData>? inventories;
   Store? store;
 
-  ActiveOrderData(
-      {this.Id,
-      this.status,
-      this.orderType,
-      this.total,
-      this.total_cashback,
-      this.wallet_amount,
-      this.cashback_percentage,
-      this.createdAt,
-      this.address,
-      this.location,
-      this.deliverySlot,
-      this.rider,
-      this.products,
-      this.inventories,
-      this.store,
-      this.receipt,
-      this.rawItems});
+  ActiveOrderData({
+    this.Id,
+    this.status,
+    this.orderType,
+    this.total,
+    this.total_cashback,
+    this.wallet_amount,
+    this.cashback_percentage,
+    this.createdAt,
+    this.address,
+    this.location,
+    this.deliverySlot,
+    this.rider,
+    this.products,
+    this.inventories,
+    this.store,
+    this.receipt,
+    this.rawItems,
+    this.final_payable_amount,
+  });
 
   ActiveOrderData.fromJson(Map<String, dynamic> json) {
     Id = json['_id'];
@@ -71,6 +74,7 @@ class ActiveOrderData {
     receipt = json['receipt'];
     orderType = json['order_type'];
     total = json['total'];
+    final_payable_amount = json['final_payable_amount'];
     cashback_percentage = json['cashback_percentage'];
     total_cashback = json['total_cashback'];
     wallet_amount = json['wallet_amount'];
@@ -111,6 +115,7 @@ class ActiveOrderData {
     data['receipt'] = this.receipt;
     data['order_type'] = this.orderType;
     data['total'] = this.total;
+    data['final_payable_amount'] = this.final_payable_amount;
     data['cashback_percentage'] = this.cashback_percentage;
     data['total_cashback'] = this.total_cashback;
     data['wallet_amount'] = this.wallet_amount;
