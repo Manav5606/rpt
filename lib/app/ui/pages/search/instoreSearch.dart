@@ -364,24 +364,31 @@ class _InstoreSearch extends State<InstoreSearch> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Obx(() => (_moreStoreController.isLoadingGetProducts.value)
-                        ? shimmereffectForSearch()
-                        : (_moreStoreController.autoCompleteProductsByStoreModel
-                                    .value?.data?.products?.isNotEmpty ??
-                                false)
-                            ? StoreProductSearchList(
-                                foundedStores: _moreStoreController
-                                    .autoCompleteProductsByStoreModel
-                                    .value
-                                    ?.data
-                                    ?.products,
-                              )
-                            : SizedBox()),
+                    Obx(() =>
+                        (_moreStoreController.isLoadingGetProducts.value ||
+                                _moreStoreController.isLoading.value)
+                            ? shimmereffectForSearch()
+                            : (_moreStoreController
+                                        .autoCompleteProductsByStoreModel
+                                        .value
+                                        ?.data
+                                        ?.products
+                                        ?.isNotEmpty ??
+                                    false)
+                                ? StoreProductSearchList(
+                                    foundedStores: _moreStoreController
+                                        .autoCompleteProductsByStoreModel
+                                        .value
+                                        ?.data
+                                        ?.products,
+                                  )
+                                : SizedBox()),
                     SizedBox(
                       height: 2.h,
                     ),
                     Obx(
-                      () => (_moreStoreController.isLoadingGetProducts.value)
+                      () => (_moreStoreController.isLoadingGetProducts.value ||
+                              _moreStoreController.isLoading.value)
                           ? shimmereffectForSearch()
                           : (_moreStoreController
                                       .autoCompleteProductsByStoreModel

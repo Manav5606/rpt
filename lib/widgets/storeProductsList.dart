@@ -76,7 +76,47 @@ class ListViewChild extends StatelessWidget {
                   DisplayProductName(name: storeSearchModel.name),
                   DisplayCashback(
                     cashback: storeSearchModel.cashback,
-                  )
+                  ),
+                  RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: "\u20b9${storeSearchModel.mrp ?? ""}",
+                        style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.grey,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.3,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
+                            decoration: TextDecoration.lineThrough)),
+                    TextSpan(
+                        text: " \u20b9${storeSearchModel.selling_price ?? ""}",
+                        style: TextStyle(
+                          fontFamily: 'MuseoSans',
+                          color: AppConst.black,
+                          fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        )),
+                    TextSpan(
+                        text: "/ ${storeSearchModel.unit ?? ""}",
+                        style: TextStyle(
+                          fontFamily: 'MuseoSans',
+                          color: AppConst.black,
+                          fontSize: SizeUtils.horizontalBlockSize * 3.3,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ))
+                  ])),
+                  // Text(
+                  //     "\u20b9${storeSearchModel.mrp ?? "--"} \u20b9${storeSearchModel.selling_price ?? ""}/ ${storeSearchModel.unit ?? ""}",
+                  //     overflow: TextOverflow.ellipsis,
+                  //     style: TextStyle(
+                  //       fontFamily: 'MuseoSans',
+                  //       color: AppConst.black,
+                  //       fontSize: SizeUtils.horizontalBlockSize * 3.3,
+                  //       fontWeight: FontWeight.w500,
+                  //       fontStyle: FontStyle.normal,
+                  //     )),
                 ],
               ),
 
@@ -199,9 +239,28 @@ class Inventories extends StatelessWidget {
                   SizedBox(
                     width: 2.w,
                   ),
-                  DisplayProductName(
-                    name: inventoriesModel?[index].name,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DisplayProductName(
+                        name: inventoriesModel?[index].name,
+                      ),
+                      SizedBox(
+                        height: 0.5.h,
+                      ),
+                      Text(
+                          "\u20b9${inventoriesModel?[index].mrp ?? "--"}/ ${inventoriesModel?[index].unit ?? ""}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.black,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.3,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
+                          )),
+                    ],
                   ),
+
                   // Expanded(
                   //   child: Text(
                   //     inventoriesModel?[index].name ?? '',

@@ -61,7 +61,9 @@ class AutoCompleteProductsByData {
 }
 
 class Products {
-  int? mrp;
+  num? mrp;
+  String? unit;
+  num? selling_price;
   String? name;
   String? sId;
   int? cashback;
@@ -72,6 +74,8 @@ class Products {
   RxBool? isQunitityAdd = false.obs;
   Products(
       {this.mrp,
+      this.selling_price,
+      this.unit,
       this.name,
       this.sId,
       this.img,
@@ -83,6 +87,9 @@ class Products {
 
   Products.fromJson(Map<String, dynamic> json) {
     mrp = json['mrp'];
+    mrp = json['mrp'];
+    unit = json['unit'];
+    selling_price = json['selling_price'];
     name = json['name'];
     sId = json['_id'];
     img = json['img'];

@@ -90,6 +90,9 @@ class Products {
   String? name;
   String? logo;
   int? cashback;
+  num? mrp;
+  String? unit;
+  num? selling_price;
   RxInt? quntity = 0.obs;
   RxBool? isQunitityAdd = false.obs;
 
@@ -97,6 +100,9 @@ class Products {
       {this.sId,
       this.name,
       this.logo,
+      this.mrp,
+      this.unit,
+      this.selling_price,
       this.cashback,
       this.quntity,
       this.isQunitityAdd});
@@ -105,6 +111,9 @@ class Products {
     sId = json['_id'];
     name = json['name'];
     logo = json['logo'];
+    mrp = json['mrp'];
+    unit = json['unit'];
+    selling_price = json['selling_price'];
     cashback = json['cashback'];
     quntity?.value = json['quantity'] != null ? 0 : 0;
   }

@@ -909,6 +909,9 @@ query($lat: Float, $lng: Float) {
        name
        logo
        cashback
+       mrp
+       unit
+       selling_price
       }
     }
   }
@@ -1050,6 +1053,10 @@ wallet_amount
           name
           cashback
           logo
+          mrp
+          unit
+          selling_price
+          
 }
       }
     }
@@ -1104,6 +1111,8 @@ wallet_amount
       products
       {
         mrp
+        selling_price
+        unit
         name
         _id
         cashback
@@ -1120,7 +1129,8 @@ wallet_amount
 }
       inventories
       {
-               mrp
+        mrp
+        unit
         name
         img
         _id
@@ -1822,6 +1832,7 @@ data{
         name
         status
         gst_amount
+        mrp
         selling_price
         quantity
         cashback
@@ -1843,6 +1854,7 @@ data{
         status
         img
         unit
+        mrp
       }
     }
   }

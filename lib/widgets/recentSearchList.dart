@@ -470,7 +470,7 @@ class DisplayHotProducts extends StatelessWidget {
                                           height: 0.5.h,
                                         ),
                                         Text(
-                                            "Cashback \u20b9${product.cashback.toString()}",
+                                            "Cashback \u20b9${product.cashback ?? ""}",
                                             style: TextStyle(
                                               fontFamily: 'MuseoSans',
                                               color: AppConst.black,
@@ -487,16 +487,59 @@ class DisplayHotProducts extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Text("₹ 125 / 3Kg",
-                                                style: TextStyle(
-                                                  fontFamily: 'MuseoSans',
-                                                  color: AppConst.black,
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      3.3,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
+                                            RichText(
+                                                text: TextSpan(children: [
+                                              // TextSpan(
+                                              //     text:
+                                              //         "\u20b9${product.mrp ?? ""}",
+                                              //     style: TextStyle(
+                                              //         fontFamily: 'MuseoSans',
+                                              //         color: AppConst.grey,
+                                              //         fontSize: SizeUtils
+                                              //                 .horizontalBlockSize *
+                                              //             3.3,
+                                              //         fontWeight:
+                                              //             FontWeight.w500,
+                                              //         fontStyle:
+                                              //             FontStyle.normal,
+                                              //         decoration: TextDecoration
+                                              //             .lineThrough)),
+                                              TextSpan(
+                                                  text:
+                                                      " \u20b9${product.mrp ?? ""}",
+                                                  style: TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.black,
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        3.5,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  )),
+                                              TextSpan(
+                                                  text:
+                                                      "/ ${product.unit ?? ""}",
+                                                  style: TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.black,
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        3.3,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  ))
+                                            ])),
+                                            // Text(
+                                            //     "\u20b9${product.mrp ?? "--"}/ ${product.unit ?? ""}",
+                                            //     style: TextStyle(
+                                            //       fontFamily: 'MuseoSans',
+                                            //       color: AppConst.black,
+                                            //       fontSize: SizeUtils
+                                            //               .horizontalBlockSize *
+                                            //           3.3,
+                                            //       fontWeight: FontWeight.w500,
+                                            //       fontStyle: FontStyle.normal,
+                                            //     )),
                                             Spacer(),
                                             // SizedBox(
                                             //   width: 3.w,

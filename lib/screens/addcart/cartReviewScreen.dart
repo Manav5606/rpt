@@ -451,22 +451,84 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                                   ?.products?[i]
                                                                   .name,
                                                         ),
-                                                        Text("₹95 / 60g",
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'MuseoSans',
-                                                              color: Color(
-                                                                  0xff9e9e9e),
-                                                              fontSize: SizeUtils
-                                                                      .horizontalBlockSize *
-                                                                  3.7,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
-                                                            )),
+                                                        RichText(
+                                                            text: TextSpan(
+                                                                children: [
+                                                              TextSpan(
+                                                                  text:
+                                                                      "\u20b9${_addCartController.reviewCart.value?.data?.products?[i].mrp ?? ""}",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          'MuseoSans',
+                                                                      color: AppConst
+                                                                          .grey,
+                                                                      fontSize:
+                                                                          SizeUtils.horizontalBlockSize *
+                                                                              3.3,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .lineThrough)),
+                                                              TextSpan(
+                                                                  text:
+                                                                      " \u20b9${_addCartController.reviewCart.value?.data?.products?[i].sellingPrice ?? ""}",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'MuseoSans',
+                                                                    color: AppConst
+                                                                        .black,
+                                                                    fontSize:
+                                                                        SizeUtils.horizontalBlockSize *
+                                                                            3.5,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal,
+                                                                  )),
+                                                              TextSpan(
+                                                                  text:
+                                                                      "/ ${_addCartController.reviewCart.value?.data?.products?[i].unit ?? ""}",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'MuseoSans',
+                                                                    color: AppConst
+                                                                        .black,
+                                                                    fontSize:
+                                                                        SizeUtils.horizontalBlockSize *
+                                                                            3.3,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal,
+                                                                  ))
+                                                            ])),
+                                                        // Text("₹95 / 60g",
+                                                        //     style: TextStyle(
+                                                        //       fontFamily:
+                                                        //           'MuseoSans',
+                                                        //       color: Color(
+                                                        //           0xff9e9e9e),
+                                                        //       fontSize: SizeUtils
+                                                        //               .horizontalBlockSize *
+                                                        //           3.7,
+                                                        //       fontWeight:
+                                                        //           FontWeight
+                                                        //               .w500,
+                                                        //       fontStyle:
+                                                        //           FontStyle
+                                                        //               .normal,
+                                                        //     )),
                                                       ],
                                                     ),
                                                     _addCartController
@@ -1202,14 +1264,78 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                             SizedBox(
                                                               width: 2.w,
                                                             ),
-                                                            DisplayProductName(
-                                                              name: _addCartController
-                                                                  .reviewCart
-                                                                  .value
-                                                                  ?.data
-                                                                  ?.inventories?[
-                                                                      index]
-                                                                  .name,
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                DisplayProductName(
+                                                                  name: _addCartController
+                                                                      .reviewCart
+                                                                      .value
+                                                                      ?.data
+                                                                      ?.inventories?[
+                                                                          index]
+                                                                      .name,
+                                                                ),
+                                                                RichText(
+                                                                    text: TextSpan(
+                                                                        children: [
+                                                                      // TextSpan(
+                                                                      //     text:
+                                                                      //         "\u20b9${_addCartController.reviewCart.value?.data?.inventories?[
+                                                                      //             index].mrp ?? ""}",
+                                                                      //     style: TextStyle(
+                                                                      //         fontFamily:
+                                                                      //             'MuseoSans',
+                                                                      //         color: AppConst
+                                                                      //             .grey,
+                                                                      //         fontSize:
+                                                                      //             SizeUtils.horizontalBlockSize *
+                                                                      //                 3.3,
+                                                                      //         fontWeight:
+                                                                      //             FontWeight
+                                                                      //                 .w500,
+                                                                      //         fontStyle:
+                                                                      //             FontStyle
+                                                                      //                 .normal,
+                                                                      //         decoration:
+                                                                      //             TextDecoration
+                                                                      //                 .lineThrough)),
+                                                                      TextSpan(
+                                                                          text:
+                                                                              " \u20b9${_addCartController.reviewCart.value?.data?.inventories?[index].mrp ?? ""}",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'MuseoSans',
+                                                                            color:
+                                                                                AppConst.black,
+                                                                            fontSize:
+                                                                                SizeUtils.horizontalBlockSize * 3.5,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            fontStyle:
+                                                                                FontStyle.normal,
+                                                                          )),
+                                                                      TextSpan(
+                                                                          text:
+                                                                              "/ ${_addCartController.reviewCart.value?.data?.inventories?[index].unit ?? ""}",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'MuseoSans',
+                                                                            color:
+                                                                                AppConst.black,
+                                                                            fontSize:
+                                                                                SizeUtils.horizontalBlockSize * 3.3,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            fontStyle:
+                                                                                FontStyle.normal,
+                                                                          ))
+                                                                    ])),
+                                                              ],
                                                             ),
                                                             // Expanded(
                                                             //     child: Text(
