@@ -23,47 +23,47 @@ class _WalletDetailScreenShimmerState extends State<WalletDetailScreenShimmer> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            child: Row(
-              children: [
-                ShimmerEffect(
-                    child: Icon(
-                  Icons.arrow_back,
-                  size: 3.h,
-                  color: AppConst.black,
-                )),
-                SizedBox(
-                  width: 3.w,
-                ),
-                ShimmerEffect(
-                  child: Container(
-                    width: 12.w,
-                    height: 6.h,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: AppConst.black),
-                  ),
-                ),
-                SizedBox(
-                  width: 2.w,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      child: Center(
-                          child: ShimmerEffect(
-                        child: Container(
-                          color: AppConst.black,
-                          height: 2.5.h,
-                          width: 60.w,
-                        ),
-                      )),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+          //   child: Row(
+          //     children: [
+          //       ShimmerEffect(
+          //           child: Icon(
+          //         Icons.arrow_back,
+          //         size: 3.h,
+          //         color: AppConst.black,
+          //       )),
+          //       SizedBox(
+          //         width: 3.w,
+          //       ),
+          //       ShimmerEffect(
+          //         child: Container(
+          //           width: 12.w,
+          //           height: 6.h,
+          //           decoration: BoxDecoration(
+          //               shape: BoxShape.circle, color: AppConst.black),
+          //         ),
+          //       ),
+          //       SizedBox(
+          //         width: 2.w,
+          //       ),
+          //       Column(
+          //         children: [
+          //           Container(
+          //             child: Center(
+          //                 child: ShimmerEffect(
+          //               child: Container(
+          //                 color: AppConst.black,
+          //                 height: 2.5.h,
+          //                 width: 60.w,
+          //               ),
+          //             )),
+          //           )
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
           ShimmerEffect(
               child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),

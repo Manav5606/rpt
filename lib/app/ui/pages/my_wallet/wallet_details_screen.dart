@@ -61,7 +61,7 @@ class WalletTransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
     // Color color = argumentData['color'];
-    Color color = Color(0xff0a3453);
+    Color color = Color(0xff003d29);
     String name = argumentData['name'] ?? "S";
     String logo = argumentData['logo'] ?? "";
 
@@ -72,7 +72,7 @@ class WalletTransactionCard extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: color,
-          title: Text("Sreeja Kirana & General Stores",
+          title: Text(name,
               style: TextStyle(
                 fontFamily: 'MuseoSans',
                 color: AppConst.white,
@@ -187,21 +187,22 @@ class WalletTransactionCard extends StatelessWidget {
         height: 25.h,
         width: double.infinity,
         decoration: BoxDecoration(
-            color: color,
-            // border: Border.all(),
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(32),
-                bottomRight: Radius.circular(32))),
+          color: color,
+          // border: Border.all(),
+          // borderRadius: BorderRadius.only(
+          //     bottomLeft: Radius.circular(32),
+          //     bottomRight: Radius.circular(32))
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Column(
               children: [
                 Text(
-                  "\u{20B9} ${walletData?.earnedCashback ?? '0.0'} ",
+                  "\u{20B9} ${(walletData?.earnedCashback ?? 0) + (walletData?.welcomeOfferAmount ?? 0)} ",
                   style: TextStyle(
                     color: AppConst.white,
-                    fontSize: SizeUtils.horizontalBlockSize * 8,
+                    fontSize: SizeUtils.horizontalBlockSize * 11,
                     fontFamily: 'MuseoSans',
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
@@ -239,10 +240,10 @@ class WalletTransactionCard extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(12.0),
                           height: 12.h,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                            width: 0.1,
-                          )),
+                          // decoration: BoxDecoration(
+                          //     border: Border.all(
+                          //   width: 0.1,
+                          // )),
                           child: Image(
                             image: AssetImage(
                               'assets/images/scanme.png',
@@ -280,10 +281,10 @@ class WalletTransactionCard extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(12.0),
                           height: 12.h,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                            width: 0.1,
-                          )),
+                          // decoration: BoxDecoration(
+                          //     border: Border.all(
+                          //   width: 0.1,
+                          // )),
                           child: Image(
                             image: AssetImage(
                               'assets/images/refund.png',
@@ -326,10 +327,10 @@ class WalletTransactionCard extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(12.0),
                           height: 12.h,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                            width: 0.1,
-                          )),
+                          // decoration: BoxDecoration(
+                          //     border: Border.all(
+                          //   width: 0.1,
+                          // )),
                           child: Image(
                             image: AssetImage(
                               'assets/images/storevisit.png',
@@ -475,7 +476,8 @@ class TransactionList extends StatelessWidget {
                                 color: AppConst.white,
                                 size: 3.5.h,
                               ),
-                              backgroundColor: AppConst.blue,
+                              backgroundColor:
+                                  Color(0xff5764da), // AppConst.blue,
                               radius: SizeUtils.horizontalBlockSize * 6,
                             )
                           : CircleAvatar(
@@ -493,8 +495,25 @@ class TransactionList extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Container(
+                            width: 55.w,
+                            child: Text(
+                              '${_myWalletController.myWalletTransactionModel.value?.data?[index].comment ?? 'no comment'}',
+                              overflow: TextOverflow.visible,
+                              style: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                                fontFamily: 'MuseoSans',
+                                color: Color(0xff3a3a3a),
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 0.5.h,
+                          ),
                           Text(
-                            DateFormat('E d MMM hh:mm a').format(
+                            DateFormat('d MMMM yyyy  hh:mm a').format(
                               DateTime.fromMillisecondsSinceEpoch(
                                 _myWalletController.myWalletTransactionModel
                                             .value?.data?[index].createdAt !=
@@ -509,33 +528,20 @@ class TransactionList extends StatelessWidget {
                               ),
                             ),
                             style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                              fontFamily: 'MuseoSans',
-                              color: Color(0xff3a3a3a),
-                              fontWeight: FontWeight.w700,
+                              fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                              color: Color(0xff888888),
+                              fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                          Container(
-                            width: 60.w,
-                            child: Text(
-                              '${_myWalletController.myWalletTransactionModel.value?.data?[index].comment ?? 'no comment'}',
-                              overflow: TextOverflow.visible,
-                              style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                                color: Color(0xff888888),
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.normal,
-                              ),
                             ),
                           ),
                         ],
                       ),
                       Spacer(),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                              '\u{20b9} ${_myWalletController.myWalletTransactionModel.value?.data?[index].amount ?? '0.0'}',
+                              '${((_myWalletController.myWalletTransactionModel.value?.data?[index].debitOrCredit)?.toUpperCase() == "DEBIT") ? "" : "+"} \u{20b9}${_myWalletController.myWalletTransactionModel.value?.data?[index].amount ?? '0.0'}',
                               style: TextStyle(
                                 fontFamily: 'MuseoSans',
                                 color: ((_myWalletController
@@ -545,7 +551,7 @@ class TransactionList extends StatelessWidget {
                                                 .debitOrCredit)
                                             ?.toUpperCase() ==
                                         "DEBIT")
-                                    ? AppConst.orange
+                                    ? AppConst.black
                                     : AppConst.green,
                                 fontSize: SizeUtils.horizontalBlockSize * 4.5,
                                 fontWeight: FontWeight.w700,
