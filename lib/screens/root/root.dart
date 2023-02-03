@@ -187,9 +187,9 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-            color: AppConst.white,
+            color: Color(0xff0a3453), // AppConst.white,
             image: DecorationImage(
-                image: AssetImage("assets/images/logowithname1.png"),
+                image: AssetImage("assets/images/rootsplash.png"),
                 fit: BoxFit.fill),
           ),
           height: double.infinity,

@@ -18,7 +18,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Future.delayed(Duration(seconds: 3), () {
-        Get.toNamed(AppRoutes.Root);
+        Get.toNamed(
+          AppRoutes.Root,
+        );
       });
     });
   }
@@ -32,16 +34,16 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-            color: AppConst.white,
-            // image: DecorationImage(
-            //     image: AssetImage("assets/images/splashbg.png"),
-            //     fit: BoxFit.fill),
+            color: Color(0xff0a3453),
+            image: DecorationImage(
+                image: AssetImage("assets/images/bgsplash.png"),
+                fit: BoxFit.fill),
           ),
           height: double.infinity,
           width: double.infinity,
           child: FittedBox(
             child: Center(
-              child: Lottie.asset('assets/lottie/splash11.json'),
+              child: Lottie.asset('assets/lottie/splash2.json'),
             ),
             //      Image.asset(
             //   "assets/images/splash11.gif",

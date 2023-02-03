@@ -29,30 +29,30 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final SignInScreenController _signInController = Get.find();
 
-  int CurrentIndex = 0;
-  late PageController _controller;
+  // int CurrentIndex = 0;
+  // late PageController _controller;
 
   @override
   void initState() {
-    _controller = PageController(initialPage: 0);
-    Timer.periodic(Duration(seconds: 3), (Timer timer) {
-      if (CurrentIndex < 3) {
-        _controller.animateToPage(
-          CurrentIndex,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeIn,
-        );
-        CurrentIndex++;
-      } else {
-        CurrentIndex = 3;
-      }
-      // super.initState();
-    });
+    // _controller = PageController(initialPage: 0);
+    // Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    //   if (CurrentIndex < 3) {
+    //     _controller.animateToPage(
+    //       CurrentIndex,
+    //       duration: Duration(milliseconds: 500),
+    //       curve: Curves.easeIn,
+    //     );
+    //     CurrentIndex++;
+    //   } else {
+    //     CurrentIndex = 3;
+    //   }
+    //   // super.initState();
+    // });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 
@@ -127,8 +127,9 @@ class _SignInScreenState extends State<SignInScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: AppConst.transparent,
-          statusBarIconBrightness: Brightness.dark),
+          statusBarIconBrightness: Brightness.light),
       child: Scaffold(
+        backgroundColor: Color(0xff0a3453),
         // resizeToAvoidBottomInset: false,
 
         bottomSheet: Obx(
@@ -206,11 +207,11 @@ class _SignInScreenState extends State<SignInScreen> {
                             color:
                                 _signInController.phoneNumber.value.length == 10
                                     ? AppConst.darkGreen
-                                    : AppConst.grey,
+                                    : AppConst.darkGreen,
                             borderColor:
                                 _signInController.phoneNumber.value.length == 10
                                     ? AppConst.darkGreen
-                                    : AppConst.grey,
+                                    : AppConst.darkGreen,
                           ),
                         ),
                       ],
@@ -279,8 +280,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         Obx(
                           () => GestureDetector(
                               onTap: (_signInController
-                                          .phoneNumber.value.length ==
-                                      10)
+                                              .phoneNumber.value.length ==
+                                          10 &&
+                                      _signInController.phoneNumber.value.isNum)
                                   ? () {
                                       log("aavoooo :0");
                                       try {
@@ -290,19 +292,30 @@ class _SignInScreenState extends State<SignInScreen> {
                                       }
                                       log("aavoooo :1");
                                     }
-                                  : null,
+                                  : () {
+                                      Get.showSnackbar(GetSnackBar(
+                                        backgroundColor: AppConst.black,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 12),
+                                        snackStyle: SnackStyle.FLOATING,
+                                        borderRadius: 12,
+                                        duration: Duration(seconds: 2),
+                                        message: "Enter vaild mobile number!",
+                                        // title: "Amount must be at least \u{20b9}1"
+                                      ));
+                                    },
                               child: BottomWideButton(
                                 text: "Sign in",
                                 color: _signInController
                                             .phoneNumber.value.length ==
                                         10
-                                    ? AppConst.darkGreen
-                                    : AppConst.grey,
+                                    ? AppConst.green
+                                    : AppConst.green.withOpacity(0.8),
                                 borderColor: _signInController
                                             .phoneNumber.value.length ==
                                         10
-                                    ? AppConst.darkGreen
-                                    : AppConst.grey,
+                                    ? AppConst.green
+                                    : AppConst.green.withOpacity(0.8),
                               )),
                         ),
                       ],
@@ -321,18 +334,37 @@ class _SignInScreenState extends State<SignInScreen> {
             // mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                  height: 75.h,
-                  child: PageView(
-                    controller: _controller,
-                    children: currentTabs,
-                    onPageChanged: (int index) {
-                      setState(() {
-                        CurrentIndex = index;
-                      });
-                    },
-                  )),
-              SizedBox(
-                height: 3.h,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/bglogin.png"),
+                      fit: BoxFit.fill),
+                ),
+
+                height: 75.h,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                          height: 25.h,
+                          child: Image(
+                              image:
+                                  AssetImage("assets/images/loginlogo.png"))),
+                      SizedBox(
+                        height: 7.h,
+                      )
+                    ],
+                  ),
+                ),
+                //     child: PageView(
+                //       controller: _controller,
+                //       children: currentTabs,
+                //       onPageChanged: (int index) {
+                //         setState(() {
+                //           CurrentIndex = index;
+                //         });
+                //       },
+                //     )),
               )
             ],
           ),
@@ -425,91 +457,91 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ),
 
-          Container(
-            color: AppConst.white,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:
-                        List.generate(4, (index) => buildDot(index, context)),
-                  ),
-                ),
-                // CurrentIndex > 0
-                //     ? GestureDetector(
-                //         onTap: () {
-                //           if (CurrentIndex == 4) {}
-                //           _controller.previousPage(
-                //               duration: Duration(
-                //                   milliseconds:
-                //                       100),
-                //               curve:
-                //                   Curves.bounceIn);
-                //         },
-                //         child: Icon(
-                //           Icons.arrow_back,
-                //           size: 3.2.h,
-                //         ),
-                //       )
-                //     : Container(
-                //         child: SizedBox(
-                //         width: 5.w,
-                //       )),
-                // Container(
-                //   child: Row(
-                //     mainAxisAlignment:
-                //         MainAxisAlignment.center,
-                //     children: List.generate(
-                //         4,
-                //         (index) => buildDot(
-                //             index, context)),
-                //   ),
-                // ),
-                // CurrentIndex < 3
-                //     ? GestureDetector(
-                //         onTap: () {
-                //           if (CurrentIndex == 4) {}
-                //           _controller.nextPage(
-                //               duration: Duration(
-                //                   milliseconds:
-                //                       100),
-                //               curve:
-                //                   Curves.bounceIn);
-                //         },
-                //         child: Icon(
-                //           Icons.arrow_forward,
-                //           size: 3.2.h,
-                //         ),
-                //       )
-                //     : Container(
-                //         child: SizedBox(
-                //         width: 5.w,
-                //       )),
-              ],
-            ),
-          ),
+          // Container(
+          //   color: AppConst.white,
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          // Container(
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children:
+          //         List.generate(4, (index) => buildDot(index, context)),
+          //   ),
+          // ),
+          // CurrentIndex > 0
+          //     ? GestureDetector(
+          //         onTap: () {
+          //           if (CurrentIndex == 4) {}
+          //           _controller.previousPage(
+          //               duration: Duration(
+          //                   milliseconds:
+          //                       100),
+          //               curve:
+          //                   Curves.bounceIn);
+          //         },
+          //         child: Icon(
+          //           Icons.arrow_back,
+          //           size: 3.2.h,
+          //         ),
+          //       )
+          //     : Container(
+          //         child: SizedBox(
+          //         width: 5.w,
+          //       )),
+          // Container(
+          //   child: Row(
+          //     mainAxisAlignment:
+          //         MainAxisAlignment.center,
+          //     children: List.generate(
+          //         4,
+          //         (index) => buildDot(
+          //             index, context)),
+          //   ),
+          // ),
+          // CurrentIndex < 3
+          //     ? GestureDetector(
+          //         onTap: () {
+          //           if (CurrentIndex == 4) {}
+          //           _controller.nextPage(
+          //               duration: Duration(
+          //                   milliseconds:
+          //                       100),
+          //               curve:
+          //                   Curves.bounceIn);
+          //         },
+          //         child: Icon(
+          //           Icons.arrow_forward,
+          //           size: 3.2.h,
+          //         ),
+          //       )
+          //     : Container(
+          //         child: SizedBox(
+          //         width: 5.w,
+          //       )),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
   }
 
-  Container buildDot(int index, BuildContext context) {
-    return Container(
-      height: 10,
-      width: 10,
-      // CurrentIndex == index ? 25 : 10,
-      margin: EdgeInsets.only(right: 2.w),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: CurrentIndex == index ? AppConst.darkGreen : AppConst.lightGrey
-          // Colors.green
-          // kSecondaryColor
-          ),
-    );
-  }
+  // Container buildDot(int index, BuildContext context) {
+  //   return Container(
+  //     height: 10,
+  //     width: 10,
+  //     // CurrentIndex == index ? 25 : 10,
+  //     margin: EdgeInsets.only(right: 2.w),
+  //     decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(20),
+  //         color: CurrentIndex == index ? AppConst.darkGreen : AppConst.lightGrey
+  //         // Colors.green
+  //         // kSecondaryColor
+  //         ),
+  //   );
+  // }
 }
 
 class BottomWideButton extends StatelessWidget {
