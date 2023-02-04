@@ -470,7 +470,7 @@ class _AddressModelState extends State<AddressModel> {
                                                 Get.toNamed(
                                                     AppRoutes.NewLocationScreen,
                                                     arguments: {
-                                                      "isFalse": false,
+                                                      "isFalse": true,
                                                       "page": widget.page
                                                       // "isHome": widget.isHomeScreen
                                                     })?.whenComplete(() =>
