@@ -511,6 +511,7 @@ class StoreListViewChild extends StatelessWidget {
             logo: Stores?.logo,
             bottomPadding: 0,
             height: 5,
+            logoPadding: 6,
           ),
           SizedBox(
             width: 2.w,

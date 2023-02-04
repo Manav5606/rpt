@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/app/ui/pages/stores/storeswithproductslist.dart';
 import 'package:customer_app/screens/more_stores/morestore_productlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +52,14 @@ class StoreViewProductsList extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(storesWithProductsModel?.name ?? "",
-                              style: TextStyle(
-                                fontFamily: 'MuseoSans',
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 4,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              )),
+                          // Text(storesWithProductsModel?.name ?? "",
+                          //     style: TextStyle(
+                          //       fontFamily: 'MuseoSans',
+                          //       color: AppConst.black,
+                          //       fontSize: SizeUtils.horizontalBlockSize * 4,
+                          //       fontWeight: FontWeight.w700,
+                          //       fontStyle: FontStyle.normal,
+                          //     )),
                           // ((storesWithProductsModel?.products?.length ?? 0) >
                           //         5)
                           //     ? Text(
@@ -117,34 +118,8 @@ class StoreViewProductsList extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Center(
-                                            child: (product.logo != null &&
-                                                    product.logo != "")
-                                                ? Image.network(
-                                                    product.logo!,
-                                                    fit: BoxFit.cover,
-                                                    height: 11.h,
-                                                    width: 24.w,
-                                                  )
-                                                : Container(
-                                                    decoration: BoxDecoration(
-                                                      color: AppConst
-                                                          .veryLightGrey,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      // border: Border.all(
-                                                      //     width: 0.1,
-                                                      //     color:
-                                                      //         AppConst.grey)
-                                                    ),
-                                                    height: 11.h,
-                                                    width: 30.w,
-                                                    child: Center(
-                                                        child: Image.asset(
-                                                            "assets/images/noimage.png")),
-                                                  ),
-                                          ),
+                                          DisplayProductInGridView(
+                                              logo: product.logo),
                                           SizedBox(
                                             // height: 4.5.h,
                                             child: Text(product.name.toString(),
@@ -603,10 +578,11 @@ class StoreViewProductsList extends StatelessWidget {
                 );
               },
               separatorBuilder: (context, index) {
-                return Container(
-                  height: 1.5.w,
-                  color: AppConst.veryLightGrey,
-                );
+                return SizedBox();
+                // Container(
+                //   height: 1.5.w,
+                //   color: AppConst.veryLightGrey,
+                // );
               },
             )
           : Center(

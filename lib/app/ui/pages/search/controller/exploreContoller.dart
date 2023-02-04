@@ -62,6 +62,7 @@ class ExploreController extends GetxController {
   RxList<RecentProductsData> recentProductList = <RecentProductsData>[].obs;
   RxList<StoreModelProducts> addCartProduct = <StoreModelProducts>[].obs;
   RxInt totalValue = 0.obs;
+  RxDouble actual_cashback = 0.0.obs;
   RxInt totalItemCount = 0.obs;
   Timer? timer;
 
@@ -141,26 +142,35 @@ class ExploreController extends GetxController {
     try {
       isLoadingStoreData.value = true;
       getStoreDataModel.value = await ExploreService.getStoreData(id);
-      try {
-        getCartIDModel.value = await MoreStoreService.getcartID(id);
-      } catch (e) {
-        print(e);
+
+      if (isScanFunction == true) {
+        Get.toNamed(AppRoutes.ScanStoreViewScreen);
       }
-      if (getCartIDModel.value?.sId != null) {
-        for (GetCartIdProducts allCartProducts
-            in getCartIDModel.value?.products ?? []) {
-          for (MainProducts mainProducts
-              in getStoreDataModel.value?.data?.mainProducts ?? []) {
-            int index = (mainProducts.products ?? []).indexWhere(
-                (mainProductsElement) =>
-                    mainProductsElement.sId == allCartProducts.sId);
-            if (index != -1) {
-              cartIndex.value?.totalItemsCount?.value =
-                  getCartIDModel.value?.totalItemsCount ?? 0;
-              totalItemCount.value = getCartIDModel.value?.totalItemsCount ?? 0;
-              mainProducts.products?[index].quntity!.value =
-                  allCartProducts.quantity ?? 0;
-              mainProducts.products?[index].isQunitityAdd!.value = true;
+
+      if (isScanFunction != true) {
+        try {
+          getCartIDModel.value = await MoreStoreService.getcartID(id);
+        } catch (e) {
+          print(e);
+        }
+
+        if (getCartIDModel.value?.sId != null) {
+          for (GetCartIdProducts allCartProducts
+              in getCartIDModel.value?.products ?? []) {
+            for (MainProducts mainProducts
+                in getStoreDataModel.value?.data?.mainProducts ?? []) {
+              int index = (mainProducts.products ?? []).indexWhere(
+                  (mainProductsElement) =>
+                      mainProductsElement.sId == allCartProducts.sId);
+              if (index != -1) {
+                cartIndex.value?.totalItemsCount?.value =
+                    getCartIDModel.value?.totalItemsCount ?? 0;
+                totalItemCount.value =
+                    getCartIDModel.value?.totalItemsCount ?? 0;
+                mainProducts.products?[index].quntity!.value =
+                    allCartProducts.quantity ?? 0;
+                mainProducts.products?[index].isQunitityAdd!.value = true;
+              }
             }
           }
         }
@@ -197,32 +207,31 @@ class ExploreController extends GetxController {
         //     }
         //   }
         // }
-      } else {
-        log('getCartIDModel.value?.sId 03 :');
-        addToCartModel.value?.totalItemsCount =
-            getCartIDModel.value?.totalItemsCount ?? 0;
-      }
-      // for (AllCartProducts allCartProducts in cartIndex.value?.products ?? []) {
-      //   for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
-      //     int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
-      //     if (index != -1) {
-      //       mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
-      //       mainProducts.products?[index].isQunitityAdd!.value = true;
-      //       print("Match Item index: $index products: ${allCartProducts.quantity} ");
-      //     }
-      //   }
-      // }
-      getStoreDataModel.refresh();
-      isLoadingStoreData.value = false;
-      if (isScanFunction == true) {
-        Get.toNamed(AppRoutes.ScanStoreViewScreen);
-      } else {
+        else {
+          log('getCartIDModel.value?.sId 03 :');
+          addToCartModel.value?.totalItemsCount =
+              getCartIDModel.value?.totalItemsCount ?? 0;
+        }
+
+        // for (AllCartProducts allCartProducts in cartIndex.value?.products ?? []) {
+        //   for (MainProducts mainProducts in getStoreDataModel.value?.data?.mainProducts ?? []) {
+        //     int index = (mainProducts.products ?? []).indexWhere((mainProductsElement) => mainProductsElement.sId == allCartProducts.sId);
+        //     if (index != -1) {
+        //       mainProducts.products?[index].quntity!.value = allCartProducts.quantity ?? 0;
+        //       mainProducts.products?[index].isQunitityAdd!.value = true;
+        //       print("Match Item index: $index products: ${allCartProducts.quantity} ");
+        //     }
+        //   }
+        // }
+        getStoreDataModel.refresh();
+        isLoadingStoreData.value = false;
         final HomeController _homeController = Get.find();
         bool isGrocery = true;
         await Get.toNamed(AppRoutes.StoreScreen,
             arguments: {'isGrocery': isGrocery});
         if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
       }
+      isLoadingStoreData.value = false;
     } catch (e, st) {
       Alert.error('product not available try different product');
       isLoadingStoreData.value = false;
@@ -288,7 +297,11 @@ class ExploreController extends GetxController {
 
   total() {
     totalValue.value = 0;
+    actual_cashback.value = 0.0;
     log('addCartProduct :${addCartProduct.length}');
+    actual_cashback.value =
+        getStoreDataModel.value?.data?.store?.actual_cashback?.toDouble() ??
+            0.0;
     addCartProduct.forEach((element) {
       log('addCartProduct element):${element.toJson()}');
       totalValue.value = totalValue.value +

@@ -78,6 +78,7 @@ class PaymentController extends GetxController {
       orderModel.value =
           await WalletService.redeemBalance(storeId: storeId, amount: amount);
       isLoading.value = false;
+      orderModel.refresh();
     } catch (e, st) {
       isLoading.value = false;
     }

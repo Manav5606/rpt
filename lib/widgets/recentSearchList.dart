@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
+import 'package:customer_app/app/ui/pages/stores/storeswithproductslist.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/screens/more_stores/morestore_productlist.dart';
@@ -228,6 +229,7 @@ class DisplayHotProducts extends StatelessWidget {
                   logo: storesWithProductsModel.logo,
                   height: 5.5,
                   bottomPadding: 0,
+                  logoPadding: 8,
                 ),
                 SizedBox(
                   width: 2.w,
@@ -427,30 +429,8 @@ class DisplayHotProducts extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Center(
-                                          child: (product.logo != null &&
-                                                  product.logo != "")
-                                              ? Image.network(
-                                                  product.logo!,
-                                                  fit: BoxFit.cover,
-                                                  height: 11.h,
-                                                  width: 24.w,
-                                                )
-                                              : Container(
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        AppConst.veryLightGrey,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  ),
-                                                  height: 11.h,
-                                                  width: 30.w,
-                                                  child: Center(
-                                                      child: Image.asset(
-                                                          "assets/images/noimage.png")),
-                                                ),
-                                        ),
+                                        DisplayProductInGridView(
+                                            logo: product.logo),
                                         SizedBox(
                                           // height: 4.5.h,
                                           child: Text(product.name.toString(),
@@ -561,83 +541,6 @@ class DisplayHotProducts extends StatelessWidget {
                                                   );
                                                 }),
                                                 child: DisplayAddPlus()),
-                                            // Obx(
-                                            //   () => product.quntity!.value > 0 &&
-                                            //           product.isQunitityAdd
-                                            //                   ?.value ==
-                                            //               false
-                                            //       ? _shoppingItem(product)
-                                            //       : GestureDetector(
-                                            //           onTap: () async {
-                                            //             if (product
-                                            //                     .quntity!.value ==
-                                            //                 0) {
-                                            //               product
-                                            //                   .quntity!.value++;
-
-                                            //               log("storesWithProductsModel?.products?[index] : ${product}");
-
-                                            //               _moreStoreController.addToCart(
-                                            //                   store_id:
-                                            //                       _moreStoreController
-                                            //                           .storeId
-                                            //                           .value,
-                                            //                   index: 0,
-                                            //                   increment: true,
-                                            //                   cart_id:
-                                            //                       _moreStoreController
-                                            //                               .getCartIDModel
-                                            //                               .value
-                                            //                               ?.sId ??
-                                            //                           '',
-                                            //                   product: product);
-
-                                            //               _moreStoreController
-                                            //                       .storeId.value =
-                                            //                   storesWithProductsModel
-                                            //                           .sId ??
-                                            //                       '';
-
-                                            //               await _moreStoreController
-                                            //                   .getStoreData(
-                                            //                 id: storesWithProductsModel
-                                            //                         .sId ??
-                                            //                     '',
-                                            //               );
-
-                                            //             }
-                                            //             if (product.quntity!
-                                            //                         .value !=
-                                            //                     0 &&
-                                            //                 product.isQunitityAdd
-                                            //                         ?.value ==
-                                            //                     false) {
-                                            //               product.isQunitityAdd
-                                            //                   ?.value = false;
-                                            //               await Future.delayed(
-                                            //                       Duration(
-                                            //                           milliseconds:
-                                            //                               500))
-                                            //                   .whenComplete(() =>
-                                            //                       product
-                                            //                           .isQunitityAdd
-                                            //                           ?.value = true);
-                                            //             }
-
-                                            //           },
-                                            //           child: product.isQunitityAdd
-                                            //                           ?.value ==
-                                            //                       true &&
-                                            //                   product.quntity!
-                                            //                           .value !=
-                                            //                       0
-                                            //               ? _dropDown(
-                                            //                   product,
-                                            //                   storesWithProductsModel
-                                            //                           .sId ??
-                                            //                       '')
-                                            //               : DisplayAddPlus()),
-                                            // ),
 
                                             SizedBox(
                                               width: 3.w,

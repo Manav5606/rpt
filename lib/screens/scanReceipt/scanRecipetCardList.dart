@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
+import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/widgets/all_offers_listview_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,11 @@ class ScanReceiptCard extends StatelessWidget {
   }) : super(key: key);
   @override
   final PaymentController _paymentController = Get.find();
+  final ExploreController _exploreController = Get.find();
 
   Widget build(BuildContext context) {
     return Obx(
-      () => _paymentController.isLoading.value
+      () => (_paymentController.isLoading.value)
           ? ScanReciptShimmerView()
           : ListView.separated(
               shrinkWrap: true,
@@ -63,10 +65,12 @@ class ListViewChild extends StatelessWidget {
       children: [
         InkWell(
           onTap: () async {
+            _paymentController.isLoading.value = true;
             await _exploreController.getStoreData(
                 id: storeSearchModel.sId.toString(), isScanFunction: true);
             _paymentController.redeemCashInStorePageDataIndex.value =
                 storeSearchModel;
+            _paymentController.isLoading.value = false;
           },
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 2.w),
@@ -119,35 +123,41 @@ class ListViewChild extends StatelessWidget {
                 //         backgroundColor: AppConst.white,
                 //         radius: SizeUtils.horizontalBlockSize * 6.5,
                 //       ),
-                storeSearchModel.logo!.isEmpty
-                    ? Padding(
-                        padding: EdgeInsets.only(bottom: 3.h),
-                        child: Container(
-                          padding: const EdgeInsets.all(12.0),
-                          height: 7.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppConst.lightGrey,
-                              border: Border.all(
-                                width: 0.1,
-                                color: AppConst.lightGrey,
-                              )),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/images/Store.png',
-                            ),
-                          ),
-                        ),
-                      )
-                    : Padding(
-                        padding: EdgeInsets.only(bottom: 3.h),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(storeSearchModel.logo ?? ''),
-                          backgroundColor: AppConst.white,
-                          radius: SizeUtils.horizontalBlockSize * 6.5,
-                        ),
-                      ),
+                // storeSearchModel.logo!.isEmpty
+                //     ?
+
+                //     Padding(
+                //         padding: EdgeInsets.only(bottom: 3.h),
+                //         child: Container(
+                //           padding: const EdgeInsets.all(12.0),
+                //           height: 7.h,
+                //           decoration: BoxDecoration(
+                //               shape: BoxShape.circle,
+                //               color: AppConst.lightGrey,
+                //               border: Border.all(
+                //                 width: 0.1,
+                //                 color: AppConst.lightGrey,
+                //               )),
+                //           child: Image(
+                //             image: AssetImage(
+                //               'assets/images/Store.png',
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //     : Padding(
+                //         padding: EdgeInsets.only(bottom: 3.h),
+                //         child: CircleAvatar(
+                //           backgroundImage:
+                //               NetworkImage(storeSearchModel.logo ?? ''),
+                //           backgroundColor: AppConst.white,
+                //           radius: SizeUtils.horizontalBlockSize * 6.5,
+                //         ),
+                //       ),
+                DispalyStoreLogo(
+                  logo: storeSearchModel.logo,
+                  bottomPadding: 2,
+                ),
                 SizedBox(
                   width: 3.w,
                 ),

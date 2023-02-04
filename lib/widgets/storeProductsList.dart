@@ -73,10 +73,59 @@ class ListViewChild extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DisplayProductName(name: storeSearchModel.name),
-                  DisplayCashback(
-                    cashback: storeSearchModel.cashback,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      DisplayProductName(name: storeSearchModel.name),
+                      Obx(
+                        () => (storeSearchModel.quntity?.value ?? 0) > 0 &&
+                                storeSearchModel.isQunitityAdd?.value == false
+                            ? _moreStoreController
+                                .shoppingItem(storeSearchModel)
+                            : GestureDetector(
+                                onTap: () async {
+                                  if (storeSearchModel.quntity!.value == 0) {
+                                    storeSearchModel.quntity!.value++;
+                                    await _moreStoreController.addToCart(
+                                        store_id:
+                                            storeSearchModel.store?.sId ?? '',
+                                        index: 0,
+                                        increment: true,
+                                        cart_id: _moreStoreController
+                                                .getCartIDModel.value?.sId ??
+                                            '',
+                                        product: storeSearchModel);
+                                    // await _moreStoreController.getStoreData(
+                                    //   id: storeSearchModel.store?.sId ?? '',
+                                    // );
+                                  }
+                                  if (storeSearchModel.quntity!.value != 0 &&
+                                      storeSearchModel.isQunitityAdd?.value ==
+                                          false) {
+                                    storeSearchModel.isQunitityAdd?.value =
+                                        false;
+                                    await Future.delayed(
+                                            Duration(milliseconds: 500))
+                                        .whenComplete(() => storeSearchModel
+                                            .isQunitityAdd?.value = true);
+                                  }
+                                  // addItem(product);
+                                },
+                                child: storeSearchModel.isQunitityAdd?.value ==
+                                            true &&
+                                        storeSearchModel.quntity!.value != 0
+                                    ? _moreStoreController.dropDown(
+                                        storeSearchModel,
+                                        storeSearchModel.store?.sId ?? '',
+                                        true)
+                                    : DisplayAddPlus()),
+                      ),
+                    ],
                   ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+
                   RichText(
                       text: TextSpan(children: [
                     TextSpan(
@@ -107,6 +156,12 @@ class ListViewChild extends StatelessWidget {
                           fontStyle: FontStyle.normal,
                         ))
                   ])),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  DisplayCashback(
+                    cashback: storeSearchModel.cashback,
+                  ),
                   // Text(
                   //     "\u20b9${storeSearchModel.mrp ?? "--"} \u20b9${storeSearchModel.selling_price ?? ""}/ ${storeSearchModel.unit ?? ""}",
                   //     overflow: TextOverflow.ellipsis,
@@ -137,72 +192,6 @@ class ListViewChild extends StatelessWidget {
               //     _moreStoreController.storeSearchText.value = '';
               //   },
               // ),
-              Obx(
-                () => (storeSearchModel.quntity?.value ?? 0) > 0 &&
-                        storeSearchModel.isQunitityAdd?.value == false
-                    ? _moreStoreController.shoppingItem(storeSearchModel)
-                    : GestureDetector(
-                        onTap: () async {
-                          if (storeSearchModel.quntity!.value == 0) {
-                            storeSearchModel.quntity!.value++;
-                            await _moreStoreController.addToCart(
-                                store_id: storeSearchModel.store?.sId ?? '',
-                                index: 0,
-                                increment: true,
-                                cart_id: _moreStoreController
-                                        .getCartIDModel.value?.sId ??
-                                    '',
-                                product: storeSearchModel);
-                            // await _moreStoreController.getStoreData(
-                            //   id: storeSearchModel.store?.sId ?? '',
-                            // );
-                          }
-                          if (storeSearchModel.quntity!.value != 0 &&
-                              storeSearchModel.isQunitityAdd?.value == false) {
-                            storeSearchModel.isQunitityAdd?.value = false;
-                            await Future.delayed(Duration(milliseconds: 500))
-                                .whenComplete(() => storeSearchModel
-                                    .isQunitityAdd?.value = true);
-                          }
-                          // addItem(product);
-                        },
-                        child: storeSearchModel.isQunitityAdd?.value == true &&
-                                storeSearchModel.quntity!.value != 0
-                            ? _moreStoreController.dropDown(storeSearchModel,
-                                storeSearchModel.store?.sId ?? '', true)
-                            : DisplayAddPlus()
-
-                        // Align(
-                        //     alignment: Alignment.topRight,
-                        //     child: Container(
-                        //       height: SizeUtils.horizontalBlockSize * 8,
-                        //       width: SizeUtils.horizontalBlockSize * 8,
-                        //       decoration: BoxDecoration(
-                        //         shape: BoxShape.circle,
-                        //         color: AppConst.grey,
-                        //       ),
-                        //       child: storeSearchModel
-                        //                       .isQunitityAdd?.value ==
-                        //                   true &&
-                        //               storeSearchModel.quntity!.value != 0
-                        //           ? Center(
-                        //               child: Text(
-                        //                   "${storeSearchModel.quntity!.value}",
-                        //                   style: TextStyle(
-                        //                     color: AppConst.white,
-                        //                     fontSize: SizeUtils
-                        //                             .horizontalBlockSize *
-                        //                         4,
-                        //                   )),
-                        //             )
-                        //           : Icon(
-                        //               Icons.add,
-                        //               color: AppConst.white,
-                        //             ),
-                        //     ),
-                        //   ),
-                        ),
-              ),
             ],
           ),
         ),

@@ -313,6 +313,7 @@ class _AllChatsState extends State<AllChats> {
                                         DispalyStoreLogo(
                                           bottomPadding: 0,
                                           height: 6.5,
+                                          logoPadding: 10,
                                           logo: channel.extraData["store_logo"]
                                               ?.toString(),
                                         ),

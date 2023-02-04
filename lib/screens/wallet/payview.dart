@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -37,6 +38,7 @@ class _PayViewState extends State<PayView> {
   void initState() {
     // TODO: implement initState
     amountController;
+    paycontroller.amountText.value = amountController.value.text;
     super.initState();
   }
 
@@ -445,7 +447,7 @@ class _PayViewState extends State<PayView> {
                                     cursorHeight: 40,
                                     cursorColor: AppConst.black,
                                     maxLines: 1,
-                                    maxLength: 6,
+                                    maxLength: 4,
                                     textDirection: TextDirection.ltr,
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.start,
@@ -826,15 +828,15 @@ class _PayViewState extends State<PayView> {
                               if (temp > 0 &&
                                   (int.parse(paycontroller.amountText.value) <=
                                       (balance))) {
-                                OrderData? order =
-                                    await paycontroller.redeemBalance(
-                                        storeId: (paycontroller
-                                                .redeemCashInStorePageDataIndex
-                                                .value
-                                                .sId ??
-                                            ''),
-                                        amount: temp);
-                                if (order != null) {
+                                await paycontroller.redeemBalance(
+                                    storeId: (paycontroller
+                                            .redeemCashInStorePageDataIndex
+                                            .value
+                                            .sId ??
+                                        ''),
+                                    amount: temp);
+                                if (paycontroller.orderModel.value?.Id !=
+                                    null) {
                                   await Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
@@ -842,6 +844,8 @@ class _PayViewState extends State<PayView> {
                                             OrderSucessScreen(
                                           order: paycontroller.orderModel.value,
                                           type: "redeem",
+                                          redeemAmount: double.parse(
+                                              paycontroller.amountText.value),
                                         ),
                                       ),
                                       (Route<dynamic> route) => route.isFirst);
@@ -854,7 +858,7 @@ class _PayViewState extends State<PayView> {
                                         type: "scan",
                                       ),
                                       transition: Transition.fadeIn);
-                                  Timer(Duration(seconds: 2), () {
+                                  Timer(Duration(seconds: 3), () {
                                     Get.offAllNamed(AppRoutes.BaseScreen);
                                   });
                                   // Snack.bottom(
@@ -884,7 +888,7 @@ class _PayViewState extends State<PayView> {
                                 snackStyle: SnackStyle.FLOATING,
                                 borderRadius: 12,
                                 duration: Duration(seconds: 1),
-                                message: 'Plase Enter the amount',
+                                message: 'Please Enter the amount',
                                 // title: "Amount must be at least \u{20b9}1"
                               ));
                             }

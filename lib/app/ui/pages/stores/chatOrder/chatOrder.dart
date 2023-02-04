@@ -601,7 +601,7 @@ class StoreChatRawItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
       child: Container(
         // color: AppConst.yellow,
         child: Column(
@@ -642,7 +642,7 @@ class StoreChatRawItem extends StatelessWidget {
                     ),
 
                     Text(
-                      "₹95 / 60g",
+                      "₹95 / 60g", // need to update
                       style: TextStyle(
                         fontFamily: 'MuseoSans',
                         color: AppConst.grey,
@@ -881,6 +881,12 @@ class DisplayProductImage extends StatelessWidget {
                   // chatOrderController.cartIndex.value?.rawItems?[index].logo
                   ??
                   '',
+              errorBuilder: (context, error, stackTrace) {
+                return SizedBox(
+                    height: 8.h,
+                    width: 16.w,
+                    child: Image.asset("assets/images/noproducts.png"));
+              },
             ),
     );
   }

@@ -26,10 +26,15 @@ class GetStoreDataModel {
 
 class Data {
   Store? store;
-  int? walletAmount;
+  num? walletAmount;
+
   List<MainProducts>? mainProducts;
 
-  Data({this.store, this.walletAmount, this.mainProducts});
+  Data({
+    this.store,
+    this.walletAmount,
+    this.mainProducts,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;

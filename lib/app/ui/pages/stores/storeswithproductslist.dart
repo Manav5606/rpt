@@ -396,28 +396,8 @@ class ListViewChild extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Center(
-                                        child: (product.logo != null &&
-                                                product.logo != "")
-                                            ? Image.network(
-                                                product.logo!,
-                                                fit: BoxFit.cover,
-                                                height: 11.h,
-                                                width: 24.w,
-                                              )
-                                            : Container(
-                                                decoration: BoxDecoration(
-                                                  color: AppConst.veryLightGrey,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                height: 11.h,
-                                                width: 30.w,
-                                                child: Center(
-                                                    child: Image.asset(
-                                                        "assets/images/noimage.png")),
-                                              ),
-                                      ),
+                                      DisplayProductInGridView(
+                                          logo: product.logo),
                                       SizedBox(
                                         // height: 4.5.h,
                                         child: Text(product.name.toString(),
@@ -454,16 +434,63 @@ class ListViewChild extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Text("₹ 125 / 3Kg",
-                                              style: TextStyle(
-                                                fontFamily: 'MuseoSans',
-                                                color: AppConst.black,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    3.3,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.normal,
-                                              )),
+                                          RichText(
+                                              text: TextSpan(children: [
+                                            // TextSpan(
+                                            //     text:
+                                            //         "\u20b9${_addCartController.reviewCart.value?.data?.inventories?[
+                                            //             index].mrp ?? ""}",
+                                            //     style: TextStyle(
+                                            //         fontFamily:
+                                            //             'MuseoSans',
+                                            //         color: AppConst
+                                            //             .grey,
+                                            //         fontSize:
+                                            //             SizeUtils.horizontalBlockSize *
+                                            //                 3.3,
+                                            //         fontWeight:
+                                            //             FontWeight
+                                            //                 .w500,
+                                            //         fontStyle:
+                                            //             FontStyle
+                                            //                 .normal,
+                                            //         decoration:
+                                            //             TextDecoration
+                                            //                 .lineThrough)),
+                                            TextSpan(
+                                                text:
+                                                    " \u20b9${product.mrp ?? ""}",
+                                                style: TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.black,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      3.5,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle: FontStyle.normal,
+                                                )),
+                                            TextSpan(
+                                                text: "/ ${product.unit ?? ""}",
+                                                style: TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.black,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      3.3,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle: FontStyle.normal,
+                                                ))
+                                          ])),
+                                          // Text("₹ 125 / 3Kg",
+                                          //     style: TextStyle(
+                                          //       fontFamily: 'MuseoSans',
+                                          //       color: AppConst.black,
+                                          //       fontSize: SizeUtils
+                                          //               .horizontalBlockSize *
+                                          //           3.3,
+                                          //       fontWeight: FontWeight.w500,
+                                          //       fontStyle: FontStyle.normal,
+                                          //     )),
                                           Spacer(),
                                           // SizedBox(
                                           //   width: 3.w,
@@ -612,6 +639,43 @@ class ListViewChild extends StatelessWidget {
       () => DisplayProductCount(
         count: product.quntity!.value,
       ),
+    );
+  }
+}
+
+class DisplayProductInGridView extends StatelessWidget {
+  DisplayProductInGridView({
+    Key? key,
+    required this.logo,
+  }) : super(key: key);
+  String? logo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: (logo != null && logo != "")
+          ? Image.network(
+              logo!,
+              fit: BoxFit.cover,
+              height: 11.h,
+              width: 24.w,
+              errorBuilder: (context, error, stackTrace) {
+                return SizedBox(
+                  height: 11.h,
+                  width: 30.w,
+                  child: Image.asset("assets/images/noproducts.png"),
+                );
+              },
+            )
+          : Container(
+              decoration: BoxDecoration(
+                color: AppConst.veryLightGrey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              height: 11.h,
+              width: 30.w,
+              child: Center(child: Image.asset("assets/images/noproducts.png")),
+            ),
     );
   }
 }

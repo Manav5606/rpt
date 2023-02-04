@@ -81,7 +81,7 @@ class OrderData {
     final_payable_wallet_amount = json['final_payable_wallet_amount'];
     orderType = json['order_type'];
     total = json['total'];
-    previous_total = json['previous_total_amount'];
+    previous_total = json['previous_total'];
     cashback_percentage = json['cashback_percentage'];
     total_cashback = json['total_cashback'];
     wallet_amount = json['wallet_amount'];
@@ -125,7 +125,7 @@ class OrderData {
     data['total'] = this.total;
     data['final_payable_amount'] = this.final_payable_amount;
     data['final_payable_wallet_amount'] = this.final_payable_wallet_amount;
-    data['previous_total_amount'] = this.previous_total;
+    data['previous_total'] = this.previous_total;
     data['cashback_percentage'] = this.cashback_percentage;
     data['total_cashback'] = this.total_cashback;
     data['wallet_amount'] = this.wallet_amount;

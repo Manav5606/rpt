@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/routes/app_list.dart';
@@ -282,28 +283,56 @@ class DisplayDistance extends StatelessWidget {
 }
 
 class DispalyStoreLogo extends StatelessWidget {
-  DispalyStoreLogo({Key? key, this.logo, this.height, this.bottomPadding})
+  DispalyStoreLogo(
+      {Key? key, this.logo, this.height, this.bottomPadding, this.logoPadding})
       : super(key: key);
 
   String? logo;
   num? height;
   num? bottomPadding;
+  double? logoPadding;
   @override
   Widget build(BuildContext context) {
+    num width = (height ?? 7) * 2;
     return Container(
       child: logo != null && logo != ""
           ? Padding(
               padding: EdgeInsets.only(bottom: (bottomPadding ?? 6).h),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(logo ?? ''),
-                backgroundColor: AppConst.white,
-                radius: SizeUtils.horizontalBlockSize * 6.5,
-              ),
-            )
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100.0),
+                child: Image.network(logo!,
+                    fit: BoxFit.fill,
+                    height: (height ?? 7).h,
+                    width: width.w, errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    padding: EdgeInsets.all(logoPadding ?? 12.0),
+                    height: (height ?? 7).h,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppConst.lightGrey,
+                        border: Border.all(
+                          width: 0.1,
+                          color: AppConst.lightGrey,
+                        )),
+                    child: Image(
+                      image: AssetImage(
+                        'assets/images/Store.png',
+                      ),
+                    ),
+                  );
+                }),
+              )
+
+              // CircleAvatar(
+              //   backgroundImage: NetworkImage(logo ?? ''),
+              //   backgroundColor: AppConst.white,
+              //   radius: SizeUtils.horizontalBlockSize * 6.5,
+              // ),
+              )
           : Padding(
               padding: EdgeInsets.only(bottom: (bottomPadding ?? 5).h),
               child: Container(
-                padding: const EdgeInsets.all(12.0),
+                padding: EdgeInsets.all(logoPadding ?? 12.0),
                 height: (height ?? 7).h,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,

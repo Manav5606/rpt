@@ -5,6 +5,7 @@ import 'package:badges/badges.dart';
 import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/responsive.dart';
+import 'package:customer_app/app/controller/account_controller.dart';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/ui/pages/chat/chat_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
@@ -16,7 +17,9 @@ import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/addcart/my_order_item_page.dart';
 import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
+import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
+import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -46,6 +49,8 @@ class _ActiveOrderTrackingScreenState extends State<ActiveOrderTrackingScreen> {
   final freshChatController _freshChat = Get.find();
 
   final AddCartController _addCartController = Get.find();
+
+  final HomeController _homeController = Get.find();
 
   late Razorpay _razorpay;
 
@@ -77,17 +82,16 @@ class _ActiveOrderTrackingScreenState extends State<ActiveOrderTrackingScreen> {
         orderId: widget.activeOrder?.Id ?? "");
 
     if (_addCartController.orderModel.value != null) {
-      // _addCartController.formatDate();
-      // await Navigator.pushAndRemoveUntil(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (BuildContext context) => OrderSucessScreen(
-      //               order: _addCartController.orderModel.value!,
-      //               type: "order",
-      //             )),
-      //     (Route<dynamic> route) => route.isFirst);
-      // _addCartController.refresh();
-      // _homeController.apiCall();
+      await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => HistoryOrderTrackingScreen(
+                    order: _addCartController.orderModel.value!,
+                    // type: "order",
+                  )),
+          (Route<dynamic> route) => route.isFirst);
+
+      _homeController.apiCall();
     } else {
       Get.to(
           OrderFailScreen(

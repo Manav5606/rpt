@@ -44,6 +44,7 @@ class ScanRecipetService {
       required String? storeId,
       var products,
       required double total,
+      required double cashback,
       required LatLng latLng}) async {
     try {
       List<String> imageLinks = [];
@@ -55,7 +56,7 @@ class ScanRecipetService {
         'products': List.from(products.map((e) => e.toJson())),
         'storeId': storeId,
         'total': total,
-        'cashback': 2,
+        'cashback': cashback,
         'lat': latLng.latitude,
         'lng': latLng.longitude
       };

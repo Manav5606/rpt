@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:customer_app/app/data/model/order_model.dart';
+import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
@@ -219,7 +221,16 @@ class _PurchasedProductsScreenState extends State<PurchasedProductsScreen> {
                   _homeController.apiCall();
                   isLoading.value = false;
                 } else {
-                  Snack.bottom('Error', 'Failed to send receipt');
+                  Get.to(
+                      OrderFailScreen(
+                        type: "scan",
+                        order: order,
+                      ),
+                      transition: Transition.fadeIn);
+                  Timer(Duration(seconds: 2), () {
+                    Get.offAllNamed(AppRoutes.BaseScreen);
+                  });
+                  // Snack.bottom('Error', 'Failed to send receipt');
                   isLoading.value = false;
                 }
                 // }

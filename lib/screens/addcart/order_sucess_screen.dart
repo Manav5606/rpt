@@ -12,8 +12,10 @@ import 'package:sizer/sizer.dart';
 class OrderSucessScreen extends StatefulWidget {
   final OrderData? order;
   final String? type;
+  num? redeemAmount;
 
-  OrderSucessScreen({Key? key, this.order, this.type = "order"})
+  OrderSucessScreen(
+      {Key? key, this.order, this.type = "order", this.redeemAmount = 0})
       : super(key: key);
 
   @override
@@ -26,19 +28,25 @@ class _OrderSucessScreenState extends State<OrderSucessScreen> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      Future.delayed(Duration(seconds: (widget.type == "order") ? 2 : 3), () {
-        (widget.type == "order")
-            ? Get.off(
-                OrderSucessScreen2(
-                  order: widget.order,
-                ),
-                transition: Transition.fadeIn)
-            : Get.off(
-                HistoryOrderTrackingScreen(
-                  // displayHour: _addCartController.displayHour.value,
-                  order: widget.order,
-                ),
-                transition: Transition.fade);
+      Future.delayed(Duration(seconds: 2), () {
+        Get.off(
+            OrderSucessScreen2(
+                order: widget.order,
+                type: widget.type,
+                redeemAmount: widget.redeemAmount),
+            transition: Transition.fadeIn);
+        // (widget.type == "order")
+        //     ? Get.off(
+        //         OrderSucessScreen2(
+        //           order: widget.order,
+        //         ),
+        //         transition: Transition.fadeIn)
+        //     : Get.off(
+        //         HistoryOrderTrackingScreen(
+        //           // displayHour: _addCartController.displayHour.value,
+        //           order: widget.order,
+        //         ),
+        //         transition: Transition.fade);
       });
     });
   }
@@ -171,11 +179,10 @@ class _OrderFailScreenState extends State<OrderFailScreen> {
 
 class OrderSucessScreen2 extends StatefulWidget {
   final OrderData? order;
-
-  OrderSucessScreen2({
-    Key? key,
-    this.order,
-  }) : super(key: key);
+  final String? type;
+  num? redeemAmount;
+  OrderSucessScreen2({Key? key, this.order, this.type, this.redeemAmount = 0})
+      : super(key: key);
 
   @override
   State<OrderSucessScreen2> createState() => _OrderSucessScreen2State();
@@ -239,8 +246,11 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
                   ),
                 ),
                 TextSpan(
-                  text:
-                      "${widget.order?.final_payable_wallet_amount?.toStringAsFixed(2) ?? 0}",
+                  text: (widget.type == "order")
+                      ? "${widget.order?.final_payable_wallet_amount?.toStringAsFixed(2) ?? 0}"
+                      : (widget.type == "scan")
+                          ? "${widget.order?.total_cashback?.toStringAsFixed(2) ?? 0}"
+                          : "${widget.redeemAmount?.toStringAsFixed(2) ?? 0}",
                   style: TextStyle(
                     color: AppConst.black,
                     fontSize: SizeUtils.horizontalBlockSize * 12,
@@ -253,7 +263,7 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
                 height: 1.h,
               ),
               Text(
-                "Cashback",
+                (widget.type == "redeem") ? "Amount" : "Cashback",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: SizeUtils.horizontalBlockSize * 7,
@@ -262,7 +272,7 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
                     letterSpacing: 1),
               ),
               Text(
-                "Earned",
+                (widget.type == "redeem") ? "redeem" : "Earned",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: SizeUtils.horizontalBlockSize * 5,

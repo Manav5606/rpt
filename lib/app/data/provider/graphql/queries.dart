@@ -1023,7 +1023,7 @@ query($lat: Float, $lng: Float) {
         color
         actual_cashback
         default_welcome_offer
-        actual_cashback
+        
         promotion_cashback
         logo
         delivery_slots
@@ -1584,6 +1584,7 @@ getAllcarts{
           status
           order_type
           cashback_percentage
+          total_cashback
           address
           createdAt
           receipt
@@ -1700,6 +1701,7 @@ getAllcarts{
           status
           order_type
           cashback_percentage
+          total_cashback
           address
           createdAt
           receipt

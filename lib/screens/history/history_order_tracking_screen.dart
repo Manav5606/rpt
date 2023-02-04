@@ -996,7 +996,7 @@ class _HistoryOrderTrackingScreenState
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Please Review the receipt and Approve",
+                                              "Reviewing and Approving the receipt",
                                               style: TextStyle(
                                                   fontSize: SizeUtils
                                                           .horizontalBlockSize *

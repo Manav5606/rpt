@@ -980,39 +980,9 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Center(
-                                            child: DisplayProductImage(
+                                            child: DisplayProductInGridView(
                                           logo: product.logo,
-                                          height: 10.h,
-                                          width: 30.w,
-                                        )
-
-                                            //  (product.logo != null &&
-                                            //         product.logo != "")
-                                            //     ? Image.network(
-                                            //         product.logo!,
-                                            //         fit: BoxFit.cover,
-                                            //         height: 10.h,
-                                            //         width: 24.w,
-                                            //       )
-                                            //     : Container(
-                                            //         decoration: BoxDecoration(
-                                            //           color:
-                                            //               AppConst.veryLightGrey,
-                                            //           borderRadius:
-                                            //               BorderRadius.circular(
-                                            //                   8),
-                                            //           // border: Border.all(
-                                            //           //     width: 0.1,
-                                            //           //     color:
-                                            //           //         AppConst.grey)
-                                            //         ),
-                                            //         height: 10.h,
-                                            //         width: 30.w,
-                                            //         child: Center(
-                                            //             child: Image.asset(
-                                            //                 "assets/images/noimage.png")),
-                                            //       ),
-                                            ),
+                                        )),
                                         Container(
                                           // color: AppConst.red,
                                           // height: 4.5.h,

@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
+import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
@@ -61,7 +62,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
         child: Scaffold(
           bottomSheet: Container(
             width: double.infinity,
-            height: 8.h,
+            height:
+                (_exploreController.actual_cashback.value > 0.0) ? 18.h : 16.h,
             decoration: BoxDecoration(
               color: AppConst.white,
               borderRadius: BorderRadius.circular(14),
@@ -76,155 +78,241 @@ class _MyCartScreenState extends State<MyCartScreen> {
                     spreadRadius: 1)
               ],
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.w),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 1.h),
-                    child: Text(
-                      "\u{20B9}",
-                      style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 6,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 1.h),
-                      child: TextFormField(
-                        controller: amountController,
-
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 4),
-                        cursorColor: AppConst.black,
-                        // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        onChanged: (value) {
-                          _exploreController.amountText.value = value;
-                        },
-
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 12.0),
-                          enabledBorder: InputBorder.none,
-                          // UnderlineInputBorder(
-                          //   borderSide:
-                          //       BorderSide(color: AppConst.transparent),
-                          // ),
-                          hintText: ' Enter bill amount',
-                          hintStyle: TextStyle(
-                            fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                            color: AppConst.grey,
-                          ),
-                          // labelStyle: AppConst.body,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: BoxDecoration(color: Color(0xfff0e6fa)),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.w, vertical: 1.2.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                  text: (_exploreController.totalValue.value !=
+                                          0)
+                                      ? "\u20b9${_exploreController.totalValue.value} "
+                                      : "",
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.black,
+                                    fontSize: SizeUtils.horizontalBlockSize * 4,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                              TextSpan(
+                                  text:
+                                      (_exploreController.totalValue.value != 0)
+                                          ? "Extra Cashback earned"
+                                          : "You haven't Select any Product",
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.black,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.7,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  ))
+                            ])),
+                            Text("Enter the bill amount to get more Cashback",
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: Color(0xff2b0064),
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                )),
+                            SizedBox(
+                              height: 0.5.h,
+                            ),
+                            (_exploreController.actual_cashback.value > 0.0)
+                                ? Text(
+                                    "CashBack : ${_exploreController.actual_cashback.value}%",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.black,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    ))
+                                : SizedBox(),
+                          ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  Obx(
-                    () => GestureDetector(
-                      onTap: () async {
-                        try {
-                          if (_exploreController.amountText.value.isNotEmpty) {
-                            _exploreController.isLoadingSubmit.value = true;
-                            OrderData? order =
-                                await ScanRecipetService.placeOrder(
-                              images: Get.arguments,
-                              total: double.parse(amountController.text),
-                              storeId: _exploreController
-                                  .getStoreDataModel.value?.data?.store?.sId,
-                              //  _paymentController
-                              //     .redeemCashInStorePageDataIndex.value,
-                              products: _exploreController.addCartProduct,
-                              latLng: _paymentController.latLng,
-                            );
-                            clearList();
-                            _exploreController.addCartProduct.clear();
-                            total();
-                            if (order != null) {
-                              Get.to(
-                                  OrderFailScreen(
-                                    type: "scan",
-                                    order: order,
-                                  ),
-                                  transition: Transition.fadeIn);
-                              Timer(Duration(seconds: 2), () {
-                                Get.offAllNamed(AppRoutes.BaseScreen);
-                              });
-                              // await Navigator.pushAndRemoveUntil(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (BuildContext context) =>
-                              //           OrderSucessScreen(
-                              //         type: "scan",
-                              //         order: order,
-                              //       ),
-                              //     ),
-                              //     (Route<dynamic> route) => route.isFirst);
-                              // _homeController.apiCall();
-                              _exploreController.isLoadingSubmit.value = false;
-                            } else {
-                              Get.to(
-                                  OrderFailScreen(
-                                    type: "scan",
-                                    order: order,
-                                  ),
-                                  transition: Transition.fadeIn);
-                              Timer(Duration(seconds: 2), () {
-                                Get.offAllNamed(AppRoutes.BaseScreen);
-                              });
-                              // Snack.bottom('Error', 'Failed to send receipt');
-                              _exploreController.isLoadingSubmit.value = false;
-                            }
-                          }
-                        } catch (e) {
-                          _exploreController.isLoadingSubmit.value = false;
-                          print(e);
-                        }
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 1.h),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color:
-                                _exploreController.amountText.value.isNotEmpty
-                                    ? Color(0xff005b41)
-                                    : Color(0xff005b41).withOpacity(0.5),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 3.w, vertical: 1.h),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Submit',
-                                  style: TextStyle(
-                                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppConst.white,
-                                    fontFamily: 'Stag',
-                                  ),
-                                ),
-                                // SizedBox(
-                                //   width: 2.w,
-                                // ),
-                                Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 2.h,
-                                  color: AppConst.white,
-                                )
-                              ],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 1.2.h),
+                        child: Text(
+                          "\u{20B9}",
+                          style: TextStyle(
+                              fontSize: SizeUtils.horizontalBlockSize * 6,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 1.h),
+                          child: TextFormField(
+                            controller: amountController,
+                            maxLines: 1,
+                            maxLength: 4,
+
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 4.5),
+                            cursorColor: AppConst.black,
+                            cursorHeight: 25,
+                            // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            onChanged: (value) {
+                              _exploreController.amountText.value = value;
+                            },
+
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              enabledBorder: InputBorder.none,
+                              // UnderlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: AppConst.transparent),
+                              // ),
+                              hintText: ' Enter bill amount',
+                              counterText: "",
+                              hintStyle: TextStyle(
+                                fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                                color: AppConst.grey,
+                              ),
+                              // labelStyle: AppConst.body,
                             ),
                           ),
                         ),
                       ),
-                    ),
+                      Obx(
+                        () => GestureDetector(
+                          onTap: () async {
+                            try {
+                              if (_exploreController
+                                      .amountText.value.isNotEmpty &&
+                                  _exploreController.amountText.value.isNum) {
+                                _exploreController.isLoadingSubmit.value = true;
+                                OrderData? order =
+                                    await ScanRecipetService.placeOrder(
+                                  images: Get.arguments,
+                                  total: double.parse(amountController.text),
+                                  storeId: _exploreController.getStoreDataModel
+                                      .value?.data?.store?.sId,
+                                  //  _paymentController
+                                  //     .redeemCashInStorePageDataIndex.value,
+                                  cashback:
+                                      _exploreController.actual_cashback.value,
+                                  products: _exploreController.addCartProduct,
+                                  latLng: _paymentController.latLng,
+                                );
+                                clearList();
+                                _exploreController.addCartProduct.clear();
+                                total();
+                                if (order != null) {
+                                  await Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            OrderSucessScreen(
+                                          type: "scan",
+                                          order: order,
+                                        ),
+                                      ),
+                                      (Route<dynamic> route) => route.isFirst);
+                                  _homeController.apiCall();
+                                  _exploreController.isLoadingSubmit.value =
+                                      false;
+                                } else {
+                                  Get.to(
+                                      OrderFailScreen(
+                                        type: "scan",
+                                        order: order,
+                                      ),
+                                      transition: Transition.fadeIn);
+                                  Timer(Duration(seconds: 2), () {
+                                    Get.offAllNamed(AppRoutes.BaseScreen);
+                                  });
+                                  // Snack.bottom('Error', 'Failed to send receipt');
+                                  _exploreController.isLoadingSubmit.value =
+                                      false;
+                                }
+                              } else {
+                                Get.showSnackbar(GetSnackBar(
+                                  backgroundColor: AppConst.black,
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 12),
+                                  snackStyle: SnackStyle.FLOATING,
+                                  borderRadius: 12,
+                                  duration: Duration(seconds: 2),
+                                  message: "Please Enter the vaild amount!",
+                                  // title: "Amount must be at least \u{20b9}1"
+                                ));
+                              }
+                            } catch (e) {
+                              _exploreController.isLoadingSubmit.value = false;
+                              print(e);
+                            }
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 1.h),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: _exploreController
+                                        .amountText.value.isNotEmpty
+                                    ? Color(0xff005b41)
+                                    : Color(0xff005b41).withOpacity(0.5),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 3.w, vertical: 1.h),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Submit',
+                                      style: TextStyle(
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppConst.white,
+                                        fontFamily: 'Stag',
+                                      ),
+                                    ),
+                                    // SizedBox(
+                                    //   width: 2.w,
+                                    // ),
+                                    Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 2.h,
+                                      color: AppConst.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           appBar: AppBar(
@@ -305,48 +393,85 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       )
                     : Column(
                         children: [
-                          Container(
-                            decoration: BoxDecoration(color: Color(0xfff0e6fa)),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 4.w, vertical: 1.2.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "\u20b9${_exploreController.totalValue.value} Extra Cashback earned",
-                                          style: TextStyle(
-                                            fontFamily: 'MuseoSans',
-                                            color: AppConst.black,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    4,
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                      SizedBox(
-                                        height: 0.5.h,
-                                      ),
-                                      Text(
-                                          "Enter the bill amount to get more Cashback",
-                                          style: TextStyle(
-                                            fontFamily: 'MuseoSans',
-                                            color: Color(0xff2b0064),
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3.7,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.normal,
-                                          ))
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   decoration: BoxDecoration(color: Color(0xfff0e6fa)),
+                          //   child: Row(
+                          //     children: [
+                          //       Padding(
+                          //         padding: EdgeInsets.symmetric(
+                          //             horizontal: 4.w, vertical: 1.2.h),
+                          //         child: Column(
+                          //           crossAxisAlignment:
+                          //               CrossAxisAlignment.start,
+                          //           children: [
+                          //             RichText(
+                          //                 text: TextSpan(children: [
+                          //               TextSpan(
+                          //                   text: (_exploreController
+                          //                               .totalValue.value !=
+                          //                           0)
+                          //                       ? "\u20b9${_exploreController.totalValue.value} "
+                          //                       : "",
+                          //                   style: TextStyle(
+                          //                     fontFamily: 'MuseoSans',
+                          //                     color: AppConst.black,
+                          //                     fontSize: SizeUtils
+                          //                             .horizontalBlockSize *
+                          //                         4,
+                          //                     fontWeight: FontWeight.w700,
+                          //                     fontStyle: FontStyle.normal,
+                          //                   )),
+                          //               TextSpan(
+                          //                   text: (_exploreController
+                          //                               .totalValue.value !=
+                          //                           0)
+                          //                       ? "Extra Cashback earned"
+                          //                       : "You haven't Select any Product",
+                          //                   style: TextStyle(
+                          //                     fontFamily: 'MuseoSans',
+                          //                     color: AppConst.black,
+                          //                     fontSize: SizeUtils
+                          //                             .horizontalBlockSize *
+                          //                         3.7,
+                          //                     fontWeight: FontWeight.w700,
+                          //                     fontStyle: FontStyle.normal,
+                          //                   ))
+                          //             ])),
+                          //             Text(
+                          //                 "Enter the bill amount to get more Cashback",
+                          //                 style: TextStyle(
+                          //                   fontFamily: 'MuseoSans',
+                          //                   color: Color(0xff2b0064),
+                          //                   fontSize:
+                          //                       SizeUtils.horizontalBlockSize *
+                          //                           3.7,
+                          //                   fontWeight: FontWeight.w500,
+                          //                   fontStyle: FontStyle.normal,
+                          //                 )),
+                          //             SizedBox(
+                          //               height: 0.5.h,
+                          //             ),
+                          //             (_exploreController
+                          //                         .actual_cashback.value >
+                          //                     0.0)
+                          //                 ? Text(
+                          //                     "CashBack : ${_exploreController.actual_cashback.value}%",
+                          //                     style: TextStyle(
+                          //                       fontFamily: 'MuseoSans',
+                          //                       color: AppConst.black,
+                          //                       fontSize: SizeUtils
+                          //                               .horizontalBlockSize *
+                          //                           4,
+                          //                       fontWeight: FontWeight.w700,
+                          //                       fontStyle: FontStyle.normal,
+                          //                     ))
+                          //                 : SizedBox(),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
 
                           Container(
                             height: 22.h,
@@ -586,46 +711,11 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Center(
-                                                    child: (_exploreController
-                                                                    .addCartProduct[
-                                                                        i]
-                                                                    .logo !=
-                                                                null &&
-                                                            _exploreController
-                                                                    .addCartProduct[
-                                                                        i]
-                                                                    .logo !=
-                                                                "")
-                                                        ? Image.network(
-                                                            _exploreController
-                                                                .addCartProduct[
-                                                                    i]
-                                                                .logo!,
-                                                            fit: BoxFit.cover,
-                                                            height: 7.h,
-                                                            width: 14.w,
-                                                          )
-                                                        : Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: AppConst
-                                                                  .veryLightGrey,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
-                                                              // border: Border.all(
-                                                              //     width: 0.1,
-                                                              //     color:
-                                                              //         AppConst.grey)
-                                                            ),
-                                                            height: 7.h,
-                                                            width: 14.w,
-                                                            child: Center(
-                                                                child: Image.asset(
-                                                                    "assets/images/noimage.png")),
-                                                          ),
+                                                  DisplayProductImage(
+                                                    logo: _exploreController
+                                                        .addCartProduct[i].logo,
+                                                    height: 7.h,
+                                                    width: 14.w,
                                                   ),
                                                   // ClipRRect(
                                                   //   borderRadius:
@@ -689,31 +779,70 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                                                     FontStyle
                                                                         .normal,
                                                               )),
-                                                          Text(
-                                                            // _exploreController
-                                                            //         .addCartProduct[i]
-                                                            //         .name ??
-                                                            //     '',
-                                                            "₹95 / 60g",
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'MuseoSans',
-                                                              color:
-                                                                  AppConst.grey,
-                                                              fontSize: SizeUtils
-                                                                      .horizontalBlockSize *
-                                                                  3.7,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
-                                                            ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                          SizedBox(
+                                                            height: 0.5.h,
                                                           ),
+                                                          RichText(
+                                                              text: TextSpan(
+                                                                  children: [
+                                                                TextSpan(
+                                                                    text:
+                                                                        "\u20b9${_exploreController.addCartProduct[i].mrp ?? ""}",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            'MuseoSans',
+                                                                        color: AppConst
+                                                                            .grey,
+                                                                        fontSize:
+                                                                            SizeUtils.horizontalBlockSize *
+                                                                                3.3,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        fontStyle:
+                                                                            FontStyle
+                                                                                .normal,
+                                                                        decoration:
+                                                                            TextDecoration.lineThrough)),
+                                                                TextSpan(
+                                                                    text:
+                                                                        " \u20b9${_exploreController.addCartProduct[i].selling_price ?? ""}",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'MuseoSans',
+                                                                      color: AppConst
+                                                                          .black,
+                                                                      fontSize:
+                                                                          SizeUtils.horizontalBlockSize *
+                                                                              3.5,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                    )),
+                                                                TextSpan(
+                                                                    text:
+                                                                        "/ ${_exploreController.addCartProduct[i].unit ?? ""}",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'MuseoSans',
+                                                                      color: AppConst
+                                                                          .black,
+                                                                      fontSize:
+                                                                          SizeUtils.horizontalBlockSize *
+                                                                              3.3,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                    ))
+                                                              ])),
                                                         ],
                                                       ),
                                                     ),
@@ -852,13 +981,15 @@ class _MyCartScreenState extends State<MyCartScreen> {
   Future<bool> handleBackPressed() async {
     SeeyaConfirmDialog(
         title: "Are you sure?",
-        subTitle: "You haven't clicked any photo of your bill.",
+        subTitle: "You want to cancel",
         onCancel: () => Get.back(),
         onConfirm: () async {
           clearList();
           _exploreController.addCartProduct.clear();
           total();
-          Get.toNamed(AppRoutes.BaseScreen);
+          Get.back();
+          Get.back();
+          Get.back();
         }).show(Get.context!);
     return false;
   }

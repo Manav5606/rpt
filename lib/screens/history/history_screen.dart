@@ -656,6 +656,7 @@ class OrderTabViewCard extends StatelessWidget {
                   logo: order?.store?.logo,
                   height: 5.5,
                   bottomPadding: 0,
+                  logoPadding: 8,
                 ),
                 SizedBox(
                   width: 4.w,
