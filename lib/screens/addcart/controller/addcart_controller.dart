@@ -126,11 +126,19 @@ class AddCartController extends GetxController {
 
       var CurrentDayStatus = getOrderConfirmPageDataModel
           .value?.data?.deliverySlots?[int.parse(currentDay.value)].status;
-
-      var NextDaySlots = getOrderConfirmPageDataModel
-          .value?.data?.deliverySlots?[int.parse(currentDay.value) + 1].slots;
-      var NextDaySlotsStatus = getOrderConfirmPageDataModel
-          .value?.data?.deliverySlots?[int.parse(currentDay.value) + 1].status;
+      var NextDaySlots;
+      var NextDaySlotsStatus;
+      if (currentDay.value == "6") {
+        NextDaySlots =
+            getOrderConfirmPageDataModel.value?.data?.deliverySlots?[0].slots;
+        NextDaySlotsStatus =
+            getOrderConfirmPageDataModel.value?.data?.deliverySlots?[0].status;
+      } else {
+        NextDaySlots = getOrderConfirmPageDataModel
+            .value?.data?.deliverySlots?[int.parse(currentDay.value) + 1].slots;
+        NextDaySlotsStatus = getOrderConfirmPageDataModel.value?.data
+            ?.deliverySlots?[int.parse(currentDay.value) + 1].status;
+      }
 
       //get todays available slots
       if (CurrentDayStatus == true) {

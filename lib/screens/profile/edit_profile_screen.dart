@@ -22,10 +22,6 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  // final TextEditingController _nameController = TextEditingController();
-  // final TextEditingController _handleController = TextEditingController();
-  // final TextEditingController _stateController = TextEditingController();
-  // final TextEditingController _descriptionController = TextEditingController();
   final SignInScreenController _signInController =
       Get.put(SignInScreenController());
   final MyAccountController _Controller = Get.find();
@@ -33,6 +29,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController emailIdController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    emailIdController.text = _Controller.user.email ?? "";
+    firstNameController.text = _Controller.user.firstName ?? "";
+    lastNameController.text = _Controller.user.lastName ?? "";
+    mobileNumberController.text = _Controller.user.mobile ?? "";
+  }
 
   @override
   void dispose() {
@@ -129,8 +134,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           SignUpFeilds(
                             labelText: "First Name*",
 
-                            hinttext: (_Controller.user.firstName) ??
-                                "First name", //"Enter your first name ",
+                            // hinttext: (_Controller.user.firstName) ??
+                            //     "First name", //"Enter your first name ",
                             controller: firstNameController,
                           ),
                           SizedBox(
@@ -139,8 +144,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           SignUpFeilds(
                             labelText: "Last Name*",
 
-                            hinttext: _Controller.user.lastName ??
-                                "Last name", //"Enter your last name ",
+                            // hinttext: _Controller.user.lastName ??
+                            //     "Last name", //"Enter your last name ",
                             controller: lastNameController,
                           ),
                           SizedBox(
@@ -149,9 +154,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                           SignUpFeilds(
                             labelText: "Email ID",
-                            hinttext: _Controller
-                                .user.email, //"Enter your last name ",
-                            controller: mobileNumberController,
+                            // hinttext: _Controller
+                            //     .user.email, //"Enter your last name ",
+                            controller: emailIdController,
                             readOnly: true,
                           ),
                           SizedBox(
@@ -159,8 +164,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           SignUpFeilds(
                             labelText: "Mobile Number*",
-                            hinttext: _Controller
-                                .user.mobile, //"Enter your last name ",
+                            // hinttext: _Controller
+                            //     .user.mobile, //"Enter your last name ",
                             controller: mobileNumberController,
                             readOnly: true,
                           ),

@@ -35,13 +35,27 @@ class SignUpFeilds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 2.h),
+      padding: EdgeInsets.only(
+        bottom: 1.h,
+      ),
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              labelText ?? "",
+              style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: AppConst.black,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                  fontSize: SizeUtils.horizontalBlockSize * 3.5),
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
             Flexible(
               child: TextFormField(
                 validator: validator,
@@ -61,20 +75,20 @@ class SignUpFeilds extends StatelessWidget {
                 readOnly: readOnly ?? false,
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: hinttext ?? '',
+                  // hintText: hinttext ?? '',
                   hintStyle: TextStyle(
                       color: AppConst.grey,
                       fontSize: SizeUtils.horizontalBlockSize * 4),
                   contentPadding: EdgeInsets.only(left: 2.w, bottom: 0.5.h),
                   hintTextDirection: TextDirection.ltr,
                   counterText: "",
-                  labelText: labelText ?? "",
-                  labelStyle: TextStyle(
-                      fontFamily: 'MuseoSans',
-                      color: AppConst.darkGrey,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.normal,
-                      fontSize: SizeUtils.horizontalBlockSize * 4),
+                  // labelText: labelText ?? "",
+                  // labelStyle: TextStyle(
+                  //     fontFamily: 'MuseoSans',
+                  //     color: AppConst.darkGrey,
+                  //     fontWeight: FontWeight.w600,
+                  //     fontStyle: FontStyle.normal,
+                  //     fontSize: SizeUtils.horizontalBlockSize * 4),
                   prefixIcon: prefixIcon,
                   // (controller?.text.length)! > 0
                   //     ? TextFieldClearButton(
