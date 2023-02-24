@@ -334,7 +334,7 @@ class _AllChatsState extends State<AllChats> {
                                                       MainAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      width: 58.w,
+                                                      width: 55.w,
                                                       child: Text(
                                                           channel.extraData[
                                                                       "store_name"]

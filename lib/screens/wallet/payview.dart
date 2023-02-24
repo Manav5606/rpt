@@ -54,12 +54,13 @@ class _PayViewState extends State<PayView> {
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
     Color color = Color(0xff003d29);
-    var balance =
-        (paycontroller.redeemCashInStorePageDataIndex.value.earnedCashback ??
-                0) +
-            (paycontroller
-                    .redeemCashInStorePageDataIndex.value.welcomeOfferAmount ??
-                0);
+    num? cashback = paycontroller
+        .redeemCashInStorePageDataIndex.value.earnedCashback
+        ?.toDouble();
+    var balance = (cashback ?? 0) +
+        (paycontroller
+                .redeemCashInStorePageDataIndex.value.welcomeOfferAmount ??
+            0);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -759,7 +760,7 @@ class _PayViewState extends State<PayView> {
                     // ),
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
