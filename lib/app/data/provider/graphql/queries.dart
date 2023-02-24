@@ -176,6 +176,7 @@ class GraphQLQueries {
             type
             status
             restoreID
+            refer_code
             addresses{
             	_id
             	title

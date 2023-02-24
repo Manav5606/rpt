@@ -205,6 +205,6 @@ class MyAccountController extends GetxController {
     super.onInit();
     // getActiveOrders();
     // getOrders();
-    await getGenerateReferCode();
+    // await getGenerateReferCode();
   }
 }

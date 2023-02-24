@@ -289,6 +289,7 @@ class ReferAndEarnScreen extends GetView<MyAccountController> {
       ),
       child: GetX<MyAccountController>(
         builder: (_) {
+          _.getGenerateReferCode();
           return Scaffold(
             appBar: AppBar(
               elevation: 0,
