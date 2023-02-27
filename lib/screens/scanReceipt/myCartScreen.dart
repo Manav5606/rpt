@@ -345,7 +345,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Scan Receipt    ",
+                  "Scan Receipt",
                   style: TextStyle(
                     fontFamily: 'MuseoSans',
                     fontWeight: FontWeight.w700,
@@ -354,23 +354,16 @@ class _MyCartScreenState extends State<MyCartScreen> {
                     fontSize: SizeUtils.horizontalBlockSize * 4.5,
                   ),
                 ),
-                Container(
-                  width: 70.w,
-                  child: Center(
-                    child: Text(
-                      _exploreController
-                              .getStoreDataModel.value?.data?.store?.name ??
-                          "",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'MuseoSans',
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        color: AppConst.grey,
-                        fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                      ),
-                    ),
+                Text(
+                  "${_exploreController.getStoreDataModel.value?.data?.store?.name ?? ""}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                    color: AppConst.grey,
+                    fontSize: SizeUtils.horizontalBlockSize * 3.7,
                   ),
                 ),
               ],

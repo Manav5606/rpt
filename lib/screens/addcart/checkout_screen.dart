@@ -1062,13 +1062,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                 ),
               ),
             ],
-          )
-          // bottomRow(
-          //     'Wallet Amount',
-          //     (_addCartController.getOrderConfirmPageDataModel.value?.data
-          //                 ?.walletAmount ??
-          //             '0')
-          //         .toString()),
+          ),
+          SizedBox(height: 2.h)
         ],
       ),
     );

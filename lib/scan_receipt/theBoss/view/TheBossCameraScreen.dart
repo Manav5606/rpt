@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/routes/app_list.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../constants/app_const.dart';
@@ -148,6 +149,9 @@ class _TheBossCameraScreenState extends State<TheBossCameraScreen>
       child: Scaffold(
         backgroundColor: AppConst.black,
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: AppConst.transparent,
+              statusBarIconBrightness: Brightness.light),
           backgroundColor: AppConst.black,
           iconTheme: IconThemeData(color: AppConst.white),
           title: Text(

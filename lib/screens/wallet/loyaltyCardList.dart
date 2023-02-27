@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/colors.dart';
+import 'package:customer_app/app/ui/pages/my_wallet/wallet_details_screen.dart';
 import 'package:customer_app/app/ui/pages/my_wallet/wallet_screen_shimmer.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/stores/searchedStoresWihProductsShimmer.dart';
@@ -27,27 +29,35 @@ class loyaltyCardList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => _paymentController.isLoading.value
-          // true
           ? Container(height: 90.h, child: WalletScreenShimmer())
-          : ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: _paymentController
-                      .getRedeemCashInStorePageData.value?.data?.length ??
-                  0,
-              itemBuilder: (context, index) {
-                return ListViewChild(
-                  storeSearchModel: _paymentController
-                      .getRedeemCashInStorePageData.value!.data![index],
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1.h),
-                  child: Container(height: 1, color: AppConst.grey),
-                );
-              },
-            ),
+          : (_paymentController
+                      .getRedeemCashInStorePageData.value?.data?.length ==
+                  0)
+              ? EmptyHistoryPage(
+                  text1: "You Don't have any stores yet",
+                  text2: "Add stores to get the Cashback",
+                  text3: "",
+                  icon: Icons.currency_rupee_sharp,
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _paymentController
+                          .getRedeemCashInStorePageData.value?.data?.length ??
+                      0,
+                  itemBuilder: (context, index) {
+                    return ListViewChild(
+                      storeSearchModel: _paymentController
+                          .getRedeemCashInStorePageData.value!.data![index],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 1.h),
+                      child: Container(height: 1, color: AppConst.grey),
+                    );
+                  },
+                ),
     );
   }
 }

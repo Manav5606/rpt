@@ -247,183 +247,198 @@ class ExploreSearchProducts extends StatelessWidget {
           id: product.store?.sId ?? '',
         );
       }),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          DisplayProductImage(
-            logo: product.logo ?? product.img,
-          ),
-          SizedBox(
-            width: 2.w,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+          Row(
             children: [
-              DisplayProductName(
-                name: product.name,
+              DisplayProductImage(
+                logo: product.logo ?? product.img,
               ),
               SizedBox(
-                height: 0.5.h,
+                width: 2.w,
               ),
-              (product.cashback == null || product.cashback == "")
-                  ? SizedBox()
-                  : Text("Cashback \u20b9${product.cashback.toString()}",
-                      style: TextStyle(
-                        fontFamily: 'MuseoSans',
-                        color: AppConst.black,
-                        fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                      )),
-              SizedBox(
-                height: 0.5.h,
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DisplayProductName(
+                    name: product.name,
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  (product.cashback == null || product.cashback == "")
+                      ? SizedBox()
+                      : Text("Cashback \u20b9${product.cashback.toString()}",
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.black,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(4.0),
-                          height: 2.5.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppConst.lightGrey,
-                              border: Border.all(
-                                width: 0.1,
-                                color: AppConst.lightGrey,
-                              )),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/images/Store.png',
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(4.0),
+                              height: 2.5.h,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppConst.lightGrey,
+                                  border: Border.all(
+                                    width: 0.1,
+                                    color: AppConst.lightGrey,
+                                  )),
+                              child: Image(
+                                image: AssetImage(
+                                  'assets/images/Store.png',
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              width: 1.w,
+                            ),
+                            Container(
+                              width: 52.w,
+                              child: Text(product.store?.name ?? "",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.black,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.5,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           width: 1.w,
                         ),
-                        Container(
-                          width: 52.w,
-                          child: Text(product.store?.name ?? "",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'MuseoSans',
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              )),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 1.w,
-                    ),
-                    InkWell(
-                      onTap: (() async {
-                        _moreStoreController.storeId.value =
-                            product.store?.sId ?? '';
+                        InkWell(
+                          onTap: (() async {
+                            _moreStoreController.storeId.value =
+                                product.store?.sId ?? '';
 
-                        await _moreStoreController.getStoreData(
-                          id: product.store?.sId ?? '',
-                        );
-                      }),
-                      child: Container(
-                        height: 3.h,
-                        width: 15.w,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: AppConst.darkGreen, width: 0.8),
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color(0xffe6faf1),
-                        ),
-                        child: Center(
-                          child: Text(
-                            " Add +",
-                            style: TextStyle(
-                              fontFamily: 'MuseoSans',
-                              color: AppConst.darkGreen,
-                              fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
+                            await _moreStoreController.getStoreData(
+                              id: product.store?.sId ?? '',
+                            );
+                          }),
+                          child: Container(
+                            height: 3.h,
+                            width: 15.w,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: AppConst.darkGreen, width: 0.8),
+                              borderRadius: BorderRadius.circular(12),
+                              color: Color(0xffe6faf1),
+                            ),
+                            child: Center(
+                              child: Text(
+                                " Add +",
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.darkGreen,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        // Obx(
+                        //   () => product.quntity!.value > 0 &&
+                        //           product.isQunitityAdd?.value == false
+                        //       ? _shoppingItem(product)
+                        //       : GestureDetector(
+                        //           onTap: () async {
+                        //             if (product.quntity!.value == 0) {
+                        //               product.quntity!.value++;
+
+                        //               _moreStoreController.addToCart(
+                        //                   store_id:
+                        //                       _moreStoreController.storeId.value,
+                        //                   index: 0,
+                        //                   increment: true,
+                        //                   cart_id: _moreStoreController
+                        //                           .getCartIDModel.value?.sId ??
+                        //                       '',
+                        //                   product: product);
+
+                        //               _moreStoreController.storeId.value =
+                        //                   product.store?.sId ?? '';
+
+                        //               await _moreStoreController.getStoreData(
+                        //                 id: product.store?.sId ?? '',
+                        //               );
+                        //             }
+                        //             if (product.quntity!.value != 0 &&
+                        //                 product.isQunitityAdd?.value == false) {
+                        //               product.isQunitityAdd?.value = false;
+                        //               await Future.delayed(
+                        //                       Duration(milliseconds: 500))
+                        //                   .whenComplete(() =>
+                        //                       product.isQunitityAdd?.value = true);
+                        //             }
+                        //             // addItem(product);
+                        //           },
+                        //           child: product.isQunitityAdd?.value == true &&
+                        //                   product.quntity!.value != 0
+                        //               ? _dropDown(product, product.store?.sId ?? '')
+                        //               : Container(
+                        //                   height: 3.h,
+                        //                   width: 15.w,
+                        //                   decoration: BoxDecoration(
+                        //                     border: Border.all(
+                        //                         color: AppConst.darkGreen,
+                        //                         width: 0.8),
+                        //                     borderRadius: BorderRadius.circular(12),
+                        //                     color: Color(0xffe6faf1),
+                        //                   ),
+                        //                   child: Center(
+                        //                     child: Text(
+                        //                       " Add +",
+                        //                       style: TextStyle(
+                        //                         fontFamily: 'MuseoSans',
+                        //                         color: AppConst.darkGreen,
+                        //                         fontSize:
+                        //                             SizeUtils.horizontalBlockSize *
+                        //                                 3.5,
+                        //                         fontWeight: FontWeight.w500,
+                        //                         fontStyle: FontStyle.normal,
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 )),
+                        // ),
+                      ],
                     ),
-                    // Obx(
-                    //   () => product.quntity!.value > 0 &&
-                    //           product.isQunitityAdd?.value == false
-                    //       ? _shoppingItem(product)
-                    //       : GestureDetector(
-                    //           onTap: () async {
-                    //             if (product.quntity!.value == 0) {
-                    //               product.quntity!.value++;
-
-                    //               _moreStoreController.addToCart(
-                    //                   store_id:
-                    //                       _moreStoreController.storeId.value,
-                    //                   index: 0,
-                    //                   increment: true,
-                    //                   cart_id: _moreStoreController
-                    //                           .getCartIDModel.value?.sId ??
-                    //                       '',
-                    //                   product: product);
-
-                    //               _moreStoreController.storeId.value =
-                    //                   product.store?.sId ?? '';
-
-                    //               await _moreStoreController.getStoreData(
-                    //                 id: product.store?.sId ?? '',
-                    //               );
-                    //             }
-                    //             if (product.quntity!.value != 0 &&
-                    //                 product.isQunitityAdd?.value == false) {
-                    //               product.isQunitityAdd?.value = false;
-                    //               await Future.delayed(
-                    //                       Duration(milliseconds: 500))
-                    //                   .whenComplete(() =>
-                    //                       product.isQunitityAdd?.value = true);
-                    //             }
-                    //             // addItem(product);
-                    //           },
-                    //           child: product.isQunitityAdd?.value == true &&
-                    //                   product.quntity!.value != 0
-                    //               ? _dropDown(product, product.store?.sId ?? '')
-                    //               : Container(
-                    //                   height: 3.h,
-                    //                   width: 15.w,
-                    //                   decoration: BoxDecoration(
-                    //                     border: Border.all(
-                    //                         color: AppConst.darkGreen,
-                    //                         width: 0.8),
-                    //                     borderRadius: BorderRadius.circular(12),
-                    //                     color: Color(0xffe6faf1),
-                    //                   ),
-                    //                   child: Center(
-                    //                     child: Text(
-                    //                       " Add +",
-                    //                       style: TextStyle(
-                    //                         fontFamily: 'MuseoSans',
-                    //                         color: AppConst.darkGreen,
-                    //                         fontSize:
-                    //                             SizeUtils.horizontalBlockSize *
-                    //                                 3.5,
-                    //                         fontWeight: FontWeight.w500,
-                    //                         fontStyle: FontStyle.normal,
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                 )),
-                    // ),
-                  ],
-                ),
-              )
+                  )
+                ],
+              ),
             ],
           ),
+          Padding(
+            padding:
+                EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 0.5.h),
+            child: Container(
+              height: 1,
+              width: double.infinity,
+              color: AppConst.lightGrey,
+            ),
+          )
         ],
       ),
     );
@@ -505,92 +520,95 @@ class StoreListViewChild extends StatelessWidget {
           id: Stores!.sId.toString(),
         );
       }),
-      child: Row(
-        children: [
-          DispalyStoreLogo(
-            logo: Stores?.logo,
-            bottomPadding: 0,
-            height: 5,
-            logoPadding: 6,
-          ),
-          SizedBox(
-            width: 2.w,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 72.w,
-                        child: Text("${Stores?.name ?? ""}",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: 'MuseoSans',
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            )),
-                      ),
-                      SizedBox(
-                        height: 0.5.h,
-                      ),
-                      Row(
-                        children: [
-                          (Stores?.calculatedDistance != null)
-                              ? DisplayDistance(
-                                  distance: Stores?.calculatedDistance,
-                                )
-                              : SizedBox(),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 1.w, right: 2.w, top: 0.5.h),
-                            child: Icon(
-                              Icons.circle,
-                              color: AppConst.grey,
-                              size: 0.8.h,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 1.h),
+        child: Row(
+          children: [
+            DispalyStoreLogo(
+              logo: Stores?.logo,
+              bottomPadding: 0,
+              height: 5,
+              logoPadding: 6,
+            ),
+            SizedBox(
+              width: 2.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 72.w,
+                          child: Text("${Stores?.name ?? ""}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.black,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              )),
+                        ),
+                        SizedBox(
+                          height: 0.5.h,
+                        ),
+                        Row(
+                          children: [
+                            (Stores?.calculatedDistance != null)
+                                ? DisplayDistance(
+                                    distance: Stores?.calculatedDistance,
+                                  )
+                                : SizedBox(),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 1.w, right: 2.w, top: 0.5.h),
+                              child: Icon(
+                                Icons.circle,
+                                color: AppConst.grey,
+                                size: 0.8.h,
+                              ),
                             ),
-                          ),
-                          if (Stores?.storeType != null &&
-                              Stores!.storeType!.isNotEmpty)
-                            if ((Stores?.storeType) == 'online')
-                              DsplayPickupDelivery()
-                            else
-                              Text("Only Pickup",
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.grey,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.7,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 0.5.h,
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 4.h),
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: AppConst.black,
-                      size: SizeUtils.horizontalBlockSize * 6,
+                            if (Stores?.storeType != null &&
+                                Stores!.storeType!.isNotEmpty)
+                              if ((Stores?.storeType) == 'online')
+                                DsplayPickupDelivery()
+                              else
+                                Text("Only Pickup",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: AppConst.grey,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 0.5.h,
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 0.h),
+                      child: Icon(
+                        Icons.arrow_forward,
+                        color: AppConst.black,
+                        size: SizeUtils.horizontalBlockSize * 6,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -38,7 +38,7 @@ class _StoreListScreenState extends State<StoreListScreen>
           //     _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
           return <Widget>[
             SliverAppBar(
-              expandedHeight: 10.h,
+              expandedHeight: 12.h,
               systemOverlayStyle: SystemUiOverlayStyle(
                   statusBarColor: Color(0xffaeebff),
                   statusBarIconBrightness: Brightness.dark),
@@ -48,93 +48,53 @@ class _StoreListScreenState extends State<StoreListScreen>
               floating: true,
               // automaticallyImplyLeading: false,
               backgroundColor: Color(0xffaeebff),
-              // title: (innerBoxIsScrolled)
-              //     ? CircleAvatar(
-              //         backgroundColor: AppConst.white,
-              //         radius: SizeUtils.horizontalBlockSize * 3.82,
-              //         child: Image.asset("assets/images/image4.png"),
-              //       )
-              //     : Row(
-              //         mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //           Text(
-              //             "${category?.name.toString() ?? ""}",
-              //             // "Pickup",
-              //             style: TextStyle(
-              //                 fontWeight: FontWeight.w700,
-              //                 fontFamily: 'MuseoSans',
-              //                 fontSize: SizeUtils.horizontalBlockSize * 5,
-              //                 color: AppConst.black),
-              //           ),
-              //           // ),
-              //         ],
-              //       ),
-              // leading: BackButtonCircle(),
-              //  SizedBox(),
+              title: (innerBoxIsScrolled)
+                  ? Row(
+                      children: [
+                        Container(
+                          width: 75.w,
+                          child: Text(
+                            "${category?.title.toString() ?? ""}",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: AppConst.black,
+                              fontFamily: 'MuseoSans',
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          "",
+                          style: TextStyle(
+                              color: AppConst.black,
+                              fontSize: SizeUtils.horizontalBlockSize * 4),
+                        ),
+                      ],
+                    ),
 
-              // actions: [
-              //   CartWidget(
-              //     onTap: () async {
-              //       if ((_homeController
-              //                   .getAllCartsModel.value?.carts?.length ??
-              //               0) ==
-              //           1) {
-              //         Get.toNamed(
-              //           AppRoutes.CartReviewScreen,
-              //           arguments: {
-              //             'logo': _homeController
-              //                 .getAllCartsModel.value?.carts?[1].store?.logo,
-              //             'storeName': _homeController
-              //                 .getAllCartsModel.value?.carts?[1].store?.name,
-              //             'totalCount': _homeController
-              //                     .getAllCartsModel.value?.cartItemsTotal
-              //                     .toString() ??
-              //                 ""
-              //           },
-              //         );
-              //         await _addCartController.getReviewCartData(
-              //             cartId: _homeController
-              //                     .getAllCartsModel.value?.carts?[1].sId ??
-              //                 "");
-              //         // await _addCartController.getCartPageInformation(storeId: _homeController.getAllCartsModel.value?.carts?[1].store?.sId ?? "");
-              //         _addCartController.store.value = _homeController
-              //             .getAllCartsModel.value?.carts?[1].store;
-              //         await _addCartController.getCartLocation(
-              //             storeId: _homeController.getAllCartsModel.value
-              //                     ?.carts?[1].store?.sId ??
-              //                 '',
-              //             cartId: _homeController
-              //                     .getAllCartsModel.value?.carts?[1].sId ??
-              //                 "");
-
-              //         _addCartController.cartId.value = _homeController
-              //                 .getAllCartsModel.value?.carts?[1].sId ??
-              //             "";
-              //       }
-              //       Get.toNamed(AppRoutes.AddCartListScreen);
-              //     },
-              //     count:
-              //         //  _homeController.getAllCartsModel.value?.cartItemsTotal.toString() ??
-              //         "",
-              //     isRedButton: true,
-              //   ),
-              //   SizedBox(
-              //     width: 2.w,
-              //   )
-              // ],
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
                 collapseMode: CollapseMode.parallax,
                 background: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 4.h,
+                    ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 1.h, left: 5.w),
+                      padding: EdgeInsets.only(top: 3.h, left: 5.w),
                       child: Text(
                         // "Fresh Store near you",
 
-                        "${category?.title.toString() ?? "Grocery"}",
+                        "${category?.title.toString() ?? ""}",
                         // "Pickup",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -144,82 +104,16 @@ class _StoreListScreenState extends State<StoreListScreen>
                             color: AppConst.black),
                       ),
                     ),
-                    // Stack(
-                    //   children: [
-                    //     Positioned(
-                    //       child: Container(
-                    //         width: MediaQuery.of(context).size.width,
-                    //         height: 18.h,
-                    //         color: Colors.yellow,
-                    //         child: Image.network(
-                    //           category?.image ?? "",
-                    //           fit: BoxFit.fill,
-                    //           height: SizeUtils.verticalBlockSize * 12,
-                    //           width: SizeUtils.horizontalBlockSize * 24,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     // Positioned(
-                    //     //   top: 20,
-                    //     //   left: 10,
-                    //     //   child: CircleAvatar(
-                    //     // radius: 2.4.h,
-                    //     // backgroundColor: AppConst.lightGrey,
-                    //     //       child: const SizedBox()),
-                    //     // ),
-                    //     Positioned(
-                    //       bottom: 15,
-                    //       left: 10,
-                    //       child: Text(
-                    //         "${category?.name.toString() ?? ""}",
-                    //         // "Pickup",
-                    //         style: TextStyle(
-                    //             fontWeight: FontWeight.w700,
-                    //             fontFamily: 'MuseoSans',
-                    //             fontSize: SizeUtils.horizontalBlockSize * 6,
-                    //             color: AppConst.black),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    // SizedBox(
-                    //   height: 2.h,
-                    // ),
                   ],
                 ),
               ),
             ),
-            // SliverAppBar(
-            //   expandedHeight: 28.h,
-            //   // collapsedHeight: 70,
-            //   centerTitle: true,
-            //   pinned: true,
-            //   stretch: true,
-            //   floating: true,
-            //   backgroundColor: Colors.green[600],
-            //   leading: BackButtonWidget(),
-            //   actions: [
-            //     CartWidget(),
-            //   ],
-            //   flexibleSpace: FlexibleSpaceBar(
-            //     centerTitle: innerBoxIsScrolled,
-            //     title: Text(
-            //       "Convenience",
-            //       style: TextStyle(color: AppConst.black),
-            //     ),
-            //     collapseMode: CollapseMode.pin,
-            //     titlePadding: EdgeInsets.only(bottom: 0.5.h, left: 2.w),
-            //     background: Image.network(
-            //       "https://img.freepik.com/free-photo/falling-broken-chocolate-chip-cookies-isolated-white-with-clipping-path_88281-2863.jpg?w=1380",
-            //       fit: BoxFit.contain,
-            //     ),
-            //   ),
-            // )
           ];
         },
         body: SingleChildScrollView(
-          controller: _homeController.remoteConfigScrollController,
+          // controller: _homeController.remoteConfigScrollController,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               StoreWithProductsList(),
             ],

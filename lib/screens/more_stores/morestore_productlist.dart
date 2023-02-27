@@ -387,21 +387,27 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                         color: AppConst.black,
                                       ),
                                     )
-                                  : Text(
-                                      _moreStoreController.getStoreDataModel
-                                              .value?.data?.store?.name
-                                              .toString() ??
-                                          "",
-                                      style: TextStyle(
-                                        color: AppConst.black,
-                                        // (colorinversion == "#FFFFFF")
-                                        //     ? AppConst.black
-                                        //     : AppConst.white,
-                                        fontFamily: 'MuseoSans',
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 4.5,
+                                  : Container(
+                                      width: 90.w,
+                                      child: Text(
+                                        _moreStoreController.getStoreDataModel
+                                                .value?.data?.store?.name
+                                                .toString() ??
+                                            "",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          color: AppConst.black,
+                                          // (colorinversion == "#FFFFFF")
+                                          //     ? AppConst.black
+                                          //     : AppConst.white,
+                                          fontFamily: 'MuseoSans',
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  4.5,
+                                        ),
                                       ),
                                     ),
                             ),
@@ -566,7 +572,7 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                 padding: EdgeInsets.symmetric(horizontal: 2.w),
                                 child: Bubble(
                                   color: AppConst.lightSkyBlue,
-                                  margin: BubbleEdges.only(top: 1.h),
+                                  margin: BubbleEdges.only(top: 0.h),
                                   stick: true,
                                   nip: BubbleNip.leftTop,
                                   child: Container(

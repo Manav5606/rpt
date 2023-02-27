@@ -145,22 +145,6 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // _homeController.checkPermission.value
-            //     ? SizedBox()
-            //     :
-            // PermissionRaw(
-            //     onTap: () async {
-            //       bool isEnable =
-            //           await _homeController.getCurrentLocation();
-            //       if (isEnable) {
-            //         _paymentController.latLng = LatLng(
-            //             UserViewModel.currentLocation.value.latitude,
-            //             UserViewModel.currentLocation.value.longitude);
-            //         await _paymentController.getRedeemCashInStorePage();
-            //       }
-            //     },
-            //   ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
               child: Text(
@@ -173,21 +157,6 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
                     fontStyle: FontStyle.normal,
                   )),
             ),
-            // Container(
-            //     height: SizeUtils.horizontalBlockSize * 10,
-            //     width: SizeUtils.horizontalBlockSize * 65,
-            //     alignment: Alignment.topLeft,
-            //     child: FittedBox(
-            //       child: Text(
-            //         "Loyalty Cards",
-            //         style: TextStyle(
-            //             fontSize: SizeUtils.horizontalBlockSize * 8,
-            //             fontWeight: FontWeight.bold),
-            //       ),
-            //     )),
-            // SizedBox(
-            //   height: SizeUtils.horizontalBlockSize * 5,
-            // ),
             Expanded(
               child: SingleChildScrollView(
                 child: loyaltyCardList(),

@@ -5,6 +5,7 @@ import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/widgets/signup_feilds.dart';
 import 'package:customer_app/widgets/textfield_clear_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -148,14 +149,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: [
                         // ShimmerEffect(
                         // child:
-                        Text(
-                          "Sign in",
-                          style: TextStyle(
-                            color: AppConst.black,
-                            fontFamily: "MuseoSans",
-                            fontStyle: FontStyle.normal,
-                            fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                            fontWeight: FontWeight.bold,
+                        ShimmerEffect(
+                          child: Text(
+                            "Sign in",
+                            style: TextStyle(
+                              color: AppConst.black,
+                              fontFamily: "MuseoSans",
+                              fontStyle: FontStyle.normal,
+                              fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         // ),
@@ -164,38 +167,57 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         // ShimmerEffect(
                         // child:
-                        Text(
-                          "Enter your Mobile Number",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppConst.darkGrey,
-                            fontFamily: "MuseoSans",
-                            fontStyle: FontStyle.normal,
-                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                        ShimmerEffect(
+                          child: Text(
+                            "Enter your Mobile Number",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: AppConst.darkGrey,
+                              fontFamily: "MuseoSans",
+                              fontStyle: FontStyle.normal,
+                              fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                            ),
+                            // ),
                           ),
-                          // ),
                         ),
                         Container(
-                          // height: 6.h,
-                          child: KeyboardActions(
-                            config: _buildConfig(context),
-                            autoScroll: false,
-                            disableScroll: true,
-                            child: Container(
-                              // height: 50,
-                              child: ShimmerEffect(
-                                child: SignUpFeilds(
-                                  prefixIcon: AddPlus91(
-                                      signInController: _signInController),
-                                  focusNode: _nodeText1,
-                                  hinttext: "",
-                                  keyboardtype: TextInputType.number,
-                                  maxlength: 10,
-                                  controller:
-                                      _signInController.phoneNumberController,
-                                  onChange: (value) {
-                                    _signInController.phoneNumber.value = value;
-                                  },
+                          color: AppConst.white,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
+                          child: ShimmerEffect(
+                            child: TextFormField(
+                              textAlignVertical: TextAlignVertical.center,
+                              controller:
+                                  _signInController.phoneNumberController,
+                              focusNode: _nodeText1,
+                              textAlign: TextAlign.start,
+                              cursorColor: AppConst.black,
+                              maxLength: 10,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+
+                                hintStyle: TextStyle(
+                                    color: AppConst.grey,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4),
+                                // contentPadding:
+                                //     EdgeInsets.only(left: 2.w, bottom: 0.h),
+                                hintTextDirection: TextDirection.ltr,
+                                counterText: "",
+
+                                prefixIcon: AddPlus91(
+                                    signInController: _signInController),
+                                suffixIconConstraints:
+                                    BoxConstraints.tightFor(),
+                                disabledBorder: InputBorder.none,
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppConst.grey, width: 1),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppConst.green, width: 1.5),
                                 ),
                               ),
                             ),
@@ -255,24 +277,61 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         Container(
                           // height: 6.h,
+                          color: AppConst.white,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
+
                           child: KeyboardActions(
                             config: _buildConfig(context),
                             autoScroll: false,
                             disableScroll: true,
                             child: Container(
                               // height: 50,
-                              child: SignUpFeilds(
-                                prefixIcon: AddPlus91(
-                                    signInController: _signInController),
+                              child: TextFormField(
+                                style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 4),
+                                textAlignVertical: TextAlignVertical.center,
                                 focusNode: _nodeText1,
-                                hinttext: "",
-                                keyboardtype: TextInputType.number,
-                                maxlength: 10,
+                                textAlign: TextAlign.start,
+                                cursorColor: AppConst.black,
+                                maxLength: 10,
+                                keyboardType: TextInputType.number,
                                 controller:
                                     _signInController.phoneNumberController,
-                                onChange: (value) {
+                                onChanged: (value) {
                                   _signInController.phoneNumber.value = value;
                                 },
+                                decoration: InputDecoration(
+                                  isDense: true,
+
+                                  hintStyle: TextStyle(
+                                      color: AppConst.grey,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4),
+                                  // contentPadding:
+                                  //     EdgeInsets.only(left: 2.w, bottom: 0.h),
+                                  hintTextDirection: TextDirection.ltr,
+                                  counterText: "",
+
+                                  prefixIcon: AddPlus91(
+                                      signInController: _signInController),
+                                  suffixIconConstraints:
+                                      BoxConstraints.tightFor(),
+                                  disabledBorder: InputBorder.none,
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppConst.grey, width: 1),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppConst.green, width: 1.5),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -890,30 +949,24 @@ class AddPlus91 extends StatelessWidget {
           SizedBox(
             width: 2.w,
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 0.5.h),
-            child: Icon(
-              Icons.call,
-              size: 3.h,
-              color: _signInController.phoneNumber.value.length == 10
-                  ? AppConst.darkGreen
-                  : AppConst.grey,
-            ),
+          Icon(
+            Icons.call,
+            size: 3.h,
+            color: _signInController.phoneNumber.value.length == 10
+                ? AppConst.darkGreen
+                : AppConst.grey,
           ),
           SizedBox(
             width: 3.w,
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 0.5.h),
-            child: Text(
-              "+91",
-              style: TextStyle(
-                  fontFamily: 'MuseoSans',
-                  color: AppConst.black,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
-                  fontSize: SizeUtils.horizontalBlockSize * 4),
-            ),
+          Text(
+            "+91",
+            style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: AppConst.black,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+                fontSize: SizeUtils.horizontalBlockSize * 4),
           )
         ],
       ),
