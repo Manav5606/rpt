@@ -16,10 +16,12 @@ class ChatOrderController extends GetxController {
   Rx<Carts?> cartIndex = Carts().obs;
   Rx<Carts?> cart = Carts().obs;
   RxInt quntity = 0.obs;
+  RxBool isQuantityUpdated = false.obs;
   RxInt selectUnitIndex = 0.obs;
   RxString oldItem = ''.obs;
-  RxString logo = ''.obs;
+  RxString Oldlogo = ''.obs;
   RxString imagePath = ''.obs;
+  RxString logo = ''.obs;
   RxInt oldQuntity = 0.obs;
   final TextEditingController itemController = TextEditingController();
   RxBool isLoading = false.obs;
