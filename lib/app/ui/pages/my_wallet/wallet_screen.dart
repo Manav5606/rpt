@@ -5,6 +5,7 @@ import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/data/model/my_wallet_model.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
+import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/screens/wallet/loyaltyCardList.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -28,6 +29,8 @@ class WalletScreen extends GetView<MyWalletController> {
 
   @override
   Widget build(BuildContext context) {
+    Map arg = Get.arguments ?? {};
+    bool? navWithOutTransaction = arg['navWithOutTranscation'];
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: AppConst.white,
@@ -69,7 +72,9 @@ class WalletScreen extends GetView<MyWalletController> {
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            child: WalletCardList(),
+            child: WalletCardList(
+              navWithOutTransaction: navWithOutTransaction ?? false,
+            ),
           ),
         ),
 
@@ -406,9 +411,9 @@ class WalletScreen extends GetView<MyWalletController> {
 }
 
 class WalletCardList extends StatelessWidget {
-  WalletCardList({
-    Key? key,
-  }) : super(key: key);
+  bool navWithOutTransaction;
+  WalletCardList({Key? key, this.navWithOutTransaction = false})
+      : super(key: key);
   @override
   final MyWalletController _myWalletController = Get.find();
 
@@ -432,6 +437,7 @@ class WalletCardList extends StatelessWidget {
                           0,
                   itemBuilder: (context, index) {
                     return WalletListView(
+                      navWithOutTransaction: navWithOutTransaction,
                       walletData:
                           _myWalletController.myWalletModel.value!.data![index],
                     );
@@ -449,10 +455,13 @@ class WalletCardList extends StatelessWidget {
 
 class WalletListView extends StatelessWidget {
   WalletData walletData;
-  WalletListView({Key? key, required this.walletData}) : super(key: key);
+  bool navWithOutTransaction;
+  WalletListView(
+      {Key? key, required this.walletData, this.navWithOutTransaction = false})
+      : super(key: key);
   final PaymentController _paymentController = Get.find();
   final MyWalletController _myWalletController = Get.find();
-
+  final MoreStoreController _moreStoreController = Get.find();
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
@@ -463,20 +472,25 @@ class WalletListView extends StatelessWidget {
         children: [
           InkWell(
             onTap: () async {
-              Get.to(
-                  () => WalletTransactionCard(
-                      storeSearchModel: _paymentController
-                          .redeemCashInStorePageDataIndex.value,
-                      walletData: walletData),
-                  arguments: {
-                    "name": walletData.name ?? "",
-                    "logo": walletData.logo ?? "",
-                    "color": color,
-                  });
+              if (navWithOutTransaction) {
+                await _moreStoreController.getStoreData(
+                    id: '${walletData.sId}');
+              } else {
+                Get.to(
+                    () => WalletTransactionCard(
+                        storeSearchModel: _paymentController
+                            .redeemCashInStorePageDataIndex.value,
+                        walletData: walletData),
+                    arguments: {
+                      "name": walletData.name ?? "",
+                      "logo": walletData.logo ?? "",
+                      "color": color,
+                    });
 
-              await _myWalletController.getAllWalletTransactionByCustomer(
-                  storeId: walletData.sId ?? "");
-              _myWalletController.storeId.value = walletData.sId ?? "";
+                await _myWalletController.getAllWalletTransactionByCustomer(
+                    storeId: walletData.sId ?? "");
+                _myWalletController.storeId.value = walletData.sId ?? "";
+              }
             },
             child: CardlistView(
                 color: color,

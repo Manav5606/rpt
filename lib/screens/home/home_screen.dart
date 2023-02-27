@@ -232,7 +232,8 @@ class _HomeScreenState extends State<HomeScreen>
                           balance: _addLocationController.convertor(
                               _myAccountController.user.balance ?? 0),
                           onTapWallet: () {
-                            Get.toNamed(AppRoutes.Wallet);
+                            Get.toNamed(AppRoutes.Wallet,
+                                arguments: {"navWithOutTranscation": true});
                           },
                           isHomeScreen: true,
                         ),
@@ -1755,7 +1756,7 @@ class RecentActiveOrders extends StatelessWidget {
                   color: AppConst.white),
               child: Padding(
                 padding: EdgeInsets.only(
-                    bottom: 0.5.h, top: 0.5.h, right: 1.w, left: 1.w),
+                    bottom: 0.h, top: 0.5.h, right: 1.w, left: 1.w),
                 child: Column(
                   children: [
                     Container(
