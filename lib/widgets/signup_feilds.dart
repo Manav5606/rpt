@@ -75,7 +75,7 @@ class SignUpFeilds extends StatelessWidget {
                 readOnly: readOnly ?? false,
                 decoration: InputDecoration(
                   isDense: true,
-                  // hintText: hinttext ?? '',
+                  hintText: hinttext ?? '',
                   hintStyle: TextStyle(
                       color: AppConst.grey,
                       fontSize: SizeUtils.horizontalBlockSize * 4),

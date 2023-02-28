@@ -41,7 +41,7 @@ class SignupBs extends StatelessWidget {
               padding: EdgeInsets.only(
                   bottom: 1.5.h, left: 3.w, right: 2.w, top: 1.h),
               child: Text(
-                'Sign up now & earn \u{20B9}15 instantly',
+                'Sign up now & earn \u{20B9}15 static instantly',
                 style: TextStyle(
                   fontSize: SizeUtils.horizontalBlockSize * 4.5,
                   fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class SignupBs extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '\u{20B9}125 Extra Cashback earned',
+                    '\u{20B9}22 static Extra Cashback earned',
                     style: TextStyle(
                       color: AppConst.darkGreen,
                       fontFamily: 'MuseoSans',
@@ -148,7 +148,6 @@ class SignupBs extends StatelessWidget {
               child: SignUpFeilds(
                 hinttext: 'Enter your Email ID',
                 // labelText: 'Enter your Email ID',
-
                 controller: _emailController,
                 validator: (val) => FormValidator.validateEmail(val!),
               ),

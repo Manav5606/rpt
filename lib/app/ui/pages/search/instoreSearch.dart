@@ -273,88 +273,158 @@ class _InstoreSearch extends State<InstoreSearch> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-              child: Bubble(
-                color: AppConst.lightSkyBlue,
-                margin: BubbleEdges.only(top: 1.h),
-                stick: true,
-                nip: BubbleNip.leftTop,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          width: 50.w,
-                          child: Obx(
-                            () => RichText(
-                                text: TextSpan(children: [
-                              TextSpan(
-                                text: "Struggling to find items? \nadd ",
-                                style: TextStyle(
-                                  color: AppConst.darkGreen,
-                                  // Color(0xff003d29),
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                                ),
-                              ),
-                              TextSpan(
-                                text: (_moreStoreController
-                                            .storeSearchText.value ==
-                                        "")
-                                    ? "item"
-                                    : "${_moreStoreController.storeSearchText.value}",
-                                style: TextStyle(
-                                  color: AppConst.darkGreen,
-                                  // Color(0xff003d29),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                                ),
-                              ),
-                              TextSpan(
-                                text: " to Chat order",
-                                style: TextStyle(
-                                  color: AppConst.darkGreen,
-                                  // Color(0xff003d29),
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                                ),
-                              ),
-                            ])),
-                          )),
-                      InkWell(
-                        onTap: (() {
-                          Get.off(
-                              ChatOrderScreen(
-                                isNewStore: true,
-                              ),
-                              arguments: {
-                                "text":
-                                    _moreStoreController.storeSearchText.value
-                              });
-                        }),
-                        child: Container(
-                          width: 30.w,
-                          height: 5.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(85),
-                              color: AppConst.darkGreen),
-                          child: Center(
-                            child: Text(
-                              "Chat Order",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                                  fontWeight: FontWeight.bold),
-                            ),
+            Obx(() => (_moreStoreController.storeSearchText.value != "")
+                ? GestureDetector(
+                    onTap: (() {
+                      Get.off(
+                          ChatOrderScreen(
+                            isNewStore: true,
                           ),
-                        ),
+                          arguments: {
+                            "text": _moreStoreController.storeSearchText.value
+                          });
+                    }),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppConst.lightSkyBlue,
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: 50.w,
+                              child: Obx(
+                                () => RichText(
+                                    text: TextSpan(children: [
+                                  TextSpan(
+                                    text: "add ",
+                                    style: TextStyle(
+                                      color: AppConst.darkGreen,
+                                      // Color(0xff003d29),
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: (_moreStoreController
+                                                .storeSearchText.value ==
+                                            "")
+                                        ? "item"
+                                        : "${_moreStoreController.storeSearchText.value}",
+                                    style: TextStyle(
+                                      color: AppConst.darkGreen,
+                                      // Color(0xff003d29),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: " to Chat order",
+                                    style: TextStyle(
+                                      color: AppConst.darkGreen,
+                                      // Color(0xff003d29),vysor
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.7,
+                                    ),
+                                  ),
+                                ])),
+                              )),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 2.5.h,
+                            color: AppConst.darkGreen,
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : SizedBox()),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+            //   child: Bubble(
+            //     color: AppConst.lightSkyBlue,
+            //     margin: BubbleEdges.only(top: 1.h),
+            //     stick: true,
+            //     nip: BubbleNip.leftTop,
+            //     child: Container(
+            //       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Container(
+            //               width: 50.w,
+            //               child: Obx(
+            //                 () => RichText(
+            //                     text: TextSpan(children: [
+            //                   TextSpan(
+            //                     text: "Struggling to find items? \nadd ",
+            //                     style: TextStyle(
+            //                       color: AppConst.darkGreen,
+            //                       // Color(0xff003d29),
+            //                       fontSize: SizeUtils.horizontalBlockSize * 3.7,
+            //                     ),
+            //                   ),
+            //                   TextSpan(
+            //                     text: (_moreStoreController
+            //                                 .storeSearchText.value ==
+            //                             "")
+            //                         ? "item"
+            //                         : "${_moreStoreController.storeSearchText.value}",
+            //                     style: TextStyle(
+            //                       color: AppConst.darkGreen,
+            //                       // Color(0xff003d29),
+            //                       fontWeight: FontWeight.w600,
+            //                       fontSize: SizeUtils.horizontalBlockSize * 3.7,
+            //                     ),
+            //                   ),
+            //                   TextSpan(
+            //                     text: " to Chat order",
+            //                     style: TextStyle(
+            //                       color: AppConst.darkGreen,
+            //                       // Color(0xff003d29),
+            //                       fontSize: SizeUtils.horizontalBlockSize * 3.7,
+            //                     ),
+            //                   ),
+            //                 ])),
+            //               )),
+            //           InkWell(
+            //             onTap: (() {
+            //               Get.off(
+            //                   ChatOrderScreen(
+            //                     isNewStore: true,
+            //                   ),
+            //                   arguments: {
+            //                     "text":
+            //                         _moreStoreController.storeSearchText.value
+            //                   });
+            //             }),
+            //             child: Container(
+            //               width: 30.w,
+            //               height: 5.h,
+            //               decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(85),
+            //                   color: AppConst.darkGreen),
+            //               child: Center(
+            //                 child: Text(
+            //                   "Chat Order",
+            //                   style: TextStyle(
+            //                       color: Colors.white,
+            //                       fontSize: SizeUtils.horizontalBlockSize * 3.7,
+            //                       fontWeight: FontWeight.bold),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 1.h,
             ),
