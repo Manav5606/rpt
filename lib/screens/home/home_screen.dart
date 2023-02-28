@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
+import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -195,6 +196,10 @@ class _HomeScreenState extends State<HomeScreen>
     Data tempModel = Data.fromJson(
         jsonDecode(FirebaseRemoteConfigUtils.homeScreenTempString));
     // _homeController.checkLocationPermission();
+
+    int recentCount =
+        (_myAccountController.activeOrdersModel.value?.data?.length ?? 0) +
+            (_homeController.getAllCartsModel.value?.carts?.length ?? 0);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: AppConst.darkGreen,
@@ -535,9 +540,9 @@ class _HomeScreenState extends State<HomeScreen>
                               //           )
                               //         : YourStores()
                               //     : SizedBox(),
-                              // SizedBox(
-                              //   height: 1.h,
-                              // ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
                               ((_myAccountController.activeOrdersModel.value
                                                   ?.data?.length ??
                                               0) >
@@ -547,10 +552,9 @@ class _HomeScreenState extends State<HomeScreen>
                                               0) >
                                           0
                                   ? Container(
-                                      height: 23.h,
+                                      height: 18.h,
                                       decoration: BoxDecoration(
-                                          // color: Color(0xfff2f3f7)
-                                          ),
+                                          color: Color(0xfff2f3f7)),
                                       child: Padding(
                                         padding: EdgeInsets.only(
                                             left: 2.w, top: 1.h, right: 1.w),
@@ -563,18 +567,18 @@ class _HomeScreenState extends State<HomeScreen>
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text("Recent Transactions",
-                                                    style: TextStyle(
-                                                      fontFamily: 'MuseoSans',
-                                                      color: AppConst.black,
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          4.5,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                    )),
+                                                // Text("Recent Transactions",
+                                                //     style: TextStyle(
+                                                //       fontFamily: 'MuseoSans',
+                                                //       color: AppConst.black,
+                                                //       fontSize: SizeUtils
+                                                //               .horizontalBlockSize *
+                                                //           4.5,
+                                                //       fontWeight:
+                                                //           FontWeight.w700,
+                                                //       fontStyle:
+                                                //           FontStyle.normal,
+                                                //     )),
                                                 // InkWell(
                                                 //   onTap: (() {
                                                 //     Get.toNamed(
@@ -615,7 +619,7 @@ class _HomeScreenState extends State<HomeScreen>
                                               height: 1.h,
                                             ),
                                             Container(
-                                              height: 16.h,
+                                              height: 14.h,
                                               // color: AppConst.yellow,
                                               width: double.infinity,
                                               child: SingleChildScrollView(
@@ -643,13 +647,23 @@ class _HomeScreenState extends State<HomeScreen>
                                                                         ?.length) ??
                                                                     0,
                                                             physics:
-                                                                PageScrollPhysics(),
+                                                                NeverScrollableScrollPhysics(),
                                                             scrollDirection:
                                                                 Axis.horizontal,
                                                             shrinkWrap: true,
-                                                            itemExtent: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                30,
+                                                            itemExtent: (recentCount ==
+                                                                    1)
+                                                                ? SizeUtils
+                                                                        .horizontalBlockSize *
+                                                                    95
+                                                                : (recentCount ==
+                                                                        2)
+                                                                    ? SizeUtils
+                                                                            .horizontalBlockSize *
+                                                                        80
+                                                                    : SizeUtils
+                                                                            .horizontalBlockSize *
+                                                                        30,
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
@@ -691,80 +705,109 @@ class _HomeScreenState extends State<HomeScreen>
                                                             scrollDirection:
                                                                 Axis.horizontal,
                                                             shrinkWrap: true,
-                                                            itemExtent: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                30,
+                                                            itemExtent: (recentCount ==
+                                                                    1)
+                                                                ? SizeUtils
+                                                                        .horizontalBlockSize *
+                                                                    95
+                                                                : (recentCount ==
+                                                                        2)
+                                                                    ? SizeUtils
+                                                                            .horizontalBlockSize *
+                                                                        80
+                                                                    : SizeUtils
+                                                                            .horizontalBlockSize *
+                                                                        30,
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
                                                               // currentItems = index;
-                                                              return RecentCarts(
-                                                                moreStoreController:
-                                                                    _moreStoreController,
-                                                                homeController:
-                                                                    _homeController,
-                                                                itemIndex: (_homeController
-                                                                        .getAllCartsModel
-                                                                        .value
-                                                                        ?.carts
-                                                                        ?.length)! -
-                                                                    1 -
-                                                                    index,
-                                                              );
+                                                              return (recentCount ==
+                                                                          1 ||
+                                                                      recentCount ==
+                                                                          2)
+                                                                  ? RecentCarts12(
+                                                                      recentCount:
+                                                                          recentCount,
+                                                                      moreStoreController:
+                                                                          _moreStoreController,
+                                                                      homeController:
+                                                                          _homeController,
+                                                                      itemIndex: (_homeController
+                                                                              .getAllCartsModel
+                                                                              .value
+                                                                              ?.carts
+                                                                              ?.length)! -
+                                                                          1 -
+                                                                          index,
+                                                                    )
+                                                                  : RecentCarts(
+                                                                      moreStoreController:
+                                                                          _moreStoreController,
+                                                                      homeController:
+                                                                          _homeController,
+                                                                      itemIndex: (_homeController
+                                                                              .getAllCartsModel
+                                                                              .value
+                                                                              ?.carts
+                                                                              ?.length)! -
+                                                                          1 -
+                                                                          index,
+                                                                    );
                                                             },
                                                           )
                                                         : SizedBox(),
-                                                    ((_myAccountController
-                                                                        .activeOrdersModel
-                                                                        .value
-                                                                        ?.data)
-                                                                    ?.length ??
-                                                                0) >
-                                                            0
-                                                        ? InkWell(
-                                                            onTap: (() {
-                                                              Get.toNamed(AppRoutes
-                                                                  .ActiveOrders);
-                                                            }),
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          2.h,
-                                                                      left: 4.w,
-                                                                      right:
-                                                                          4.w),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text(
-                                                                    "View All",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: AppConst
-                                                                          .green,
-                                                                      fontSize:
-                                                                          SizeUtils.horizontalBlockSize *
-                                                                              3.4,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
-                                                                  ),
-                                                                  Icon(
-                                                                    Icons
-                                                                        .arrow_forward_ios_rounded,
-                                                                    color: AppConst
-                                                                        .green,
-                                                                    size: 1.8.h,
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : SizedBox(),
+                                                    // ((_myAccountController
+                                                    //                     .activeOrdersModel
+                                                    //                     .value
+                                                    //                     ?.data)
+                                                    //                 ?.length ??
+                                                    //             0) >
+                                                    //         0
+                                                    //     ? InkWell(
+                                                    //         onTap: (() {
+                                                    //           Get.toNamed(AppRoutes
+                                                    //               .ActiveOrders);
+                                                    //         }),
+                                                    //         child: Padding(
+                                                    //           padding: EdgeInsets
+                                                    //               .only(
+                                                    //                   bottom:
+                                                    //                       2.h,
+                                                    //                   left: 4.w,
+                                                    //                   right:
+                                                    //                       4.w),
+                                                    //           child: Row(
+                                                    //             mainAxisAlignment:
+                                                    //                 MainAxisAlignment
+                                                    //                     .end,
+                                                    //             children: [
+                                                    //               Text(
+                                                    //                 "View All",
+                                                    //                 style:
+                                                    //                     TextStyle(
+                                                    //                   color: AppConst
+                                                    //                       .green,
+                                                    //                   fontSize:
+                                                    //                       SizeUtils.horizontalBlockSize *
+                                                    //                           3.4,
+                                                    //                   fontWeight:
+                                                    //                       FontWeight
+                                                    //                           .bold,
+                                                    //                 ),
+                                                    //               ),
+                                                    //               Icon(
+                                                    //                 Icons
+                                                    //                     .arrow_forward_ios_rounded,
+                                                    //                 color: AppConst
+                                                    //                     .green,
+                                                    //                 size: 1.8.h,
+                                                    //               )
+                                                    //             ],
+                                                    //           ),
+                                                    //         ),
+                                                    //       )
+                                                    //     : SizedBox(),
                                                   ],
                                                 ),
                                               ),
@@ -979,402 +1022,6 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ],
                   ),
-                // _homeController.isLoading.value
-                //     ? SizedBox()
-                //     : FadeTransition(
-                //         opacity: _hideFabAnimController,
-                //         child: Column(
-                //           mainAxisSize: MainAxisSize.min,
-                //           // crossAxisAlignment: CrossAxisAlignment.end,
-                //           children: [
-                //             Container(
-                //               height: 13.h,
-                //               decoration: BoxDecoration(
-                //                 borderRadius: BorderRadius.only(
-                //                   topLeft: Radius.circular(10),
-                //                   topRight: Radius.circular(10),
-                //                 ),
-                //                 // boxShadow: [
-                //                 //   BoxShadow(
-                //                 //     color: (_myAccountController
-                //                 //                 .activeOrdersModel
-                //                 //                 .value
-                //                 //                 ?.data
-                //                 //                 ?.isNotEmpty ??
-                //                 //             false)
-                //                 //         ? AppConst.grey
-                //                 //         : AppConst.transparent,
-                //                 //     blurRadius: 5.0,
-                //                 //   ),
-                //                 // ],
-                //                 color: (_myAccountController.activeOrdersModel
-                //                             .value?.data?.isNotEmpty ??
-                //                         false)
-                //                     ? AppConst.transparent
-                //                     : AppConst.transparent,
-                //               ),
-                //               child: Padding(
-                //                 padding: EdgeInsets.symmetric(horizontal: 2.w),
-                //                 child: Row(
-                //                   mainAxisAlignment:
-                //                       MainAxisAlignment.spaceBetween,
-                //                   children: [
-                //                     Obx(
-                //                       () => (_myAccountController
-                //                                   .activeOrdersModel
-                //                                   .value
-                //                                   ?.data
-                //                                   ?.isNotEmpty ??
-                //                               false)
-                //                           ? GestureDetector(
-                //                               onTap: () {
-                //                                 Get.toNamed(
-                //                                     AppRoutes.ActiveOrders);
-                //                               },
-                //                               child: Container(
-                //                                 // width: 73.w,
-                //                                 // height: 10.h,
-                //                                 decoration: BoxDecoration(
-                //                                   borderRadius:
-                //                                       BorderRadius.only(
-                //                                     topLeft:
-                //                                         Radius.circular(10),
-                //                                     topRight:
-                //                                         Radius.circular(10),
-                //                                     bottomLeft:
-                //                                         Radius.circular(10),
-                //                                     bottomRight:
-                //                                         Radius.circular(10),
-                //                                   ),
-                //                                   // boxShadow: [
-                //                                   //   BoxShadow(
-                //                                   //     color: AppConst.grey,
-                //                                   //     blurRadius: 5.0,
-                //                                   //   ),
-                //                                   // ],
-                //                                   color: AppConst.transparent,
-                //                                 ),
-                //                                 child: Padding(
-                //                                   padding: EdgeInsets.only(
-                //                                       left: 2.w,
-                //                                       top: 1.h,
-                //                                       bottom: 1.h),
-                //                                   child: Column(
-                //                                     crossAxisAlignment:
-                //                                         CrossAxisAlignment
-                //                                             .start,
-                //                                     mainAxisAlignment:
-                //                                         MainAxisAlignment
-                //                                             .spaceEvenly,
-                //                                     children: [
-                //                                       Text(
-                //                                         "Your Active orders   ",
-                //                                         style: TextStyle(
-                //                                             fontSize: SizeUtils
-                //                                                     .horizontalBlockSize *
-                //                                                 5,
-                //                                             fontWeight:
-                //                                                 FontWeight
-                //                                                     .bold),
-                //                                       ),
-                //                                       Text(
-                //                                         "See all your active orders ! ",
-                //                                         style: TextStyle(
-                //                                             fontSize: SizeUtils
-                //                                                     .horizontalBlockSize *
-                //                                                 3.5,
-                //                                             fontWeight:
-                //                                                 FontWeight
-                //                                                     .w300),
-                //                                       ),
-                //                                       SizedBox(
-                //                                         height: 0.5.h,
-                //                                       ),
-                //                                       FittedBox(
-                //                                         child: SizedBox(
-                //                                           height: 3.5.h,
-                //                                           child: ElevatedButton(
-                //                                             child: Text(
-                //                                               'All active orders',
-                //                                               style: TextStyle(
-                //                                                   fontSize:
-                //                                                       SizeUtils
-                //                                                               .horizontalBlockSize *
-                //                                                           3.2,
-                //                                                   color: AppConst
-                //                                                       .black),
-                //                                             ),
-                //                                             onPressed: () {
-                // Get.toNamed(AppRoutes
-                //     .ActiveOrders);
-                //                                             },
-                //                                             style: ElevatedButton.styleFrom(
-                //                                                 primary:
-                //                                                     AppConst
-                //                                                         .orange,
-                //                                                 shape: RoundedRectangleBorder(
-                //                                                     borderRadius:
-                //                                                         BorderRadius.circular(
-                //                                                             15))),
-                //                                           ),
-                //                                         ),
-                //                                       ),
-                //                                     ],
-                //                                   ),
-                //                                 ),
-                //                                 // Row(
-                //                                 //   children: [
-                //                                 //     SizedBox(
-                //                                 //       width: 2.w,
-                //                                 //     ),
-                //                                 //     Expanded(
-                //                                 //       child: Padding(
-                //                                 //         padding:
-                //                                 //             EdgeInsets.all(1.h),
-                //                                 //         child: Row(
-                //                                 //           children: [
-                //                                 //             Column(
-                //                                 //               crossAxisAlignment:
-                //                                 //                   CrossAxisAlignment
-                //                                 //                       .start,
-                //                                 //               children: [
-                //                                 //                 Row(
-                //                                 //                   mainAxisAlignment:
-                //                                 //                       MainAxisAlignment
-                //                                 //                           .spaceBetween,
-                //                                 //                   children: [
-                //                                 //                     Text(
-                //                                 //                       "${_myAccountController.activeOrders.data?.first.store?.name ?? "Storename"} ",
-                //                                 //                       style:
-                //                                 //                           TextStyle(
-                //                                 //                         fontWeight:
-                //                                 //                             FontWeight
-                //                                 //                                 .w700,
-                //                                 //                         color: Colors
-                //                                 //                             .black,
-                //                                 //                         fontSize:
-                //                                 //                             SizeUtils.horizontalBlockSize *
-                //                                 //                                 4.5,
-                //                                 //                       ),
-                //                                 //                     ),
-                //                                 //                     // Text(
-                //                                 //                     // 'Active Order (${_myAccountController.activeOrders.data?.length ?? 0})',
-                //                                 //                     //   style: TextStyle(
-                //                                 //                     //     fontWeight:
-                //                                 //                     //         FontWeight.w500,
-                //                                 //                     //     color: Colors.black,
-                //                                 //                     //     fontSize: SizeUtils
-                //                                 //                     //             .horizontalBlockSize *
-                //                                 //                     //         3.5,
-                //                                 //                     //   ),
-                //                                 //                     // ),
-                //                                 //                   ],
-                //                                 //                 ),
-                //                                 //                 Text(
-                //                                 //                   "Total :- ${_myAccountController.activeOrders.data?.first.total ?? ""} ",
-                //                                 //                   style:
-                //                                 //                       TextStyle(
-                //                                 //                     fontWeight:
-                //                                 //                         FontWeight
-                //                                 //                             .w400,
-                //                                 //                     color: Colors
-                //                                 //                         .black,
-                //                                 //                     fontSize:
-                //                                 //                         SizeUtils
-                //                                 //                                 .horizontalBlockSize *
-                //                                 //                             4,
-                //                                 //                   ),
-                //                                 //                 ),
-                //                                 //                 RichText(
-                //                                 //                   overflow:
-                //                                 //                       TextOverflow
-                //                                 //                           .ellipsis,
-                //                                 //                   text: TextSpan(
-                //                                 //                     style: TextStyle(
-                //                                 //                         color: AppConst
-                //                                 //                             .kIconColor),
-                //                                 //                     children: _myAccountController
-                //                                 //                         .activeOrders
-                //                                 //                         .data
-                //                                 //                         ?.first
-                //                                 //                         .products
-                //                                 //                         ?.map(
-                //                                 //                             (e) {
-                //                                 //                       return TextSpan(
-                //                                 //                           text:
-                //                                 //                               "${e.name} (${e.quantity}), ",
-                //                                 //                           style:
-                //                                 //                               TextStyle(
-                //                                 //                             color:
-                //                                 //                                 Colors.black,
-                //                                 //                           ));
-                //                                 //                     }).toList(),
-                //                                 //                   ),
-                //                                 //                 ),
-                //                                 //               ],
-                //                                 //             ),
-                //                                 //             Spacer(),
-                //                                 //             Icon(
-                //                                 //               Icons
-                //                                 //                   .arrow_forward_ios_rounded,
-                //                                 //               size: 4.h,
-                //                                 //               color:
-                //                                 //                   AppConst.grey,
-                //                                 //             ),
-                //                                 //             // goToStore(),
-                //                                 //             SizedBox(
-                //                                 //               width: 2.w,
-                //                                 //             ),
-                //                                 //           ],
-                //                                 //         ),
-                //                                 //       ),
-                //                                 //     ),
-                //                                 //   ],
-                //                                 // ),
-                //                               ),
-                //                             )
-                //                           : SizedBox(),
-                //                     ),
-                //                     FloatingActionButton(
-                //                       heroTag: '2',
-                //                       elevation: 1,
-                //                       backgroundColor: Color(0xffffa300),
-                //                       // AppConst.kPrimaryColor,
-                //                       onPressed: () {
-                //                         Get.defaultDialog(
-                //                             title: "Pick any one",
-                //                             titleStyle:
-                //                                 AppStyles.STORE_NAME_STYLE,
-                //                             content: Center(
-                //                               child: Row(
-                //                                 mainAxisAlignment:
-                //                                     MainAxisAlignment
-                //                                         .spaceAround,
-                //                                 children: [
-                //                                   Column(
-                //                                     children: [
-                //                                       InkWell(
-                //                                         onTap: () async {
-                //                                           // await _homeController.checkLocationPermission();
-                //                                           // if (_homeController.checkPermission.value) {
-                //                                           //   Position position = await Geolocator.getCurrentPosition();
-                //                                           //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
-                //                                           //   await _paymentController.getScanReceiptPageNearMeStoresData();
-                //                                           //   Get.back();
-                //                                           //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
-                //                                           //       ? null
-                //                                           //       : Get.toNamed(AppRoutes.ScanRecipetSearch);
-                //                                           // } else {
-                //                                           _paymentController
-                //                                                   .latLng =
-                //                                               LatLng(
-                //                                                   UserViewModel
-                //                                                       .currentLocation
-                //                                                       .value
-                //                                                       .latitude,
-                //                                                   UserViewModel
-                //                                                       .currentLocation
-                //                                                       .value
-                //                                                       .longitude);
-                //                                           await _paymentController
-                //                                               .getScanReceiptPageNearMeStoresData();
-                //                                           Get.back();
-                //                                           (_paymentController
-                //                                                       .getRedeemCashInStorePageData
-                //                                                       .value
-                //                                                       ?.error ??
-                //                                                   false)
-                //                                               ? null
-                //                                               : Get.toNamed(
-                //                                                   AppRoutes
-                //                                                       .ScanRecipetSearch);
-                //                                           // }
-                //                                         },
-                //                                         child: CircleAvatar(
-                //                                           radius: 10.w,
-                //                                           foregroundImage:
-                //                                               NetworkImage(
-                //                                                   "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
-                //                                         ),
-                //                                       ),
-                //                                       Text(
-                //                                         "Scan",
-                //                                         style: AppStyles
-                //                                             .BOLD_STYLE,
-                //                                       )
-                //                                     ],
-                //                                   ),
-                //                                   Column(
-                //                                     children: [
-                //                                       InkWell(
-                //                                         onTap: () async {
-                //                                           _paymentController
-                //                                               .isLoading
-                //                                               .value = true;
-                //                                           // await _homeController.checkLocationPermission();
-                //                                           // if (_homeController.checkPermission.value) {
-                //                                           //   Position position = await Geolocator.getCurrentPosition();
-                //                                           //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
-                //                                           //   await _paymentController.getRedeemCashInStorePage();
-                //                                           //   Get.back();
-                //                                           //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
-                //                                           //       ? null
-                //                                           //       : Get.toNamed(AppRoutes.LoyaltyCardScreen);
-                //                                           // } else {
-                //                                           _paymentController
-                //                                                   .latLng =
-                //                                               LatLng(
-                //                                                   UserViewModel
-                //                                                       .currentLocation
-                //                                                       .value
-                //                                                       .latitude,
-                //                                                   UserViewModel
-                //                                                       .currentLocation
-                //                                                       .value
-                //                                                       .longitude);
-                //                                           await _paymentController
-                //                                               .getRedeemCashInStorePage();
-                //                                           Get.back();
-                //                                           (_paymentController
-                //                                                       .getRedeemCashInStorePageData
-                //                                                       .value
-                //                                                       ?.error ??
-                //                                                   false)
-                //                                               ? null
-                //                                               : Get.toNamed(
-                //                                                   AppRoutes
-                //                                                       .LoyaltyCardScreen);
-                //                                           // }
-                //                                         },
-                //                                         child: CircleAvatar(
-                //                                           radius: 10.w,
-                //                                           backgroundColor:
-                //                                               Colors.white,
-                //                                           foregroundImage:
-                //                                               NetworkImage(
-                //                                                   "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
-                //                                         ),
-                //                                       ),
-                //                                       Text(
-                //                                         "Refund",
-                //                                         style: AppStyles
-                //                                             .BOLD_STYLE,
-                //                                       )
-                //                                     ],
-                //                                   )
-                //                                 ],
-                //                               ),
-                //                             ));
-                //                       },
-                //                       child: Icon(Icons.camera_alt_outlined),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
                 Positioned(
                   right: 2.w,
                   bottom: 2.h,
@@ -1460,12 +1107,13 @@ class _HomeScreenState extends State<HomeScreen>
                                                 ),
                                               ),
                                               Text("Scan Receipt",
+                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     fontFamily: 'MuseoSans',
                                                     color: AppConst.black,
                                                     fontSize: SizeUtils
                                                             .horizontalBlockSize *
-                                                        4,
+                                                        3.8,
                                                     fontWeight: FontWeight.w500,
                                                     fontStyle: FontStyle.normal,
                                                   ))
@@ -1540,12 +1188,13 @@ class _HomeScreenState extends State<HomeScreen>
                                                 ),
                                               ),
                                               Text("Redeem Cash",
+                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     fontFamily: 'MuseoSans',
                                                     color: AppConst.black,
                                                     fontSize: SizeUtils
                                                             .horizontalBlockSize *
-                                                        4,
+                                                        3.8,
                                                     fontWeight: FontWeight.w500,
                                                     fontStyle: FontStyle.normal,
                                                   ))
@@ -1576,6 +1225,144 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
         // floatingActionButton:
+      ),
+    );
+  }
+}
+
+class RecentCarts12 extends StatelessWidget {
+  RecentCarts12(
+      {Key? key,
+      required MoreStoreController moreStoreController,
+      required HomeController homeController,
+      required this.recentCount,
+      required this.itemIndex})
+      : _moreStoreController = moreStoreController,
+        _homeController = homeController,
+        super(key: key);
+
+  final MoreStoreController _moreStoreController;
+  final HomeController _homeController;
+  int itemIndex;
+  int recentCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        _moreStoreController.storeId.value = _homeController
+                .getAllCartsModel.value?.carts?[itemIndex].store?.sId ??
+            '';
+        await _moreStoreController.getStoreData(
+          id: _homeController
+                  .getAllCartsModel.value?.carts?[itemIndex].store?.sId ??
+              '',
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.only(right: 1.w),
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+          decoration: BoxDecoration(
+            color: AppConst.white,
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            boxShadow: [
+              BoxShadow(
+                  color: AppConst.lightGrey, //New
+                  blurRadius: 2,
+                  spreadRadius: 2,
+                  offset: Offset(1, 1))
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 5.5.h,
+                      child: Image(
+                        image: AssetImage(
+                          'assets/images/eCART.png',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: (recentCount == 1)
+                              ? 55.w
+                              : (recentCount == 2)
+                                  ? 38.w
+                                  : 15.w,
+                          // color: AppConst.yellow,
+                          child: Text(
+                            "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? ""}",
+                            // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.black,
+                              fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 0.5.h,
+                        ),
+                        Text(
+                            "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: Color(0xff0082ab),
+                              fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 1.2.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppConst.green,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Cart ",
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.white,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: SizeUtils.horizontalBlockSize * 3.5,
+                        color: AppConst.white,
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -1708,16 +1495,6 @@ class RecentActiveOrders extends StatelessWidget {
                 .activeOrdersModel.value?.data![itemIndex]),
           ),
         );
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        // builder: (context) => ActiveOrderTrackingScreen(
-        //   activeOrder: (_myAccountController
-        //       .activeOrdersModel.value?.data![itemIndex]),
-        // ),
-
-        //   ),
-        // );
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
@@ -1750,7 +1527,7 @@ class RecentActiveOrders extends StatelessWidget {
                 left: 1.w,
               ),
               width: 26.w,
-              height: 9.h,
+              // height: 9.h,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: AppConst.white),
@@ -1758,6 +1535,7 @@ class RecentActiveOrders extends StatelessWidget {
                 padding: EdgeInsets.only(
                     bottom: 0.h, top: 0.5.h, right: 1.w, left: 1.w),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       height: 4.h,
@@ -1768,7 +1546,6 @@ class RecentActiveOrders extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Spacer(),
                     Text(
                       "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? "Go to Order"}",
                       maxLines: 2,
@@ -1853,6 +1630,244 @@ class RecentActiveOrders extends StatelessWidget {
                               )),
                         ),
                       )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RecentActiveOrders1 extends StatelessWidget {
+  RecentActiveOrders1(
+      {Key? key,
+      required MyAccountController myAccountController,
+      required this.itemIndex})
+      : _myAccountController = myAccountController,
+        super(key: key);
+
+  final MyAccountController _myAccountController;
+  final HomeController _homeController = Get.find();
+
+  int itemIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        Get.to(
+          ActiveOrderTrackingScreen(
+            activeOrder: (_myAccountController
+                .activeOrdersModel.value?.data![itemIndex]),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
+        height: 11.h,
+        width: 96.w,
+        decoration: BoxDecoration(
+          color: AppConst.white,
+          border: Border.all(width: 0.5, color: AppConst.lightGrey),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          boxShadow: [
+            BoxShadow(
+                color: AppConst.veryLightGrey, //New
+                blurRadius: 3,
+                spreadRadius: 5,
+                offset: Offset(2, 2)),
+          ],
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 3.w,
+            ),
+            Container(
+              height: 10.h,
+              width: 18.w,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color: _myAccountController.activeOrdersModel.value
+                                      ?.data![itemIndex].store?.logo !=
+                                  null &&
+                              _myAccountController.activeOrdersModel.value
+                                      ?.data![itemIndex].store?.logo !=
+                                  ""
+                          ? AppConst.grey
+                          : AppConst.white,
+                      width: 0.5),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.0),
+                    bottomLeft: Radius.circular(18.0),
+                  )),
+              child: _myAccountController.activeOrdersModel.value
+                              ?.data![itemIndex].store?.logo !=
+                          null &&
+                      _myAccountController.activeOrdersModel.value
+                              ?.data![itemIndex].store?.logo !=
+                          ""
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18.0),
+                        bottomLeft: Radius.circular(18.0),
+                      ),
+                      child: Image(
+                        image: NetworkImage(_myAccountController
+                                .activeOrdersModel
+                                .value
+                                ?.data![itemIndex]
+                                .store
+                                ?.logo ??
+                            ''),
+                        fit: BoxFit.fill,
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image(
+                        image: AssetImage(
+                          'assets/images/Store.png',
+                        ),
+                      ),
+                    ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 1.h, left: 3.w, right: 0.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 60.w,
+                    child: Text(
+                        "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? ""} ",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'MuseoSans',
+                          color: AppConst.black,
+                          fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        )),
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Text(
+                      "\u{20b9} ${_myAccountController.activeOrdersModel.value?.data![itemIndex].final_payable_amount ?? ""}",
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: AppConst.black,
+                        fontSize: SizeUtils.horizontalBlockSize * 4,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      )),
+                  Spacer(),
+                  Container(
+                    width: 65.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        (_myAccountController.activeOrdersModel.value
+                                        ?.data![itemIndex].status ==
+                                    "pending" ||
+                                (_myAccountController.activeOrdersModel.value
+                                        ?.data![itemIndex].orderType ==
+                                    "receipt"))
+                            ? Text(
+                                "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: Color(0xff0082ab),
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.4,
+                                  fontStyle: FontStyle.normal,
+                                ))
+                            : (((_myAccountController.activeOrdersModel.value
+                                                ?.data![itemIndex].status ==
+                                            "picked_up") ||
+                                        (_myAccountController
+                                                .activeOrdersModel
+                                                .value
+                                                ?.data![itemIndex]
+                                                .status ==
+                                            "accepted") ||
+                                        (_myAccountController
+                                                .activeOrdersModel
+                                                .value
+                                                ?.data![itemIndex]
+                                                .status ==
+                                            "ready")) &&
+                                    ((_myAccountController
+                                                .activeOrdersModel
+                                                .value
+                                                ?.data![itemIndex]
+                                                .final_payable_amount ??
+                                            0) >
+                                        0) &&
+                                    (_myAccountController
+                                            .activeOrdersModel
+                                            .value
+                                            ?.data![itemIndex]
+                                            .orderType !=
+                                        "receipt")
+                                ? Container(
+                                    width: 14.w,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 0.5.h),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        color: AppConst.green),
+                                    child: Center(
+                                      child: Text("Pay",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: AppConst.white,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    3.5,
+                                            fontWeight: FontWeight.w500,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 14.w,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 0.5.h),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        color: AppConst.grey),
+                                    child: Center(
+                                      child: Text("Paid",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: AppConst.white,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    3.5,
+                                            fontWeight: FontWeight.w500,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ),
+                                  )),
+                        Container(
+                          height: 3.2.h,
+                          width: 8.w,
+                          child: Image(
+                            image: AssetImage(
+                              'assets/images/CART.png',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Spacer(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
