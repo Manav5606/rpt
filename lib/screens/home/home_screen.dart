@@ -119,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
       ..getActiveOrders()
       ..getUserData();
     Get.find<UserViewModel>();
+    Get.find<HomeController>()..getAllCartsData();
 
     _categoryController.addListener(_scrollListener);
     _recentController.addListener(_recentScrollListener);
@@ -197,9 +198,9 @@ class _HomeScreenState extends State<HomeScreen>
         jsonDecode(FirebaseRemoteConfigUtils.homeScreenTempString));
     // _homeController.checkLocationPermission();
 
-    int recentCount =
-        (_myAccountController.activeOrdersModel.value?.data?.length ?? 0) +
-            (_homeController.getAllCartsModel.value?.carts?.length ?? 0);
+    RxInt recentCount = ((_myAccountController.activeOrderCount.value) +
+            (_homeController.cartsCount.value))
+        .obs;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: AppConst.darkGreen,
@@ -627,136 +628,137 @@ class _HomeScreenState extends State<HomeScreen>
                                                     Axis.horizontal,
                                                 child: Row(
                                                   children: [
-                                                    ((_myAccountController
-                                                                        .activeOrdersModel
-                                                                        .value
-                                                                        ?.data)
-                                                                    ?.length ??
-                                                                0) >
-                                                            0
-                                                        ? ListView.builder(
-                                                            controller:
-                                                                _recentController,
-                                                            itemCount:
-                                                                //  2,
-
-                                                                ((_myAccountController
+                                                    Obx(() =>
+                                                        ((_myAccountController
+                                                                    .activeOrderCount
+                                                                    .value) >
+                                                                0)
+                                                            ? ListView.builder(
+                                                                controller:
+                                                                    _recentController,
+                                                                itemCount: ((_myAccountController
                                                                             .activeOrdersModel
                                                                             .value
                                                                             ?.data)
                                                                         ?.length) ??
                                                                     0,
-                                                            physics:
-                                                                NeverScrollableScrollPhysics(),
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            shrinkWrap: true,
-                                                            itemExtent: (recentCount ==
-                                                                    1)
-                                                                ? SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    95
-                                                                : (recentCount ==
-                                                                        2)
+                                                                physics:
+                                                                    NeverScrollableScrollPhysics(),
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                shrinkWrap:
+                                                                    true,
+                                                                itemExtent: (recentCount
+                                                                            .value ==
+                                                                        1)
                                                                     ? SizeUtils
                                                                             .horizontalBlockSize *
-                                                                        80
-                                                                    : SizeUtils
-                                                                            .horizontalBlockSize *
-                                                                        30,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              //currentItems = index;
-                                                              return RecentActiveOrders(
-                                                                myAccountController:
-                                                                    _myAccountController,
-                                                                itemIndex: (_myAccountController
-                                                                        .activeOrdersModel
-                                                                        .value
-                                                                        ?.data!
-                                                                        .length)! -
-                                                                    1 -
-                                                                    index,
-                                                              );
-                                                            },
-                                                          )
-                                                        : SizedBox(),
-                                                    ((_homeController
-                                                                    .getAllCartsModel
-                                                                    .value
-                                                                    ?.carts
-                                                                    ?.length) ??
-                                                                0) >
-                                                            0
-                                                        ? ListView.builder(
-                                                            controller:
-                                                                _recentCartController,
-                                                            itemCount:
-                                                                // 1,
-                                                                ((_homeController
-                                                                        .getAllCartsModel
-                                                                        .value
-                                                                        ?.carts
-                                                                        ?.length) ??
-                                                                    0),
-                                                            physics:
-                                                                PageScrollPhysics(),
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            shrinkWrap: true,
-                                                            itemExtent: (recentCount ==
-                                                                    1)
-                                                                ? SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    95
-                                                                : (recentCount ==
-                                                                        2)
+                                                                        95
+                                                                    : (recentCount.value ==
+                                                                            2)
+                                                                        ? SizeUtils.horizontalBlockSize *
+                                                                            80
+                                                                        : SizeUtils.horizontalBlockSize *
+                                                                            30,
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  //currentItems = index;
+                                                                  return RecentActiveOrders1(
+                                                                    recentCount:
+                                                                        recentCount,
+                                                                    myAccountController:
+                                                                        _myAccountController,
+                                                                    itemIndex:
+                                                                        (_myAccountController.activeOrdersModel.value?.data!.length ??
+                                                                                0) -
+                                                                            1 -
+                                                                            index,
+                                                                  );
+                                                                  // : RecentActiveOrders(
+                                                                  //     myAccountController:
+                                                                  //         _myAccountController,
+                                                                  //     itemIndex: (_myAccountController
+                                                                  //             .activeOrdersModel
+                                                                  //             .value
+                                                                  //             ?.data!
+                                                                  //             .length)! -
+                                                                  //         1 -
+                                                                  //         index,
+                                                                  //   );
+                                                                },
+                                                              )
+                                                            : SizedBox()),
+                                                    Obx(() =>
+                                                        ((_homeController
+                                                                    .cartsCount
+                                                                    .value) >
+                                                                0)
+                                                            ? ListView.builder(
+                                                                controller:
+                                                                    _recentCartController,
+                                                                itemCount:
+                                                                    // 1,
+                                                                    ((_homeController
+                                                                            .getAllCartsModel
+                                                                            .value
+                                                                            ?.carts
+                                                                            ?.length) ??
+                                                                        0),
+                                                                physics:
+                                                                    PageScrollPhysics(),
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                shrinkWrap:
+                                                                    true,
+                                                                itemExtent: (recentCount
+                                                                            .value ==
+                                                                        1)
                                                                     ? SizeUtils
                                                                             .horizontalBlockSize *
-                                                                        80
-                                                                    : SizeUtils
-                                                                            .horizontalBlockSize *
-                                                                        30,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              // currentItems = index;
-                                                              return (recentCount ==
-                                                                          1 ||
-                                                                      recentCount ==
-                                                                          2)
-                                                                  ? RecentCarts12(
-                                                                      recentCount:
-                                                                          recentCount,
-                                                                      moreStoreController:
-                                                                          _moreStoreController,
-                                                                      homeController:
-                                                                          _homeController,
-                                                                      itemIndex: (_homeController
-                                                                              .getAllCartsModel
-                                                                              .value
-                                                                              ?.carts
-                                                                              ?.length)! -
-                                                                          1 -
-                                                                          index,
-                                                                    )
-                                                                  : RecentCarts(
-                                                                      moreStoreController:
-                                                                          _moreStoreController,
-                                                                      homeController:
-                                                                          _homeController,
-                                                                      itemIndex: (_homeController
-                                                                              .getAllCartsModel
-                                                                              .value
-                                                                              ?.carts
-                                                                              ?.length)! -
-                                                                          1 -
-                                                                          index,
-                                                                    );
-                                                            },
-                                                          )
-                                                        : SizedBox(),
+                                                                        95
+                                                                    : (recentCount.value ==
+                                                                            2)
+                                                                        ? SizeUtils.horizontalBlockSize *
+                                                                            80
+                                                                        : SizeUtils.horizontalBlockSize *
+                                                                            30,
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  // currentItems = index;
+                                                                  return RecentCarts12(
+                                                                    recentCount:
+                                                                        recentCount
+                                                                            .value,
+                                                                    moreStoreController:
+                                                                        _moreStoreController,
+                                                                    homeController:
+                                                                        _homeController,
+                                                                    itemIndex: (_homeController
+                                                                            .getAllCartsModel
+                                                                            .value
+                                                                            ?.carts
+                                                                            ?.length)! -
+                                                                        1 -
+                                                                        index,
+                                                                  );
+                                                                  // : RecentCarts(
+                                                                  //     moreStoreController:
+                                                                  //         _moreStoreController,
+                                                                  //     homeController:
+                                                                  //         _homeController,
+                                                                  //     itemIndex: (_homeController
+                                                                  //             .getAllCartsModel
+                                                                  //             .value
+                                                                  //             ?.carts
+                                                                  //             ?.length)! -
+                                                                  //         1 -
+                                                                  //         index,
+                                                                  //   );
+                                                                },
+                                                              )
+                                                            : SizedBox()),
                                                     // ((_myAccountController
                                                     //                     .activeOrdersModel
                                                     //                     .value
@@ -1259,111 +1261,187 @@ class RecentCarts12 extends StatelessWidget {
               '',
         );
       },
-      child: Padding(
-        padding: EdgeInsets.only(right: 1.w),
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
-          decoration: BoxDecoration(
-            color: AppConst.white,
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            boxShadow: [
-              BoxShadow(
-                  color: AppConst.lightGrey, //New
-                  blurRadius: 2,
-                  spreadRadius: 2,
-                  offset: Offset(1, 1))
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 5.5.h,
-                      child: Image(
-                        image: AssetImage(
-                          'assets/images/eCART.png',
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: (recentCount == 1)
-                              ? 55.w
-                              : (recentCount == 2)
-                                  ? 38.w
-                                  : 15.w,
-                          // color: AppConst.yellow,
-                          child: Text(
-                            "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? ""}",
-                            // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: 'MuseoSans',
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 0.5.h,
-                        ),
-                        Text(
-                            "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
-                            style: TextStyle(
-                              fontFamily: 'MuseoSans',
-                              color: Color(0xff0082ab),
-                              fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                            )),
-                      ],
-                    ),
+      child: (recentCount == 1 || recentCount == 2)
+          ? Padding(
+              padding: EdgeInsets.only(right: 1.w),
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+                decoration: BoxDecoration(
+                  color: AppConst.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: AppConst.lightGrey, //New
+                        blurRadius: 2,
+                        spreadRadius: 2,
+                        offset: Offset(1, 1))
                   ],
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 1.2.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppConst.green,
-                  ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Cart ",
-                          style: TextStyle(
-                            fontFamily: 'MuseoSans',
-                            color: AppConst.white,
-                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          )),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: SizeUtils.horizontalBlockSize * 3.5,
-                        color: AppConst.white,
+                      Row(
+                        children: [
+                          Container(
+                            height: 5.5.h,
+                            child: Image(
+                              image: AssetImage(
+                                'assets/images/eCART.png',
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 3.w,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: (recentCount == 1)
+                                    ? 55.w
+                                    : (recentCount == 2)
+                                        ? 38.w
+                                        : 15.w,
+                                // color: AppConst.yellow,
+                                child: Text(
+                                  "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? ""}",
+                                  // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.black,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.8,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 0.5.h,
+                              ),
+                              Text(
+                                  "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: Color(0xff0082ab),
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.5,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 2.5.w, vertical: 1.2.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppConst.green,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Cart ",
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.white,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                )),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: SizeUtils.horizontalBlockSize * 3.5,
+                              color: AppConst.white,
+                            )
+                          ],
+                        ),
                       )
                     ],
                   ),
-                )
-              ],
+                ),
+              ),
+            )
+          : Padding(
+              padding: EdgeInsets.only(right: 1.w),
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+                decoration: BoxDecoration(
+                  color: AppConst.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: AppConst.lightGrey, //New
+                        blurRadius: 2,
+                        spreadRadius: 2,
+                        offset: Offset(1, 1))
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                        left: 1.w,
+                      ),
+                      width: 26.w,
+                      height: 10.h,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: AppConst.white),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: 0.5.h, top: 1.h, right: 1.w, left: 1.w),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 3.5.h,
+                              child: Image(
+                                image: AssetImage(
+                                  'assets/images/eCART.png',
+                                ),
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? "Go to Order"}",
+                              // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.black,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Text(
+                        "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
+                        style: TextStyle(
+                          fontFamily: 'MuseoSans',
+                          color: Color(0xff0082ab),
+                          fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        )),
+                    SizedBox(
+                      height: 0.5.h,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -1641,7 +1719,8 @@ class RecentActiveOrders1 extends StatelessWidget {
   RecentActiveOrders1(
       {Key? key,
       required MyAccountController myAccountController,
-      required this.itemIndex})
+      required this.itemIndex,
+      required this.recentCount})
       : _myAccountController = myAccountController,
         super(key: key);
 
@@ -1649,228 +1728,378 @@ class RecentActiveOrders1 extends StatelessWidget {
   final HomeController _homeController = Get.find();
 
   int itemIndex;
+  RxInt recentCount;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        Get.to(
-          ActiveOrderTrackingScreen(
-            activeOrder: (_myAccountController
-                .activeOrdersModel.value?.data![itemIndex]),
-          ),
-        );
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
-        height: 11.h,
-        width: 96.w,
-        decoration: BoxDecoration(
-          color: AppConst.white,
-          border: Border.all(width: 0.5, color: AppConst.lightGrey),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          boxShadow: [
-            BoxShadow(
-                color: AppConst.veryLightGrey, //New
-                blurRadius: 3,
-                spreadRadius: 5,
-                offset: Offset(2, 2)),
-          ],
-        ),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 3.w,
+        onTap: () async {
+          Get.to(
+            ActiveOrderTrackingScreen(
+              activeOrder: (_myAccountController
+                  .activeOrdersModel.value?.data![itemIndex]),
             ),
-            Container(
-              height: 10.h,
-              width: 18.w,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: _myAccountController.activeOrdersModel.value
-                                      ?.data![itemIndex].store?.logo !=
-                                  null &&
-                              _myAccountController.activeOrdersModel.value
-                                      ?.data![itemIndex].store?.logo !=
-                                  ""
-                          ? AppConst.grey
-                          : AppConst.white,
-                      width: 0.5),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(18.0),
-                    bottomLeft: Radius.circular(18.0),
-                  )),
-              child: _myAccountController.activeOrdersModel.value
-                              ?.data![itemIndex].store?.logo !=
-                          null &&
-                      _myAccountController.activeOrdersModel.value
-                              ?.data![itemIndex].store?.logo !=
-                          ""
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(18.0),
-                        bottomLeft: Radius.circular(18.0),
-                      ),
-                      child: Image(
-                        image: NetworkImage(_myAccountController
-                                .activeOrdersModel
-                                .value
-                                ?.data![itemIndex]
-                                .store
-                                ?.logo ??
-                            ''),
-                        fit: BoxFit.fill,
-                      ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Image(
-                        image: AssetImage(
-                          'assets/images/Store.png',
-                        ),
-                      ),
-                    ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 1.h, left: 3.w, right: 0.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 60.w,
-                    child: Text(
-                        "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? ""} ",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: 'MuseoSans',
-                          color: AppConst.black,
-                          fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        )),
-                  ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Text(
-                      "\u{20b9} ${_myAccountController.activeOrdersModel.value?.data![itemIndex].final_payable_amount ?? ""}",
-                      style: TextStyle(
-                        fontFamily: 'MuseoSans',
-                        color: AppConst.black,
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                      )),
-                  Spacer(),
-                  Container(
-                    width: 65.w,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        (_myAccountController.activeOrdersModel.value
-                                        ?.data![itemIndex].status ==
-                                    "pending" ||
-                                (_myAccountController.activeOrdersModel.value
-                                        ?.data![itemIndex].orderType ==
-                                    "receipt"))
-                            ? Text(
-                                "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
-                                style: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: Color(0xff0082ab),
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.4,
-                                  fontStyle: FontStyle.normal,
-                                ))
-                            : (((_myAccountController.activeOrdersModel.value
-                                                ?.data![itemIndex].status ==
-                                            "picked_up") ||
-                                        (_myAccountController
-                                                .activeOrdersModel
-                                                .value
-                                                ?.data![itemIndex]
-                                                .status ==
-                                            "accepted") ||
-                                        (_myAccountController
-                                                .activeOrdersModel
-                                                .value
-                                                ?.data![itemIndex]
-                                                .status ==
-                                            "ready")) &&
-                                    ((_myAccountController
-                                                .activeOrdersModel
-                                                .value
-                                                ?.data![itemIndex]
-                                                .final_payable_amount ??
-                                            0) >
-                                        0) &&
-                                    (_myAccountController
-                                            .activeOrdersModel
-                                            .value
-                                            ?.data![itemIndex]
-                                            .orderType !=
-                                        "receipt")
-                                ? Container(
-                                    width: 14.w,
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 0.5.h),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: AppConst.green),
-                                    child: Center(
-                                      child: Text("Pay",
-                                          style: TextStyle(
-                                            fontFamily: 'MuseoSans',
-                                            color: AppConst.white,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3.5,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ),
-                                  )
-                                : Container(
-                                    width: 14.w,
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 0.5.h),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: AppConst.grey),
-                                    child: Center(
-                                      child: Text("Paid",
-                                          style: TextStyle(
-                                            fontFamily: 'MuseoSans',
-                                            color: AppConst.white,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3.5,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ),
-                                  )),
-                        Container(
-                          height: 3.2.h,
-                          width: 8.w,
-                          child: Image(
-                            image: AssetImage(
-                              'assets/images/CART.png',
-                            ),
-                          ),
-                        ),
+          );
+        },
+        child: Obx(
+          () => (recentCount.value == 1 || recentCount.value == 2)
+              ? Padding(
+                  padding: EdgeInsets.only(right: 1.w),
+                  child: Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+                    decoration: BoxDecoration(
+                      color: AppConst.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: AppConst.lightGrey, //New
+                            blurRadius: 2,
+                            spreadRadius: 2,
+                            offset: Offset(1, 1))
                       ],
                     ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            Container(
+                              height: 5.5.h,
+                              child: Image(
+                                image: AssetImage(
+                                  'assets/images/CART.png',
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 3.w,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: (recentCount.value == 1)
+                                      ? 55.w
+                                      : (recentCount.value == 2)
+                                          ? 38.w
+                                          : 15.w,
+                                  child: Text(
+                                      "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? ""} ",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.8,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                                ),
+                                SizedBox(
+                                  height: 0.5.h,
+                                ),
+                                Container(
+                                  width: (recentCount.value == 1)
+                                      ? 55.w
+                                      : (recentCount.value == 2)
+                                          ? 38.w
+                                          : 15.w,
+                                  child: Text(
+                                      "\u{20b9} ${_myAccountController.activeOrdersModel.value?.data![itemIndex].final_payable_amount ?? ""}",
+                                      style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                                ),
+                                SizedBox(
+                                  height: 0.5.h,
+                                ),
+                                Text(
+                                    "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: Color(0xff0082ab),
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.5,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                                // Row(
+                                //   children: [
+                                //     (_myAccountController.activeOrdersModel.value
+                                //                     ?.data![itemIndex].status ==
+                                //                 "pending" ||
+                                //             (_myAccountController.activeOrdersModel.value
+                                //                     ?.data![itemIndex].orderType ==
+                                //                 "receipt"))
+                                //         ? Text(
+                                //             "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
+                                //             style: TextStyle(
+                                //               fontFamily: 'MuseoSans',
+                                //               color: Color(0xff0082ab),
+                                //               fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                //               fontWeight: FontWeight.w600,
+                                //               letterSpacing: 0.4,
+                                //               fontStyle: FontStyle.normal,
+                                //             ))
+                                //         : (((_myAccountController.activeOrdersModel.value
+                                //                             ?.data![itemIndex].status ==
+                                //                         "picked_up") ||
+                                //                     (_myAccountController
+                                //                             .activeOrdersModel
+                                //                             .value
+                                //                             ?.data![itemIndex]
+                                //                             .status ==
+                                //                         "accepted") ||
+                                //                     (_myAccountController
+                                //                             .activeOrdersModel
+                                //                             .value
+                                //                             ?.data![itemIndex]
+                                //                             .status ==
+                                //                         "ready")) &&
+                                //                 ((_myAccountController
+                                //                             .activeOrdersModel
+                                //                             .value
+                                //                             ?.data![itemIndex]
+                                //                             .final_payable_amount ??
+                                //                         0) >
+                                //                     0) &&
+                                //                 (_myAccountController
+                                //                         .activeOrdersModel
+                                //                         .value
+                                //                         ?.data![itemIndex]
+                                //                         .orderType !=
+                                //                     "receipt")
+                                // ? Container(
+                                //     width: 14.w,
+                                //     padding:
+                                //         EdgeInsets.symmetric(vertical: 0.5.h),
+                                //     decoration: BoxDecoration(
+                                //         borderRadius: BorderRadius.circular(4),
+                                //         color: AppConst.green),
+                                //     child: Center(
+                                //       child: Text("Pay",
+                                //           style: TextStyle(
+                                //             fontFamily: 'MuseoSans',
+                                //             color: AppConst.white,
+                                //             fontSize:
+                                //                 SizeUtils.horizontalBlockSize *
+                                //                     3.5,
+                                //             fontWeight: FontWeight.w500,
+                                //             fontStyle: FontStyle.normal,
+                                //           )),
+                                //     ),
+                                //   )
+                                //             : Container(
+                                //                 width: 14.w,
+                                //                 padding:
+                                //                     EdgeInsets.symmetric(vertical: 0.5.h),
+                                //                 decoration: BoxDecoration(
+                                //                     borderRadius: BorderRadius.circular(4),
+                                //                     color: AppConst.grey),
+                                //                 child: Center(
+                                //                   child: Text("Paid",
+                                //                       style: TextStyle(
+                                //                         fontFamily: 'MuseoSans',
+                                //                         color: AppConst.white,
+                                //                         fontSize:
+                                //                             SizeUtils.horizontalBlockSize *
+                                //                                 3.5,
+                                //                         fontWeight: FontWeight.w500,
+                                //                         fontStyle: FontStyle.normal,
+                                //                       )),
+                                //                 ),
+                                //               )),
+                                //   ],
+                                // ),
+                              ],
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.5.w, vertical: 1.2.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppConst.green,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text("Pay ",
+                                      style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.white,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.5,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: SizeUtils.horizontalBlockSize * 3.5,
+                                    color: AppConst.white,
+                                  )
+                                ],
+                              ),
+                            )
+                          ]),
+                        ],
+                      ),
+                    ),
                   ),
-                  Spacer(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                )
+              : Container(
+                  margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
+                  decoration: BoxDecoration(
+                    color: AppConst.white,
+                    // border: Border.all(width: 0.5, color: AppConst.lightGrey),
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: AppConst.veryLightGrey, //New
+                          blurRadius: 2,
+                          spreadRadius: 3,
+                          offset: Offset(0, 2)),
+                      // BoxShadow(
+                      //     color: AppConst.white, //New
+                      //     blurRadius: 2,
+                      //     spreadRadius: 3,
+                      //     offset: Offset(-2, -2)),
+                      // BoxShadow(
+                      //     color: AppConst.lightGrey, //New
+                      //     blurRadius: 2,
+                      //     spreadRadius: 3,
+                      //     offset: Offset(2, 0)),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 1.w,
+                        ),
+                        width: 26.w,
+                        // height: 9.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: AppConst.white),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              bottom: 0.h, top: 0.5.h, right: 1.w, left: 1.w),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                height: 4.h,
+                                width: 8.w,
+                                child: Image(
+                                  image: AssetImage(
+                                    'assets/images/CART.png',
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? "Go to Order"}",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontFamily: 'MuseoSans',
+                                  color: AppConst.black,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 0.5.h,
+                      ),
+                      (_myAccountController.activeOrdersModel.value
+                                      ?.data![itemIndex].status ==
+                                  "pending" ||
+                              (_myAccountController.activeOrdersModel.value
+                                      ?.data![itemIndex].orderType ==
+                                  "receipt"))
+                          ? Text(
+                              "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status ?? "Pending"}",
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: Color(0xff0082ab),
+                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                              ))
+                          : (((_myAccountController.activeOrdersModel.value
+                                              ?.data![itemIndex].status ==
+                                          "picked_up") ||
+                                      (_myAccountController.activeOrdersModel
+                                              .value?.data![itemIndex].status ==
+                                          "accepted") ||
+                                      (_myAccountController.activeOrdersModel
+                                              .value?.data![itemIndex].status ==
+                                          "ready")) &&
+                                  ((_myAccountController
+                                              .activeOrdersModel
+                                              .value
+                                              ?.data![itemIndex]
+                                              .final_payable_amount ??
+                                          0) >
+                                      0) &&
+                                  (_myAccountController.activeOrdersModel.value
+                                          ?.data![itemIndex].orderType !=
+                                      "receipt")
+                              ? Container(
+                                  width: 12.w,
+                                  padding:
+                                      EdgeInsets.symmetric(vertical: 0.5.h),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: AppConst.green),
+                                  child: Center(
+                                    child: Text("Pay",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.white,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize * 3,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ),
+                                )
+                              : Container(
+                                  width: 12.w,
+                                  padding:
+                                      EdgeInsets.symmetric(vertical: 0.5.h),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: AppConst.grey),
+                                  child: Center(
+                                    child: Text("Paid",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.white,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.2,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ),
+                                )),
+                    ],
+                  ),
+                ),
+        ));
   }
 }

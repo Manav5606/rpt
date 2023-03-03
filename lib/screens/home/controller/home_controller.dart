@@ -29,6 +29,7 @@ class HomeController extends GetxController {
   Rx<HomePageRemoteConfigData?> homePageRemoteConfigModel =
       HomePageRemoteConfigData().obs;
   Rx<GetAllCartsModel?> getAllCartsModel = GetAllCartsModel().obs;
+  RxInt cartsCount = 0.obs;
   RxBool isLoading = false.obs;
   RxBool isAllCartLoading = false.obs;
   // RxString userAddress = ''.obs;
@@ -57,6 +58,7 @@ class HomeController extends GetxController {
       isAllCartLoading.value = true;
       getAllCartsModel.value = await HomeService.getAllCartsData();
       getAllCartsModel.refresh();
+      cartsCount.value = getAllCartsModel.value?.carts?.length ?? 0;
       isAllCartLoading.value = false;
     } catch (e, st) {
       isAllCartLoading.value = false;
@@ -140,7 +142,7 @@ class HomeController extends GetxController {
 
   apiCall() async {
     await getHomePageFavoriteShops();
-    await getAllCartsData();
+    // await getAllCartsData(); // this query fire on homepage
     homePageFavoriteShopsScrollController.addListener(() {
       double maxScroll =
           homePageFavoriteShopsScrollController.position.maxScrollExtent;

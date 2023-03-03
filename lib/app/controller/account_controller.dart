@@ -22,7 +22,7 @@ class MyAccountController extends GetxController {
   RxString displayHour = ''.obs;
   RxString referCode = ''.obs;
   RxInt selectIndex = 0.obs;
-
+  RxInt activeOrderCount = 0.obs;
   MyAccountController(this.remote, this.local);
 
   // final dynamicLinkSercive = Get.find<DynamicLinkService>();
@@ -170,6 +170,7 @@ class MyAccountController extends GetxController {
       activeOrdersModel.value = await MyAccountRepository.getAllActiveOrders();
       log('activeordershere : ${activeOrdersModel.value?.data?.length}');
       allOrdersModel.refresh();
+      activeOrderCount.value = activeOrdersModel.value?.data?.length ?? 0;
 
       isActiveOrderloading.value = false;
     } catch (e, st) {
