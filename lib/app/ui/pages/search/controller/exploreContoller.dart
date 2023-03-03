@@ -229,7 +229,7 @@ class ExploreController extends GetxController {
         bool isGrocery = true;
         await Get.toNamed(AppRoutes.StoreScreen,
             arguments: {'isGrocery': isGrocery});
-        if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
+        // if (Constants.isAbleToCallApi) await _homeController.getAllCartsData();
       }
       isLoadingStoreData.value = false;
     } catch (e, st) {

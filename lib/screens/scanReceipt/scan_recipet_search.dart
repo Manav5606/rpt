@@ -108,8 +108,8 @@ class _ScanRecipetSearchState extends State<ScanRecipetSearch> {
                         UserViewModel.currentLocation.value.longitude);
                     await _paymentController
                         .getScanReceiptPageNearMeStoresData();
-                    if (Constants.isAbleToCallApi)
-                      await _homeController.getAllCartsData();
+                    // if (Constants.isAbleToCallApi)
+                    //   await _homeController.getAllCartsData();
                   },
                   child: SizedBox(
                     width: 10.w,

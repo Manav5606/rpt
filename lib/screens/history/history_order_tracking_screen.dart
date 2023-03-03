@@ -17,6 +17,7 @@ import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/addcart/my_order_item_page.dart';
 import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
+import 'package:customer_app/screens/base_screen.dart';
 import 'package:customer_app/screens/history/history_order_items_page.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +32,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class HistoryOrderTrackingScreen extends StatefulWidget {
   final OrderData? order;
+  String? type;
 
-  HistoryOrderTrackingScreen({
-    Key? key,
-    this.order,
-  }) : super(key: key);
+  HistoryOrderTrackingScreen({Key? key, this.order, this.type})
+      : super(key: key);
 
   @override
   State<HistoryOrderTrackingScreen> createState() =>
@@ -184,7 +184,34 @@ class _HistoryOrderTrackingScreenState
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            CircularCloseButton(),
+                            (widget.type == "order")
+                                ? Container(
+                                    width: 36,
+                                    height: 36,
+                                    child: GestureDetector(
+                                      // color: Colors.white,
+                                      onTap: (() =>
+                                          Get.offAll(() => BaseScreen())),
+                                      child: Icon(
+                                        Icons.close,
+                                        size:
+                                            SizeUtils.horizontalBlockSize * 5.5,
+                                        color: AppConst.black,
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Color(0x19000000),
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                      color: AppConst.white,
+                                    ),
+                                  )
+                                : CircularCloseButton(),
                             SizedBox(width: 3.w),
                             Spacer(),
                             InkWell(

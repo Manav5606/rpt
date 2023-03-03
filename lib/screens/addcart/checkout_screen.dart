@@ -122,6 +122,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           (Route<dynamic> route) => route.isFirst);
       _addCartController.refresh();
       _homeController.apiCall();
+      // _homeController.getAllCartsData();
     } else {
       Get.to(
           OrderFailScreen(
@@ -1052,7 +1053,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                 ),
               ),
               Text(
-                " \u{20B9}${(_addCartController.getOrderConfirmPageDataModel.value?.data?.total ?? '0').toString()}",
+                " \u{20B9}${(_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? '0').toString()}",
                 style: TextStyle(
                   fontFamily: 'MuseoSans',
                   color: AppConst.black,

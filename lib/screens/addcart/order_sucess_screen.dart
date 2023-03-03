@@ -199,9 +199,9 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
 
         Get.off(
             HistoryOrderTrackingScreen(
-              // displayHour: _addCartController.displayHour.value,
-              order: widget.order,
-            ),
+                // displayHour: _addCartController.displayHour.value,
+                order: widget.order,
+                type: widget.type),
             transition: Transition.fade);
       });
     });

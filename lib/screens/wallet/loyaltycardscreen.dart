@@ -100,8 +100,8 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
                       UserViewModel.currentLocation.value.latitude,
                       UserViewModel.currentLocation.value.longitude);
                   await _paymentController.getScanReceiptPageNearMeStoresData();
-                  if (Constants.isAbleToCallApi)
-                    await _homeController.getAllCartsData();
+                  // if (Constants.isAbleToCallApi)
+                  //   await _homeController.getAllCartsData();
                 },
                 child: SizedBox(
                   width: 10.w,
