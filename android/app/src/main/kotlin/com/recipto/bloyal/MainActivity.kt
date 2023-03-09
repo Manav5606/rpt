@@ -1,4 +1,4 @@
-package com.recipto.bloyal
+package com.recipto.customerapp
 
 import io.flutter.embedding.android.FlutterActivity
 

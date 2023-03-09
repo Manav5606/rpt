@@ -41,7 +41,7 @@ class DynamicLinkService {
         // minimumVersion: 0,
       ),
       iosParameters: IOSParameters(
-        bundleId: 'com.recipto.bloyal',
+        bundleId: 'com.recipto.customerapp',
         minimumVersion: '1',
         appStoreId: '6444468019',
       ),

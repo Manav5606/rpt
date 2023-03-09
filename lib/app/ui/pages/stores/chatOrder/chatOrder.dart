@@ -372,7 +372,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
 //bottom textformfield and add button
   Widget _enterItem() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+      padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -441,7 +441,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                     width: (chatOrderController.imagePath.value.isNotEmpty ||
                             (chatOrderController.Oldlogo.value != null &&
                                 chatOrderController.Oldlogo.value != ""))
-                        ? 50.w
+                        ? 49.w
                         : 62.w,
                     child: TextFormField(
                       inputFormatters: [

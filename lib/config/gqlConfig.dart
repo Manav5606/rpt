@@ -1,9 +1,9 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GqlConfig {
-  static const String BASE_URL = "http://192.168.96.1:3000";
+  static const String BASE_URL = "https://backend.recipto.in";
   static const String BASE_URL_Upload = "https://backend.recipto.in";
-  // "htt/ps://df26-2405-201-c039-70c2-4d94-3680-9bc0-d8a7.in.ngrok.io/graphql"; //
+  // "https://df26-2405-201-c039-70c2-4d94-3680-9bc0-d8a7.in.ngrok.io/graphql"; //
 
   static getClient([String? token]) {
     HttpLink link = HttpLink(
@@ -21,9 +21,9 @@ class GqlConfig {
 
   static getSocket() {
     WebSocketLink link = WebSocketLink(
-      // 'ws://10.0.2.2:3000/graphql',
+      'wss://backend.recipto.in/graphql',
       // "ws://df26-2405-201-c039-70c2-4d94-3680-9bc0-d8a7.in.ngrok.io/graphql",
-      'ws://13.234.115.133:3000/graphql',
+      // 'ws://13.234.115.133:3000/graphql',
     );
     GraphQLClient cc = GraphQLClient(link: link, cache: GraphQLCache());
     return cc;
