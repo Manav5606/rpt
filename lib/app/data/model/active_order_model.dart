@@ -304,23 +304,26 @@ class Products {
   num? updatemrp;
   num? updateselling_price;
   int? updatequantity;
+  String? unit;
 
-  Products(
-      {this.name,
-      this.quantity,
-      this.deleted,
-      this.modified,
-      this.sellingPrice,
-      this.id,
-      this.cashback,
-      this.gst_amount,
-      this.mrp,
-      this.status,
-      this.updatelogo,
-      this.updatemrp,
-      this.updatename,
-      this.updatequantity,
-      this.updateselling_price});
+  Products({
+    this.name,
+    this.quantity,
+    this.deleted,
+    this.modified,
+    this.sellingPrice,
+    this.id,
+    this.cashback,
+    this.gst_amount,
+    this.mrp,
+    this.status,
+    this.updatelogo,
+    this.updatemrp,
+    this.updatename,
+    this.updatequantity,
+    this.updateselling_price,
+    this.unit,
+  });
 
   Products.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -338,6 +341,7 @@ class Products {
     updateselling_price = json['updateselling_price'];
     updatequantity = json['updatequantity'];
     gst_amount = json['gst_amount'];
+    unit = json['unit'];
   }
 
   Map<String, dynamic> toJson() {
@@ -357,6 +361,7 @@ class Products {
     data['updateselling_price'] = this.updateselling_price;
     data['updatequantity'] = this.updatequantity;
     data['gst_amount'] = this.gst_amount;
+    data['unit'] = this.unit;
     return data;
   }
 }
@@ -377,6 +382,7 @@ class InventoriesData {
   num? updatemrp;
   num? updateselling_price;
   int? updatequantity;
+  String? unit;
 
   InventoriesData(
       {this.name,
@@ -393,7 +399,8 @@ class InventoriesData {
       this.updatemrp,
       this.updatename,
       this.updatequantity,
-      this.updateselling_price});
+      this.updateselling_price,
+      this.unit});
 
   InventoriesData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -411,6 +418,7 @@ class InventoriesData {
     updateselling_price = json['updateselling_price'];
     updatequantity = json['updatequantity'];
     gst_amount = json['gst_amount'];
+    unit = json['unit'];
   }
 
   Map<String, dynamic> toJson() {
@@ -430,6 +438,7 @@ class InventoriesData {
     data['updateselling_price'] = this.updateselling_price;
     data['updatequantity'] = this.updatequantity;
     data['gst_amount'] = this.gst_amount;
+    data['unit'] = this.unit;
     return data;
   }
 }

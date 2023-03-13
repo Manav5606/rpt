@@ -422,7 +422,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                                 .getOrderConfirmPageDataModel
                                                 .value
                                                 ?.data
-                                                ?.total
+                                                ?.finalpayableAmount
                                                 ?.toStringAsFixed(2) ??
                                             "0.0"));
                                     _addCartController.deliveryMessage.value ==
@@ -445,7 +445,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                                   .getOrderConfirmPageDataModel
                                                   .value
                                                   ?.data
-                                                  ?.total
+                                                  ?.finalpayableAmount
                                                   ?.toInt() ??
                                               00,
                                           _addCartController

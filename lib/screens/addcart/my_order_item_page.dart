@@ -219,7 +219,7 @@ class AllModifiedItems extends StatelessWidget {
                           quantity: (activeOrder?.products?[index].quantity),
                           updatequantity:
                               (activeOrder?.products?[index].updatequantity),
-                          units: "125gm",
+                          units: "${activeOrder?.products?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -248,7 +248,7 @@ class AllModifiedItems extends StatelessWidget {
                           quantity: (activeOrder?.inventories?[index].quantity),
                           updatequantity:
                               (activeOrder?.inventories?[index].updatequantity),
-                          units: "125gm",
+                          units: "${activeOrder?.inventories?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -276,7 +276,7 @@ class AllModifiedItems extends StatelessWidget {
                           quantity: (activeOrder?.rawItems?[index].quantity),
                           updatequantity:
                               (activeOrder?.rawItems?[index].updatequantity),
-                          units: "125gm",
+                          units: "",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -366,7 +366,7 @@ class ModifiedItemsList extends StatelessWidget {
                   ),
                   Text(
                     //  (activeOrder?.products?[index].name ?? ''),
-                    units ?? "125g",
+                    units ?? "",
                     style: TextStyle(
                         color: AppConst.grey,
                         fontSize: SizeUtils.horizontalBlockSize * 3.5,
@@ -516,7 +516,7 @@ class AllReplacedItems extends StatelessWidget {
                           updatename: activeOrder?.products?[index].updatename,
                           updatequantity:
                               activeOrder?.products?[index].updatequantity,
-                          units: "300gm",
+                          units: "${activeOrder?.products?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -554,7 +554,7 @@ class AllReplacedItems extends StatelessWidget {
                               activeOrder?.inventories?[index].updatename,
                           updatequantity:
                               activeOrder?.inventories?[index].updatequantity,
-                          units: "300gm",
+                          units: "${activeOrder?.inventories?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -590,7 +590,7 @@ class AllReplacedItems extends StatelessWidget {
                           updatename: activeOrder?.rawItems?[index].updatename,
                           updatequantity:
                               activeOrder?.rawItems?[index].updatequantity,
-                          units: "300gm",
+                          units: "",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -677,7 +677,7 @@ class ReplaceItemsList extends StatelessWidget {
                       ),
                       Text(
                         // "${activeOrder?.total ?? 0} Paid", //updated the payment status
-                        units ?? "125g",
+                        units ?? "",
                         style: TextStyle(
                             color: AppConst.grey,
                             fontSize: SizeUtils.horizontalBlockSize * 3.5,
@@ -780,7 +780,7 @@ class ReplaceItemsList extends StatelessWidget {
                       ),
                       Text(
                         //updated the payment status
-                        units ?? "125g",
+                        units ?? "",
                         style: TextStyle(
                             color: AppConst.grey,
                             fontSize: SizeUtils.horizontalBlockSize * 3.5,
@@ -885,7 +885,7 @@ class AllFoundedItems extends StatelessWidget {
                         return FoundItemsList(
                           name: activeOrder?.products?[index].name,
                           quantity: activeOrder?.products?[index].quantity,
-                          units: "150gm",
+                          units: "${activeOrder?.products?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -911,7 +911,7 @@ class AllFoundedItems extends StatelessWidget {
                         return FoundItemsList(
                           name: activeOrder?.rawItems?[index].item,
                           quantity: activeOrder?.rawItems?[index].quantity,
-                          units: "150gm",
+                          units: "",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -937,7 +937,7 @@ class AllFoundedItems extends StatelessWidget {
                         return FoundItemsList(
                           name: activeOrder?.inventories?[index].name,
                           quantity: activeOrder?.inventories?[index].quantity,
-                          units: "150gm",
+                          units: "${activeOrder?.inventories?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -1024,8 +1024,7 @@ class FoundItemsList extends StatelessWidget {
                     height: 0.5.h,
                   ),
                   Text(
-                    //  (activeOrder?.products?[index].name ?? ''),
-                    "125g",
+                    units ?? "",
                     style: TextStyle(
                         color: AppConst.grey,
                         fontSize: SizeUtils.horizontalBlockSize * 3.5,
@@ -1127,7 +1126,7 @@ class YetToReviewItems extends StatelessWidget {
                         return FoundItemsList(
                           name: activeOrder?.products?[index].name,
                           quantity: activeOrder?.products?[index].quantity,
-                          units: "150gm",
+                          units: "${activeOrder?.products?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -1151,7 +1150,7 @@ class YetToReviewItems extends StatelessWidget {
                         return FoundItemsList(
                           name: activeOrder?.rawItems?[index].item,
                           quantity: activeOrder?.rawItems?[index].quantity,
-                          units: "150gm",
+                          units: "",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
@@ -1177,7 +1176,7 @@ class YetToReviewItems extends StatelessWidget {
                         return FoundItemsList(
                           name: activeOrder?.inventories?[index].name,
                           quantity: activeOrder?.inventories?[index].quantity,
-                          units: "150gm",
+                          units: "${activeOrder?.inventories?[index].unit}",
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>

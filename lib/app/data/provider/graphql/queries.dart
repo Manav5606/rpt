@@ -772,6 +772,7 @@ query($lat: Float, $lng: Float) {
         distance
         actual_cashback
         default_welcome_offer
+        actual_welcome_offer
         promotion_welcome_offer_status
         promotion_welcome_offer
        
@@ -1203,6 +1204,7 @@ wallet_amount
           updatename
           updatequantity
           updateselling_price
+          unit
           }
            inventories
           {
@@ -1222,6 +1224,7 @@ wallet_amount
           updatename
           updatequantity
           updateselling_price
+          unit
           }
              rawitems{
              logo

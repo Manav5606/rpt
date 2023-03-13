@@ -618,14 +618,15 @@ class AddLocationController extends GetxController {
       List<Map<String, dynamic>> data = [];
 
       for (var allStoresList in allStores) {
-        num offer = allStoresList.defaultWelcomeOffer!;
-        final today = DateTime.now();
-        if (allStoresList.promotionWelcomeOfferStatus == 'active') {
-          // if (allStoresList.promotionWelcomeOfferDate!.startDate!.isBefore(today) &&
-          //     allStoresList.promotionWelcomeOfferDate!.endDate!.isAfter(today)) {
-          // }
-          offer = allStoresList.promotionWelcomeOffer!;
-        }
+        num offer = allStoresList.actualWelcomeOffer!;
+        // num offer = allStoresList.defaultWelcomeOffer!;
+        // final today = DateTime.now();
+        // if (allStoresList.promotionWelcomeOfferStatus == 'active') {
+        //   // if (allStoresList.promotionWelcomeOfferDate!.startDate!.isBefore(today) &&
+        //   //     allStoresList.promotionWelcomeOfferDate!.endDate!.isAfter(today)) {
+        //   // }
+        //   offer = allStoresList.promotionWelcomeOffer!;
+        // }
         if (allStoresList.flag == 'true') {
           data.add({
             'store': allStoresList.sId,

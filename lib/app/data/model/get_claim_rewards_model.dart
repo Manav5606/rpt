@@ -34,6 +34,7 @@ class Stores {
   String? flag;
   int? distance;
   int? defaultWelcomeOffer;
+  int? actualWelcomeOffer;
   String? promotionWelcomeOfferStatus;
   int? promotionWelcomeOffer;
   int? actualCashback;
@@ -59,6 +60,7 @@ class Stores {
       this.flag,
       this.distance,
       this.defaultWelcomeOffer,
+      this.actualWelcomeOffer,
       this.promotionWelcomeOfferStatus,
       this.promotionWelcomeOffer,
       // this.promotionWelcomeOfferDate,
@@ -83,6 +85,7 @@ class Stores {
     flag = json['flag'];
     distance = json['distance'];
     defaultWelcomeOffer = json['default_welcome_offer'];
+    actualWelcomeOffer = json['actual_welcome_offer'];
     promotionWelcomeOfferStatus = json['promotion_welcome_offer_status'];
     promotionWelcomeOffer = json['promotion_welcome_offer'];
     // promotionWelcomeOfferDate = json['promotion_welcome_offer_date'] != null
@@ -119,6 +122,8 @@ class Stores {
     data['flag'] = this.flag;
     data['distance'] = this.distance;
     data['default_welcome_offer'] = this.defaultWelcomeOffer;
+    data['actual_welcome_offer'] = this.actualWelcomeOffer;
+
     data['promotion_welcome_offer_status'] = this.promotionWelcomeOfferStatus;
     data['promotion_welcome_offer'] = this.promotionWelcomeOffer;
     // data['promotion_welcome_offer_date'] = this.promotionWelcomeOfferDate;
