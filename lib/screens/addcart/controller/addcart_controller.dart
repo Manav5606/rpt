@@ -173,7 +173,12 @@ class AddCartController extends GetxController {
             remainingSlotForDay?.add(slots);
             displayHour.value = slots.startTime?.hour.toString() ?? "";
             if (int.parse(displayHour.value) >= 12) {
-              displayHour.value = 'By ${int.parse(displayHour.value) - 12} PM';
+              if (int.parse(displayHour.value) == 12) {
+                displayHour.value = 'By 12 PM';
+              } else {
+                displayHour.value =
+                    'By ${int.parse(displayHour.value) - 12} PM';
+              }
             } else {
               displayHour.value = 'By ${int.parse(displayHour.value)} AM';
             }

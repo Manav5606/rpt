@@ -194,7 +194,7 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 3), () {
         // Get.toNamed(AppRoutes.Root);
 
         Get.off(
@@ -276,6 +276,22 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: SizeUtils.horizontalBlockSize * 5,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Text(
+                (widget.type == "redeem")
+                    ? ""
+                    : "Cashback may change based upon final bill Amount",
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
                     fontFamily: 'MuseoSans',
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1),
