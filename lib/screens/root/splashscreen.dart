@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:upgrader/upgrader.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -32,22 +34,32 @@ class _SplashScreenState extends State<SplashScreen> {
           statusBarColor: AppConst.transparent,
           statusBarIconBrightness: Brightness.dark),
       child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            color: Color(0xff0a3453),
-            image: DecorationImage(
-                image: AssetImage("assets/images/bgsplash.png"),
-                fit: BoxFit.fill),
+        body: UpgradeAlert(
+          upgrader: Upgrader(
+            durationUntilAlertAgain: Duration(days: 1),
+            canDismissDialog: true,
+            shouldPopScope: () => true,
+            dialogStyle: Platform.isIOS
+                ? UpgradeDialogStyle.cupertino
+                : UpgradeDialogStyle.material,
           ),
-          height: double.infinity,
-          width: double.infinity,
-          child: FittedBox(
-            child: Center(
-              child: Lottie.asset('assets/lottie/splash2.json'),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xff0a3453),
+              image: DecorationImage(
+                  image: AssetImage("assets/images/bgsplash.png"),
+                  fit: BoxFit.fill),
             ),
-            //      Image.asset(
-            //   "assets/images/splash11.gif",
-            // )
+            height: double.infinity,
+            width: double.infinity,
+            child: FittedBox(
+              child: Center(
+                child: Lottie.asset('assets/lottie/splash2.json'),
+              ),
+              //      Image.asset(
+              //   "assets/images/splash11.gif",
+              // )
+            ),
           ),
         ),
       ),

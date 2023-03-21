@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:upgrader/upgrader.dart';
 import 'app/constants/colors.dart';
 
 List<CameraDescription> cameras = [];
@@ -35,6 +36,9 @@ void main() async {
   //     statusBarColor: AppConst.white,
   //     statusBarIconBrightness: Brightness.dark));
   Get.put(AddLocationController());
+
+  // Only call clearSavedSettings() during testing to reset internal values.
+  // await Upgrader.clearSavedSettings(); // REMOVE this for release builds
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(new MyApp());
