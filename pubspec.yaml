@@ -120,7 +120,8 @@ dependency_overrides:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/logofinal.png"
+  remove_alpha_ios: true
+  image_path: "assets/icons/customerlogo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
