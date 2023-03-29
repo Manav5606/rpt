@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:732082417535:android:fc58ee2473f2cda199344a",
         "android_client_info": {
-          "package_name": "com.example.customer_app"
+          "package_name": "com.example.food_delivery"
         }
       },
       "oauth_client": [
@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_id": "732082417535-90scjkenqn6j8j1a37mumv8trkp466bi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "in.recipto.rider"
+                "bundle_id": "com.seeya.seeyastore"
               }
             }
           ]
@@ -50,11 +50,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "732082417535-c8nvnustrrsafvucl4lsrk1sodvn088j.apps.googleusercontent.com",
+          "client_id": "732082417535-g1giq59ppo48tjg0oec4r4addspi7dvp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.recipto.customer_app",
-            "certificate_hash": "4117c53a97c06f1ccdad381d6d6cab6fe4e016d5"
+            "certificate_hash": "69880560792f2bb340eda3aa65ac898ccd171270"
+          }
+        },
+        {
+          "client_id": "732082417535-ud0casi9a7k2ijbtqc4umdqni3qicnpl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recipto.customer_app",
+            "certificate_hash": "4f0ff7d4e30c029f36a2568e0ee6125dfca06b93"
+          }
+        },
+        {
+          "client_id": "732082417535-ugh4mndeh21ho83ns7d7egof489je7jd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recipto.customer_app",
+            "certificate_hash": "626615b45ff2472922b54e26c8a3fc8a58e5fcfa"
           }
         },
         {
@@ -75,10 +91,10 @@
               "client_type": 3
             },
             {
-              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_id": "732082417535-90scjkenqn6j8j1a37mumv8trkp466bi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "in.recipto.rider"
+                "bundle_id": "com.seeya.seeyastore"
               }
             }
           ]
@@ -89,7 +105,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:732082417535:android:14e01caebd5fd33399344a",
         "android_client_info": {
-          "package_name": "com.recipto.customer_app"
+          "package_name": "com.recipto.food_delivery"
         }
       },
       "oauth_client": [
@@ -97,7 +113,7 @@
           "client_id": "732082417535-6dcshc04ngbblfqf7n0ao0uji1k0el17.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.recipto.customer_app",
+            "package_name": "com.recipto.food_delivery",
             "certificate_hash": "58acd11583cd4aa9b1605d3e98064309d259f4ba"
           }
         },
@@ -105,7 +121,7 @@
           "client_id": "732082417535-ktgbdqhotgcs292ru6qvk2h94sor1ufe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.recipto.customer_app",
+            "package_name": "com.recipto.food_delivery",
             "certificate_hash": "0d03f412d35c64592614d7f5caf196676a6aa3d4"
           }
         },
@@ -113,7 +129,7 @@
           "client_id": "732082417535-vmo986t743eki9uuortuhgurfs04mueb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.recipto.customer_app",
+            "package_name": "com.recipto.food_delivery",
             "certificate_hash": "b6b215465ad799f0ddf33d25dba9c376ebee7aa1"
           }
         },
@@ -135,10 +151,46 @@
               "client_type": 3
             },
             {
-              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_id": "732082417535-90scjkenqn6j8j1a37mumv8trkp466bi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "in.recipto.rider"
+                "bundle_id": "com.seeya.seeyastore"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732082417535:android:fe56ebabbab6caf099344a",
+        "android_client_info": {
+          "package_name": "com.recipto.reciptobusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5eCmRxTADhouV55dopIXP_I1JrCg2qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732082417535-pbi0grjr43n57nge5ptqrv990cj6miqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732082417535-90scjkenqn6j8j1a37mumv8trkp466bi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.seeya.seeyastore"
               }
             }
           ]
@@ -171,10 +223,10 @@
               "client_type": 3
             },
             {
-              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_id": "732082417535-90scjkenqn6j8j1a37mumv8trkp466bi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "in.recipto.rider"
+                "bundle_id": "com.seeya.seeyastore"
               }
             }
           ]
@@ -207,10 +259,10 @@
               "client_type": 3
             },
             {
-              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_id": "732082417535-90scjkenqn6j8j1a37mumv8trkp466bi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "in.recipto.rider"
+                "bundle_id": "com.seeya.seeyastore"
               }
             }
           ]
@@ -243,10 +295,10 @@
               "client_type": 3
             },
             {
-              "client_id": "732082417535-igtb4aitlntdfmsd9831u45liuufdp4e.apps.googleusercontent.com",
+              "client_id": "732082417535-90scjkenqn6j8j1a37mumv8trkp466bi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "in.recipto.rider"
+                "bundle_id": "com.seeya.seeyastore"
               }
             }
           ]

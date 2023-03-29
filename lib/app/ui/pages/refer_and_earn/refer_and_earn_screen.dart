@@ -378,46 +378,46 @@ class ReferAndEarnScreen extends GetView<MyAccountController> {
                       padding: const EdgeInsets.all(15.0),
                       child: Column(
                         children: [
-                          OutlinedButton.icon(
-                            icon: Icon(
-                              FontAwesomeIcons.whatsapp,
-                              color: Colors.green,
-                            ),
-                            style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all(
-                                Size(double.infinity, 45),
-                              ),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              )),
-                              side: MaterialStateProperty.all(
-                                BorderSide(
-                                  color: AppConst.kSecondaryColor,
-                                  width: 2,
-                                ),
-                              ),
-                            ),
-                            onPressed: () {
-                              print("share to whatsapp");
-                              _.shareToWhatsApp();
-                            },
-                            label: Text(
-                              "Share on Whatsapp",
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
+                          // OutlinedButton.icon(
+                          //   icon: Icon(
+                          //     FontAwesomeIcons.whatsapp,
+                          //     color: Colors.green,
+                          //   ),
+                          //   style: ButtonStyle(
+                          //     minimumSize: MaterialStateProperty.all(
+                          //       Size(double.infinity, 45),
+                          //     ),
+                          //     shape: MaterialStateProperty.all(
+                          //         RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(10.0),
+                          //     )),
+                          //     side: MaterialStateProperty.all(
+                          //       BorderSide(
+                          //         color: AppConst.kSecondaryColor,
+                          //         width: 2,
+                          //       ),
+                          //     ),
+                          //   ),
+                          //   onPressed: () {
+                          //     print("share to whatsapp");
+                          //     _.shareToWhatsApp();
+                          //   },
+                          //   label: Text(
+                          //     "Share on Whatsapp",
+                          //     style: TextStyle(
+                          //       fontSize: 13.sp,
+                          //       fontWeight: FontWeight.bold,
+                          //       color: Colors.black,
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 10,
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 0,
-                              primary: AppConst.kSecondaryColor,
+                              primary: AppConst.darkGreen,
                               minimumSize: Size(double.infinity, 45),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -428,7 +428,7 @@ class ReferAndEarnScreen extends GetView<MyAccountController> {
                               _.shareToSystem();
                             },
                             child: Text(
-                              "More...",
+                              "Share",
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.bold,
