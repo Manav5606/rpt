@@ -221,7 +221,7 @@ class WalletTransactionCard extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -238,7 +238,8 @@ class WalletTransactionCard extends StatelessWidget {
                           Get.to(() => ScanStoreViewScreen());
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
                           height: 12.h,
                           // decoration: BoxDecoration(
                           //     border: Border.all(
@@ -279,7 +280,8 @@ class WalletTransactionCard extends StatelessWidget {
                               arguments: {"color": randomGenerator()});
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
                           height: 12.h,
                           // decoration: BoxDecoration(
                           //     border: Border.all(
@@ -325,7 +327,8 @@ class WalletTransactionCard extends StatelessWidget {
                           //     : Get.toNamed(AppRoutes.MoreStoreProductView);
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
                           height: 12.h,
                           // decoration: BoxDecoration(
                           //     border: Border.all(
