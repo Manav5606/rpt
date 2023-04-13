@@ -73,8 +73,7 @@ class DynamicLinkService {
           print('referralCode : $referralCode');
 
           UserViewModel.setRefferralCode(referralCode ?? '');
-          await Get.toNamed(AppRoutes.EnterNumberScreen);
-          // Get.to(EnterNumberScreen());
+          await Get.toNamed(AppRoutes.Authentication);
         }
       }
 
@@ -86,8 +85,8 @@ class DynamicLinkService {
           var getReferralCode = getQuery.split('refercode=');
           if (getReferralCode.isNotEmpty) {
             UserViewModel.setRefferralCode(getReferralCode[1]);
-            // Get.to(EnterNumberScreen());
-            await Get.toNamed(AppRoutes.EnterNumberScreen);
+
+            await Get.toNamed(AppRoutes.Authentication);
             // UserViewModel.setRefferralCode('StoreREST8485');
             print('getReferralCode : $getReferralCode');
           }

@@ -46,7 +46,7 @@ class AppRoutes {
   static const String AddCartListScreen = '/AddCartListScreen';
   static const String CartReviewScreen = '/CartReviewScreen';
   static const String ScanRecipetSearch = '/ScanRecipetSearch';
-  static const String EnterNumberScreen = '/EnterNumberScreen';
+  // static const String EnterNumberScreen = '/EnterNumberScreen';
   static const String SearchRecipeScreen = '/SearchRecipeScreen';
   static const String ScanStoreViewScreen = '/ScanStoreViewScreen';
   static const String paymentList = '/paymentlist';

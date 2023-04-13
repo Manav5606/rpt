@@ -155,11 +155,11 @@ class AppPages {
         name: AppRoutes.orderCheckOutScreen, page: () => OrderCheckOutScreen()),
     GetPage(name: AppRoutes.EditAddressScreen, page: () => EditAddressScreen()),
     GetPage(name: AppRoutes.ScanRecipetSearch, page: () => ScanRecipetSearch()),
-    GetPage(
-      name: AppRoutes.EnterNumberScreen,
-      page: () => EnterNumberScreen(),
-      binding: SignInScreenBindings(),
-    ),
+    // GetPage(
+    //   name: AppRoutes.EnterNumberScreen,
+    //   page: () => EnterNumberScreen(),
+    //   binding: SignInScreenBindings(),
+    // ),
     GetPage(
         name: AppRoutes.SearchRecipeScreen, page: () => SearchRecipeScreen()),
     GetPage(name: AppRoutes.paymentList, page: () => PaymentModeScreen()),

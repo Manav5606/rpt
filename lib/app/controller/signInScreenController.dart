@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
+import 'package:customer_app/constants/app_const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
@@ -187,13 +188,6 @@ class SignInScreenController extends GetxController {
             UserViewModel.setUser(userModel!);
             List<Wallet>? wallet = await signInRepository.getAllWallet();
             userModel?.wallet = wallet;
-            // try {
-            //   await connectUserStream(
-            //       userId: userModel?.id ?? '',
-            //       name: "${userModel?.firstName} ${userModel?.lastName}");
-            // } catch (e) {
-            //   print('e $e');
-            // }
 
             final box = Boxes.getCommonBoolBox();
             final flag = box.get(HiveConstants.SIGNUP_FLAG);
@@ -202,25 +196,46 @@ class SignInScreenController extends GetxController {
               UserViewModel.setReferFlag(true);
             }
             await checkSession(flag ?? false);
+          } else {
+            isLoading.value = false;
+            Get.showSnackbar(GetSnackBar(
+              backgroundColor: AppConst.black,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              snackStyle: SnackStyle.FLOATING,
+              borderRadius: 12,
+              duration: Duration(seconds: 2),
+              message: "User Not Created Please Try Again!",
+              // title: "Amount must be at least \u{20b9}1"
+            ));
           }
 
-          // if (flag!) {
-          //   log("flag 00:");
-          //   isLoading.value = false;
-          //   return Get.to(SignUpScreen());
-          // }
-          // await checkSession();
-          isLoading.value = false;
+          // isLoading.value = false;
         } else {
           isLoading.value = false;
-          print('Error');
+          Get.showSnackbar(GetSnackBar(
+            backgroundColor: AppConst.black,
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            snackStyle: SnackStyle.FLOATING,
+            borderRadius: 12,
+            duration: Duration(seconds: 2),
+            message: "Please Enter the vaild OTP!",
+            // title: "Amount must be at least \u{20b9}1"
+          ));
         }
       });
     } catch (e, st) {
       otpController.clear();
+
       isLoading.value = false;
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(content: Text("Invalid OTP : Please Enter Valid OTP")));
+      Get.showSnackbar(GetSnackBar(
+        backgroundColor: AppConst.black,
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        snackStyle: SnackStyle.FLOATING,
+        borderRadius: 12,
+        duration: Duration(seconds: 2),
+        message: "OTP Invaild : Please Enter Vaild OTP!",
+        // title: "Amount must be at least \u{20b9}1"
+      ));
       print('eeee :$e $st');
     }
   }
@@ -285,6 +300,7 @@ class SignInScreenController extends GetxController {
           FireBaseNotification().firebaseCloudMessagingLSetup();
           Future.delayed(Duration(seconds: 2), () {
             Get.offAllNamed(AppRoutes.BaseScreen);
+            isLoading.value = false;
           });
           // });
         } else {
@@ -293,6 +309,7 @@ class SignInScreenController extends GetxController {
               FireBaseNotification().firebaseCloudMessagingLSetup();
               Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": true});
+              isLoading.value = false;
               // _addLocationController.getCurrentLocation();
             });
           } else {
@@ -300,6 +317,7 @@ class SignInScreenController extends GetxController {
               FireBaseNotification().firebaseCloudMessagingLSetup();
               Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": false});
+              isLoading.value = false;
               // _addLocationController.getCurrentLocation();
             });
           }
@@ -311,6 +329,7 @@ class SignInScreenController extends GetxController {
     } catch (e) {
       Future.delayed(Duration(seconds: 2),
           () => Get.offAllNamed(AppRoutes.Authentication));
+      isLoading.value = false;
     }
     // if (hiveRepository.hasUser()) {
     //   try {
