@@ -21,10 +21,11 @@ import 'package:customer_app/utils/utils.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+// import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as temp;
+import 'package:sizer/sizer.dart';
 
 class Root extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   temp.Location location = new temp.Location();
   @override
   void initState() {
-    checkNetwork();
+    // checkNetwork();
     // checkPermission();
     if (!mounted) {
       return;
@@ -53,27 +54,27 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
     // await Permission.location.request();
   }
 
-  void checkNetwork() async {
-    await InternetConnectionChecker().hasConnection;
-    InternetConnectionChecker().onStatusChange.listen(
-      (InternetConnectionStatus status) async {
-        switch (status) {
-          case InternetConnectionStatus.connected:
-            print('Data connection is available.');
-            // ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-            //   content: Text('Data connection is available.'),
-            // ));
-            break;
-          case InternetConnectionStatus.disconnected:
-            ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-              content: Text('You are disconnected from the internet.'),
-            ));
-            print('You are disconnected from the internet.');
-            break;
-        }
-      },
-    );
-  }
+  // void checkNetwork() async {
+  //   await InternetConnectionChecker().hasConnection;
+  //   InternetConnectionChecker().onStatusChange.listen(
+  //     (InternetConnectionStatus status) async {
+  //       switch (status) {
+  //         case InternetConnectionStatus.connected:
+  //           print('Data connection is available.');
+  //           // ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+  //           //   content: Text('Data connection is available.'),
+  //           // ));
+  //           break;
+  //         case InternetConnectionStatus.disconnected:
+  //           ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+  //             content: Text('You are disconnected from the internet.'),
+  //           ));
+  //           print('You are disconnected from the internet.');
+  //           break;
+  //       }
+  //     },
+  //   );
+  // }
 
   Future<void> checkSession() async {
     // final value;

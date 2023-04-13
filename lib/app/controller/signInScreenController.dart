@@ -121,20 +121,20 @@ class SignInScreenController extends GetxController {
   int? _resendToken;
   Future submitPhoneNumber() async {
     try {
-      log("aavoooo :2");
+      log("inside submitPhoneNumber ");
       isLoading.value = true;
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: "+91${phoneNumberController.text}",
         timeout: Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) {
-          log("aavoooo :4");
-          FirebaseAuth.instance
-              .signInWithCredential(credential)
-              .then((value) async {
-            if (value.user != null) {
-              log("Verification Complete successful With Mobile number");
-            }
-          });
+          // log("aavoooo :4");
+          // FirebaseAuth.instance
+          //     .signInWithCredential(credential)
+          //     .then((value) async {
+          //   if (value.user != null) {
+          //     log("Verification Complete successful With Mobile number");
+          //   }
+          // });
         },
         codeSent: (String verificationId, int? forceResendingToken) {
           isLoading.value = false;
@@ -152,13 +152,21 @@ class SignInScreenController extends GetxController {
         verificationFailed: (FirebaseAuthException e) {
           isLoading.value = false;
           if (e.code == 'invalid-phone-number') {
+            Get.showSnackbar(GetSnackBar(
+              backgroundColor: AppConst.black,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              snackStyle: SnackStyle.FLOATING,
+              borderRadius: 12,
+              duration: Duration(seconds: 2),
+              message: "The provided phone number is not valid.",
+              // title: "Amount must be at least \u{20b9}1"
+            ));
             log('The provided phone number is not valid.');
           }
         },
       );
     } catch (e) {
-      log("aavoooo :3");
-      print(e);
+      log("error submitPhoneNumber :$e");
     }
   }
 
@@ -236,7 +244,7 @@ class SignInScreenController extends GetxController {
         message: "OTP Invaild : Please Enter Vaild OTP!",
         // title: "Amount must be at least \u{20b9}1"
       ));
-      print('eeee :$e $st');
+      log('eeee :$e $st');
     }
   }
 
@@ -298,24 +306,24 @@ class SignInScreenController extends GetxController {
         if (value.latitude != 0.0 && value.longitude != 0.0) {
           // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
           FireBaseNotification().firebaseCloudMessagingLSetup();
-          Future.delayed(Duration(seconds: 2), () {
-            Get.offAllNamed(AppRoutes.BaseScreen);
+          Future.delayed(Duration(seconds: 2), () async {
+            await Get.offAllNamed(AppRoutes.BaseScreen);
             isLoading.value = false;
           });
           // });
         } else {
           if ((userModel?.addresses?.length ?? 0) > 0) {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) async {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+              await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": true});
               isLoading.value = false;
               // _addLocationController.getCurrentLocation();
             });
           } else {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) async {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+              await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": false});
               isLoading.value = false;
               // _addLocationController.getCurrentLocation();
@@ -327,9 +335,10 @@ class SignInScreenController extends GetxController {
           userId: userModel!.id!,
           name: "${userModel?.firstName} ${userModel?.lastName}");
     } catch (e) {
-      Future.delayed(Duration(seconds: 2),
-          () => Get.offAllNamed(AppRoutes.Authentication));
-      isLoading.value = false;
+      Future.delayed(Duration(seconds: 2), () async {
+        await Get.offAllNamed(AppRoutes.Authentication);
+        isLoading.value = false;
+      });
     }
     // if (hiveRepository.hasUser()) {
     //   try {

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
+import 'package:customer_app/screens/root/network_check.dart';
 import 'package:customer_app/widgets/signup_feilds.dart';
 import 'package:customer_app/widgets/textfield_clear_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -118,6 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
     //       " in your next purchase",
     //       " Use your E-Wallet in your next purchase get more Rewards")
     // ];
+    Connectivity connectivity = Connectivity();
     SizeUtils().init(context);
     final box = Boxes.getCommonBox();
     final flag = box.get(HiveConstants.REFERID);
@@ -137,141 +140,170 @@ class _SignInScreenState extends State<SignInScreen> {
           () => _signInController.isLoading.value
               ? SignInBottomShimmer(
                   signInController: _signInController, nodeText1: _nodeText1)
-              : Container(
-                  height: 24.h,
-                  color: AppConst.white,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 4.w,
-                      right: 4.w,
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    StreamBuilder<ConnectivityResult>(
+                      stream: connectivity.onConnectivityChanged,
+                      builder: (_, snapshot) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 1.h),
+                          child: CheckInternetConnectionWidget(
+                              snapshot: snapshot,
+                              showsnankbar: true,
+                              widget: SizedBox()),
+                        );
+                      },
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Sign in",
-                          style: TextStyle(
-                            color: AppConst.black,
-                            fontFamily: "MuseoSans",
-                            fontStyle: FontStyle.normal,
-                            fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        Text(
-                          "Enter your Mobile Number",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppConst.darkGrey,
-                            fontFamily: "MuseoSans",
-                            fontStyle: FontStyle.normal,
-                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                          ),
-                        ),
-                        Container(
-                          // height: 6.h,
+                    Container(
+                      height: 24.h,
+                      decoration: BoxDecoration(
                           color: AppConst.white,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.w, vertical: 1.h),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24))),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 4.w,
+                          right: 4.w,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Sign in",
+                              style: TextStyle(
+                                color: AppConst.black,
+                                fontFamily: "MuseoSans",
+                                fontStyle: FontStyle.normal,
+                                fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Text(
+                              "Enter your Mobile Number",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: AppConst.darkGrey,
+                                fontFamily: "MuseoSans",
+                                fontStyle: FontStyle.normal,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                              ),
+                            ),
+                            Container(
+                              // height: 6.h,
+                              color: AppConst.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w, vertical: 1.h),
 
-                          child: KeyboardActions(
-                            config: _buildConfig(context),
-                            autoScroll: false,
-                            disableScroll: true,
-                            child: Container(
-                              // height: 50,
-                              child: TextFormField(
-                                style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 4),
-                                textAlignVertical: TextAlignVertical.center,
-                                focusNode: _nodeText1,
-                                textAlign: TextAlign.start,
-                                cursorColor: AppConst.black,
-                                maxLength: 10,
-                                keyboardType: TextInputType.number,
-                                controller:
-                                    _signInController.phoneNumberController,
-                                onChanged: (value) {
-                                  _signInController.phoneNumber.value = value;
-                                },
-                                decoration: InputDecoration(
-                                  isDense: true,
+                              child: KeyboardActions(
+                                config: _buildConfig(context),
+                                autoScroll: false,
+                                disableScroll: true,
+                                child: Container(
+                                  // height: 50,
+                                  child: TextFormField(
+                                    style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4),
+                                    textAlignVertical: TextAlignVertical.center,
+                                    focusNode: _nodeText1,
+                                    textAlign: TextAlign.start,
+                                    cursorColor: AppConst.black,
+                                    maxLength: 10,
+                                    keyboardType: TextInputType.number,
+                                    controller:
+                                        _signInController.phoneNumberController,
+                                    onChanged: (value) {
+                                      _signInController.phoneNumber.value =
+                                          value;
+                                    },
+                                    decoration: InputDecoration(
+                                      isDense: true,
 
-                                  hintStyle: TextStyle(
-                                      color: AppConst.grey,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 4),
-                                  // contentPadding:
-                                  //     EdgeInsets.only(left: 2.w, bottom: 0.h),
-                                  hintTextDirection: TextDirection.ltr,
-                                  counterText: "",
+                                      hintStyle: TextStyle(
+                                          color: AppConst.grey,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  4),
+                                      // contentPadding:
+                                      //     EdgeInsets.only(left: 2.w, bottom: 0.h),
+                                      hintTextDirection: TextDirection.ltr,
+                                      counterText: "",
 
-                                  prefixIcon: AddPlus91(
-                                      signInController: _signInController),
-                                  suffixIconConstraints:
-                                      BoxConstraints.tightFor(),
-                                  disabledBorder: InputBorder.none,
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppConst.grey, width: 1),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppConst.green, width: 1.5),
+                                      prefixIcon: AddPlus91(
+                                          signInController: _signInController),
+                                      suffixIconConstraints:
+                                          BoxConstraints.tightFor(),
+                                      disabledBorder: InputBorder.none,
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppConst.grey, width: 1),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppConst.green, width: 1.5),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                            Obx(
+                              () => GestureDetector(
+                                  onTap: () async {
+                                    var isAvialble =
+                                        connectivity.checkConnectivity();
+                                    if (true) {
+                                      if (_signInController
+                                                  .phoneNumber.value.length ==
+                                              10 &&
+                                          _signInController.phoneNumber.value
+                                              .isPhoneNumber) {
+                                        await _signInController
+                                            .submitPhoneNumber();
+                                      } else {
+                                        Get.showSnackbar(GetSnackBar(
+                                          backgroundColor: AppConst.black,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 12),
+                                          snackStyle: SnackStyle.FLOATING,
+                                          borderRadius: 12,
+                                          duration: Duration(seconds: 2),
+                                          message:
+                                              "Please Enter the vaild number!",
+                                          // title: "Amount must be at least \u{20b9}1"
+                                        ));
+                                      }
+                                    }
+                                  },
+                                  child: BottomWideButton(
+                                    text: "Sign in",
+                                    color: _signInController
+                                                .phoneNumber.value.length ==
+                                            10
+                                        ? AppConst.green
+                                        : AppConst.green.withOpacity(0.8),
+                                    borderColor: _signInController
+                                                .phoneNumber.value.length ==
+                                            10
+                                        ? AppConst.green
+                                        : AppConst.green.withOpacity(0.8),
+                                  )),
+                            ),
+                          ],
                         ),
-                        Obx(
-                          () => GestureDetector(
-                              onTap: () async {
-                                if (_signInController
-                                            .phoneNumber.value.length ==
-                                        10 &&
-                                    _signInController
-                                        .phoneNumber.value.isPhoneNumber) {
-                                  await _signInController.submitPhoneNumber();
-                                } else {
-                                  Get.showSnackbar(GetSnackBar(
-                                    backgroundColor: AppConst.black,
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 12),
-                                    snackStyle: SnackStyle.FLOATING,
-                                    borderRadius: 12,
-                                    duration: Duration(seconds: 2),
-                                    message: "Please Enter the vaild number!",
-                                    // title: "Amount must be at least \u{20b9}1"
-                                  ));
-                                }
-                              },
-                              child: BottomWideButton(
-                                text: "Sign in",
-                                color: _signInController
-                                            .phoneNumber.value.length ==
-                                        10
-                                    ? AppConst.green
-                                    : AppConst.green.withOpacity(0.8),
-                                borderColor: _signInController
-                                            .phoneNumber.value.length ==
-                                        10
-                                    ? AppConst.green
-                                    : AppConst.green.withOpacity(0.8),
-                              )),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
         ),
         body:
@@ -297,12 +329,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                          height: 25.h,
+                          height: 27.h,
                           child: Image(
                               image:
                                   AssetImage("assets/images/loginlogo.png"))),
                       SizedBox(
-                        height: 7.h,
+                        height: 15.h,
                       )
                     ],
                   ),
@@ -511,7 +543,10 @@ class SignInBottomShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 24.h,
-      color: AppConst.white,
+      decoration: BoxDecoration(
+          color: AppConst.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24), topRight: Radius.circular(24))),
       child: Padding(
         padding: EdgeInsets.only(
           left: 4.w,
@@ -523,16 +558,14 @@ class SignInBottomShimmer extends StatelessWidget {
           children: [
             // ShimmerEffect(
             // child:
-            ShimmerEffect(
-              child: Text(
-                "Sign in",
-                style: TextStyle(
-                  color: AppConst.black,
-                  fontFamily: "MuseoSans",
-                  fontStyle: FontStyle.normal,
-                  fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              "Sign in",
+              style: TextStyle(
+                color: AppConst.grey,
+                fontFamily: "MuseoSans",
+                fontStyle: FontStyle.normal,
+                fontSize: SizeUtils.horizontalBlockSize * 4.2,
+                fontWeight: FontWeight.bold,
               ),
             ),
             // ),
@@ -584,7 +617,7 @@ class SignInBottomShimmer extends StatelessWidget {
                       borderSide: BorderSide(color: AppConst.grey, width: 1),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppConst.green, width: 1.5),
+                      borderSide: BorderSide(color: AppConst.grey, width: 1.5),
                     ),
                   ),
                 ),
