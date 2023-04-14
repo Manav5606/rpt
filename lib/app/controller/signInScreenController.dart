@@ -123,9 +123,10 @@ class SignInScreenController extends GetxController {
     try {
       log("inside submitPhoneNumber ");
       isLoading.value = true;
+
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: "+91${phoneNumberController.text}",
-        timeout: Duration(seconds: 60),
+        timeout: Duration(seconds: 5),
         verificationCompleted: (PhoneAuthCredential credential) {
           // log("aavoooo :4");
           // FirebaseAuth.instance
@@ -145,8 +146,8 @@ class SignInScreenController extends GetxController {
           }
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          isLoading.value = false;
-          verification.value = verificationId;
+          // isLoading.value = false;
+          // verification.value = verificationId;
         },
         forceResendingToken: _resendToken,
         verificationFailed: (FirebaseAuthException e) {
