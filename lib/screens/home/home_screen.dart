@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
@@ -43,6 +44,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../../controllers/userViewModel.dart';
 import '../../routes/app_list.dart';
@@ -206,610 +208,832 @@ class _HomeScreenState extends State<HomeScreen>
           statusBarColor: AppConst.darkGreen,
           statusBarIconBrightness: Brightness.light),
       child: Scaffold(
-        body: SafeArea(
-          child: Obx(
-            () => Stack(
-              alignment: AlignmentDirectional.bottomEnd,
-              children: [
-                if (_homeController.isLoading.value)
-                  HomeScreenShimmer()
-                else
-                  Flex(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    direction: Axis.vertical,
-                    children: [
-                      Obx(
-                        () => HomeAppBar(
-                          onTap: () async {
-                            dynamic value = Get.to(AddressModel(
-                              isHomeScreen: true,
-                              page: "home",
-                            ));
-                            // if (Constants.isAbleToCallApi)
-                            //   await _homeController.getAllCartsData();
-                          },
-                          isRedDot: _homeController
-                                      .getAllCartsModel.value?.cartItemsTotal !=
-                                  0
-                              ? true
-                              : false,
-                          address: UserSlecetedAddress,
-                          // "${_addLocationController.userAddressTitle.value}, ${_addLocationController.userHouse.value}, ${_addLocationController.userAppartment.value}, ${_addLocationController.userAddress.value}",
-                          balance: _addLocationController.convertor(
-                              _myAccountController.user.balance ?? 0),
-                          onTapWallet: () {
-                            Get.toNamed(AppRoutes.Wallet,
-                                arguments: {"navWithOutTranscation": true});
-                          },
-                          isHomeScreen: true,
+        body: UpgradeAlert(
+          upgrader: Upgrader(
+              durationUntilAlertAgain: Duration(days: 1),
+              canDismissDialog: true,
+              showIgnore: false,
+              platform:
+                  Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android,
+              // shouldPopScope: () => true,
+              dialogStyle: Platform.isIOS
+                  ? UpgradeDialogStyle.cupertino
+                  : UpgradeDialogStyle.material,
+              minAppVersion: "1.0.8",
+              countryCode: "IN"),
+          child: SafeArea(
+            child: Obx(
+              () => Stack(
+                alignment: AlignmentDirectional.bottomEnd,
+                children: [
+                  if (_homeController.isLoading.value)
+                    HomeScreenShimmer()
+                  else
+                    Flex(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      direction: Axis.vertical,
+                      children: [
+                        Obx(
+                          () => HomeAppBar(
+                            onTap: () async {
+                              dynamic value = Get.to(AddressModel(
+                                isHomeScreen: true,
+                                page: "home",
+                              ));
+                              // if (Constants.isAbleToCallApi)
+                              //   await _homeController.getAllCartsData();
+                            },
+                            isRedDot: _homeController.getAllCartsModel.value
+                                        ?.cartItemsTotal !=
+                                    0
+                                ? true
+                                : false,
+                            address: UserSlecetedAddress,
+                            // "${_addLocationController.userAddressTitle.value}, ${_addLocationController.userHouse.value}, ${_addLocationController.userAppartment.value}, ${_addLocationController.userAddress.value}",
+                            balance: _addLocationController.convertor(
+                                _myAccountController.user.balance ?? 0),
+                            onTapWallet: () {
+                              Get.toNamed(AppRoutes.Wallet,
+                                  arguments: {"navWithOutTranscation": true});
+                            },
+                            isHomeScreen: true,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      // _homeController.checkPermission.value
-                      //     ? SizedBox()
-                      //     : PermissionRaw(
-                      //         onTap: () async {
-                      //           bool isEnable =
-                      //               await _homeController.getCurrentLocation();
-                      //           if (isEnable) {
-                      //             _homeController.isPageAvailable = true;
-                      //             _homeController.homePageFavoriteShopsList
-                      //                 .clear();
-                      //             await _homeController.apiCall();
-                      //           }
-                      //         },
-                      //       ),
-                      Obx(
-                        () => Flexible(
-                          child: ListView(
-                            controller: _homeController
-                                .homePageFavoriteShopsScrollController,
-                            children: [
-                              ((_myAccountController.activeOrdersModel.value
-                                                  ?.data?.length ??
-                                              1) >
-                                          0 ||
-                                      ((_homeController.getAllCartsModel.value
-                                                  ?.carts?.length) ??
-                                              0) >
-                                          0)
-                                  ? Container(
-                                      height: 18.h,
-                                      width: double.infinity,
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: [
-                                            ListView.builder(
-                                              controller: _categoryController,
-                                              itemCount: _homeController
-                                                  .category.length,
-                                              //  _homeController
-                                              //         .getHomePageFavoriteShopsModel
-                                              //         .value
-                                              //         ?.keywords
-                                              //         ?.length ??
-                                              physics: PageScrollPhysics(),
-                                              scrollDirection: Axis.horizontal,
-                                              shrinkWrap: true,
-                                              itemExtent: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  30,
-                                              itemBuilder: (context, index) {
-                                                //currentItems = index;
-                                                return GestureDetector(
-                                                    onTap: () async {
-                                                      _homeController
-                                                          .storeDataList
-                                                          .clear();
-                                                      _homeController
-                                                          .remoteConfigPageNumber = 1;
-                                                      _homeController
-                                                              .isRemoteConfigPageAvailable =
-                                                          true;
-                                                      // _homeController.keywordValue =
-                                                      //     CategoryModel(
-                                                      //   isProductAvailable: _homeController
-                                                      //           .getHomePageFavoriteShopsModel
-                                                      //           .value
-                                                      //           ?.keywords?[index]
-                                                      //           .isProductAvailable ??
-                                                      //       false,
-                                                      //   id: _homeController
-                                                      //       .getHomePageFavoriteShopsModel
-                                                      //       .value!
-                                                      //       .keywords![index]
-                                                      //       .id,
-                                                      //   keywordHelper: _homeController
-                                                      //       .getHomePageFavoriteShopsModel
-                                                      //       .value!
-                                                      //       .keywords![index]
-                                                      //       .keywordHelper,
-                                                      //   name: _homeController
-                                                      //       .getHomePageFavoriteShopsModel
-                                                      //       .value!
-                                                      //       .keywords![index]
-                                                      //       .name,
-                                                      //   subtitle: '',
-                                                      //   image: '',
-                                                      // );
-                                                      _homeController
-                                                              .keywordValue =
-                                                          CategoryModel(
-                                                        isProductAvailable:
-                                                            _homeController
-                                                                .category[index]
-                                                                .isProductAvailable,
-                                                        id: _homeController
-                                                            .category[index].id,
-                                                        keywordHelper:
-                                                            _homeController
-                                                                .category[index]
-                                                                .keywordHelper,
-                                                        name: _homeController
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        // _homeController.checkPermission.value
+                        //     ? SizedBox()
+                        //     : PermissionRaw(
+                        //         onTap: () async {
+                        //           bool isEnable =
+                        //               await _homeController.getCurrentLocation();
+                        //           if (isEnable) {
+                        //             _homeController.isPageAvailable = true;
+                        //             _homeController.homePageFavoriteShopsList
+                        //                 .clear();
+                        //             await _homeController.apiCall();
+                        //           }
+                        //         },
+                        //       ),
+                        Obx(
+                          () => Flexible(
+                            child: ListView(
+                              controller: _homeController
+                                  .homePageFavoriteShopsScrollController,
+                              children: [
+                                ((_myAccountController.activeOrdersModel.value
+                                                    ?.data?.length ??
+                                                1) >
+                                            0 ||
+                                        ((_homeController.getAllCartsModel.value
+                                                    ?.carts?.length) ??
+                                                0) >
+                                            0)
+                                    ? Container(
+                                        height: 18.h,
+                                        width: double.infinity,
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              ListView.builder(
+                                                controller: _categoryController,
+                                                itemCount: _homeController
+                                                    .category.length,
+                                                //  _homeController
+                                                //         .getHomePageFavoriteShopsModel
+                                                //         .value
+                                                //         ?.keywords
+                                                //         ?.length ??
+                                                physics: PageScrollPhysics(),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                shrinkWrap: true,
+                                                itemExtent: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    30,
+                                                itemBuilder: (context, index) {
+                                                  //currentItems = index;
+                                                  return GestureDetector(
+                                                      onTap: () async {
+                                                        _homeController
+                                                            .storeDataList
+                                                            .clear();
+                                                        _homeController
+                                                            .remoteConfigPageNumber = 1;
+                                                        _homeController
+                                                                .isRemoteConfigPageAvailable =
+                                                            true;
+                                                        // _homeController.keywordValue =
+                                                        //     CategoryModel(
+                                                        //   isProductAvailable: _homeController
+                                                        //           .getHomePageFavoriteShopsModel
+                                                        //           .value
+                                                        //           ?.keywords?[index]
+                                                        //           .isProductAvailable ??
+                                                        //       false,
+                                                        //   id: _homeController
+                                                        //       .getHomePageFavoriteShopsModel
+                                                        //       .value!
+                                                        //       .keywords![index]
+                                                        //       .id,
+                                                        //   keywordHelper: _homeController
+                                                        //       .getHomePageFavoriteShopsModel
+                                                        //       .value!
+                                                        //       .keywords![index]
+                                                        //       .keywordHelper,
+                                                        //   name: _homeController
+                                                        //       .getHomePageFavoriteShopsModel
+                                                        //       .value!
+                                                        //       .keywords![index]
+                                                        //       .name,
+                                                        //   subtitle: '',
+                                                        //   image: '',
+                                                        // );
+                                                        _homeController
+                                                                .keywordValue =
+                                                            CategoryModel(
+                                                          isProductAvailable:
+                                                              _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .isProductAvailable,
+                                                          id: _homeController
+                                                              .category[index]
+                                                              .id,
+                                                          keywordHelper:
+                                                              _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .keywordHelper,
+                                                          name: _homeController
+                                                              .category[index]
+                                                              .name,
+                                                          subtitle:
+                                                              _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .subtitle,
+                                                          image: _homeController
+                                                              .category[index]
+                                                              .image,
+                                                          title: _homeController
+                                                              .category[index]
+                                                              .title,
+                                                        );
+                                                        _homeController
+                                                            .isRemoteConfigPageLoading1
+                                                            .value = true;
+                                                        if (!(_homeController
                                                             .category[index]
-                                                            .name,
-                                                        subtitle:
-                                                            _homeController
-                                                                .category[index]
-                                                                .subtitle,
-                                                        image: _homeController
-                                                            .category[index]
-                                                            .image,
-                                                        title: _homeController
-                                                            .category[index]
-                                                            .title,
-                                                      );
-                                                      _homeController
-                                                          .isRemoteConfigPageLoading1
-                                                          .value = true;
-                                                      if (!(_homeController
-                                                          .category[index]
-                                                          .isProductAvailable)) {
-                                                        Get.to(() => InStoreScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]));
-                                                      } else {
-                                                        Get.to(() => StoreListScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]));
-                                                      }
+                                                            .isProductAvailable)) {
+                                                          Get.to(() => InStoreScreen(
+                                                              category:
+                                                                  _homeController
+                                                                          .category[
+                                                                      index]));
+                                                        } else {
+                                                          Get.to(() => StoreListScreen(
+                                                              category:
+                                                                  _homeController
+                                                                          .category[
+                                                                      index]));
+                                                        }
 
-                                                      await _homeController
-                                                          .homePageRemoteConfigData(
-                                                        productFetch:
-                                                            _homeController
-                                                                .category[index]
-                                                                .isProductAvailable,
-                                                        keyword: _homeController
-                                                            .category[index]
-                                                            .name,
-                                                        keywordHelper:
-                                                            _homeController
-                                                                .category[index]
-                                                                .keywordHelper,
-                                                        id: _homeController
-                                                            .category[index].id,
-                                                        // productFetch:
-                                                        //  _homeController
+                                                        await _homeController
+                                                            .homePageRemoteConfigData(
+                                                          productFetch:
+                                                              _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .isProductAvailable,
+                                                          keyword:
+                                                              _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .name,
+                                                          keywordHelper:
+                                                              _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .keywordHelper,
+                                                          id: _homeController
+                                                              .category[index]
+                                                              .id,
+                                                          // productFetch:
+                                                          //  _homeController
+                                                          //         .getHomePageFavoriteShopsModel
+                                                          //         .value
+                                                          //         ?.keywords?[index]
+                                                          //         .isProductAvailable ??
+                                                          //     false,
+                                                          // keyword: _homeController
+                                                          //     .getHomePageFavoriteShopsModel
+                                                          //     .value!
+                                                          //     .keywords![index]
+                                                          //     .name,
+                                                          // keywordHelper: _homeController
+                                                          //     .getHomePageFavoriteShopsModel
+                                                          //     .value!
+                                                          //     .keywords![index]
+                                                          //     .keywordHelper,
+                                                          // id: _homeController
+                                                          //     .getHomePageFavoriteShopsModel
+                                                          //     .value!
+                                                          //     .keywords![index]
+                                                          //     .id,
+                                                        );
+                                                        //      (!(_homeController
                                                         //         .getHomePageFavoriteShopsModel
                                                         //         .value
                                                         //         ?.keywords?[index]
                                                         //         .isProductAvailable ??
-                                                        //     false,
-                                                        // keyword: _homeController
-                                                        //     .getHomePageFavoriteShopsModel
-                                                        //     .value!
-                                                        //     .keywords![index]
-                                                        //     .name,
-                                                        // keywordHelper: _homeController
-                                                        //     .getHomePageFavoriteShopsModel
-                                                        //     .value!
-                                                        //     .keywords![index]
-                                                        //     .keywordHelper,
-                                                        // id: _homeController
-                                                        //     .getHomePageFavoriteShopsModel
-                                                        //     .value!
-                                                        //     .keywords![index]
-                                                        //     .id,
-                                                      );
-                                                      //      (!(_homeController
-                                                      //         .getHomePageFavoriteShopsModel
-                                                      //         .value
-                                                      //         ?.keywords?[index]
-                                                      //         .isProductAvailable ??
-                                                      //     false))
-                                                      // ? await Get.to(() => InStoreScreen(
-                                                      //     category: _homeController
-                                                      //         .getHomePageFavoriteShopsModel
-                                                      //         .value!
-                                                      //         .keywords![index]))
-                                                      // : await Get.to(
-                                                      //     () => StoreListScreen());
-                                                      if (Constants
-                                                          .isAbleToCallApi)
-                                                        await _homeController
-                                                            .getAllCartsData();
-                                                    },
-                                                    child: CategoryCard(
-                                                        index: index,
-                                                        category:
-                                                            _homeController
-                                                                    .category[
-                                                                index]));
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : GridView(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: 2.w,
-                                              mainAxisSpacing: 2.h),
-                                      children: List.generate(
-                                          (_homeController.category.length),
-                                          (index) {
-                                        return GestureDetector(
-                                            onTap: () async {
-                                              _homeController.storeDataList
-                                                  .clear();
-                                              _homeController
-                                                  .remoteConfigPageNumber = 1;
-                                              _homeController
-                                                      .isRemoteConfigPageAvailable =
-                                                  true;
-
-                                              _homeController.keywordValue =
-                                                  CategoryModel(
-                                                isProductAvailable:
-                                                    _homeController
-                                                        .category[index]
-                                                        .isProductAvailable,
-                                                id: _homeController
-                                                    .category[index].id,
-                                                keywordHelper: _homeController
-                                                    .category[index]
-                                                    .keywordHelper,
-                                                name: _homeController
-                                                    .category[index].name,
-                                                subtitle: _homeController
-                                                    .category[index].subtitle,
-                                                image: _homeController
-                                                    .category[index].image,
-                                                title: _homeController
-                                                    .category[index].title,
-                                              );
-                                              await _homeController
-                                                  .homePageRemoteConfigData(
-                                                productFetch: _homeController
-                                                    .category[index]
-                                                    .isProductAvailable,
-                                                keyword: _homeController
-                                                    .category[index].name,
-                                                keywordHelper: _homeController
-                                                    .category[index]
-                                                    .keywordHelper,
-                                                id: _homeController
-                                                    .category[index].id,
-                                              );
-                                              (!(_homeController.category[index]
-                                                      .isProductAvailable))
-                                                  ? await Get.to(() =>
-                                                      InStoreScreen(
-                                                          category:
-                                                              _homeController
-                                                                      .category[
-                                                                  index]))
-                                                  : await Get.to(() =>
-                                                      StoreListScreen(
+                                                        //     false))
+                                                        // ? await Get.to(() => InStoreScreen(
+                                                        //     category: _homeController
+                                                        //         .getHomePageFavoriteShopsModel
+                                                        //         .value!
+                                                        //         .keywords![index]))
+                                                        // : await Get.to(
+                                                        //     () => StoreListScreen());
+                                                        if (Constants
+                                                            .isAbleToCallApi)
+                                                          await _homeController
+                                                              .getAllCartsData();
+                                                      },
+                                                      child: CategoryCard(
+                                                          index: index,
                                                           category:
                                                               _homeController
                                                                       .category[
                                                                   index]));
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : GridView(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 3,
+                                                crossAxisSpacing: 2.w,
+                                                mainAxisSpacing: 2.h),
+                                        children: List.generate(
+                                            (_homeController.category.length),
+                                            (index) {
+                                          return GestureDetector(
+                                              onTap: () async {
+                                                _homeController.storeDataList
+                                                    .clear();
+                                                _homeController
+                                                    .remoteConfigPageNumber = 1;
+                                                _homeController
+                                                        .isRemoteConfigPageAvailable =
+                                                    true;
 
-                                              if (Constants.isAbleToCallApi)
+                                                _homeController.keywordValue =
+                                                    CategoryModel(
+                                                  isProductAvailable:
+                                                      _homeController
+                                                          .category[index]
+                                                          .isProductAvailable,
+                                                  id: _homeController
+                                                      .category[index].id,
+                                                  keywordHelper: _homeController
+                                                      .category[index]
+                                                      .keywordHelper,
+                                                  name: _homeController
+                                                      .category[index].name,
+                                                  subtitle: _homeController
+                                                      .category[index].subtitle,
+                                                  image: _homeController
+                                                      .category[index].image,
+                                                  title: _homeController
+                                                      .category[index].title,
+                                                );
                                                 await _homeController
-                                                    .getAllCartsData();
-                                            },
-                                            child: CategoryCard(
-                                                index: index,
-                                                category: _homeController
-                                                    .category[index]));
-                                      }),
-                                    ),
-                              // SizedBox(
-                              //   height: 2.h,
-                              // ),
-                              // (_homeController.getAllCartsModel.value?.carts
-                              //             ?.isNotEmpty ??
-                              //         false)
-                              //     ? _homeController.isAllCartLoading.value
-                              //         ? ShimmerEffect(
-                              //             child: YourStores(),
-                              //           )
-                              //         : YourStores()
-                              //     : SizedBox(),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              ((_myAccountController.activeOrdersModel.value
-                                                  ?.data?.length ??
-                                              0) >
-                                          0) ||
-                                      ((_homeController.getAllCartsModel.value
-                                                  ?.carts?.length) ??
-                                              0) >
-                                          0
-                                  ? Container(
-                                      height: 18.h,
-                                      decoration: BoxDecoration(
-                                          color: Color(0xfff2f3f7)),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 2.w, top: 1.h, right: 1.w),
+                                                    .homePageRemoteConfigData(
+                                                  productFetch: _homeController
+                                                      .category[index]
+                                                      .isProductAvailable,
+                                                  keyword: _homeController
+                                                      .category[index].name,
+                                                  keywordHelper: _homeController
+                                                      .category[index]
+                                                      .keywordHelper,
+                                                  id: _homeController
+                                                      .category[index].id,
+                                                );
+                                                (!(_homeController
+                                                        .category[index]
+                                                        .isProductAvailable))
+                                                    ? await Get.to(() =>
+                                                        InStoreScreen(
+                                                            category:
+                                                                _homeController
+                                                                        .category[
+                                                                    index]))
+                                                    : await Get.to(() =>
+                                                        StoreListScreen(
+                                                            category:
+                                                                _homeController
+                                                                        .category[
+                                                                    index]));
+
+                                                if (Constants.isAbleToCallApi)
+                                                  await _homeController
+                                                      .getAllCartsData();
+                                              },
+                                              child: CategoryCard(
+                                                  index: index,
+                                                  category: _homeController
+                                                      .category[index]));
+                                        }),
+                                      ),
+                                // SizedBox(
+                                //   height: 2.h,
+                                // ),
+                                // (_homeController.getAllCartsModel.value?.carts
+                                //             ?.isNotEmpty ??
+                                //         false)
+                                //     ? _homeController.isAllCartLoading.value
+                                //         ? ShimmerEffect(
+                                //             child: YourStores(),
+                                //           )
+                                //         : YourStores()
+                                //     : SizedBox(),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                ((_myAccountController.activeOrdersModel.value
+                                                    ?.data?.length ??
+                                                0) >
+                                            0) ||
+                                        ((_homeController.getAllCartsModel.value
+                                                    ?.carts?.length) ??
+                                                0) >
+                                            0
+                                    ? Container(
+                                        height: 18.h,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xfff2f3f7)),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 2.w, top: 1.h, right: 1.w),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  // Text("Recent Transactions",
+                                                  //     style: TextStyle(
+                                                  //       fontFamily: 'MuseoSans',
+                                                  //       color: AppConst.black,
+                                                  //       fontSize: SizeUtils
+                                                  //               .horizontalBlockSize *
+                                                  //           4.5,
+                                                  //       fontWeight:
+                                                  //           FontWeight.w700,
+                                                  //       fontStyle:
+                                                  //           FontStyle.normal,
+                                                  //     )),
+                                                  // InkWell(
+                                                  //   onTap: (() {
+                                                  //     Get.toNamed(
+                                                  //         AppRoutes.ActiveOrders);
+                                                  //   }),
+                                                  //   child: Padding(
+                                                  //     padding: EdgeInsets.only(
+                                                  //         bottom: 0.5.h),
+                                                  //     child: Row(
+                                                  //       mainAxisAlignment:
+                                                  //           MainAxisAlignment.end,
+                                                  //       children: [
+                                                  //         Text(
+                                                  //           "View All",
+                                                  //           style: TextStyle(
+                                                  //             color:
+                                                  //                 AppConst.black,
+                                                  //             fontSize: SizeUtils
+                                                  //                     .horizontalBlockSize *
+                                                  //                 3.4,
+                                                  //             fontWeight:
+                                                  //                 FontWeight.bold,
+                                                  //           ),
+                                                  //         ),
+                                                  //         Icon(
+                                                  //           Icons
+                                                  //               .arrow_forward_ios_rounded,
+                                                  //           color: AppConst.black,
+                                                  //           size: 1.8.h,
+                                                  //         )
+                                                  //       ],
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 1.h,
+                                              ),
+                                              Container(
+                                                height: 14.h,
+                                                // color: AppConst.yellow,
+                                                width: double.infinity,
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Obx(() =>
+                                                          ((_myAccountController
+                                                                      .activeOrderCount
+                                                                      .value) >
+                                                                  0)
+                                                              ? ListView
+                                                                  .builder(
+                                                                  controller:
+                                                                      _recentController,
+                                                                  itemCount: ((_myAccountController
+                                                                              .activeOrdersModel
+                                                                              .value
+                                                                              ?.data)
+                                                                          ?.length) ??
+                                                                      0,
+                                                                  physics:
+                                                                      NeverScrollableScrollPhysics(),
+                                                                  scrollDirection:
+                                                                      Axis.horizontal,
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  itemExtent: (recentCount
+                                                                              .value ==
+                                                                          1)
+                                                                      ? SizeUtils
+                                                                              .horizontalBlockSize *
+                                                                          95
+                                                                      : (recentCount.value ==
+                                                                              2)
+                                                                          ? SizeUtils.horizontalBlockSize *
+                                                                              80
+                                                                          : SizeUtils.horizontalBlockSize *
+                                                                              30,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          index) {
+                                                                    //currentItems = index;
+                                                                    return RecentActiveOrders1(
+                                                                      recentCount:
+                                                                          recentCount,
+                                                                      myAccountController:
+                                                                          _myAccountController,
+                                                                      itemIndex: (_myAccountController.activeOrdersModel.value?.data!.length ??
+                                                                              0) -
+                                                                          1 -
+                                                                          index,
+                                                                    );
+                                                                    // : RecentActiveOrders(
+                                                                    //     myAccountController:
+                                                                    //         _myAccountController,
+                                                                    //     itemIndex: (_myAccountController
+                                                                    //             .activeOrdersModel
+                                                                    //             .value
+                                                                    //             ?.data!
+                                                                    //             .length)! -
+                                                                    //         1 -
+                                                                    //         index,
+                                                                    //   );
+                                                                  },
+                                                                )
+                                                              : SizedBox()),
+                                                      Obx(() => ((_homeController
+                                                                  .cartsCount
+                                                                  .value) >
+                                                              0)
+                                                          ? ListView.builder(
+                                                              controller:
+                                                                  _recentCartController,
+                                                              itemCount:
+                                                                  // 1,
+                                                                  ((_homeController
+                                                                          .getAllCartsModel
+                                                                          .value
+                                                                          ?.carts
+                                                                          ?.length) ??
+                                                                      0),
+                                                              physics:
+                                                                  PageScrollPhysics(),
+                                                              scrollDirection:
+                                                                  Axis.horizontal,
+                                                              shrinkWrap: true,
+                                                              itemExtent: (recentCount
+                                                                          .value ==
+                                                                      1)
+                                                                  ? SizeUtils
+                                                                          .horizontalBlockSize *
+                                                                      95
+                                                                  : (recentCount
+                                                                              .value ==
+                                                                          2)
+                                                                      ? SizeUtils
+                                                                              .horizontalBlockSize *
+                                                                          80
+                                                                      : SizeUtils
+                                                                              .horizontalBlockSize *
+                                                                          30,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                // currentItems = index;
+                                                                return RecentCarts12(
+                                                                  recentCount:
+                                                                      recentCount
+                                                                          .value,
+                                                                  moreStoreController:
+                                                                      _moreStoreController,
+                                                                  homeController:
+                                                                      _homeController,
+                                                                  itemIndex: (_homeController
+                                                                          .getAllCartsModel
+                                                                          .value
+                                                                          ?.carts
+                                                                          ?.length)! -
+                                                                      1 -
+                                                                      index,
+                                                                );
+                                                                // : RecentCarts(
+                                                                //     moreStoreController:
+                                                                //         _moreStoreController,
+                                                                //     homeController:
+                                                                //         _homeController,
+                                                                //     itemIndex: (_homeController
+                                                                //             .getAllCartsModel
+                                                                //             .value
+                                                                //             ?.carts
+                                                                //             ?.length)! -
+                                                                //         1 -
+                                                                //         index,
+                                                                //   );
+                                                              },
+                                                            )
+                                                          : SizedBox()),
+                                                      // ((_myAccountController
+                                                      //                     .activeOrdersModel
+                                                      //                     .value
+                                                      //                     ?.data)
+                                                      //                 ?.length ??
+                                                      //             0) >
+                                                      //         0
+                                                      //     ? InkWell(
+                                                      //         onTap: (() {
+                                                      //           Get.toNamed(AppRoutes
+                                                      //               .ActiveOrders);
+                                                      //         }),
+                                                      //         child: Padding(
+                                                      //           padding: EdgeInsets
+                                                      //               .only(
+                                                      //                   bottom:
+                                                      //                       2.h,
+                                                      //                   left: 4.w,
+                                                      //                   right:
+                                                      //                       4.w),
+                                                      //           child: Row(
+                                                      //             mainAxisAlignment:
+                                                      //                 MainAxisAlignment
+                                                      //                     .end,
+                                                      //             children: [
+                                                      //               Text(
+                                                      //                 "View All",
+                                                      //                 style:
+                                                      //                     TextStyle(
+                                                      //                   color: AppConst
+                                                      //                       .green,
+                                                      //                   fontSize:
+                                                      //                       SizeUtils.horizontalBlockSize *
+                                                      //                           3.4,
+                                                      //                   fontWeight:
+                                                      //                       FontWeight
+                                                      //                           .bold,
+                                                      //                 ),
+                                                      //               ),
+                                                      //               Icon(
+                                                      //                 Icons
+                                                      //                     .arrow_forward_ios_rounded,
+                                                      //                 color: AppConst
+                                                      //                     .green,
+                                                      //                 size: 1.8.h,
+                                                      //               )
+                                                      //             ],
+                                                      //           ),
+                                                      //         ),
+                                                      //       )
+                                                      //     : SizedBox(),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(),
+                                // Divider(
+                                //   thickness: 2.w,
+                                //   color: AppConst.veryLightGrey,
+                                // ),
+                                ((_homeController
+                                            .homePageFavoriteShopsList.length) >
+                                        0)
+                                    ? AllOffers()
+
+                                    //  Row(
+                                    //     children: [
+                                    //       InkWell(
+                                    //           onTap: (() {
+                                    //             Get.offAllNamed(
+                                    //                 AppRoutes
+                                    //                     .SelectLocationAddress,
+                                    //                 arguments: {
+                                    //                   "locationListAvilable": true
+                                    //                 });
+                                    //           }),
+                                    //           child: AllOffers()),
+                                    //       Spacer(),
+                                    //       InkWell(
+                                    //           onTap: (() {
+                                    //             Get.offAllNamed(
+                                    //                 AppRoutes
+                                    //                     .SelectLocationAddress,
+                                    //                 arguments: {
+                                    //                   "locationListAvilable":
+                                    //                       false
+                                    //                 });
+                                    //           }),
+                                    //           child: AllOffers()),
+                                    //     ],
+                                    //   )
+                                    : SizedBox(
+                                        // height: 5.h,
+                                        ),
+                                AllOffersListView(
+                                  controller: _scrollController,
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                // Divider(
+                                //   thickness: 2.w,
+                                //   color: AppConst.veryLightGrey,
+                                // ),
+
+                                Container(
+                                  color: AppConst.veryLightGrey,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 3.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 2.w, vertical: 1.h),
+                                            child: Container(
+                                                height: 5.5.h,
+                                                width: 30.w,
+                                                child: FittedBox(
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/logoname1.svg",
+                                                    fit: BoxFit.fill,
+                                                    color: AppConst.grey,
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 2.w, vertical: 1.h),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                // Text("Recent Transactions",
-                                                //     style: TextStyle(
-                                                //       fontFamily: 'MuseoSans',
-                                                //       color: AppConst.black,
-                                                //       fontSize: SizeUtils
-                                                //               .horizontalBlockSize *
-                                                //           4.5,
-                                                //       fontWeight:
-                                                //           FontWeight.w700,
-                                                //       fontStyle:
-                                                //           FontStyle.normal,
-                                                //     )),
-                                                // InkWell(
-                                                //   onTap: (() {
-                                                //     Get.toNamed(
-                                                //         AppRoutes.ActiveOrders);
-                                                //   }),
-                                                //   child: Padding(
-                                                //     padding: EdgeInsets.only(
-                                                //         bottom: 0.5.h),
-                                                //     child: Row(
-                                                //       mainAxisAlignment:
-                                                //           MainAxisAlignment.end,
-                                                //       children: [
-                                                //         Text(
-                                                //           "View All",
-                                                //           style: TextStyle(
-                                                //             color:
-                                                //                 AppConst.black,
-                                                //             fontSize: SizeUtils
-                                                //                     .horizontalBlockSize *
-                                                //                 3.4,
-                                                //             fontWeight:
-                                                //                 FontWeight.bold,
-                                                //           ),
-                                                //         ),
-                                                //         Icon(
-                                                //           Icons
-                                                //               .arrow_forward_ios_rounded,
-                                                //           color: AppConst.black,
-                                                //           size: 1.8.h,
-                                                //         )
-                                                //       ],
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                              ],
+                                            Text(
+                                              "Can't find your store ?",
+                                              style: TextStyle(
+                                                fontFamily: 'MuseoSans',
+                                                color: AppConst.grey,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    3.5,
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                              ),
                                             ),
                                             SizedBox(
-                                              height: 1.h,
+                                              height: 0.5.h,
                                             ),
-                                            Container(
-                                              height: 14.h,
-                                              // color: AppConst.yellow,
-                                              width: double.infinity,
-                                              child: SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
+                                            // Text(
+                                            //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
+                                            //   maxLines: 2,
+                                            //   style: TextStyle(
+                                            //     fontFamily: 'MuseoSans',
+                                            //     color: AppConst.grey,
+                                            //     fontSize:
+                                            //         SizeUtils.horizontalBlockSize * 3.5,
+                                            //     fontWeight: FontWeight.w500,
+                                            //     fontStyle: FontStyle.normal,
+                                            //   ),
+                                            // ),
+                                            // RichText(
+                                            //     text: TextSpan(children: [
+                                            //   TextSpan(
+                                            //     text:
+                                            //         "currently showing the stores in ",
+                                            //     style: TextStyle(
+                                            //       fontFamily: 'MuseoSans',
+                                            //       color: AppConst.grey,
+                                            //       fontSize:
+                                            //           SizeUtils.horizontalBlockSize *
+                                            //               3.5,
+                                            //       fontWeight: FontWeight.w500,
+                                            //       fontStyle: FontStyle.normal,
+                                            //     ),
+                                            //   ),
+                                            //   TextSpan(
+                                            //     text:
+                                            //         "${_addLocationController.userAddress.value}. ",
+                                            //     style: TextStyle(
+                                            //       fontFamily: 'MuseoSans',
+                                            //       color: AppConst.darkGrey,
+                                            //       fontSize:
+                                            //           SizeUtils.horizontalBlockSize *
+                                            //               3.5,
+                                            //       fontWeight: FontWeight.w500,
+                                            //       fontStyle: FontStyle.normal,
+                                            //     ),
+                                            //   ),
+                                            //   TextSpan(
+                                            //     text:
+                                            //         "Please change the location to see local store.",
+                                            //     style: TextStyle(
+                                            //       fontFamily: 'MuseoSans',
+                                            //       color: AppConst.grey,
+                                            //       fontSize:
+                                            //           SizeUtils.horizontalBlockSize *
+                                            //               3.5,
+                                            //       fontWeight: FontWeight.w500,
+                                            //       fontStyle: FontStyle.normal,
+                                            //     ),
+                                            //   ),
+                                            // ])),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                dynamic value =
+                                                    Get.to(AddressModel(
+                                                  // isSavedAddress: false,
+                                                  isHomeScreen: true,
+                                                  page: "home",
+                                                ));
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(),
                                                 child: Row(
                                                   children: [
-                                                    Obx(() =>
-                                                        ((_myAccountController
-                                                                    .activeOrderCount
-                                                                    .value) >
-                                                                0)
-                                                            ? ListView.builder(
-                                                                controller:
-                                                                    _recentController,
-                                                                itemCount: ((_myAccountController
-                                                                            .activeOrdersModel
-                                                                            .value
-                                                                            ?.data)
-                                                                        ?.length) ??
-                                                                    0,
-                                                                physics:
-                                                                    NeverScrollableScrollPhysics(),
-                                                                scrollDirection:
-                                                                    Axis.horizontal,
-                                                                shrinkWrap:
-                                                                    true,
-                                                                itemExtent: (recentCount
-                                                                            .value ==
-                                                                        1)
-                                                                    ? SizeUtils
-                                                                            .horizontalBlockSize *
-                                                                        95
-                                                                    : (recentCount.value ==
-                                                                            2)
-                                                                        ? SizeUtils.horizontalBlockSize *
-                                                                            80
-                                                                        : SizeUtils.horizontalBlockSize *
-                                                                            30,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  //currentItems = index;
-                                                                  return RecentActiveOrders1(
-                                                                    recentCount:
-                                                                        recentCount,
-                                                                    myAccountController:
-                                                                        _myAccountController,
-                                                                    itemIndex:
-                                                                        (_myAccountController.activeOrdersModel.value?.data!.length ??
-                                                                                0) -
-                                                                            1 -
-                                                                            index,
-                                                                  );
-                                                                  // : RecentActiveOrders(
-                                                                  //     myAccountController:
-                                                                  //         _myAccountController,
-                                                                  //     itemIndex: (_myAccountController
-                                                                  //             .activeOrdersModel
-                                                                  //             .value
-                                                                  //             ?.data!
-                                                                  //             .length)! -
-                                                                  //         1 -
-                                                                  //         index,
-                                                                  //   );
-                                                                },
-                                                              )
-                                                            : SizedBox()),
-                                                    Obx(() =>
-                                                        ((_homeController
-                                                                    .cartsCount
-                                                                    .value) >
-                                                                0)
-                                                            ? ListView.builder(
-                                                                controller:
-                                                                    _recentCartController,
-                                                                itemCount:
-                                                                    // 1,
-                                                                    ((_homeController
-                                                                            .getAllCartsModel
-                                                                            .value
-                                                                            ?.carts
-                                                                            ?.length) ??
-                                                                        0),
-                                                                physics:
-                                                                    PageScrollPhysics(),
-                                                                scrollDirection:
-                                                                    Axis.horizontal,
-                                                                shrinkWrap:
-                                                                    true,
-                                                                itemExtent: (recentCount
-                                                                            .value ==
-                                                                        1)
-                                                                    ? SizeUtils
-                                                                            .horizontalBlockSize *
-                                                                        95
-                                                                    : (recentCount.value ==
-                                                                            2)
-                                                                        ? SizeUtils.horizontalBlockSize *
-                                                                            80
-                                                                        : SizeUtils.horizontalBlockSize *
-                                                                            30,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  // currentItems = index;
-                                                                  return RecentCarts12(
-                                                                    recentCount:
-                                                                        recentCount
-                                                                            .value,
-                                                                    moreStoreController:
-                                                                        _moreStoreController,
-                                                                    homeController:
-                                                                        _homeController,
-                                                                    itemIndex: (_homeController
-                                                                            .getAllCartsModel
-                                                                            .value
-                                                                            ?.carts
-                                                                            ?.length)! -
-                                                                        1 -
-                                                                        index,
-                                                                  );
-                                                                  // : RecentCarts(
-                                                                  //     moreStoreController:
-                                                                  //         _moreStoreController,
-                                                                  //     homeController:
-                                                                  //         _homeController,
-                                                                  //     itemIndex: (_homeController
-                                                                  //             .getAllCartsModel
-                                                                  //             .value
-                                                                  //             ?.carts
-                                                                  //             ?.length)! -
-                                                                  //         1 -
-                                                                  //         index,
-                                                                  //   );
-                                                                },
-                                                              )
-                                                            : SizedBox()),
-                                                    // ((_myAccountController
-                                                    //                     .activeOrdersModel
-                                                    //                     .value
-                                                    //                     ?.data)
-                                                    //                 ?.length ??
-                                                    //             0) >
-                                                    //         0
-                                                    //     ? InkWell(
-                                                    //         onTap: (() {
-                                                    //           Get.toNamed(AppRoutes
-                                                    //               .ActiveOrders);
-                                                    //         }),
-                                                    //         child: Padding(
-                                                    //           padding: EdgeInsets
-                                                    //               .only(
-                                                    //                   bottom:
-                                                    //                       2.h,
-                                                    //                   left: 4.w,
-                                                    //                   right:
-                                                    //                       4.w),
-                                                    //           child: Row(
-                                                    //             mainAxisAlignment:
-                                                    //                 MainAxisAlignment
-                                                    //                     .end,
-                                                    //             children: [
-                                                    //               Text(
-                                                    //                 "View All",
-                                                    //                 style:
-                                                    //                     TextStyle(
-                                                    //                   color: AppConst
-                                                    //                       .green,
-                                                    //                   fontSize:
-                                                    //                       SizeUtils.horizontalBlockSize *
-                                                    //                           3.4,
-                                                    //                   fontWeight:
-                                                    //                       FontWeight
-                                                    //                           .bold,
-                                                    //                 ),
-                                                    //               ),
-                                                    //               Icon(
-                                                    //                 Icons
-                                                    //                     .arrow_forward_ios_rounded,
-                                                    //                 color: AppConst
-                                                    //                     .green,
-                                                    //                 size: 1.8.h,
-                                                    //               )
-                                                    //             ],
-                                                    //           ),
-                                                    //         ),
-                                                    //       )
-                                                    //     : SizedBox(),
+                                                    Text(
+                                                      "Click here to change the location",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        fontSize: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            3.5,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        color:
+                                                            AppConst.darkGreen,
+                                                      ),
+                                                    ),
+                                                    Icon(
+                                                      Icons.location_on_sharp,
+                                                      color: AppConst.darkGreen,
+                                                      size: 2.h,
+                                                    )
                                                   ],
                                                 ),
                                               ),
@@ -817,412 +1041,223 @@ class _HomeScreenState extends State<HomeScreen>
                                           ],
                                         ),
                                       ),
-                                    )
-                                  : SizedBox(),
-                              // Divider(
-                              //   thickness: 2.w,
-                              //   color: AppConst.veryLightGrey,
-                              // ),
-                              ((_homeController
-                                          .homePageFavoriteShopsList.length) >
-                                      0)
-                                  ? AllOffers()
-
-                                  //  Row(
-                                  //     children: [
-                                  //       InkWell(
-                                  //           onTap: (() {
-                                  //             Get.offAllNamed(
-                                  //                 AppRoutes
-                                  //                     .SelectLocationAddress,
-                                  //                 arguments: {
-                                  //                   "locationListAvilable": true
-                                  //                 });
-                                  //           }),
-                                  //           child: AllOffers()),
-                                  //       Spacer(),
-                                  //       InkWell(
-                                  //           onTap: (() {
-                                  //             Get.offAllNamed(
-                                  //                 AppRoutes
-                                  //                     .SelectLocationAddress,
-                                  //                 arguments: {
-                                  //                   "locationListAvilable":
-                                  //                       false
-                                  //                 });
-                                  //           }),
-                                  //           child: AllOffers()),
-                                  //     ],
-                                  //   )
-                                  : SizedBox(
-                                      // height: 5.h,
+                                      SizedBox(
+                                        height: 7.h,
                                       ),
-                              AllOffersListView(
-                                controller: _scrollController,
-                              ),
-                              SizedBox(
-                                height: 2.h,
-                              ),
-                              // Divider(
-                              //   thickness: 2.w,
-                              //   color: AppConst.veryLightGrey,
-                              // ),
-
-                              Container(
-                                color: AppConst.veryLightGrey,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 2.w, vertical: 1.h),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  Positioned(
+                    right: 2.w,
+                    bottom: 2.h,
+                    child: FloatingActionButton(
+                      heroTag: '2',
+                      elevation: 1,
+                      backgroundColor: Color(0xffffa300),
+                      // AppConst.kPrimaryColor,
+                      onPressed: () {
+                        Get.defaultDialog(
+                            titlePadding: EdgeInsets.symmetric(
+                                vertical: 1.h, horizontal: 2.w),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 1.h, horizontal: 2.w),
+                            title: "Choose any one",
+                            titleStyle: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.black,
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            content: Container(
+                              width: 90.w,
+                              height: 18.h,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Column(
+                                    children: [
+                                      InkWell(
+                                          onTap: () async {
+                                            // await _homeController.checkLocationPermission();
+                                            // if (_homeController.checkPermission.value) {
+                                            //   Position position = await Geolocator.getCurrentPosition();
+                                            //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
+                                            //   await _paymentController.getScanReceiptPageNearMeStoresData();
+                                            //   Get.back();
+                                            //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
+                                            //       ? null
+                                            //       : Get.toNamed(AppRoutes.ScanRecipetSearch);
+                                            // } else {
+                                            _paymentController.latLng = LatLng(
+                                                UserViewModel.currentLocation
+                                                    .value.latitude,
+                                                UserViewModel.currentLocation
+                                                    .value.longitude);
+                                            await _paymentController
+                                                .getScanReceiptPageNearMeStoresData();
+                                            Get.back();
+                                            (_paymentController
+                                                        .getRedeemCashInStorePageData
+                                                        .value
+                                                        ?.error ??
+                                                    false)
+                                                ? null
+                                                : Get.toNamed(AppRoutes
+                                                    .ScanRecipetSearch);
+                                            // }
+                                          },
                                           child: Container(
-                                              height: 5.5.h,
-                                              width: 30.w,
-                                              child: FittedBox(
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/logoname1.svg",
-                                                  fit: BoxFit.fill,
-                                                  color: AppConst.grey,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1.h, horizontal: 2.w),
+                                            width: 30.w,
+                                            height: 18.h,
+                                            decoration: new BoxDecoration(
+                                                color: AppConst.veryLightGrey,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                SizedBox(
+                                                  height: 1.h,
                                                 ),
-                                              )),
-                                        )
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.w, vertical: 1.h),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Can't find your store ?",
-                                            style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              color: AppConst.grey,
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  3.5,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 0.5.h,
-                                          ),
-                                          // Text(
-                                          //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
-                                          //   maxLines: 2,
-                                          //   style: TextStyle(
-                                          //     fontFamily: 'MuseoSans',
-                                          //     color: AppConst.grey,
-                                          //     fontSize:
-                                          //         SizeUtils.horizontalBlockSize * 3.5,
-                                          //     fontWeight: FontWeight.w500,
-                                          //     fontStyle: FontStyle.normal,
-                                          //   ),
-                                          // ),
-                                          // RichText(
-                                          //     text: TextSpan(children: [
-                                          //   TextSpan(
-                                          //     text:
-                                          //         "currently showing the stores in ",
-                                          //     style: TextStyle(
-                                          //       fontFamily: 'MuseoSans',
-                                          //       color: AppConst.grey,
-                                          //       fontSize:
-                                          //           SizeUtils.horizontalBlockSize *
-                                          //               3.5,
-                                          //       fontWeight: FontWeight.w500,
-                                          //       fontStyle: FontStyle.normal,
-                                          //     ),
-                                          //   ),
-                                          //   TextSpan(
-                                          //     text:
-                                          //         "${_addLocationController.userAddress.value}. ",
-                                          //     style: TextStyle(
-                                          //       fontFamily: 'MuseoSans',
-                                          //       color: AppConst.darkGrey,
-                                          //       fontSize:
-                                          //           SizeUtils.horizontalBlockSize *
-                                          //               3.5,
-                                          //       fontWeight: FontWeight.w500,
-                                          //       fontStyle: FontStyle.normal,
-                                          //     ),
-                                          //   ),
-                                          //   TextSpan(
-                                          //     text:
-                                          //         "Please change the location to see local store.",
-                                          //     style: TextStyle(
-                                          //       fontFamily: 'MuseoSans',
-                                          //       color: AppConst.grey,
-                                          //       fontSize:
-                                          //           SizeUtils.horizontalBlockSize *
-                                          //               3.5,
-                                          //       fontWeight: FontWeight.w500,
-                                          //       fontStyle: FontStyle.normal,
-                                          //     ),
-                                          //   ),
-                                          // ])),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              dynamic value =
-                                                  Get.to(AddressModel(
-                                                // isSavedAddress: false,
-                                                isHomeScreen: true,
-                                                page: "home",
-                                              ));
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Click here to change the location",
+                                                SizedBox(
+                                                  height: 8.h,
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                      'assets/images/Scan.png',
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text("Scan Receipt",
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontFamily: 'MuseoSans',
+                                                      color: AppConst.black,
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
-                                                          3.5,
+                                                          3.8,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                       fontStyle:
                                                           FontStyle.normal,
-                                                      color: AppConst.darkGreen,
+                                                    ))
+                                              ],
+                                            ),
+                                          )
+
+                                          // CircleAvatar(
+                                          //   radius: 10.w,
+                                          //   foregroundImage: NetworkImage(
+                                          //       "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
+                                          // ),
+                                          ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      InkWell(
+                                          onTap: () async {
+                                            _paymentController.isLoading.value =
+                                                true;
+                                            // await _homeController.checkLocationPermission();
+                                            // if (_homeController.checkPermission.value) {
+                                            //   Position position = await Geolocator.getCurrentPosition();
+                                            //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
+                                            //   await _paymentController.getRedeemCashInStorePage();
+                                            //   Get.back();
+                                            //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
+                                            //       ? null
+                                            //       : Get.toNamed(AppRoutes.LoyaltyCardScreen);
+                                            // } else {
+                                            _paymentController.latLng = LatLng(
+                                                UserViewModel.currentLocation
+                                                    .value.latitude,
+                                                UserViewModel.currentLocation
+                                                    .value.longitude);
+                                            await _paymentController
+                                                .getRedeemCashInStorePage();
+                                            Get.back();
+                                            (_paymentController
+                                                        .getRedeemCashInStorePageData
+                                                        .value
+                                                        ?.error ??
+                                                    false)
+                                                ? null
+                                                : Get.toNamed(AppRoutes
+                                                    .LoyaltyCardScreen);
+                                            // }
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1.h, horizontal: 2.w),
+                                            width: 30.w,
+                                            height: 18.h,
+                                            decoration: new BoxDecoration(
+                                                color: AppConst.veryLightGrey,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                SizedBox(
+                                                  height: 1.h,
+                                                ),
+                                                SizedBox(
+                                                  height: 8.h,
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                      'assets/images/Redeem.png',
                                                     ),
                                                   ),
-                                                  Icon(
-                                                    Icons.location_on_sharp,
-                                                    color: AppConst.darkGreen,
-                                                    size: 2.h,
-                                                  )
-                                                ],
-                                              ),
+                                                ),
+                                                Text("Redeem Cash",
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontFamily: 'MuseoSans',
+                                                      color: AppConst.black,
+                                                      fontSize: SizeUtils
+                                                              .horizontalBlockSize *
+                                                          3.8,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    ))
+                                              ],
                                             ),
+                                          )
+                                          // CircleAvatar(
+                                          //   radius: 10.w,
+                                          //   backgroundColor: Colors.white,
+                                          //   foregroundImage: NetworkImage(
+                                          //       "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
+                                          // ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 7.h,
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
+                            ));
+                      },
+                      child: Icon(
+                        CupertinoIcons.camera,
+                        size: 3.8.h,
                       ),
-                    ],
-                  ),
-                Positioned(
-                  right: 2.w,
-                  bottom: 2.h,
-                  child: FloatingActionButton(
-                    heroTag: '2',
-                    elevation: 1,
-                    backgroundColor: Color(0xffffa300),
-                    // AppConst.kPrimaryColor,
-                    onPressed: () {
-                      Get.defaultDialog(
-                          titlePadding: EdgeInsets.symmetric(
-                              vertical: 1.h, horizontal: 2.w),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 1.h, horizontal: 2.w),
-                          title: "Choose any one",
-                          titleStyle: TextStyle(
-                            fontFamily: 'MuseoSans',
-                            color: AppConst.black,
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          ),
-                          content: Container(
-                            width: 90.w,
-                            height: 18.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  children: [
-                                    InkWell(
-                                        onTap: () async {
-                                          // await _homeController.checkLocationPermission();
-                                          // if (_homeController.checkPermission.value) {
-                                          //   Position position = await Geolocator.getCurrentPosition();
-                                          //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
-                                          //   await _paymentController.getScanReceiptPageNearMeStoresData();
-                                          //   Get.back();
-                                          //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
-                                          //       ? null
-                                          //       : Get.toNamed(AppRoutes.ScanRecipetSearch);
-                                          // } else {
-                                          _paymentController.latLng = LatLng(
-                                              UserViewModel.currentLocation
-                                                  .value.latitude,
-                                              UserViewModel.currentLocation
-                                                  .value.longitude);
-                                          await _paymentController
-                                              .getScanReceiptPageNearMeStoresData();
-                                          Get.back();
-                                          (_paymentController
-                                                      .getRedeemCashInStorePageData
-                                                      .value
-                                                      ?.error ??
-                                                  false)
-                                              ? null
-                                              : Get.toNamed(
-                                                  AppRoutes.ScanRecipetSearch);
-                                          // }
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 1.h, horizontal: 2.w),
-                                          width: 30.w,
-                                          height: 18.h,
-                                          decoration: new BoxDecoration(
-                                              color: AppConst.veryLightGrey,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              SizedBox(
-                                                height: 8.h,
-                                                child: Image(
-                                                  image: AssetImage(
-                                                    'assets/images/Scan.png',
-                                                  ),
-                                                ),
-                                              ),
-                                              Text("Scan Receipt",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: AppConst.black,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.8,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                  ))
-                                            ],
-                                          ),
-                                        )
-
-                                        // CircleAvatar(
-                                        //   radius: 10.w,
-                                        //   foregroundImage: NetworkImage(
-                                        //       "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
-                                        // ),
-                                        ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    InkWell(
-                                        onTap: () async {
-                                          _paymentController.isLoading.value =
-                                              true;
-                                          // await _homeController.checkLocationPermission();
-                                          // if (_homeController.checkPermission.value) {
-                                          //   Position position = await Geolocator.getCurrentPosition();
-                                          //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
-                                          //   await _paymentController.getRedeemCashInStorePage();
-                                          //   Get.back();
-                                          //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
-                                          //       ? null
-                                          //       : Get.toNamed(AppRoutes.LoyaltyCardScreen);
-                                          // } else {
-                                          _paymentController.latLng = LatLng(
-                                              UserViewModel.currentLocation
-                                                  .value.latitude,
-                                              UserViewModel.currentLocation
-                                                  .value.longitude);
-                                          await _paymentController
-                                              .getRedeemCashInStorePage();
-                                          Get.back();
-                                          (_paymentController
-                                                      .getRedeemCashInStorePageData
-                                                      .value
-                                                      ?.error ??
-                                                  false)
-                                              ? null
-                                              : Get.toNamed(
-                                                  AppRoutes.LoyaltyCardScreen);
-                                          // }
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 1.h, horizontal: 2.w),
-                                          width: 30.w,
-                                          height: 18.h,
-                                          decoration: new BoxDecoration(
-                                              color: AppConst.veryLightGrey,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              SizedBox(
-                                                height: 8.h,
-                                                child: Image(
-                                                  image: AssetImage(
-                                                    'assets/images/Redeem.png',
-                                                  ),
-                                                ),
-                                              ),
-                                              Text("Redeem Cash",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: AppConst.black,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.8,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                  ))
-                                            ],
-                                          ),
-                                        )
-                                        // CircleAvatar(
-                                        //   radius: 10.w,
-                                        //   backgroundColor: Colors.white,
-                                        //   foregroundImage: NetworkImage(
-                                        //       "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
-                                        // ),
-                                        ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ));
-                    },
-                    child: Icon(
-                      CupertinoIcons.camera,
-                      size: 3.8.h,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

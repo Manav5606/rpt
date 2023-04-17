@@ -430,8 +430,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         resizeToAvoidBottomInset: true,
         bottomSheet: Container(
             decoration: BoxDecoration(
-                color: AppConst.transparent,
-                borderRadius: BorderRadius.circular(25)),
+                color: AppConst.white, borderRadius: BorderRadius.circular(12)),
             child: SignupBs()),
         body: SignUpBackground(),
       ),

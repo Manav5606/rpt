@@ -1,3 +1,5 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:customer_app/screens/root/network_check.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/ui/pages/chat/ChatView.dart';
@@ -25,8 +27,19 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Connectivity connectivity = Connectivity();
     return Scaffold(
-        body: _body(), bottomNavigationBar: BottomNavigation(context: context));
+        body: StreamBuilder<ConnectivityResult>(
+          stream: connectivity.onConnectivityChanged,
+          builder: (_, snapshot) {
+            return CheckInternetConnectionWidget(
+              snapshot: snapshot,
+              showsnankbar: false,
+              widget: _body(),
+            );
+          },
+        ),
+        bottomNavigationBar: BottomNavigation(context: context));
   }
 
   Widget _body() {

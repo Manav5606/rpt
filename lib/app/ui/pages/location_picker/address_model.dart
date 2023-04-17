@@ -1363,8 +1363,7 @@ class _SelectLocationAddressState extends State<SelectLocationAddress> {
         resizeToAvoidBottomInset: true,
         bottomSheet: Container(
             decoration: BoxDecoration(
-                color: AppConst.transparent,
-                borderRadius: BorderRadius.circular(25)),
+                color: AppConst.white, borderRadius: BorderRadius.circular(12)),
             child: Container(
               height: locationListAvilable ? 52.h : 28.h,
               child: Padding(

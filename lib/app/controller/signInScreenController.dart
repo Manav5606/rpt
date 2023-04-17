@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
+import 'package:customer_app/constants/app_const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
@@ -120,20 +121,21 @@ class SignInScreenController extends GetxController {
   int? _resendToken;
   Future submitPhoneNumber() async {
     try {
-      log("aavoooo :2");
+      log("inside submitPhoneNumber ");
       isLoading.value = true;
+
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: "+91${phoneNumberController.text}",
-        timeout: Duration(seconds: 60),
+        timeout: Duration(seconds: 5),
         verificationCompleted: (PhoneAuthCredential credential) {
-          log("aavoooo :4");
-          FirebaseAuth.instance
-              .signInWithCredential(credential)
-              .then((value) async {
-            if (value.user != null) {
-              log("Verification Complete successful With Mobile number");
-            }
-          });
+          // log("aavoooo :4");
+          // FirebaseAuth.instance
+          //     .signInWithCredential(credential)
+          //     .then((value) async {
+          //   if (value.user != null) {
+          //     log("Verification Complete successful With Mobile number");
+          //   }
+          // });
         },
         codeSent: (String verificationId, int? forceResendingToken) {
           isLoading.value = false;
@@ -144,20 +146,28 @@ class SignInScreenController extends GetxController {
           }
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          isLoading.value = false;
-          verification.value = verificationId;
+          // isLoading.value = false;
+          // verification.value = verificationId;
         },
         forceResendingToken: _resendToken,
         verificationFailed: (FirebaseAuthException e) {
           isLoading.value = false;
           if (e.code == 'invalid-phone-number') {
+            Get.showSnackbar(GetSnackBar(
+              backgroundColor: AppConst.black,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              snackStyle: SnackStyle.FLOATING,
+              borderRadius: 12,
+              duration: Duration(seconds: 2),
+              message: "The provided phone number is not valid.",
+              // title: "Amount must be at least \u{20b9}1"
+            ));
             log('The provided phone number is not valid.');
           }
         },
       );
     } catch (e) {
-      log("aavoooo :3");
-      print(e);
+      log("error submitPhoneNumber :$e");
     }
   }
 
@@ -187,13 +197,6 @@ class SignInScreenController extends GetxController {
             UserViewModel.setUser(userModel!);
             List<Wallet>? wallet = await signInRepository.getAllWallet();
             userModel?.wallet = wallet;
-            // try {
-            //   await connectUserStream(
-            //       userId: userModel?.id ?? '',
-            //       name: "${userModel?.firstName} ${userModel?.lastName}");
-            // } catch (e) {
-            //   print('e $e');
-            // }
 
             final box = Boxes.getCommonBoolBox();
             final flag = box.get(HiveConstants.SIGNUP_FLAG);
@@ -202,26 +205,47 @@ class SignInScreenController extends GetxController {
               UserViewModel.setReferFlag(true);
             }
             await checkSession(flag ?? false);
+          } else {
+            isLoading.value = false;
+            Get.showSnackbar(GetSnackBar(
+              backgroundColor: AppConst.black,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              snackStyle: SnackStyle.FLOATING,
+              borderRadius: 12,
+              duration: Duration(seconds: 2),
+              message: "User Not Created Please Try Again!",
+              // title: "Amount must be at least \u{20b9}1"
+            ));
           }
 
-          // if (flag!) {
-          //   log("flag 00:");
-          //   isLoading.value = false;
-          //   return Get.to(SignUpScreen());
-          // }
-          // await checkSession();
-          isLoading.value = false;
+          // isLoading.value = false;
         } else {
           isLoading.value = false;
-          print('Error');
+          Get.showSnackbar(GetSnackBar(
+            backgroundColor: AppConst.black,
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            snackStyle: SnackStyle.FLOATING,
+            borderRadius: 12,
+            duration: Duration(seconds: 2),
+            message: "Please Enter the vaild OTP!",
+            // title: "Amount must be at least \u{20b9}1"
+          ));
         }
       });
     } catch (e, st) {
       otpController.clear();
+
       isLoading.value = false;
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(content: Text("Invalid OTP : Please Enter Valid OTP")));
-      print('eeee :$e $st');
+      Get.showSnackbar(GetSnackBar(
+        backgroundColor: AppConst.black,
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        snackStyle: SnackStyle.FLOATING,
+        borderRadius: 12,
+        duration: Duration(seconds: 2),
+        message: "OTP Invaild : Please Enter Vaild OTP!",
+        // title: "Amount must be at least \u{20b9}1"
+      ));
+      log('eeee :$e $st');
     }
   }
 
@@ -283,23 +307,26 @@ class SignInScreenController extends GetxController {
         if (value.latitude != 0.0 && value.longitude != 0.0) {
           // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
           FireBaseNotification().firebaseCloudMessagingLSetup();
-          Future.delayed(Duration(seconds: 2), () {
-            Get.offAllNamed(AppRoutes.BaseScreen);
+          Future.delayed(Duration(seconds: 2), () async {
+            await Get.offAllNamed(AppRoutes.BaseScreen);
+            isLoading.value = false;
           });
           // });
         } else {
           if ((userModel?.addresses?.length ?? 0) > 0) {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) async {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+              await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": true});
+              isLoading.value = false;
               // _addLocationController.getCurrentLocation();
             });
           } else {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) async {
               FireBaseNotification().firebaseCloudMessagingLSetup();
-              Get.offAllNamed(AppRoutes.SelectLocationAddress,
+              await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": false});
+              isLoading.value = false;
               // _addLocationController.getCurrentLocation();
             });
           }
@@ -309,8 +336,10 @@ class SignInScreenController extends GetxController {
           userId: userModel!.id!,
           name: "${userModel?.firstName} ${userModel?.lastName}");
     } catch (e) {
-      Future.delayed(Duration(seconds: 2),
-          () => Get.offAllNamed(AppRoutes.Authentication));
+      Future.delayed(Duration(seconds: 2), () async {
+        await Get.offAllNamed(AppRoutes.Authentication);
+        isLoading.value = false;
+      });
     }
     // if (hiveRepository.hasUser()) {
     //   try {
