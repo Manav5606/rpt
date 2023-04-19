@@ -1023,38 +1023,22 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            RichText(
-                                                text: TextSpan(children: [
-                                              // TextSpan(
-                                              //     text:
-                                              //         "\u20b9${product.mrp ?? ""}",
-                                              //     style: TextStyle(
-                                              //         fontFamily: 'MuseoSans',
-                                              //         color: AppConst.grey,
-                                              //         fontSize: SizeUtils
-                                              //                 .horizontalBlockSize *
-                                              //             3.3,
-                                              //         fontWeight:
-                                              //             FontWeight.w500,
-                                              //         fontStyle:
-                                              //             FontStyle.normal,
-                                              //         decoration: TextDecoration
-                                              //             .lineThrough)),
-                                              TextSpan(
-                                                  text:
-                                                      " \u20b9${product.selling_price ?? ""}",
-                                                  style: TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: AppConst.black,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.5,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                  )),
-                                              TextSpan(
-                                                  text:
-                                                      "/ ${product.unit ?? ""}",
+                                            Text(
+                                                "\u20b9${product.selling_price ?? ""}",
+                                                style: TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.black,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      3.5,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle: FontStyle.normal,
+                                                )),
+                                            SizedBox(
+                                              width: 14.w,
+                                              child: Text(
+                                                  "/kg ${product.unit ?? ""}",
+                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     fontFamily: 'MuseoSans',
                                                     color: AppConst.black,
@@ -1063,8 +1047,50 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                                         3.3,
                                                     fontWeight: FontWeight.w500,
                                                     fontStyle: FontStyle.normal,
-                                                  ))
-                                            ])),
+                                                  )),
+                                            ),
+                                            // RichText(
+                                            //     text: TextSpan(children: [
+                                            //   // TextSpan(
+                                            //   //     text:
+                                            //   //         "\u20b9${product.mrp ?? ""}",
+                                            //   //     style: TextStyle(
+                                            //   //         fontFamily: 'MuseoSans',
+                                            //   //         color: AppConst.grey,
+                                            //   //         fontSize: SizeUtils
+                                            //   //                 .horizontalBlockSize *
+                                            //   //             3.3,
+                                            //   //         fontWeight:
+                                            //   //             FontWeight.w500,
+                                            //   //         fontStyle:
+                                            //   //             FontStyle.normal,
+                                            //   //         decoration: TextDecoration
+                                            //   //             .lineThrough)),
+                                            //   TextSpan(
+                                            //       text:
+                                            //           " \u20b9${product.selling_price ?? ""}",
+                                            //       style: TextStyle(
+                                            //         fontFamily: 'MuseoSans',
+                                            //         color: AppConst.black,
+                                            //         fontSize: SizeUtils
+                                            //                 .horizontalBlockSize *
+                                            //             3.5,
+                                            //         fontWeight: FontWeight.w500,
+                                            //         fontStyle: FontStyle.normal,
+                                            //       )),
+                                            //   TextSpan(
+                                            //       text:
+                                            //           "/ ${product.unit ?? ""}",
+                                            //       style: TextStyle(
+                                            //         fontFamily: 'MuseoSans',
+                                            //         color: AppConst.black,
+                                            //         fontSize: SizeUtils
+                                            //                 .horizontalBlockSize *
+                                            //             3.3,
+                                            //         fontWeight: FontWeight.w500,
+                                            //         fontStyle: FontStyle.normal,
+                                            //       ))
+                                            // ])),
 
                                             // Text(
                                             //     "\u20b9${product.mrp ?? "--"}/ ${product.unit ?? ""}",

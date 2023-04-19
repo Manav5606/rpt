@@ -20,7 +20,7 @@ class CategoryCard extends StatelessWidget {
       "assets/images/Fresh.png",
       "assets/images/groceryImage.png",
       "assets/images/Nonveg.png",
-      "assets/images/Pickup.png",
+      "assets/images/dryfruits.png",
       "assets/images/petfood.png",
       "assets/images/Medics.png",
     ];

@@ -381,48 +381,46 @@ class EmptyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Container(
-              //   height: 15.h,
-              //   width: 45.w,
-              //   child: Lottie.asset(
-              //       'assets/lottie/receipt.json'),
-              // ),
-              Icon(
-                icon,
-                // Icons.receipt,
-                size: 15.h,
-                color: AppConst.grey,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 4.h,
-          ),
-          Text(
-            text1!,
-            // "You haven't placed any ",
-            style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 5.5,
-              fontWeight: FontWeight.w300,
+    return Column(
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Container(
+            //   height: 15.h,
+            //   width: 45.w,
+            //   child: Lottie.asset(
+            //       'assets/lottie/receipt.json'),
+            // ),
+            Icon(
+              icon,
+              // Icons.receipt,
+              size: 15.h,
+              color: AppConst.grey,
             ),
+          ],
+        ),
+        SizedBox(
+          height: 4.h,
+        ),
+        Text(
+          text1!,
+          // "You haven't placed any ",
+          style: TextStyle(
+            fontSize: SizeUtils.horizontalBlockSize * 5.5,
+            fontWeight: FontWeight.w300,
           ),
-          Text(
-            text2!,
-            // "orders yet! ",
-            style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 5.5,
-              fontWeight: FontWeight.w300,
-            ),
-          )
-        ],
-      ),
+        ),
+        Text(
+          text2!,
+          // "orders yet! ",
+          style: TextStyle(
+            fontSize: SizeUtils.horizontalBlockSize * 5.5,
+            fontWeight: FontWeight.w300,
+          ),
+        )
+      ],
     );
   }
 }

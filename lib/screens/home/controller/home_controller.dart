@@ -246,13 +246,13 @@ class HomeController extends GetxController {
         image: "assets/images/Nonveg.png",
         isProductAvailable: true),
     CategoryModel(
-        id: "",
-        name: "30 mins",
-        title: " Delivery within 30 mins",
+        id: "641ecc4ad9f0df5fa16d708d",
+        name: "Dry Fruit Store",
+        title: "Dry Fruits ",
         subtitle: "new",
         keywordHelper: "",
-        image: "assets/images/Pickup.png",
-        isProductAvailable: false),
+        image: "assets/images/dryfruits.png",
+        isProductAvailable: true),
     CategoryModel(
         id: "63a689eff5416c5c5b0ab0a4",
         name: "petfood",

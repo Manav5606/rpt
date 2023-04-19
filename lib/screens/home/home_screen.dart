@@ -7,6 +7,7 @@ import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
+import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -474,87 +475,102 @@ class _HomeScreenState extends State<HomeScreen>
                                           ),
                                         ),
                                       )
-                                    : GridView(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 3,
-                                                crossAxisSpacing: 2.w,
-                                                mainAxisSpacing: 2.h),
-                                        children: List.generate(
-                                            (_homeController.category.length),
-                                            (index) {
-                                          return GestureDetector(
-                                              onTap: () async {
-                                                _homeController.storeDataList
-                                                    .clear();
-                                                _homeController
-                                                    .remoteConfigPageNumber = 1;
-                                                _homeController
-                                                        .isRemoteConfigPageAvailable =
-                                                    true;
+                                    : ((_homeController
+                                                .homePageFavoriteShopsList
+                                                .length) >
+                                            0)
+                                        ? GridView(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 3,
+                                                    crossAxisSpacing: 2.w,
+                                                    mainAxisSpacing: 2.h),
+                                            children: List.generate(
+                                                (_homeController
+                                                    .category.length), (index) {
+                                              return GestureDetector(
+                                                  onTap: () async {
+                                                    _homeController
+                                                        .storeDataList
+                                                        .clear();
+                                                    _homeController
+                                                        .remoteConfigPageNumber = 1;
+                                                    _homeController
+                                                            .isRemoteConfigPageAvailable =
+                                                        true;
 
-                                                _homeController.keywordValue =
-                                                    CategoryModel(
-                                                  isProductAvailable:
-                                                      _homeController
+                                                    _homeController
+                                                            .keywordValue =
+                                                        CategoryModel(
+                                                      isProductAvailable:
+                                                          _homeController
+                                                              .category[index]
+                                                              .isProductAvailable,
+                                                      id: _homeController
+                                                          .category[index].id,
+                                                      keywordHelper:
+                                                          _homeController
+                                                              .category[index]
+                                                              .keywordHelper,
+                                                      name: _homeController
+                                                          .category[index].name,
+                                                      subtitle: _homeController
                                                           .category[index]
-                                                          .isProductAvailable,
-                                                  id: _homeController
-                                                      .category[index].id,
-                                                  keywordHelper: _homeController
-                                                      .category[index]
-                                                      .keywordHelper,
-                                                  name: _homeController
-                                                      .category[index].name,
-                                                  subtitle: _homeController
-                                                      .category[index].subtitle,
-                                                  image: _homeController
-                                                      .category[index].image,
-                                                  title: _homeController
-                                                      .category[index].title,
-                                                );
-                                                await _homeController
-                                                    .homePageRemoteConfigData(
-                                                  productFetch: _homeController
-                                                      .category[index]
-                                                      .isProductAvailable,
-                                                  keyword: _homeController
-                                                      .category[index].name,
-                                                  keywordHelper: _homeController
-                                                      .category[index]
-                                                      .keywordHelper,
-                                                  id: _homeController
-                                                      .category[index].id,
-                                                );
-                                                (!(_homeController
-                                                        .category[index]
-                                                        .isProductAvailable))
-                                                    ? await Get.to(() =>
-                                                        InStoreScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]))
-                                                    : await Get.to(() =>
-                                                        StoreListScreen(
-                                                            category:
-                                                                _homeController
-                                                                        .category[
-                                                                    index]));
+                                                          .subtitle,
+                                                      image: _homeController
+                                                          .category[index]
+                                                          .image,
+                                                      title: _homeController
+                                                          .category[index]
+                                                          .title,
+                                                    );
+                                                    await _homeController
+                                                        .homePageRemoteConfigData(
+                                                      productFetch:
+                                                          _homeController
+                                                              .category[index]
+                                                              .isProductAvailable,
+                                                      keyword: _homeController
+                                                          .category[index].name,
+                                                      keywordHelper:
+                                                          _homeController
+                                                              .category[index]
+                                                              .keywordHelper,
+                                                      id: _homeController
+                                                          .category[index].id,
+                                                    );
+                                                    (!(_homeController
+                                                            .category[index]
+                                                            .isProductAvailable))
+                                                        ? await Get.to(() =>
+                                                            InStoreScreen(
+                                                                category:
+                                                                    _homeController
+                                                                            .category[
+                                                                        index]))
+                                                        : await Get.to(() =>
+                                                            StoreListScreen(
+                                                                category:
+                                                                    _homeController
+                                                                            .category[
+                                                                        index]));
 
-                                                if (Constants.isAbleToCallApi)
-                                                  await _homeController
-                                                      .getAllCartsData();
-                                              },
-                                              child: CategoryCard(
-                                                  index: index,
-                                                  category: _homeController
-                                                      .category[index]));
-                                        }),
-                                      ),
+                                                    if (Constants
+                                                        .isAbleToCallApi)
+                                                      await _homeController
+                                                          .getAllCartsData();
+                                                  },
+                                                  child: CategoryCard(
+                                                      index: index,
+                                                      category: _homeController
+                                                          .category[index]));
+                                            }),
+                                          )
+                                        : SizedBox(),
                                 // SizedBox(
                                 //   height: 2.h,
                                 // ),
@@ -882,8 +898,16 @@ class _HomeScreenState extends State<HomeScreen>
                                     //     ],
                                     //   )
                                     : SizedBox(
-                                        // height: 5.h,
-                                        ),
+                                        height: 55.h,
+                                        // child: EmptyHistoryPage(
+                                        //     icon: Icons.store_rounded,
+                                        //     text1: "Store not found ",
+                                        //     text2: "",
+                                        //     // "for selected location . please ",
+                                        //     text3: ""
+                                        //     // "select a differnrt location "
+                                        //     ),
+                                      ),
                                 AllOffersListView(
                                   controller: _scrollController,
                                 ),
@@ -1012,6 +1036,8 @@ class _HomeScreenState extends State<HomeScreen>
                                               child: Container(
                                                 decoration: BoxDecoration(),
                                                 child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       "Click here to change the location",
