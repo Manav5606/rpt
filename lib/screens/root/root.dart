@@ -90,10 +90,15 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
         final UserModel userModel = hiveRepository.getCurrentUser();
 
         //check for siginupflag
-        final box = Boxes.getCommonBoolBox();
-        final flag = box.get(HiveConstants.SIGNUP_FLAG);
-        log("SiginUp :$flag");
-        if (flag!) {
+        // final box = Boxes.getCommonBoolBox();
+        // final flag = box.get(HiveConstants.SIGNUP_FLAG);
+        // log("SiginUp :$flag");
+        // if (flag!) {
+        //   return Get.to(SignUpScreen());
+        // }
+        //check user exit
+        if (!((userModel.email != null && userModel.email != "") &&
+            (userModel.firstName != null && userModel.firstName != ""))) {
           return Get.to(SignUpScreen());
         }
 

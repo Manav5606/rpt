@@ -65,6 +65,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
   void _handlePaymentError(PaymentFailureResponse response) {
     //todo handle paymentError
+    finalPlaceOrder1(response: response);
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
@@ -72,6 +73,71 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
     finalPlaceOrder(response: response);
     //todo handle PaymentSuccess
   }
+   void finalPlaceOrder1({PaymentFailureResponse? response}) async {
+    await _addCartController.finalPlaceOrder(
+        order_type: "online",
+        total: double.parse(_addCartController
+                .getOrderConfirmPageDataModel.value?.data?.total
+                ?.toStringAsFixed(2) ??
+            '0.0'),
+        final_payable_amount: double.parse(_addCartController
+                .getOrderConfirmPageDataModel.value?.data?.finalpayableAmount
+                ?.toStringAsFixed(2) ??
+            "0.0"),
+        previous_total_amount: double.parse(_addCartController
+                .getOrderConfirmPageDataModel.value?.data?.previousTotalAmount
+                ?.toStringAsFixed(2) ??
+            "0.0"),
+        store:
+            _addCartController.reviewCart.value?.data?.storeDoc?.id ?? storeID,
+        cartId: _addCartController.cartId.value,
+        products: _addCartController.reviewCart.value?.data?.products,
+        rawItem: _addCartController.reviewCart.value?.data?.rawItems,
+        inventories: _addCartController.reviewCart.value?.data?.inventories,
+        deliveryTimeSlot: _addCartController.dayTimeSlots.value,
+        walletAmount: double.parse(_addCartController.getOrderConfirmPageDataModel.value?.data?.usedWalletAmount?.toStringAsFixed(2) ?? "0.0"),
+        deliveryFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.deliveryFee ?? 0,
+        packagingFee: _addCartController.getOrderConfirmPageDataModel.value?.data?.packagingFee ?? 0,
+        // bill_discount_offer_amount: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferAmount ?? 0,
+        // bill_discount_offer_status: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferStatus ?? false,
+        // bill_discount_offer_target: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferTarget ?? 0,
+        // omit_bill_amount: _addCartController.getOrderConfirmPageDataModel.value?.data?.omit_bill_amount ?? 0,
+        razorPayPaymentId:  '',
+        razorPayOrderId:  '',
+        razorPaySignature:  '',
+        lat: _addCartController.selectAddressIndex.value?.location?.lat ?? _addLocationController.latitude.value,
+        lng: _addCartController.selectAddressIndex.value?.location?.lng ?? _addLocationController.longitude.value,
+        address: _addCartController.selectAddressIndex.value?.address ?? _addLocationController.userAddress.value,
+        pickedup: _addCartController.pickedup.value);
+
+    if (_addCartController.orderModel.value != null) {
+      _addCartController.formatDate();
+      await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => OrderSucessScreen(
+                    order: _addCartController.orderModel.value!,
+                    type: "order",
+                  )),
+          (Route<dynamic> route) => route.isFirst);
+      _addCartController.refresh();
+      _homeController.apiCall();
+      // _homeController.getAllCartsData();
+    } else {
+      Get.to(
+          OrderFailScreen(
+            order: _addCartController.orderModel.value!,
+            type: "order",
+          ),
+          transition: Transition.fadeIn);
+      Timer(Duration(seconds: 2), () {
+        Get.offAllNamed(AppRoutes.BaseScreen);
+      });
+      // Snack.bottom('Error', 'Failed to send receipt');
+
+    }
+  }
+
 
   void finalPlaceOrder({PaymentSuccessResponse? response}) async {
     await _addCartController.finalPlaceOrder(
@@ -1973,7 +2039,7 @@ class DisplayGuaranteeCard extends StatelessWidget {
                   text: TextSpan(children: [
                 TextSpan(
                   text:
-                      "By placing your order you agree to be bound by the bloyal ",
+                      "By placing your order you agree to be bound by the Recipto ",
                   style: TextStyle(
                     fontFamily: 'MuseoSans',
                     color: AppConst.grey,

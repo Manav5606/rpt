@@ -57,7 +57,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Scan Receipt",
+                  "Chat Order",
                   style: TextStyle(
                     fontFamily: 'MuseoSans',
                     fontWeight: FontWeight.w700,

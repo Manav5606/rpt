@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:customer_app/app/controller/my_wallet_controller.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,6 +53,7 @@ class HomeController extends GetxController {
   final ScrollController remoteConfigScrollController = ScrollController();
   late CategoryModel keywordValue;
   final AddLocationController _addLocationController = Get.find();
+  final MyWalletController _myWalletController = Get.put(MyWalletController());
 
   Future<void> getAllCartsData() async {
     try {
@@ -79,6 +81,7 @@ class HomeController extends GetxController {
         pageNumber++;
       } else {
         isPageAvailable = false;
+        _myWalletController.getAllWalletByCustomer();
       }
       isPageLoading.value = false;
       homePageFavoriteShopsList.refresh();

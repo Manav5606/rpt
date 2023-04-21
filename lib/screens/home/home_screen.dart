@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
+import 'package:customer_app/app/ui/pages/my_wallet/wallet_screen.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
@@ -291,190 +292,204 @@ class _HomeScreenState extends State<HomeScreen>
                                                     ?.carts?.length) ??
                                                 0) >
                                             0)
-                                    ? Container(
-                                        height: 18.h,
-                                        width: double.infinity,
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: [
-                                              ListView.builder(
-                                                controller: _categoryController,
-                                                itemCount: _homeController
-                                                    .category.length,
-                                                //  _homeController
-                                                //         .getHomePageFavoriteShopsModel
-                                                //         .value
-                                                //         ?.keywords
-                                                //         ?.length ??
-                                                physics: PageScrollPhysics(),
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                shrinkWrap: true,
-                                                itemExtent: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    30,
-                                                itemBuilder: (context, index) {
-                                                  //currentItems = index;
-                                                  return GestureDetector(
-                                                      onTap: () async {
-                                                        _homeController
-                                                            .storeDataList
-                                                            .clear();
-                                                        _homeController
-                                                            .remoteConfigPageNumber = 1;
-                                                        _homeController
-                                                                .isRemoteConfigPageAvailable =
-                                                            true;
-                                                        // _homeController.keywordValue =
-                                                        //     CategoryModel(
-                                                        //   isProductAvailable: _homeController
-                                                        //           .getHomePageFavoriteShopsModel
-                                                        //           .value
-                                                        //           ?.keywords?[index]
-                                                        //           .isProductAvailable ??
-                                                        //       false,
-                                                        //   id: _homeController
-                                                        //       .getHomePageFavoriteShopsModel
-                                                        //       .value!
-                                                        //       .keywords![index]
-                                                        //       .id,
-                                                        //   keywordHelper: _homeController
-                                                        //       .getHomePageFavoriteShopsModel
-                                                        //       .value!
-                                                        //       .keywords![index]
-                                                        //       .keywordHelper,
-                                                        //   name: _homeController
-                                                        //       .getHomePageFavoriteShopsModel
-                                                        //       .value!
-                                                        //       .keywords![index]
-                                                        //       .name,
-                                                        //   subtitle: '',
-                                                        //   image: '',
-                                                        // );
-                                                        _homeController
-                                                                .keywordValue =
-                                                            CategoryModel(
-                                                          isProductAvailable:
-                                                              _homeController
-                                                                  .category[
-                                                                      index]
-                                                                  .isProductAvailable,
-                                                          id: _homeController
-                                                              .category[index]
-                                                              .id,
-                                                          keywordHelper:
-                                                              _homeController
-                                                                  .category[
-                                                                      index]
-                                                                  .keywordHelper,
-                                                          name: _homeController
-                                                              .category[index]
-                                                              .name,
-                                                          subtitle:
-                                                              _homeController
-                                                                  .category[
-                                                                      index]
-                                                                  .subtitle,
-                                                          image: _homeController
-                                                              .category[index]
-                                                              .image,
-                                                          title: _homeController
-                                                              .category[index]
-                                                              .title,
-                                                        );
-                                                        _homeController
-                                                            .isRemoteConfigPageLoading1
-                                                            .value = true;
-                                                        if (!(_homeController
-                                                            .category[index]
-                                                            .isProductAvailable)) {
-                                                          Get.to(() => InStoreScreen(
-                                                              category:
+                                    ? ((_homeController
+                                                .homePageFavoriteShopsList
+                                                .length) >
+                                            0)
+                                        ? Container(
+                                            height: 18.h,
+                                            width: double.infinity,
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children: [
+                                                  ListView.builder(
+                                                    controller:
+                                                        _categoryController,
+                                                    itemCount: _homeController
+                                                        .category.length,
+                                                    //  _homeController
+                                                    //         .getHomePageFavoriteShopsModel
+                                                    //         .value
+                                                    //         ?.keywords
+                                                    //         ?.length ??
+                                                    physics:
+                                                        PageScrollPhysics(),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    itemExtent: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        30,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      //currentItems = index;
+                                                      return GestureDetector(
+                                                          onTap: () async {
+                                                            _homeController
+                                                                .storeDataList
+                                                                .clear();
+                                                            _homeController
+                                                                .remoteConfigPageNumber = 1;
+                                                            _homeController
+                                                                    .isRemoteConfigPageAvailable =
+                                                                true;
+                                                            // _homeController.keywordValue =
+                                                            //     CategoryModel(
+                                                            //   isProductAvailable: _homeController
+                                                            //           .getHomePageFavoriteShopsModel
+                                                            //           .value
+                                                            //           ?.keywords?[index]
+                                                            //           .isProductAvailable ??
+                                                            //       false,
+                                                            //   id: _homeController
+                                                            //       .getHomePageFavoriteShopsModel
+                                                            //       .value!
+                                                            //       .keywords![index]
+                                                            //       .id,
+                                                            //   keywordHelper: _homeController
+                                                            //       .getHomePageFavoriteShopsModel
+                                                            //       .value!
+                                                            //       .keywords![index]
+                                                            //       .keywordHelper,
+                                                            //   name: _homeController
+                                                            //       .getHomePageFavoriteShopsModel
+                                                            //       .value!
+                                                            //       .keywords![index]
+                                                            //       .name,
+                                                            //   subtitle: '',
+                                                            //   image: '',
+                                                            // );
+                                                            _homeController
+                                                                    .keywordValue =
+                                                                CategoryModel(
+                                                              isProductAvailable:
                                                                   _homeController
-                                                                          .category[
-                                                                      index]));
-                                                        } else {
-                                                          Get.to(() => StoreListScreen(
-                                                              category:
-                                                                  _homeController
-                                                                          .category[
-                                                                      index]));
-                                                        }
-
-                                                        await _homeController
-                                                            .homePageRemoteConfigData(
-                                                          productFetch:
-                                                              _homeController
-                                                                  .category[
-                                                                      index]
-                                                                  .isProductAvailable,
-                                                          keyword:
-                                                              _homeController
-                                                                  .category[
-                                                                      index]
-                                                                  .name,
-                                                          keywordHelper:
-                                                              _homeController
-                                                                  .category[
-                                                                      index]
-                                                                  .keywordHelper,
-                                                          id: _homeController
-                                                              .category[index]
-                                                              .id,
-                                                          // productFetch:
-                                                          //  _homeController
-                                                          //         .getHomePageFavoriteShopsModel
-                                                          //         .value
-                                                          //         ?.keywords?[index]
-                                                          //         .isProductAvailable ??
-                                                          //     false,
-                                                          // keyword: _homeController
-                                                          //     .getHomePageFavoriteShopsModel
-                                                          //     .value!
-                                                          //     .keywords![index]
-                                                          //     .name,
-                                                          // keywordHelper: _homeController
-                                                          //     .getHomePageFavoriteShopsModel
-                                                          //     .value!
-                                                          //     .keywords![index]
-                                                          //     .keywordHelper,
-                                                          // id: _homeController
-                                                          //     .getHomePageFavoriteShopsModel
-                                                          //     .value!
-                                                          //     .keywords![index]
-                                                          //     .id,
-                                                        );
-                                                        //      (!(_homeController
-                                                        //         .getHomePageFavoriteShopsModel
-                                                        //         .value
-                                                        //         ?.keywords?[index]
-                                                        //         .isProductAvailable ??
-                                                        //     false))
-                                                        // ? await Get.to(() => InStoreScreen(
-                                                        //     category: _homeController
-                                                        //         .getHomePageFavoriteShopsModel
-                                                        //         .value!
-                                                        //         .keywords![index]))
-                                                        // : await Get.to(
-                                                        //     () => StoreListScreen());
-                                                        if (Constants
-                                                            .isAbleToCallApi)
-                                                          await _homeController
-                                                              .getAllCartsData();
-                                                      },
-                                                      child: CategoryCard(
-                                                          index: index,
-                                                          category:
-                                                              _homeController
                                                                       .category[
-                                                                  index]));
-                                                },
+                                                                          index]
+                                                                      .isProductAvailable,
+                                                              id: _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .id,
+                                                              keywordHelper:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .keywordHelper,
+                                                              name:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .name,
+                                                              subtitle:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .subtitle,
+                                                              image:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .image,
+                                                              title:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .title,
+                                                            );
+                                                            _homeController
+                                                                .isRemoteConfigPageLoading1
+                                                                .value = true;
+                                                            if (!(_homeController
+                                                                .category[index]
+                                                                .isProductAvailable)) {
+                                                              Get.to(() => InStoreScreen(
+                                                                  category: _homeController
+                                                                          .category[
+                                                                      index]));
+                                                            } else {
+                                                              Get.to(() => StoreListScreen(
+                                                                  category: _homeController
+                                                                          .category[
+                                                                      index]));
+                                                            }
+
+                                                            await _homeController
+                                                                .homePageRemoteConfigData(
+                                                              productFetch:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .isProductAvailable,
+                                                              keyword:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .name,
+                                                              keywordHelper:
+                                                                  _homeController
+                                                                      .category[
+                                                                          index]
+                                                                      .keywordHelper,
+                                                              id: _homeController
+                                                                  .category[
+                                                                      index]
+                                                                  .id,
+                                                              // productFetch:
+                                                              //  _homeController
+                                                              //         .getHomePageFavoriteShopsModel
+                                                              //         .value
+                                                              //         ?.keywords?[index]
+                                                              //         .isProductAvailable ??
+                                                              //     false,
+                                                              // keyword: _homeController
+                                                              //     .getHomePageFavoriteShopsModel
+                                                              //     .value!
+                                                              //     .keywords![index]
+                                                              //     .name,
+                                                              // keywordHelper: _homeController
+                                                              //     .getHomePageFavoriteShopsModel
+                                                              //     .value!
+                                                              //     .keywords![index]
+                                                              //     .keywordHelper,
+                                                              // id: _homeController
+                                                              //     .getHomePageFavoriteShopsModel
+                                                              //     .value!
+                                                              //     .keywords![index]
+                                                              //     .id,
+                                                            );
+                                                            //      (!(_homeController
+                                                            //         .getHomePageFavoriteShopsModel
+                                                            //         .value
+                                                            //         ?.keywords?[index]
+                                                            //         .isProductAvailable ??
+                                                            //     false))
+                                                            // ? await Get.to(() => InStoreScreen(
+                                                            //     category: _homeController
+                                                            //         .getHomePageFavoriteShopsModel
+                                                            //         .value!
+                                                            //         .keywords![index]))
+                                                            // : await Get.to(
+                                                            //     () => StoreListScreen());
+                                                            if (Constants
+                                                                .isAbleToCallApi)
+                                                              await _homeController
+                                                                  .getAllCartsData();
+                                                          },
+                                                          child: CategoryCard(
+                                                              index: index,
+                                                              category:
+                                                                  _homeController
+                                                                          .category[
+                                                                      index]));
+                                                    },
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
+                                            ),
+                                          )
+                                        : SizedBox()
                                     : ((_homeController
                                                 .homePageFavoriteShopsList
                                                 .length) >
@@ -595,7 +610,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                 0) >
                                             0
                                     ? Container(
-                                        height: 18.h,
+                                        height: 20.h,
                                         decoration: BoxDecoration(
                                             color: Color(0xfff2f3f7)),
                                         child: Padding(
@@ -610,18 +625,18 @@ class _HomeScreenState extends State<HomeScreen>
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  // Text("Recent Transactions",
-                                                  //     style: TextStyle(
-                                                  //       fontFamily: 'MuseoSans',
-                                                  //       color: AppConst.black,
-                                                  //       fontSize: SizeUtils
-                                                  //               .horizontalBlockSize *
-                                                  //           4.5,
-                                                  //       fontWeight:
-                                                  //           FontWeight.w700,
-                                                  //       fontStyle:
-                                                  //           FontStyle.normal,
-                                                  //     )),
+                                                  Text("Recent Transactions",
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color: AppConst.black,
+                                                        fontSize: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            4.5,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
                                                   // InkWell(
                                                   //   onTap: (() {
                                                   //     Get.toNamed(
@@ -899,14 +914,9 @@ class _HomeScreenState extends State<HomeScreen>
                                     //   )
                                     : SizedBox(
                                         height: 55.h,
-                                        // child: EmptyHistoryPage(
-                                        //     icon: Icons.store_rounded,
-                                        //     text1: "Store not found ",
-                                        //     text2: "",
-                                        //     // "for selected location . please ",
-                                        //     text3: ""
-                                        //     // "select a differnrt location "
-                                        //     ),
+                                        child: WalletCardList(
+                                          navWithOutTransaction: true,
+                                        ),
                                       ),
                                 AllOffersListView(
                                   controller: _scrollController,
