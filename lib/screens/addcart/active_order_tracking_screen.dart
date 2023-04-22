@@ -453,7 +453,7 @@ class _ActiveOrderTrackingScreenState extends State<ActiveOrderTrackingScreen> {
                                             (widget.activeOrder?.orderType ==
                                                     "receipt")
                                                 ? "Earned Cashback- \u{20B9} ${widget.activeOrder?.total_cashback ?? 0}"
-                                                : "Amount Paid- \u{20B9} ${widget.activeOrder?.total ?? 0}",
+                                                : "Amount Paid- \u{20B9} ${widget.activeOrder?.iPayment ?? 0}",
                                             style: TextStyle(
                                                 fontSize: SizeUtils
                                                         .horizontalBlockSize *
@@ -569,44 +569,56 @@ class _ActiveOrderTrackingScreenState extends State<ActiveOrderTrackingScreen> {
                                         (widget.activeOrder?.orderType !=
                                             "receipt")) {
                                       log("payment method ontap");
-                                      await _addCartController
-                                          .createRazorPayOrder(
-                                              storeId: widget.activeOrder?.store
-                                                      ?.sId ??
-                                                  '',
-                                              amount: double.parse(widget
-                                                      .activeOrder
-                                                      ?.final_payable_amount
-                                                      ?.toStringAsFixed(2) ??
-                                                  "0.0"));
-                                      if (_addCartController
-                                              .createRazorpayResponseModel
-                                              .value !=
-                                          null) {
-                                        await launchPayment(
-                                                widget.activeOrder
-                                                        ?.final_payable_amount
-                                                        ?.toInt() ??
-                                                    00,
-                                                _addCartController
-                                                        .createRazorpayResponseModel
-                                                        .value
-                                                        ?.orderId ??
-                                                    '')
-                                            .then((value) {
-                                          if (value == true) {
-                                            postOrderCustomerCollectAmount();
-                                          }
-                                        });
-                                      } else {
-                                        Get.showSnackbar(GetBar(
-                                          message:
-                                              "failed to create razor order",
-                                          duration: Duration(seconds: 2),
-                                        ));
-                                      }
-                                    } else {
-                                      log("order paid ");
+                                      Get.showSnackbar(GetSnackBar(
+                                        backgroundColor: AppConst.black,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 12),
+                                        snackStyle: SnackStyle.FLOATING,
+                                        borderRadius: 12,
+                                        duration: Duration(seconds: 2),
+                                        message: "Pay to Rider or at Store",
+                                        // title: "Amount must be at least \u{20b9}1"
+                                      ));
+
+                                      //razorpay code committed uncommited when razorpay activate
+                                      //   await _addCartController
+                                      //       .createRazorPayOrder(
+                                      //           storeId: widget.activeOrder?.store
+                                      //                   ?.sId ??
+                                      //               '',
+                                      //           amount: double.parse(widget
+                                      //                   .activeOrder
+                                      //                   ?.final_payable_amount
+                                      //                   ?.toStringAsFixed(2) ??
+                                      //               "0.0"));
+                                      //   if (_addCartController
+                                      //           .createRazorpayResponseModel
+                                      //           .value !=
+                                      //       null) {
+                                      //     await launchPayment(
+                                      //             widget.activeOrder
+                                      //                     ?.final_payable_amount
+                                      //                     ?.toInt() ??
+                                      //                 00,
+                                      //             _addCartController
+                                      //                     .createRazorpayResponseModel
+                                      //                     .value
+                                      //                     ?.orderId ??
+                                      //                 '')
+                                      //         .then((value) {
+                                      //       if (value == true) {
+                                      //         postOrderCustomerCollectAmount();
+                                      //       }
+                                      //     });
+                                      //   } else {
+                                      //     Get.showSnackbar(GetBar(
+                                      //       message:
+                                      //           "failed to create razor order",
+                                      //       duration: Duration(seconds: 2),
+                                      //     ));
+                                      //   }
+                                      // } else {
+                                      //   log("order paid ");
                                     }
                                     ;
                                   }),

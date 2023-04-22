@@ -34,6 +34,8 @@ class ActiveOrderData {
   String? orderType;
   int? total;
   num? final_payable_amount;
+  num? iPayment;
+
   int? cashback_percentage;
   num? total_cashback;
   num? wallet_amount;
@@ -53,6 +55,7 @@ class ActiveOrderData {
     this.orderType,
     this.total,
     this.total_cashback,
+    this.iPayment,
     this.wallet_amount,
     this.cashback_percentage,
     this.createdAt,
@@ -74,6 +77,7 @@ class ActiveOrderData {
     receipt = json['receipt'];
     orderType = json['order_type'];
     total = json['total'];
+    iPayment = json['iPayment'];
     final_payable_amount = json['final_payable_amount'];
     cashback_percentage = json['cashback_percentage'];
     total_cashback = json['total_cashback'];
@@ -115,6 +119,7 @@ class ActiveOrderData {
     data['receipt'] = this.receipt;
     data['order_type'] = this.orderType;
     data['total'] = this.total;
+    data['iPayment'] = this.iPayment;
     data['final_payable_amount'] = this.final_payable_amount;
     data['cashback_percentage'] = this.cashback_percentage;
     data['total_cashback'] = this.total_cashback;

@@ -1247,70 +1247,74 @@ class _HistoryOrderTrackingScreenState
                                       InkWell(
                                         highlightColor: AppConst.grey,
                                         onTap: (() async {
-                                          if (widget.order?.status ==
-                                                  "pending" ||
-                                              (widget.order?.orderType ==
-                                                  "receipt")) {
-                                            Get.to(HistoryOrderItems(
-                                              order: widget.order,
-                                              TimeSlot: TimeSlot,
-                                            ));
-                                          } else if (((widget.order?.status ==
-                                                      "picked_up") ||
-                                                  (widget.order?.status ==
-                                                      "accepted") ||
-                                                  (widget.order?.status ==
-                                                      "ready")) &&
-                                              ((widget.order
-                                                          ?.final_payable_amount ??
-                                                      0) >
-                                                  0) &&
-                                              (widget.order?.orderType !=
-                                                  "receipt")) {
-                                            log("payment method ontap");
-                                            await _addCartController
-                                                .createRazorPayOrder(
-                                                    storeId: widget.order?.store
-                                                            ?.sId ??
-                                                        '',
-                                                    amount: double.parse(widget
-                                                            .order
-                                                            ?.final_payable_amount
-                                                            ?.toStringAsFixed(
-                                                                2) ??
-                                                        "0.0"));
-                                            if (_addCartController
-                                                    .createRazorpayResponseModel
-                                                    .value !=
-                                                null) {
-                                              await launchPayment(
-                                                      widget.order
-                                                              ?.final_payable_amount
-                                                              ?.toInt() ??
-                                                          00,
-                                                      _addCartController
-                                                              .createRazorpayResponseModel
-                                                              .value
-                                                              ?.orderId ??
-                                                          '')
-                                                  .then((value) {
-                                                if (value == true) {
-                                                  postOrderCustomerCollectAmount();
-                                                }
-                                              });
-                                            } else {
-                                              Get.showSnackbar(GetBar(
-                                                message:
-                                                    "failed to create razor order",
-                                                duration: Duration(seconds: 2),
-                                              ));
-                                            }
+                                          Get.to(HistoryOrderItems(
+                                            order: widget.order,
+                                            TimeSlot: TimeSlot,
+                                          ));
+                                          // if (widget.order?.status ==
+                                          //         "pending" ||
+                                          //     (widget.order?.orderType ==
+                                          //         "receipt")) {
+                                          //   Get.to(HistoryOrderItems(
+                                          //     order: widget.order,
+                                          //     TimeSlot: TimeSlot,
+                                          //   ));
+                                          // } else if (((widget.order?.status ==
+                                          //             "picked_up") ||
+                                          //         (widget.order?.status ==
+                                          //             "accepted") ||
+                                          //         (widget.order?.status ==
+                                          //             "ready")) &&
+                                          //     ((widget.order
+                                          //                 ?.final_payable_amount ??
+                                          //             0) >
+                                          //         0) &&
+                                          //     (widget.order?.orderType !=
+                                          //         "receipt")) {
+                                          //   log("payment method ontap");
+                                          //   await _addCartController
+                                          //       .createRazorPayOrder(
+                                          //           storeId: widget.order?.store
+                                          //                   ?.sId ??
+                                          //               '',
+                                          //           amount: double.parse(widget
+                                          //                   .order
+                                          //                   ?.final_payable_amount
+                                          //                   ?.toStringAsFixed(
+                                          //                       2) ??
+                                          //               "0.0"));
+                                          //   if (_addCartController
+                                          //           .createRazorpayResponseModel
+                                          //           .value !=
+                                          //       null) {
+                                          //     await launchPayment(
+                                          //             widget.order
+                                          //                     ?.final_payable_amount
+                                          //                     ?.toInt() ??
+                                          //                 00,
+                                          //             _addCartController
+                                          //                     .createRazorpayResponseModel
+                                          //                     .value
+                                          //                     ?.orderId ??
+                                          //                 '')
+                                          //         .then((value) {
+                                          //       if (value == true) {
+                                          //         postOrderCustomerCollectAmount();
+                                          //       }
+                                          //     });
+                                          //   } else {
+                                          //     Get.showSnackbar(GetBar(
+                                          //       message:
+                                          //           "failed to create razor order",
+                                          //       duration: Duration(seconds: 2),
+                                          //     ));
+                                          //   }
 
-                                            // postOrderCustomerCollectAmount();
-                                          } else {
-                                            log("order paid ");
-                                          }
-                                          ;
+                                          //   // postOrderCustomerCollectAmount();
+                                          // } else {
+                                          //   log("order paid ");
+                                          // }
+                                          // ;
                                         }),
                                         child: Container(
                                           height: 6.h,
@@ -1380,7 +1384,8 @@ class _HistoryOrderTrackingScreenState
                                                                             ?.final_payable_amount ??
                                                                         0) >
                                                                     0)
-                                                            ? "Verify Items and Pay \u{20B9} ${widget.order?.final_payable_amount ?? 0}"
+                                                            ? "Verify Items"
+                                                            // "Verify Items and Pay\u{20B9} ${widget.order?.final_payable_amount ?? 0}"
                                                             : "Pay \u{20B9} ${widget.order?.final_payable_amount ?? 0}", //pay 0 disable the button
                                                         style: TextStyle(
                                                           color: AppConst

@@ -1163,6 +1163,7 @@ wallet_amount
           status
           order_type
           final_payable_amount
+          iPayment
           cashback_percentage
           address
           createdAt

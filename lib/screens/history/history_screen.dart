@@ -288,7 +288,7 @@ class OrderTabView extends StatelessWidget {
                             onTap: () async {
                               // Get.toNamed(AppRoutes.OrderTreckScreen);
                               _.selectIndex.value = index;
-                              _.formatDate();
+                              // _.formatDate();
                               await Get.to(
                                 () => HistoryOrderTrackingScreen(
                                   // historyTab: true,

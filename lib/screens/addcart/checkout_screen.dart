@@ -73,7 +73,8 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
     finalPlaceOrder(response: response);
     //todo handle PaymentSuccess
   }
-   void finalPlaceOrder1({PaymentFailureResponse? response}) async {
+
+  void finalPlaceOrder1({PaymentFailureResponse? response}) async {
     await _addCartController.finalPlaceOrder(
         order_type: "online",
         total: double.parse(_addCartController
@@ -102,9 +103,9 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         // bill_discount_offer_status: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferStatus ?? false,
         // bill_discount_offer_target: _addCartController.getOrderConfirmPageDataModel.value?.data?.billDiscountOfferTarget ?? 0,
         // omit_bill_amount: _addCartController.getOrderConfirmPageDataModel.value?.data?.omit_bill_amount ?? 0,
-        razorPayPaymentId:  '',
-        razorPayOrderId:  '',
-        razorPaySignature:  '',
+        razorPayPaymentId: '',
+        razorPayOrderId: '',
+        razorPaySignature: '',
         lat: _addCartController.selectAddressIndex.value?.location?.lat ?? _addLocationController.latitude.value,
         lng: _addCartController.selectAddressIndex.value?.location?.lng ?? _addLocationController.longitude.value,
         address: _addCartController.selectAddressIndex.value?.address ?? _addLocationController.userAddress.value,
@@ -137,7 +138,6 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
 
     }
   }
-
 
   void finalPlaceOrder({PaymentSuccessResponse? response}) async {
     await _addCartController.finalPlaceOrder(
@@ -457,14 +457,16 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                     height: 10.h,
                     decoration: BoxDecoration(color: Color(0xffe6faf1)),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 2.w),
+                      padding: EdgeInsets.symmetric(horizontal: 3.w),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: 50.w,
-                            height: 9.h,
-                            child: paymentMode(),
-                          ),
+                          // Container(
+                          //   width: 50.w,
+                          //   height: 9.h,
+                          //   child:
+                          paymentMode(),
+                          // ),
                           InkWell(
                             onTap: () async {
                               if (_addCartController
@@ -506,19 +508,20 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                         _addCartController.dayTimeSlots.value
                                                 ?.startTime !=
                                             null) {
-                                      launchPayment(
-                                          _addCartController
-                                                  .getOrderConfirmPageDataModel
-                                                  .value
-                                                  ?.data
-                                                  ?.finalpayableAmount
-                                                  ?.toInt() ??
-                                              00,
-                                          _addCartController
-                                                  .createRazorpayResponseModel
-                                                  .value
-                                                  ?.orderId ??
-                                              '');
+                                      // razorpay disable uncommit this code for lunch payment through razorpay
+                                      // launchPayment(
+                                      //     _addCartController
+                                      //             .getOrderConfirmPageDataModel
+                                      //             .value
+                                      //             ?.data
+                                      //             ?.finalpayableAmount
+                                      //             ?.toInt() ??
+                                      //         00,
+                                      //     _addCartController
+                                      //             .createRazorpayResponseModel
+                                      //             .value
+                                      //             ?.orderId ??
+                                      //         '');
                                       _addCartController
                                               .deliveryMessage.value ==
                                           "";
@@ -567,7 +570,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                   child: Text(
                                 (_addCartController.selectPaymentMode.value ==
                                         "paybycash")
-                                    ? "Pay Cash \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}"
+                                    ? "Pay \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}"
                                     : "Pay \u{20B9}${_addCartController.getOrderConfirmPageDataModel.value?.data?.finalpayableAmount ?? 0}",
                                 style: TextStyle(
                                   fontFamily: 'MuseoSans',
@@ -868,58 +871,54 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 4.h,
-            child: Row(
-              children: [
-                Radio<String>(
-                  activeColor: AppConst.darkGreen,
-                  value: "paybycash",
-                  groupValue: _addCartController.selectPaymentMode.value,
-                  onChanged: (value) {
-                    _addCartController.selectPaymentMode.value =
-                        value.toString();
-                  },
+          Row(
+            children: [
+              Radio<String>(
+                activeColor: AppConst.darkGreen,
+                value: "paybycash",
+                groupValue: _addCartController.selectPaymentMode.value,
+                onChanged: (value) {
+                  _addCartController.selectPaymentMode.value = value.toString();
+                },
+              ),
+              Text(
+                "Pay On Delivery",
+                style: TextStyle(
+                  fontFamily: 'MuseoSans',
+                  color: AppConst.black,
+                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
                 ),
-                Text(
-                  "Pay by Cash",
-                  style: TextStyle(
-                    fontFamily: 'MuseoSans',
-                    color: AppConst.black,
-                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
-          Container(
-            height: 4.h,
-            child: Row(
-              children: [
-                Radio<String>(
-                  activeColor: AppConst.darkGreen,
-                  value: "paynow",
-                  groupValue: _addCartController.selectPaymentMode.value,
-                  onChanged: (value) {
-                    _addCartController.selectPaymentMode.value =
-                        value.toString();
-                  },
-                ),
-                Text(
-                  "Pay Now",
-                  style: TextStyle(
-                    fontFamily: 'MuseoSans',
-                    color: AppConst.black,
-                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
-                  ),
-                )
-              ],
-            ),
-          ),
+          // Container(
+          //   height: 4.h,
+          //   child: Row(
+          //     children: [
+          //       Radio<String>(
+          //         activeColor: AppConst.darkGreen,
+          //         value: "paynow",
+          //         groupValue: _addCartController.selectPaymentMode.value,
+          //         onChanged: (value) {
+          //           _addCartController.selectPaymentMode.value =
+          //               value.toString();
+          //         },
+          //       ),
+          //       Text(
+          //         "Pay Now",
+          //         style: TextStyle(
+          //           fontFamily: 'MuseoSans',
+          //           color: AppConst.black,
+          //           fontSize: SizeUtils.horizontalBlockSize * 3.5,
+          //           fontWeight: FontWeight.w500,
+          //           fontStyle: FontStyle.normal,
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

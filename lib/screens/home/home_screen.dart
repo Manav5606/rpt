@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen>
               dialogStyle: Platform.isIOS
                   ? UpgradeDialogStyle.cupertino
                   : UpgradeDialogStyle.material,
-              minAppVersion: "1.0.8",
+              minAppVersion: "1.1.0",
               countryCode: "IN"),
           child: SafeArea(
             child: Obx(
