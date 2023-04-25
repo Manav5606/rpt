@@ -2,7 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -28,24 +27,22 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>image permission</string>
+	<string>App need access to Photo Library to upload the images during the chat order and  upload receipts images </string>
 	<key>NSCameraUsageDescription</key>
-	<string>camera permission</string>
+	<string>App need access to camera for scanning the receipts </string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>microphone permission</string>
-	
+	<string>Used by image picker plugin while capturing videos during chat</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
-	
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>App needs location access to display the nearby stores in that location .</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>App needs location access to display the nearby stores in that location.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -61,7 +58,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>app-1-732082417535-ios-39389fc3257103e699344a</string>
+				<string>com.googleusercontent.apps.732082417535-c39aaca1ijgfjf1feucupcb22idvtqah</string>
 			</array>
 		</dict>
 		<dict>
@@ -69,7 +66,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>app-1-732082417535-ios-39389fc3257103e699344a*</string>
+				<string>app-1-732082417535-ios-bb13bf2b3d4047ae99344a</string>
 			</array>
 		</dict>
 	</array>

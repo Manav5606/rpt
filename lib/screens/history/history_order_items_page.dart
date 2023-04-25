@@ -375,7 +375,7 @@ class ModifiedItemsList extends StatelessWidget {
                   ),
                   Text(
                     //  (order?.products?[index].name ?? ''),
-                    units ?? "125g",
+                    units ?? "",
                     style: TextStyle(
                         color: AppConst.grey,
                         fontSize: SizeUtils.horizontalBlockSize * 3.5,
@@ -687,7 +687,7 @@ class ReplaceItemsList extends StatelessWidget {
                       ),
                       Text(
                         // "${order?.total ?? 0} Paid", //updated the payment status
-                        units ?? "125g",
+                        units ?? "",
                         style: TextStyle(
                             color: AppConst.grey,
                             fontSize: SizeUtils.horizontalBlockSize * 3.5,
@@ -790,7 +790,7 @@ class ReplaceItemsList extends StatelessWidget {
                       ),
                       Text(
                         //updated the payment status
-                        units ?? "125g",
+                        units ?? "",
                         style: TextStyle(
                             color: AppConst.grey,
                             fontSize: SizeUtils.horizontalBlockSize * 3.5,
@@ -1032,7 +1032,7 @@ class FoundItemsList extends StatelessWidget {
                   ),
                   Text(
                     //  (order?.products?[index].name ?? ''),
-                    "125g",
+                    "",
                     style: TextStyle(
                         color: AppConst.grey,
                         fontSize: SizeUtils.horizontalBlockSize * 3.5,
