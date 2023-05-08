@@ -47,13 +47,13 @@ class DynamicLinkService {
       ),
     );
 
-    final link = await FirebaseDynamicLinks.instance.buildLink(parameters);
-    log('link : $link');
-    // var dynamicUrl = await parameters.link;
-    // log('dynamicUrl : $dynamicUrl');
-    log("link data: ${link.data}");
-    log("link normalizePath: ${link.normalizePath()}");
-    String appUrl = link.toString();
+    final link = await FirebaseDynamicLinks.instance.buildShortLink(parameters);
+    log('link : ${link.shortUrl}');
+    var dynamicUrl = await parameters.link;
+    log('dynamicUrl : $dynamicUrl');
+    // log("link data: ${link.data}");
+    // log("link normalizePath: ${link.normalizePath()}");
+    String appUrl = link.shortUrl.toString();
     log('appUrl : $appUrl');
     String decodeUrl = Uri.decodeFull(appUrl);
     log('appUrl : $decodeUrl');
