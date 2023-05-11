@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/screens/home/models/GetAllCartsModel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 
 class ChatOrderService {
   static Future<Carts?> addToCartRaw({
@@ -31,6 +32,8 @@ class ChatOrderService {
         return carts;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("AddRawItemToCArt", "$e");
       log("addToCart $e , $st");
       rethrow;
     }

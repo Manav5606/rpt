@@ -9,6 +9,7 @@ import 'package:customer_app/app/data/repository/hive_repository.dart';
 import 'package:customer_app/app/data/repository/my_account_repository.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:customer_app/widgets/snack.dart';
 import 'package:get/get.dart';
 
@@ -19,51 +20,66 @@ class LocationRepository {
 
   Future<GetClaimRewardsModel?> getClaimRewardsPageData(
       double lat, double lng) async {
-    final result = await GraphQLRequest.query(
-        query: GraphQLQueries.getClaimRewardsPageData,
-        variables: {
-          'lat': lat,
-          'lng': lng,
-        });
-    if (result['error'] == false) {
-      final GetClaimRewardsModel getClaimRewardsModel =
-          GetClaimRewardsModel.fromJson(result['data']);
-      return getClaimRewardsModel;
-    } else {
-      return null;
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getClaimRewardsPageData,
+          variables: {
+            'lat': lat,
+            'lng': lng,
+          });
+      if (result['error'] == false) {
+        final GetClaimRewardsModel getClaimRewardsModel =
+            GetClaimRewardsModel.fromJson(result['data']);
+        return getClaimRewardsModel;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getClaimRewardsPageData", "$e");
     }
   }
 
   Future<GetClaimRewardsPageCountModel?> getClaimRewardsPageCount(
       double lat, double lng) async {
-    final result = await GraphQLRequest.query(
-        query: GraphQLQueries.getClaimRewardsPageCount,
-        variables: {
-          'lat': lat,
-          'lng': lng,
-        });
-    if (result['error'] == false) {
-      log("getClaimRewardsPageCount--->$result");
-      final GetClaimRewardsPageCountModel getClaimRewardsPageCountModel =
-          GetClaimRewardsPageCountModel.fromJson(result['data']);
-      return getClaimRewardsPageCountModel;
-    } else {
-      log("getClaimRewardsPageCount--->$result");
-      return null;
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getClaimRewardsPageCount,
+          variables: {
+            'lat': lat,
+            'lng': lng,
+          });
+      if (result['error'] == false) {
+        log("getClaimRewardsPageCount--->$result");
+        final GetClaimRewardsPageCountModel getClaimRewardsPageCountModel =
+            GetClaimRewardsPageCountModel.fromJson(result['data']);
+        return getClaimRewardsPageCountModel;
+      } else {
+        log("getClaimRewardsPageCount--->$result");
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getClaimRewardsPageCount", "$e");
     }
   }
 
   Future<void> addMultipleStoreToWallet(double lat, double lng) async {
-    final result = await GraphQLRequest.query(
-        query: GraphQLQueries.addMultipleStoreToWalletNew,
-        variables: {
-          'lat': lat,
-          'lng': lng,
-        });
-    if (result['error'] == false) {
-      log("getClaimRewardsPageCount--->$result");
-    } else {
-      return null;
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.addMultipleStoreToWalletNew,
+          variables: {
+            'lat': lat,
+            'lng': lng,
+          });
+      if (result['error'] == false) {
+        log("getClaimRewardsPageCount--->$result");
+      } else {
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addMultipleStoreToWalletNew", "$e");
     }
   }
 
@@ -78,13 +94,17 @@ class LocationRepository {
       'lat': addressModel.location?.lat,
       'lng': addressModel.location?.lng
     };
-
-    final result = await GraphQLRequest.query(
-        query: GraphQLQueries.replaceCustomerAddress, variables: variables);
-    log("replaceCustomerAddress--->$result");
-    if (result['error'] == false) {
-    } else {
-      return null;
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.replaceCustomerAddress, variables: variables);
+      log("replaceCustomerAddress--->$result");
+      if (result['error'] == false) {
+      } else {
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("replaceCustomerAddress", "$e");
     }
   }
 
@@ -92,12 +112,18 @@ class LocationRepository {
     Map<String, dynamic> variables = {
       'id': id,
     };
-    final result = await GraphQLRequest.query(
-        query: GraphQLQueries.deleteCustomerAddress, variables: variables);
-    log("deleteCustomerAddress--->$result");
-    if (result['error'] == false) {
-    } else {
-      return null;
+
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.deleteCustomerAddress, variables: variables);
+      log("deleteCustomerAddress--->$result");
+      if (result['error'] == false) {
+      } else {
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("deleteCustomerAddress", "$e");
     }
   }
 
@@ -156,6 +182,8 @@ class LocationRepository {
             .whenComplete(() => Get.offNamed(AppRoutes.NewLocationScreen));
       }
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addCustomerAddress", "$e");
       print("Error --- >$e");
     }
   }

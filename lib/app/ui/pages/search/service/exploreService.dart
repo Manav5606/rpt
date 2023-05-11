@@ -8,6 +8,7 @@ import 'package:customer_app/app/ui/pages/search/models/autoCompleteProductsBySt
 import 'package:customer_app/app/ui/pages/search/models/get_near_me_page_data.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/models/addcartmodel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 
 class ExploreService {
   static Future<GetNearMePageData?> getNearMePageData(String searchText) async {
@@ -25,6 +26,8 @@ class ExploreService {
         return _getHomePageFavoriteShops;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getNearMePageData", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -45,6 +48,8 @@ class ExploreService {
         return _getProductsByName;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getProductsByName", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -67,6 +72,9 @@ class ExploreService {
         return autoCompleteProductsByStoreModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("getAutoCompleteProductsByStore", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -85,6 +93,8 @@ class ExploreService {
         return _getStoreDataModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getStoreData", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -114,6 +124,8 @@ class ExploreService {
         return addToCartModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addToCartWithId", "$e");
       log("addToCart $e , $st");
       rethrow;
     }

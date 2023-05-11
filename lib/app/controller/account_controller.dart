@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/data/repository/my_account_repository.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
@@ -174,6 +175,8 @@ class MyAccountController extends GetxController {
 
       isActiveOrderloading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getAllActiveOrders", "$e");
       isActiveOrderloading.value = false;
     }
     // MyAccountRepository.getAllActiveOrders()
@@ -190,6 +193,8 @@ class MyAccountController extends GetxController {
 
       isOrderloading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getAllOrders", "$e");
       isOrderloading.value = false;
     }
     // MyAccountRepository.getAllOrders().then((value) => this.allOrders = value);

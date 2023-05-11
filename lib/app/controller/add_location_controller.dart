@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:customer_app/app/utils/app_constants.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:customer_app/widgets/custom_alert_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as temp;
@@ -175,6 +176,8 @@ class AddLocationController extends GetxController {
       }
       addressModelLoading.value = false;
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getDetails", "$e");
       addressModelLoading.value = false;
     }
   }
@@ -217,6 +220,8 @@ class AddLocationController extends GetxController {
           "${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
       loading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("onCameraIdle", "$e");
       loading.value = false;
       print('onMapCreated middlePointOfScreenOnMap $e st :$st');
     }
@@ -503,6 +508,8 @@ class AddLocationController extends GetxController {
       await getRecentAddress();
       loading.value = false;
     }).catchError((e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getRecentLocation", "$e");
       loading.value = false;
       print(" error ->  $e");
     });
@@ -518,6 +525,8 @@ class AddLocationController extends GetxController {
       currentAddress.value =
           "${place.subLocality}, ${place.locality}, ${place.postalCode}";
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getRecentAddress", "$e");
       print(e);
     }
   }
@@ -532,6 +541,8 @@ class AddLocationController extends GetxController {
       currentAddress.value =
           "${place.subLocality}, ${place.locality}, ${place.postalCode}";
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("placemarkFromCoordinates", "$e");
       print(e);
     }
   }
@@ -553,6 +564,8 @@ class AddLocationController extends GetxController {
       currentAddress.value =
           "${place.subLocality}, ${place.locality}, ${place.postalCode}";
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getCurrentAddress", "$e");
       print(e);
     }
   }
@@ -568,6 +581,8 @@ class AddLocationController extends GetxController {
       totalCashBack.value = getClaimRewardsPageCountModel?.totalCashBack ?? 0;
       loading.value = false;
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getClaimRewardsPageCount", "$e");
       loading.value = false;
     }
   }
@@ -609,6 +624,8 @@ class AddLocationController extends GetxController {
           directionToReach: directionToReach,
           page: page);
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addCustomerAddress", "$e");
       print(e);
     }
   }
@@ -639,6 +656,8 @@ class AddLocationController extends GetxController {
       await locationRepository.addMultipleStoreToWallet(
           currentPosition.latitude, currentPosition.longitude);
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addMultipleStoreToWallet", "$e");
       print(e);
     }
   }

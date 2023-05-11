@@ -32,6 +32,11 @@ void main() async {
   await HiveHelper.init();
   // DynamicLinkHelper.init();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  // Pass all uncaught "fatal" errors from the framework to Crashlytics
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
   //     statusBarColor: AppConst.white,
   //     statusBarIconBrightness: Brightness.dark));

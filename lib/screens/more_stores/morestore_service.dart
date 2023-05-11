@@ -6,6 +6,7 @@ import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/app/ui/pages/search/models/GetStoreDataModel.dart';
 import 'package:customer_app/app/ui/pages/search/models/getCartId_model.dart';
 import 'package:customer_app/models/addcartmodel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 
 class MoreStoreService {
   static Future<GetStoreDataModel?> getStoreData(String id) async {
@@ -21,21 +22,29 @@ class MoreStoreService {
         return _getStoreDataModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getStoreData", "$e");
       log("$e , $st");
       rethrow;
     }
   }
 
   static Future<GetCartIDModel?> getcartID(String id) async {
-    final result =
-        await GraphQLRequest.query(query: GraphQLQueries.getcartID, variables: {
-      'store': id,
-    });
-    // log('getCartIDModel result :$result');
-    final GetCartIDModel getCartIDModel =
-        GetCartIDModel.fromJson(result['data']);
-    print(getCartIDModel.totalItemsCount);
-    return getCartIDModel;
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getcartID,
+          variables: {
+            'store': id,
+          });
+      // log('getCartIDModel result :$result');
+      final GetCartIDModel getCartIDModel =
+          GetCartIDModel.fromJson(result['data']);
+      print(getCartIDModel.totalItemsCount);
+      return getCartIDModel;
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getcartID", "$e");
+    }
   }
 
   static Future<GetCartIDModel?> addToCart({
@@ -78,6 +87,8 @@ class MoreStoreService {
         print("::rest :: true");
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addToCart", "$e");
       log("addToCart $e , $st");
       rethrow;
     }
@@ -108,6 +119,8 @@ class MoreStoreService {
         return getCartIDModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addToCartInventory", "$e");
       log("addToCart $e , $st");
       rethrow;
     }

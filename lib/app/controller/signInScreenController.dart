@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
@@ -46,11 +47,17 @@ class SignInScreenController extends GetxController {
 
   RxString phoneNumbers = ''.obs;
 
+  // @override
+  // void onClose() {
+  //   // TODO: implement onClose
+  //   _timer.cancel();
+  //   super.onClose();
+  // }
+
   @override
-  void onClose() {
-    // TODO: implement onClose
-    _timer.cancel();
-    super.onClose();
+  void initState() {
+    _timer = Timer(Duration(seconds: 0), () => print('Timer initialized'));
+    // super.initState();
   }
 
   void startTimer() {
@@ -167,6 +174,8 @@ class SignInScreenController extends GetxController {
         },
       );
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("submitPhoneNumber", "$e");
       log("error submitPhoneNumber :$e");
     }
   }
@@ -187,7 +196,7 @@ class SignInScreenController extends GetxController {
           .signInWithCredential(phoneAuthCredential)
           .then((UserCredential authRes) async {
         user = authRes.user;
-        // _timer.cancel();
+        _timer.cancel();
         if (user != null) {
           userModel = await signInRepository.customerLoginOrSignUp(
               phoneNumber: phoneNumberController.text,
@@ -233,6 +242,8 @@ class SignInScreenController extends GetxController {
         }
       });
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("customerLoginOrSignUp", "$st");
       otpController.clear();
 
       isLoading.value = false;
@@ -276,7 +287,10 @@ class SignInScreenController extends GetxController {
         Get.back();
         Get.back();
         // Get.offAllNamed(AppRoutes.MyAccount);
-      } catch (e) {}
+      } catch (e) {
+        ReportCrashes().reportRecorderror(e);
+        ReportCrashes().reportErrorCustomKey("getCurrentUser", "$e");
+      }
     }
   }
 
@@ -285,6 +299,8 @@ class SignInScreenController extends GetxController {
       await FirebaseAuth.instance.signOut();
       user = null;
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("_logout", "$e");
       print(e.toString());
     }
   }
@@ -336,6 +352,8 @@ class SignInScreenController extends GetxController {
           userId: userModel!.id!,
           name: "${userModel?.firstName} ${userModel?.lastName}");
     } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("checksessionSignin", "$e");
       Future.delayed(Duration(seconds: 2), () async {
         await Get.offAllNamed(AppRoutes.Authentication);
         isLoading.value = false;

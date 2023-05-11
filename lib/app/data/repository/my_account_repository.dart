@@ -10,41 +10,54 @@ import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/ui/common/alret.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 
 class MyAccountRepository {
   Future<UserModel?> getCurrentUser() async {
-    final box = Boxes.getCommonBox();
-    final token = box.get(HiveConstants.USER_TOKEN);
-    final result = await GraphQLRequest.query(
-        query: GraphQLQueries.verifyUserToken,
-        variables: {
-          'token': token,
-        });
-    if (result['error'] == false) {
-      final user = UserModel.fromJson(result['data']);
-      UserViewModel.setUser(user);
-      return user;
-    } else {
-      Alert.error(result['msg']);
+    try {
+      final box = Boxes.getCommonBox();
+      final token = box.get(HiveConstants.USER_TOKEN);
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.verifyUserToken,
+          variables: {
+            'token': token,
+          });
+      if (result['error'] == false) {
+        final user = UserModel.fromJson(result['data']);
+        UserViewModel.setUser(user);
+        return user;
+      } else {
+        Alert.error(result['msg']);
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("verifyUserToken", "$e");
       return null;
     }
   }
 
   Future<List<Wallet>?> getAllWallet() async {
-    final result = await GraphQLRequest.query(
-        query: GraphQLQueries.getAllWalletByCustomer,
-        variables: {
-          'lat': UserViewModel.currentLocation.value.latitude, //12.9716,
-          'lng': UserViewModel.currentLocation.value.longitude, // 77.5946,
-        });
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getAllWalletByCustomer,
+          variables: {
+            'lat': UserViewModel.currentLocation.value.latitude, //12.9716,
+            'lng': UserViewModel.currentLocation.value.longitude, // 77.5946,
+          });
 
-    if (result['error'] == false) {
-      final items =
-          List.from(result['data']).map((e) => Wallet.fromJson(e)).toList();
-      return items;
-    } else {
-      Alert.error(result['msg']);
-      return null;
+      if (result['error'] == false) {
+        final items =
+            List.from(result['data']).map((e) => Wallet.fromJson(e)).toList();
+        return items;
+      } else {
+        Alert.error(result['msg']);
+        return null;
+      }
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getAllWalletByCustomer", "$e");
+      log("$e , $st");
     }
   }
 
@@ -60,6 +73,8 @@ class MyAccountRepository {
         return _getAllActiveOrders;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getAllActiveOrders", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -73,6 +88,8 @@ class MyAccountRepository {
           isLogOff: true);
       return result['data'];
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("generateReferCode", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -87,6 +104,8 @@ class MyAccountRepository {
         return _getAllOrders;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getAllOrders", "$e");
       log("$e , $st");
       rethrow;
     }

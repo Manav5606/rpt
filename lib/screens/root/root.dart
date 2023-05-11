@@ -10,6 +10,7 @@ import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/data/repositories/mainRepoWithAllApi.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/address_model.dart';
@@ -89,58 +90,11 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
         MyAccountRepository().getCurrentUser();
         final UserModel userModel = hiveRepository.getCurrentUser();
 
-        //check for siginupflag
-        // final box = Boxes.getCommonBoolBox();
-        // final flag = box.get(HiveConstants.SIGNUP_FLAG);
-        // log("SiginUp :$flag");
-        // if (flag!) {
-        //   return Get.to(SignUpScreen());
-        // }
         //check user exit
         if (!((userModel.email != null && userModel.email != "") &&
             (userModel.firstName != null && userModel.firstName != ""))) {
           return Get.to(SignUpScreen());
         }
-
-        // bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-        // final checkPermission =
-        //     serviceEnabled && await Permission.location.isGranted;
-
-        // var lat;
-        // var lng;
-        // try {
-        //   Position position = await Geolocator.getCurrentPosition();
-        //   lat = position.latitude;
-        //   lng = position.longitude;
-        // } catch (e) {
-        //   lng = 0.0;
-        // }
-        // value = _addLocationController.getCurrentLocation1() ;
-        // _addLocationController.checkLocationPermission();
-
-//         bool IsGpsOn = true;
-//         double value;
-//         checkGps() async {
-//           try {
-//  Position position = await Geolocator.getCurrentPosition();
-
-//             // value =  _addLocationController.getCurrentLocation1();
-
-//             IsGpsOn = true;
-//           } catch (e) {
-//             IsGpsOn = false;
-//           }
-//         }
-
-//         checkGps();
-
-//  Position position =
-//             await Geolocator.getCurrentPosition().then((position) {
-//           return position;
-//         });
-        // Future<Position> value = _addLocationController.getCurrentLocation1();
-
-        // bool isBothEnable = checkPermission;
 
         _addLocationController.getCurrentLocation1().then((value) {
           if (value.latitude != 0.0 && value.longitude != 0.0) {
@@ -172,6 +126,8 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
             userId: userModel.id!,
             name: "${userModel.firstName} ${userModel.lastName}");
       } catch (e) {
+        ReportCrashes().reportRecorderror(e);
+        ReportCrashes().reportErrorCustomKey("checksessionRoot", "");
         Future.delayed(Duration(seconds: 2),
             () => Get.offAllNamed(AppRoutes.Authentication));
       }

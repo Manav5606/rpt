@@ -14,6 +14,7 @@ import 'package:customer_app/screens/addcart/models/create_razorpay_model.dart';
 import 'package:customer_app/screens/addcart/models/getOrderConfirmModel.dart';
 import 'package:customer_app/screens/addcart/models/weekday_model.dart';
 import 'package:customer_app/screens/more_stores/morestore_service.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -274,6 +275,8 @@ class AddCartController extends GetxController {
       log("displayHour.value===${displayHour.value}");
       return DateFormat('H').format(date).toString();
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("formatDate", "$e");
       log('eeeeeeeeeee :$e stt $st');
       return '';
     }
@@ -296,6 +299,8 @@ class AddCartController extends GetxController {
       log('totalCount.value:${totalCount.value}');
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getReviewCartData", "$e");
       isLoading.value = false;
     }
   }
@@ -334,6 +339,8 @@ class AddCartController extends GetxController {
       reviewCart.refresh();
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addToCartRaw", "$e");
       isLoading.value = false;
     }
   }
@@ -367,6 +374,8 @@ class AddCartController extends GetxController {
       cartIndex.refresh();
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addToCart", "$e");
       isLoading.value = false;
     }
   }
@@ -413,6 +422,8 @@ class AddCartController extends GetxController {
       log("addToCartInventory.addToCartModel ${getCartIDModel.toJson()}");
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addToCartInventory", "$e");
       isLoading.value = false;
     }
   }
@@ -426,6 +437,8 @@ class AddCartController extends GetxController {
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getCartLocation", "$e");
     }
   }
 
@@ -436,6 +449,8 @@ class AddCartController extends GetxController {
       await AddCartService.selectCartLocation(cardId, addresses!);
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("selectCartLocation", "$e");
       isLoading.value = false;
     }
   }
@@ -508,6 +523,8 @@ class AddCartController extends GetxController {
           pickedup: pickedup);
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("finalPlaceOrder", "$e");
       isLoading.value = false;
       // return false;
     }
@@ -578,6 +595,8 @@ class AddCartController extends GetxController {
       // deliverySlots.addAll(getOrderConfirmPageDataModel.value?.data?.deliverySlots ?? []);
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getOrderConfirmPageData", "$e");
       isLoading.value = false;
     }
   }

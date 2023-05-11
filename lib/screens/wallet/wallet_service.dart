@@ -6,6 +6,7 @@ import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/app/ui/common/alret.dart';
 import 'package:customer_app/models/getRedeemCashStorePageDataModel.dart';
 import 'package:customer_app/models/redeem_model.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -27,6 +28,9 @@ class WalletService {
         return _getRedeemCashInStorePageData;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("getRedeemCashInStorePageData", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -49,6 +53,9 @@ class WalletService {
         return _getRedeemCashInStorePageData;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("getScanReceiptPageNearMeStoresData", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -68,6 +75,8 @@ class WalletService {
         return _getAllRefunds;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("redeemBalance", "$e");
       log("$e , $st");
       rethrow;
     }

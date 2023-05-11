@@ -6,6 +6,7 @@ import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/screens/home/models/GetAllCartsModel.dart';
 import 'package:customer_app/screens/home/models/homeFavStoreModel.dart';
 import 'package:customer_app/screens/home/models/homePageRemoteConfigModel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 
 import '../../../controllers/userViewModel.dart';
 
@@ -21,6 +22,8 @@ class HomeService {
         return _getAllCartsModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getAllCartData", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -42,6 +45,8 @@ class HomeService {
         return _getHomePageFavoriteShops;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getHomePageFavoriteShops", "$e");
       log("  $e , $st");
       rethrow;
     }
@@ -72,6 +77,8 @@ class HomeService {
         return _homePageRemoteConfigModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("homePageRemoteConfigData", "$e");
       log("  $e , $st");
       rethrow;
     }

@@ -88,30 +88,30 @@ class Wallet {
   Wallet.fromJson(Map<String, dynamic> json) {
     recentlyVisited = json['recently_visited'];
     id = json['id'];
-    welcomeOffer = json['welcome_offer'];
-    welcomeOfferAmount = json['welcome_offer_amount'];
-    earnedCashback = json['earned_cashback'];
-    user = json['user'];
-    password = json['password'];
-    name = json['name'];
+    welcomeOffer = json['welcome_offer'] ?? 0;
+    welcomeOfferAmount = json['welcome_offer_amount'] ?? 0;
+    earnedCashback = json['earned_cashback'] ?? 0;
+    user = json['user'] ?? "";
+    password = json['password'] ?? "";
+    name = json['name'] ?? "";
     premium = json['premium'];
-    logo = json['logo'];
-    defaultCashback = json['default_cashback'];
-    defaultWelcomeOffer = json['default_welcome_offer'];
-    promotionCashback = json['promotion_cashback'];
-    status = json['status'];
-    promotionWelcomeOfferStatus = json['promotion_welcome_offer_status'];
-    promotionCashbackStatus = json['promotion_cashback_status'];
+    logo = json['logo'] ?? "";
+    defaultCashback = json['default_cashback'] ?? 0;
+    defaultWelcomeOffer = json['default_welcome_offer'] ?? 0;
+    promotionCashback = json['promotion_cashback'] ?? 0;
+    status = json['status'] ?? "";
+    promotionWelcomeOfferStatus = json['promotion_welcome_offer_status'] ?? "";
+    promotionCashbackStatus = json['promotion_cashback_status'] ?? "";
     flag = null;
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    storeType = json['store_type'];
-    distance = json['distance'];
+    createdAt = json['createdAt'] ?? "";
+    updatedAt = json['updatedAt'] ?? "";
+    storeType = json['store_type'] ?? "";
+    distance = json['distance'] ?? 0;
     online = json['online'];
-    calculatedDistance = json['calculated_distance'];
+    calculatedDistance = json['calculated_distance'] ?? 0.0;
     customerWalletAmount = null;
     lead = json['lead'];
-    leadWelcomeOffer = json['lead_welcome_offer'];
+    leadWelcomeOffer = json['lead_welcome_offer'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {

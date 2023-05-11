@@ -6,6 +6,7 @@ import 'package:customer_app/screens/addcart/models/cartLocation_model.dart';
 import 'package:customer_app/screens/addcart/models/cartPageInfo_model.dart';
 import 'package:customer_app/screens/addcart/models/create_razorpay_model.dart';
 import 'package:customer_app/screens/addcart/models/getOrderConfirmModel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 
 import '../../../app/data/provider/graphql/queries.dart';
 import '../../../app/data/provider/graphql/request.dart';
@@ -26,6 +27,8 @@ class AddCartService {
         return _reviewCart;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("reviewCart", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -69,6 +72,8 @@ class AddCartService {
         return cartLocationModel;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getCartLocation", "$e");
       log("getCartLocation $e , $st");
       rethrow;
     }
@@ -86,6 +91,8 @@ class AddCartService {
           });
       log("selectCartLocation------${result}");
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("selectCartLocation", "$e");
       log("selectCartLocation $e , $st");
       rethrow;
     }
@@ -115,6 +122,8 @@ class AddCartService {
         return getOrderConfirmPageData;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getOrderConfirmPageData", "$e");
       log("$e , $st");
       rethrow;
     }
@@ -204,6 +213,8 @@ class AddCartService {
       }
       return result['error'];
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("finalPlaceOrder", "$e");
       log("$e , $st");
       rethrow;
     }

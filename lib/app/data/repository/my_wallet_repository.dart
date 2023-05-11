@@ -4,6 +4,7 @@ import 'package:customer_app/app/data/model/my_wallet_model.dart';
 import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 
 class MyWalletRepository {
   static Future<GetAllWalletByCustomer?> getAllWalletByCustomer() async {
@@ -26,6 +27,8 @@ class MyWalletRepository {
         return _getAllWalletByCustomer;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getAllWalletByCustomer", "$e");
       log("$e , $st");
       rethrow; // konw more about it
     }
@@ -50,6 +53,9 @@ class MyWalletRepository {
         return _getAllWalletTransactionByCustomer;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("getAllWalletTransactionByCustomer", "$e");
       log("$e , $st");
       rethrow;
     }

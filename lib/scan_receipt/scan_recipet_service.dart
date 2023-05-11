@@ -6,6 +6,7 @@ import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/models/getRedeemCashStorePageDataModel.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:customer_app/widgets/imagePicker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -33,6 +34,8 @@ class ScanRecipetService {
         return _getAllReceipts;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("placeOrderWithoutStore", "$e");
       log('st : $st');
 
       rethrow;
@@ -67,6 +70,8 @@ class ScanRecipetService {
         return _getAllReceipts;
       }
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("placeOrderWithStore", "$e");
       log('e  : $e ,stt $st');
       rethrow;
     }

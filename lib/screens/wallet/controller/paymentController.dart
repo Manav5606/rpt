@@ -1,4 +1,5 @@
 import 'package:customer_app/app/data/model/order_model.dart';
+import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/ui/pages/search/models/get_near_me_page_data.dart';
@@ -44,6 +45,9 @@ class PaymentController extends GetxController {
           await WalletService.getRedeemCashInStorePageData(latLng);
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("getRedeemCashInStorePageData", "$e");
       isLoading.value = false;
     }
   }
@@ -56,6 +60,9 @@ class PaymentController extends GetxController {
       getRedeemCashInStorePageData.refresh();
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("getScanReceiptPageNearMeStoresData", "$e");
       isLoading.value = false;
     }
   }
@@ -67,6 +74,8 @@ class PaymentController extends GetxController {
           await ExploreService.getNearMePageData(searchText);
       isLoading.value = false;
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getNearMePageData", "$e");
       isLoading.value = false;
     }
   }
@@ -80,6 +89,8 @@ class PaymentController extends GetxController {
       isLoading.value = false;
       orderModel.refresh();
     } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("redeemBalance", "$e");
       isLoading.value = false;
     }
   }
