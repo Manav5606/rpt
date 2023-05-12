@@ -409,7 +409,7 @@ class _AllChatsState extends State<AllChats> {
                                                 Row(
                                                   children: [
                                                     Container(
-                                                      width: 70.w,
+                                                      width: 66.w,
                                                       // height: 3.h,
                                                       child: Text(text!,
                                                           maxLines: 2,
@@ -436,16 +436,14 @@ class _AllChatsState extends State<AllChats> {
                                                         ? Container(
                                                             padding:
                                                                 EdgeInsets.all(
-                                                                    3),
+                                                                    6),
                                                             decoration: BoxDecoration(
                                                                 color: AppConst
                                                                     .green,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20)),
+                                                                shape: BoxShape
+                                                                    .circle),
                                                             child: Text(
-                                                                " ${channel.state!.unreadCount} ",
+                                                                "${channel.state!.unreadCount}",
                                                                 style:
                                                                     TextStyle(
                                                                   fontFamily:
@@ -458,7 +456,7 @@ class _AllChatsState extends State<AllChats> {
                                                                           3.5,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w500,
+                                                                          .w700,
                                                                   fontStyle:
                                                                       FontStyle
                                                                           .normal,
