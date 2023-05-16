@@ -27,13 +27,17 @@ class AllChats extends StatefulWidget {
 }
 
 class _AllChatsState extends State<AllChats> {
+  final GlobalKey<ScaffoldState>? _scaffoldKey = new GlobalKey<ScaffoldState>();
   final ChatController _controller = Get.find();
   final MyAccountController _MyController = Get.find();
   final freshChatController _freshChat = Get.find();
   @override
   Widget build(BuildContext context) {
+    dynamic arg = Get.arguments;
+
+    bool? isbackenable = (arg != null) ? arg['isBack'] : false;
     return Scaffold(
-      key: _freshChat.scaffoldKey,
+      key: _scaffoldKey,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -51,15 +55,18 @@ class _AllChatsState extends State<AllChats> {
               fontStyle: FontStyle.normal,
               color: AppConst.white),
         ),
-        // leading: GestureDetector(
-        //   onTap: () {
-        //     Get.toNamed(AppRoutes.BaseScreen);
-        //   },
-        //   child: Icon(
-        //     Icons.close_rounded,
-        //     size: 3.h,
-        //   ),
-        // ),
+        leading: (isbackenable ?? false)
+            ? GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.BaseScreen);
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  size: 3.h,
+                  color: AppConst.white,
+                ),
+              )
+            : null,
         actions: [
           InkWell(
               highlightColor: AppConst.highLightColor,

@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:customer_app/screens/root/network_check.dart';
+import 'package:customer_app/widgets/all_chatview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/ui/pages/chat/ChatView.dart';
@@ -56,7 +57,7 @@ class _BaseScreenState extends State<BaseScreen> {
       case 0:
         return HomeScreen();
       case 1:
-        return ChatView();
+        return AllChats();
       case 2:
         return ExploreScreen();
       case 3:

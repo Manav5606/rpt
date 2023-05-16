@@ -1265,6 +1265,120 @@ wallet_amount
     ''',
   );
 
+  static final getSingleOrder = new GraphQLQuery(
+    name: 'getOnlineOrder',
+    query: r'''
+    query($_id: ID  ){
+    getOnlineOrder(_id:$_id){
+        error
+        msg
+    data
+        {
+          _id
+          status
+          order_type
+          final_payable_amount
+          iPayment
+          cashback_percentage
+          address
+          createdAt
+          receipt
+          delivery_slot
+          {
+          day
+            start_time
+            {
+              hour
+              minute
+            }
+            end_time{
+              hour
+              minute
+}
+}
+          total
+        location
+           {
+          type
+          coordinates
+        }
+        products
+          {
+          name
+          quantity
+          logo
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          unit
+          }
+           inventories
+          {
+            name
+          quantity
+          img
+          deleted
+          modified
+          selling_price
+          _id
+          cashback
+          gst_amount
+          mrp
+          status
+          updatelogo
+          updatemrp
+          updatename
+          updatequantity
+          updateselling_price
+          unit
+          }
+             rawitems{
+             logo
+            item
+            _id
+            quantity 
+            modified
+            deleted
+            status
+            updatelogo
+            updatemrp
+            updatename
+            updatequantity
+            updateselling_price
+          }
+        store
+          {
+           _id
+           logo
+              mobile
+              name
+              address{
+                address
+              }
+          }
+          rider
+          {
+            mobile
+            _id
+            first_name
+            last_name
+            bank_document_photo
+          }
+        }
+      }
+}
+    ''',
+  );
   static final getAllOrders = new GraphQLQuery(
     name: 'getAllOrdersByCustomer',
     query: r'''

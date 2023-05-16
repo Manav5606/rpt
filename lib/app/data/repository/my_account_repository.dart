@@ -80,6 +80,25 @@ class MyAccountRepository {
     }
   }
 
+  static Future<ActiveOrderData?> getSingleOrder(String? id) async {
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.getSingleOrder,
+          variables: {'_id': id},
+          isLogOff: true);
+      if (result['error'] == false) {
+        final ActiveOrderData _getSingleOrder =
+            ActiveOrderData.fromJson(result["data"]);
+        return _getSingleOrder;
+      }
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getSingleOrder", "$e");
+      log("$e , $st");
+      rethrow;
+    }
+  }
+
   static Future<String> getGenerateReferCode() async {
     try {
       final result = await GraphQLRequest.query(

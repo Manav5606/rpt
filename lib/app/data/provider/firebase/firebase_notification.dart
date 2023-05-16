@@ -1,15 +1,22 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
+import 'package:customer_app/app/data/repository/my_account_repository.dart';
 import 'package:customer_app/app/ui/pages/chat/ChatView.dart';
+import 'package:customer_app/app/ui/pages/chat/chatRepo.dart';
+import 'package:customer_app/app/ui/pages/chat/chatViewScreen.dart';
+import 'package:customer_app/app/ui/pages/chat/chat_controller.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/app/data/model/user_model.dart';
+import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/widgets/snack.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -27,8 +34,12 @@ class FireBaseNotification {
   factory FireBaseNotification() {
     return _fireBaseNotification;
   }
-
   FireBaseNotification.init();
+
+  static Future<void> initializeFirebase() async {
+    await Firebase.initializeApp();
+    await FireBaseNotification().setUpLocalNotification;
+  }
 
   late FirebaseMessaging firebaseMessaging;
   late AndroidNotificationChannel channel = const AndroidNotificationChannel(
@@ -103,29 +114,27 @@ class FireBaseNotification {
     }
     log('TOKEN to be Registered: $fcmToken');
 
-    // await firebaseMessaging.getToken().then((token) {
-    //   log('TOKEN to be Registered: $token');
-    // }
-    // );
-
     // Fired when app is coming from a terminated state
     var initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (initialMessage != null) _showLocalNotification(initialMessage);
-
+    if (initialMessage != null)
+      _showLocalNotification(initialMessage); // in app message disable
     // Fired when app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       _showLocalNotification(message);
       // notificationToNavigat(); local
-      debugPrint(
-          'Got a message, app is in the foreground! ${message.notification}');
+      log('Got a message, app is in the foreground! ${message.data}');
     });
 
     // Fired when app is in foreground
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      notificationToNavigat();
+      try {
+        notificationToNavigat(message);
+      } catch (e) {}
+
       _showLocalNotification(message);
-      selectNotification('playLoad -->');
-      debugPrint('Got a message, app is in the foreground! onMessage');
+      //  for the testing purpose i have disable the in app notification
+      selectNotification('${message.data['payload']}');
+      log('Got a message, app is opening on clicking on message  ${message.notification}');
     });
 
     // background message
@@ -133,7 +142,7 @@ class FireBaseNotification {
   }
 
   Future<void> _backgroundMessageHandler(RemoteMessage message) async {
-    final chatClient = StreamChatClient('8gm7wmg4ep65');
+    final chatClient = Constants.client;
     log("inside the background messge");
     final box = Boxes.getCommonBox();
     final token = box.get(HiveConstants.STREAM_TOKEN);
@@ -147,8 +156,7 @@ class FireBaseNotification {
     );
 
     handleNotification(message, chatClient);
-    debugPrint(
-        'Got a message, app is in the background! ${message.notification}');
+    log('Got a message, app is in the background! ${message.notification}');
     print('_backgroundMessageHandler');
     print(message.data);
   }
@@ -240,8 +248,9 @@ class FireBaseNotification {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, notification!.title, notification.body, platformChannelSpecifics,
-        payload: notification.title);
+        0, notification?.title, notification?.body, platformChannelSpecifics,
+        payload: message.data.toString());
+
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
         backgroundColor: AppConst.transparent,
         behavior: SnackBarBehavior.floating,
@@ -250,7 +259,8 @@ class FireBaseNotification {
           borderRadius: BorderRadius.circular(24),
         ),
         // margin: EdgeInsets.only(bottom: 75.h, right: 2.w, left: 2.w),
-        content: Snack.bottom('', 'Order Placed Successfully')
+        content: Snack.top(
+            '${message.notification?.title}', '${message.notification?.body}')
 
         // Container(
         //     height: 12.h,
@@ -300,7 +310,6 @@ class FireBaseNotification {
     didReceiveLocalNotificationStream
         .listen((ReceivedNotification receivedNotification) async {
       log("payloadNotification: $receivedNotification");
-      notificationToNavigat();
     });
   }
 
@@ -308,14 +317,24 @@ class FireBaseNotification {
     log("configureSelectNotificationSubject stream listen");
     selectNotificationStream.listen((String? payload) {
       log("payloadNotification: $payload");
-
-      notificationToNavigat();
     });
   }
 
-  void notificationToNavigat() {
-    log('notificationToNavigat : ');
-    Get.toNamed(AppRoutes.ChatView);
+  Future<void> notificationToNavigat(RemoteMessage message) async {
+    if ((message.data["type"] == "ORDER")) {
+      ActiveOrderData? orderData =
+          await MyAccountRepository.getSingleOrder(message.data["_id"]);
+
+      log("orderdata from payload:${orderData}");
+      Get.to(ActiveOrderTrackingScreen(
+        activeOrder: orderData,
+      ));
+    } else if (message.data["sender_server"] == "stream.chat") {
+      Get.toNamed(AppRoutes.ChatView, arguments: {"isBack": true});
+      // ChatRepo.JoinChat(
+      //     "${message.data["payload"]}"); // enter order id to join the chat
+      log("chat messge id : ${message.data}");
+    }
   }
 
   void localNotificationDispose() {

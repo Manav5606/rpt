@@ -17,7 +17,7 @@ class ChatController extends GetxController {
   //     GetAllStreamChatChannelById().obs;
 
   RxBool isLoading = false.obs;
-  final MyAccountController _accountController = Get.find();
+  // final MyAccountController _accountController = Get.find();
   RxList<ActiveOrderData> chatList = <ActiveOrderData>[].obs;
   List<String> streamChatApiID = [];
   List<String> matchedId = [];

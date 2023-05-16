@@ -1,5 +1,6 @@
 import 'package:customer_app/app/ui/pages/my_account/about_screen.dart';
 import 'package:customer_app/screens/root/splashscreen.dart';
+import 'package:customer_app/widgets/all_chatview.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/bindings/cartBindings.dart';
 import 'package:customer_app/app/bindings/home_binding.dart';
@@ -139,7 +140,7 @@ class AppPages {
         name: AppRoutes.PopularSearchScreen, page: () => PopularSearchScreen()),
     GetPage(name: AppRoutes.InStoreScreen, page: () => InStoreScreen()),
     GetPage(name: AppRoutes.StoreListScreen, page: () => StoreListScreen()),
-    GetPage(name: AppRoutes.ChatView, page: () => ChatView()),
+    GetPage(name: AppRoutes.ChatView, page: () => AllChats()),
     GetPage(name: AppRoutes.HelpSupport, page: () => HelpSupport()),
     GetPage(name: AppRoutes.OrderInformation, page: () => OrderInformation()),
     GetPage(

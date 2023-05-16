@@ -24,13 +24,12 @@ import 'app/constants/colors.dart';
 List<CameraDescription> cameras = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await FireBaseNotification().setUpLocalNotification();
+  await FireBaseNotification.initializeFirebase();
   await GetStorage.init();
   await FirebaseRemoteConfigUtils().initMethod();
 
   await HiveHelper.init();
-  // DynamicLinkHelper.init();
+
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // Pass all uncaught "fatal" errors from the framework to Crashlytics
   FlutterError.onError = (errorDetails) {

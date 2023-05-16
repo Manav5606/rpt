@@ -25,35 +25,35 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-class ChatView extends StatelessWidget {
-  ChatView({Key? key}) : super(key: key);
-  final ChatController _chatController = Get.put(ChatController());
-  final freshChatController _freshChat = Get.put(freshChatController());
-  @override
-  Widget build(BuildContext context) {
-    return
-        //  Scaffold(
-        // key: _freshChat.scaffoldKey,
-        // appBar: AppBar(
-        //   title: Text(
-        //     'Start chatting ',
-        //     style: TextStyle(color: AppConst.black),
-        //   ),
-        // ),
-        // floatingActionButton: FloatingActionButton(
-        // onPressed: () async {
-        //   _freshChat.initState();
-        //   await _freshChat.showChatConversation();
-        // },
-        //   tooltip: 'Chat',
-        //   child: Icon(Icons.chat),
-        // ),
-        // );
+// class ChatView extends StatelessWidget {
+//   ChatView({Key? key}) : super(key: key);
+//   final ChatController _chatController = Get.put(ChatController());
+//   final freshChatController _freshChat = Get.put(freshChatController());
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//         //  Scaffold(
+//         // key: _freshChat.scaffoldKey,
+//         // appBar: AppBar(
+//         //   title: Text(
+//         //     'Start chatting ',
+//         //     style: TextStyle(color: AppConst.black),
+//         //   ),
+//         // ),
+//         // floatingActionButton: FloatingActionButton(
+//         // onPressed: () async {
+//         //   _freshChat.initState();
+//         //   await _freshChat.showChatConversation();
+//         // },
+//         //   tooltip: 'Chat',
+//         //   child: Icon(Icons.chat),
+//         // ),
+//         // );
 
-        AllChats();
-    // nochats();
-  }
-}
+//         AllChats();
+//     // nochats();
+//   }
+// }
 
 class nochats extends StatelessWidget {
   const nochats({

@@ -448,7 +448,7 @@ class ListViewChild extends StatelessWidget {
                                           SizedBox(
                                             width: 14.w,
                                             child: Text(
-                                                "/kg ${product.unit ?? ""}",
+                                                "/ ${product.unit ?? ""}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                   fontFamily: 'MuseoSans',
@@ -539,20 +539,20 @@ class ListViewChild extends StatelessWidget {
 
                                                         log("storesWithProductsModel?.products?[index] : ${product}");
 
-                                                        _moreStoreController.addToCart(
-                                                            store_id:
-                                                                _moreStoreController
-                                                                    .storeId
-                                                                    .value,
-                                                            index: 0,
-                                                            increment: true,
-                                                            cart_id:
-                                                                _moreStoreController
-                                                                        .getCartIDModel
-                                                                        .value
-                                                                        ?.sId ??
-                                                                    '',
-                                                            product: product);
+                                                        // _moreStoreController.addToCart(
+                                                        //     store_id:
+                                                        //         _moreStoreController
+                                                        //             .storeId
+                                                        //             .value,
+                                                        //     index: 0,
+                                                        //     increment: true,
+                                                        //     cart_id:
+                                                        //         _moreStoreController
+                                                        //                 .getCartIDModel
+                                                        //                 .value
+                                                        //                 ?.sId ??
+                                                        //             '',
+                                                        //     product: product);
 
                                                         _moreStoreController
                                                                 .storeId.value =
@@ -586,18 +586,20 @@ class ListViewChild extends StatelessWidget {
                                                       }
                                                       // addItem(product);
                                                     },
-                                                    child: product.isQunitityAdd
-                                                                    ?.value ==
-                                                                true &&
-                                                            product.quntity!
-                                                                    .value !=
-                                                                0
-                                                        ? _dropDown(
-                                                            product,
-                                                            storesWithProductsModel
-                                                                    .sId ??
-                                                                '')
-                                                        : DisplayAddPlus()),
+                                                    child:
+                                                        //  product.isQunitityAdd
+                                                        //                 ?.value ==
+                                                        //             true &&
+                                                        //         product.quntity!
+                                                        //                 .value !=
+                                                        //             0
+                                                        //     ? _dropDown(
+                                                        //         product,
+                                                        //         storesWithProductsModel
+                                                        //                 .sId ??
+                                                        //             '')
+                                                        //     :
+                                                        DisplayAddPlus()),
                                           ),
 
                                           SizedBox(
