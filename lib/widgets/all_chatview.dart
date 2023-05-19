@@ -27,8 +27,8 @@ class AllChats extends StatefulWidget {
 }
 
 class _AllChatsState extends State<AllChats> {
-  final GlobalKey<ScaffoldState>? _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final ChatController _controller = Get.find();
+  // final GlobalKey<ScaffoldState>? _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final ChatController _controller = Get.put(ChatController());
   final MyAccountController _MyController = Get.find();
   final freshChatController _freshChat = Get.find();
   @override
@@ -37,7 +37,7 @@ class _AllChatsState extends State<AllChats> {
 
     bool? isbackenable = (arg != null) ? arg['isBack'] : false;
     return Scaffold(
-      key: _scaffoldKey,
+      key: RIKeys.riKey1,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -58,7 +58,10 @@ class _AllChatsState extends State<AllChats> {
         leading: (isbackenable ?? false)
             ? GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoutes.BaseScreen);
+                  Future.delayed(Duration.zero, () async {
+                    Get.toNamed(AppRoutes.BaseScreen);
+                  });
+                  //  Get.toNamed(AppRoutes.BaseScreen);
                 },
                 child: Icon(
                   Icons.arrow_back,
@@ -251,7 +254,7 @@ class _AllChatsState extends State<AllChats> {
                                     })
                                     .where((e) => e != null)
                                     .join(' ');
-                                log('channel.state!.messages :${channel.state!.messages}');
+                                // log('channel.state!.messages :${channel.state!.messages}');
                                 log('lastMessage.text :${lastMessage.toJson()}');
 
                                 text = '$prefix ${lastMessage.text ?? ''}';

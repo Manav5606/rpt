@@ -115,14 +115,23 @@ class FireBaseNotification {
     log('TOKEN to be Registered: $fcmToken');
 
     // Fired when app is coming from a terminated state
-    var initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (initialMessage != null)
-      _showLocalNotification(initialMessage); // in app message disable
+    // var initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    // investigate how we can acheive
+    //1. ontap of  notification open the app and nav to perticular screen
+    // if (initialMessage != null)
+    //   _showLocalNotification(initialMessage); // in app message disable
     // Fired when app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      _showLocalNotification(message);
-      // notificationToNavigat(); local
-      log('Got a message, app is in the foreground! ${message.data}');
+      try {
+        final chatClient = Constants.client;
+        handleNotification(message, chatClient);
+
+        _showLocalNotification(message);
+
+        log('Got a message, app is in the foreground! ${message.data}');
+      } catch (e) {
+        log("forground message error :$e");
+      }
     });
 
     // Fired when app is in foreground
@@ -131,9 +140,9 @@ class FireBaseNotification {
         notificationToNavigat(message);
       } catch (e) {}
 
-      _showLocalNotification(message);
+      // _showLocalNotification(message);
       //  for the testing purpose i have disable the in app notification
-      selectNotification('${message.data['payload']}');
+      // selectNotification('${message.data['payload']}');
       log('Got a message, app is opening on clicking on message  ${message.notification}');
     });
 
@@ -165,23 +174,26 @@ class FireBaseNotification {
     RemoteMessage message,
     StreamChatClient chatClient,
   ) async {
-    final data = message.data;
+    try {
+      final data = message.data;
 
-    if (data['type'] == 'message.new') {
-      // final flutterLocalNotificationsPlugin = await setupLocalNotifications();
-      final messageId = data['id'];
-      final response = await chatClient.getMessage(messageId);
-      log("response: ${response.message.text}");
-      // flutterLocalNotificationsPlugin.show(
-      //   1,
-      //   'New message from ${response.message.user?.name} in ${response.channel?.name}',
-      //   response.message.text,
-      //   NotificationDetails(
-      //       android: AndroidNotificationDetails(
-      //     'new_message',
-      //     'New message notifications channel',
-      //   )),
-      // );
+      if (data['sender_server'] == 'stream.chat') {
+        // final messageId = data['id'];
+        // final response = await chatClient.getMessage(messageId);
+
+        flutterLocalNotificationsPlugin.show(
+          1,
+          'New message from ${message.notification?.title} ',
+          message.notification?.body,
+          NotificationDetails(
+              android: AndroidNotificationDetails(
+            'new_message',
+            'New message notifications channel',
+          )),
+        );
+      }
+    } catch (e) {
+      log("error chat: $e");
     }
   }
 
@@ -236,54 +248,61 @@ class FireBaseNotification {
   }
 
   void _showLocalNotification(RemoteMessage message) async {
-    RemoteNotification? notification = message.notification;
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('your channel id', 'your channel name',
-            channelDescription: 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker');
+    try {
+      RemoteNotification? notification = message.notification;
+      const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails('your channel id', 'your channel name',
+              channelDescription: 'your channel description',
+              importance: Importance.max,
+              icon: "@mipmap/launcher_icon",
+              priority: Priority.high,
+              ticker: 'ticker');
 
-    /// Local Notification
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, notification?.title, notification?.body, platformChannelSpecifics,
-        payload: message.data.toString());
+      /// Local Notification
+      const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+      await flutterLocalNotificationsPlugin.show(
+          0, notification?.title, notification?.body, platformChannelSpecifics,
+          payload: message.data.toString());
 
-    ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-        backgroundColor: AppConst.transparent,
-        behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        // margin: EdgeInsets.only(bottom: 75.h, right: 2.w, left: 2.w),
-        content: Snack.top(
-            '${message.notification?.title}', '${message.notification?.body}')
+      // ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+      //   backgroundColor: AppConst.transparent,
+      //   behavior: SnackBarBehavior.floating,
+      //   duration: Duration(seconds: 3),
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(24),
+      //   ),
+      //   // margin: EdgeInsets.only(bottom: 75.h, right: 2.w, left: 2.w),
+      //   content:
 
-        // Container(
-        //     height: 12.h,
-        //     decoration: BoxDecoration(
-        //         color: AppConst.lightYellow,
-        //         borderRadius: BorderRadius.circular(8)),
-        //     child: Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             notification.title ?? '',
-        //             style: TextStyle(color: AppConst.black),
-        //           ),
-        //           Text(
-        //             notification.body ?? '',
-        //             style: TextStyle(color: AppConst.black),
-        //           ),
-        //         ],
-        //       ),
-        //     )),
-        ));
+      //       // Snack.top(
+      //       //     '${message.notification?.title}', '${message.notification?.body}')
+
+      //       Container(
+      //           height: 12.h,
+      //           decoration: BoxDecoration(
+      //               color: AppConst.lightYellow,
+      //               borderRadius: BorderRadius.circular(8)),
+      //           child: Padding(
+      //             padding: const EdgeInsets.all(8.0),
+      //             child: Column(
+      //               crossAxisAlignment: CrossAxisAlignment.start,
+      //               children: [
+      //                 Text(
+      //                   notification?.title ?? '',
+      //                   style: TextStyle(color: AppConst.black),
+      //                 ),
+      //                 Text(
+      //                   notification?.body ?? '',
+      //                   style: TextStyle(color: AppConst.black),
+      //                 ),
+      //               ],
+      //             ),
+      //           )),
+      // ));
+    } catch (e) {
+      log("forground message error :$e");
+    }
   }
 
   void localNotificationRequestPermissions() {
@@ -334,6 +353,16 @@ class FireBaseNotification {
       // ChatRepo.JoinChat(
       //     "${message.data["payload"]}"); // enter order id to join the chat
       log("chat messge id : ${message.data}");
+    }
+
+    if ((message.data["type"] == "ACCEPTED")) {
+      ActiveOrderData? orderData =
+          await MyAccountRepository.getSingleOrder(message.data["_id"]);
+
+      log("orderdata from payload:${orderData}");
+      Get.to(ActiveOrderTrackingScreen(
+        activeOrder: orderData,
+      ));
     }
   }
 

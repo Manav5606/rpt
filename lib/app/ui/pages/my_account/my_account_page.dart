@@ -736,7 +736,7 @@ class MyAccountPage extends GetView<MyAccountController> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        key: _freshChat.scaffoldKey,
+        key: RIKeys.riKey2,
         body: SafeArea(
           child: GetX<MyAccountController>(
             initState: (state) {
