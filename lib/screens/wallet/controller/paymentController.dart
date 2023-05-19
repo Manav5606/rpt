@@ -34,6 +34,7 @@ class PaymentController extends GetxController {
   Rx<OrderData?> orderModel = OrderData().obs;
 
   RxString amountText = ''.obs;
+  RxString BillAmount = ''.obs;
   LatLng latLng = LatLng(0.0, 0.0);
   Rx<GetStoreDataModel?> getStoreDataModel = GetStoreDataModel().obs;
   RxList<RecentProductsData> scanRecentProductList = <RecentProductsData>[].obs;
@@ -81,11 +82,13 @@ class PaymentController extends GetxController {
   }
 
   Future<OrderData?> redeemBalance(
-      {required String storeId, required double amount}) async {
+      {required String storeId,
+      required double amount,
+      required double billAmount}) async {
     try {
       isLoading.value = true;
-      orderModel.value =
-          await WalletService.redeemBalance(storeId: storeId, amount: amount);
+      orderModel.value = await WalletService.redeemBalance(
+          storeId: storeId, amount: amount, billAmount: billAmount);
       isLoading.value = false;
       orderModel.refresh();
     } catch (e, st) {

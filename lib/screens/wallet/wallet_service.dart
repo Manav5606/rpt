@@ -62,13 +62,16 @@ class WalletService {
   }
 
   static Future<OrderData?> redeemBalance(
-      {required String storeId, required double amount}) async {
+      {required String storeId,
+      required double amount,
+      required double billAmount}) async {
     try {
       final result = await GraphQLRequest.query(
           query: GraphQLQueries.redeemBalance,
           variables: {
             'store': storeId,
             'amount': amount,
+            "bill_amount": billAmount
           });
       if (result['error'] == false) {
         final OrderData _getAllRefunds = OrderData.fromJson(result['data']);

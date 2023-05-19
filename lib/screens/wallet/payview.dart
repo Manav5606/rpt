@@ -32,12 +32,14 @@ class _PayViewState extends State<PayView> {
   final PaymentController paycontroller = Get.find();
   final HomeController _homeController = Get.find();
   final TextEditingController amountController = TextEditingController();
+  final TextEditingController billAmountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     // TODO: implement initState
     amountController;
+    billAmountController;
     paycontroller.amountText.value = amountController.value.text;
     super.initState();
   }
@@ -46,6 +48,7 @@ class _PayViewState extends State<PayView> {
   void dispose() {
     // TODO: implement dispose
     amountController.dispose();
+    billAmountController.dispose();
 
     super.dispose();
   }
@@ -84,7 +87,7 @@ class _PayViewState extends State<PayView> {
             SizedBox(
               width: 4.w,
             ),
-            Text("Redeem Cash",
+            Text("Pay To Store",
                 style: TextStyle(
                   fontFamily: 'MuseoSans',
                   color: AppConst.white,
@@ -112,7 +115,7 @@ class _PayViewState extends State<PayView> {
                             ),
                             ShimmerEffect(
                               child: Container(
-                                height: 22.h,
+                                height: 18.h,
                                 width: 76.w,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.rectangle,
@@ -256,7 +259,7 @@ class _PayViewState extends State<PayView> {
                             //   height: 2.h,
                             // ),
                             Container(
-                              height: 26.h,
+                              height: 20.h,
                               width: double.infinity, //76.w,
                               decoration: BoxDecoration(
                                 // shape: BoxShape.rectangle,
@@ -393,108 +396,273 @@ class _PayViewState extends State<PayView> {
                             //       )),
                             // ),
                             SizedBox(
-                              height: 5.h,
+                              height: 3.h,
                             ),
-                            Text("You are Paying",
-                                style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: Color(0xff003d29),
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 5.2,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                    letterSpacing: 0.4)),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width:
-                                      ((paycontroller.amountText.value).length >
-                                              3)
-                                          ? 15.w
-                                          : 35.w,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 1.w),
-                                        child: Text("\u{20b9}",
-                                            style: TextStyle(
+                            Padding(
+                              padding: EdgeInsets.only(left: 4.w),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Bill Amount :",
+                                    style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 5),
+                                  ),
+                                  SizedBox(
+                                    width: 3.w,
+                                  ),
+                                  Container(
+                                    width: 55.w,
+                                    // color: AppConst.yellow,
+                                    child: TextFormField(
+                                      // validator: (value) => ((value != null &&
+                                      //         value.isEmpty)
+                                      //     ? 'Amount cannot be blank'
+                                      //     : (int.parse(value!) > (balance))
+                                      //         ? "Amount must be less than wallet balance"
+                                      //         : null),
+                                      controller: billAmountController,
+
+                                      cursorColor: AppConst.black,
+                                      maxLines: 1,
+                                      maxLength: 5,
+
+                                      textDirection: TextDirection.ltr,
+                                      keyboardType: TextInputType.number,
+                                      textAlign: TextAlign.start,
+                                      onChanged: (value) {
+                                        paycontroller.BillAmount.value = value;
+                                      },
+                                      decoration: InputDecoration(
+                                          prefixText: "\u{20b9} ",
+                                          prefixStyle: TextStyle(
                                               fontFamily: 'MuseoSans',
                                               color: AppConst.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle: FontStyle.normal,
                                               fontSize: SizeUtils
                                                       .horizontalBlockSize *
-                                                  11,
-                                              fontWeight: FontWeight.w700,
+                                                  5),
+                                          counterText: "",
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          hintText: " Enter bill Amount",
+                                          hintStyle: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              color: AppConst.grey,
+                                              fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
-                                            )),
-                                      ),
-                                    ],
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  4),
+                                          hintTextDirection: TextDirection.ltr,
+                                          alignLabelWithHint: true),
+                                      style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  5),
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  width: 45.w,
-                                  child: TextFormField(
-                                    // validator: (value) => ((value != null &&
-                                    //         value.isEmpty)
-                                    //     ? 'Amount cannot be blank'
-                                    //     : (int.parse(value!) > (balance))
-                                    //         ? "Amount must be less than wallet balance"
-                                    //         : null),
-                                    controller: amountController,
-                                    cursorHeight: 40,
-                                    cursorColor: AppConst.black,
-                                    maxLines: 1,
-                                    maxLength: 4,
-                                    textDirection: TextDirection.ltr,
-                                    keyboardType: TextInputType.number,
-                                    textAlign: TextAlign.start,
-                                    onChanged: (value) {
-                                      paycontroller.amountText.value = value;
-                                    },
-                                    decoration: InputDecoration(
-                                        counterText: "",
-                                        contentPadding:
-                                            EdgeInsets.symmetric(horizontal: 1),
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        hintText: "0",
-                                        hintTextDirection: TextDirection.ltr,
-                                        alignLabelWithHint: true),
-                                    style: TextStyle(
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 11),
-                                  ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-
                             SizedBox(
                               height: 2.h,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width:
-                                      ((paycontroller.amountText.value).length >
-                                              3)
-                                          ? 50.w
-                                          : 30.w,
-                                  height: 5,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color:
-                                        (paycontroller.amountText.value != "")
-                                            ? AppConst.green
-                                            : AppConst.grey,
+
+                            Padding(
+                              padding: EdgeInsets.only(left: 4.w),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Pay from Wallet :",
+                                    style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 5),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    width: 3.w,
+                                  ),
+                                  Container(
+                                    width: 50.w,
+                                    // color: AppConst.yellow,
+                                    child: TextFormField(
+                                      // validator: (value) => ((value != null &&
+                                      //         value.isEmpty)
+                                      //     ? 'Amount cannot be blank'
+                                      //     : (int.parse(value!) > (balance))
+                                      //         ? "Amount must be less than wallet balance"
+                                      //         : null),
+                                      controller: amountController,
+                                      // cursorHeight: 40,
+                                      cursorColor: AppConst.black,
+                                      maxLines: 1,
+                                      maxLength: 4,
+
+                                      textDirection: TextDirection.ltr,
+                                      keyboardType: TextInputType.number,
+                                      textAlign: TextAlign.start,
+                                      onChanged: (value) {
+                                        paycontroller.amountText.value = value;
+                                      },
+                                      decoration: InputDecoration(
+                                          prefixText: "\u{20b9} ",
+                                          prefixStyle: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              color: AppConst.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  5),
+                                          counterText: "",
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          hintText: " Enter Amount",
+                                          hintStyle: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              color: AppConst.grey,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  4),
+                                          hintTextDirection: TextDirection.ltr,
+                                          alignLabelWithHint: true),
+                                      style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  5),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            // Text("You are Paying",
+                            //     style: TextStyle(
+                            //         fontFamily: 'MuseoSans',
+                            //         color: Color(0xff003d29),
+                            //         fontSize:
+                            //             SizeUtils.horizontalBlockSize * 5.2,
+                            //         fontWeight: FontWeight.w500,
+                            //         fontStyle: FontStyle.normal,
+                            //         letterSpacing: 0.4)),
+                            // SizedBox(
+                            //   height: 1.h,
+                            // ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                            //     Container(
+                            //       width:
+                            //           ((paycontroller.amountText.value).length >
+                            //                   3)
+                            //               ? 15.w
+                            //               : 35.w,
+                            //       child: Row(
+                            //         mainAxisAlignment: MainAxisAlignment.end,
+                            //         children: [
+                            //           Padding(
+                            //             padding: EdgeInsets.only(right: 1.w),
+                            //             child: Text("\u{20b9}",
+                            //                 style: TextStyle(
+                            //                   fontFamily: 'MuseoSans',
+                            //                   color: AppConst.black,
+                            //                   fontSize: SizeUtils
+                            //                           .horizontalBlockSize *
+                            //                       11,
+                            //                   fontWeight: FontWeight.w700,
+                            //                   fontStyle: FontStyle.normal,
+                            //                 )),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //     Container(
+                            //       width: 45.w,
+                            //       child: TextFormField(
+                            //         // validator: (value) => ((value != null &&
+                            //         //         value.isEmpty)
+                            //         //     ? 'Amount cannot be blank'
+                            //         //     : (int.parse(value!) > (balance))
+                            //         //         ? "Amount must be less than wallet balance"
+                            //         //         : null),
+                            //         controller: amountController,
+                            //         cursorHeight: 40,
+                            //         cursorColor: AppConst.black,
+                            //         maxLines: 1,
+                            //         maxLength: 4,
+                            //         textDirection: TextDirection.ltr,
+                            //         keyboardType: TextInputType.number,
+                            //         textAlign: TextAlign.start,
+                            //         onChanged: (value) {
+                            //           paycontroller.amountText.value = value;
+                            //         },
+                            //         decoration: InputDecoration(
+                            //             counterText: "",
+                            //             contentPadding:
+                            //                 EdgeInsets.symmetric(horizontal: 1),
+                            //             enabledBorder: InputBorder.none,
+                            //             focusedBorder: InputBorder.none,
+                            //             hintText: "0",
+                            //             hintTextDirection: TextDirection.ltr,
+                            //             alignLabelWithHint: true),
+                            //         style: TextStyle(
+                            //             fontSize:
+                            //                 SizeUtils.horizontalBlockSize * 11),
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
+
+                            // SizedBox(
+                            //   height: 2.h,
+                            // ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                            //     Container(
+                            //       width:
+                            //           ((paycontroller.amountText.value).length >
+                            //                   3)
+                            //               ? 50.w
+                            //               : 30.w,
+                            //       height: 5,
+                            //       decoration: BoxDecoration(
+                            //         borderRadius: BorderRadius.circular(25),
+                            //         color:
+                            //             (paycontroller.amountText.value != "")
+                            //                 ? AppConst.green
+                            //                 : AppConst.grey,
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                             SizedBox(
                               height: 4.h,
                             ),
@@ -823,19 +991,25 @@ class _PayViewState extends State<PayView> {
                         () => InkWell(
                           onTap: () async {
                             if (paycontroller.amountText.value.isNotEmpty &&
-                                paycontroller.amountText.value.isNum) {
+                                paycontroller.amountText.value.isNum &&
+                                (paycontroller.BillAmount.value.isNotEmpty &&
+                                    paycontroller.BillAmount.value.isNum)) {
                               var temp =
                                   double.parse(paycontroller.amountText.value);
+                              var tempBillAmount =
+                                  double.parse(paycontroller.BillAmount.value);
                               if (temp > 0 &&
                                   (int.parse(paycontroller.amountText.value) <=
-                                      (balance))) {
+                                      (balance)) &&
+                                  tempBillAmount > 0) {
                                 await paycontroller.redeemBalance(
                                     storeId: (paycontroller
                                             .redeemCashInStorePageDataIndex
                                             .value
                                             .sId ??
                                         ''),
-                                    amount: temp);
+                                    amount: temp,
+                                    billAmount: tempBillAmount);
                                 if (paycontroller.orderModel.value?.Id !=
                                     null) {
                                   await Navigator.pushAndRemoveUntil(
@@ -851,7 +1025,7 @@ class _PayViewState extends State<PayView> {
                                       ),
                                       (Route<dynamic> route) => route.isFirst);
                                   _homeController.apiCall();
-                                  amountController.clear();
+
                                   paycontroller.isLoading.value = false;
                                 } else {
                                   Get.to(

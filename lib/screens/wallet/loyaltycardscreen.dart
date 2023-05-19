@@ -81,7 +81,7 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
             SizedBox(
               width: 4.w,
             ),
-            Text("Redeem Cash",
+            Text("Pay To Store",
                 style: TextStyle(
                   fontFamily: 'MuseoSans',
                   color: AppConst.black,

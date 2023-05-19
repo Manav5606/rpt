@@ -1576,8 +1576,8 @@ getAllcarts{
 
   static final redeemBalance = new GraphQLQuery(
     name: 'redeemBalance',
-    query: r'''mutation($store: ID $amount: Float ){
-    redeemBalance(store:$store,amount:$amount){
+    query: r'''mutation($store: ID $amount: Float $bill_amount: Float){
+    redeemBalance(store:$store,amount:$amount , bill_amount: $bill_amount){
       error
     msg
      data

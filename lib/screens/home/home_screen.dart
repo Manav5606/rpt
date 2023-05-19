@@ -1257,7 +1257,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                     ),
                                                   ),
                                                 ),
-                                                Text("Redeem Cash",
+                                                Text("Pay To Store",
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontFamily: 'MuseoSans',
