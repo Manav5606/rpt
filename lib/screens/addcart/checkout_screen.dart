@@ -482,17 +482,17 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
                                       _addCartController
                                               .dayTimeSlots.value?.startTime !=
                                           null) {
-                                    await _addCartController.createRazorPayOrder(
-                                        storeId: _addCartController
-                                                .store.value?.sId ??
-                                            '',
-                                        amount: double.parse(_addCartController
-                                                .getOrderConfirmPageDataModel
-                                                .value
-                                                ?.data
-                                                ?.finalpayableAmount
-                                                ?.toStringAsFixed(2) ??
-                                            "0.0"));
+                                    // await _addCartController.createRazorPayOrder(
+                                    //     storeId: _addCartController
+                                    //             .store.value?.sId ??
+                                    //         '',
+                                    //     amount: double.parse(_addCartController
+                                    //             .getOrderConfirmPageDataModel
+                                    //             .value
+                                    //             ?.data
+                                    //             ?.finalpayableAmount
+                                    //             ?.toStringAsFixed(2) ??
+                                    //         "0.0"));
                                     _addCartController.deliveryMessage.value ==
                                         "";
                                   } else {
@@ -1001,14 +1001,30 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
             if (_addCartController.isTodaySlotsAvailable.value ||
                 _addCartController.isTomorrowSlotsAvailable.value) {
               if (_addCartController.selectTimeSheetIndex.value == 1) {
-                _addCartController.timeSlots.value = _addCartController
-                    .getOrderConfirmPageDataModel
-                    .value
-                    ?.data
-                    ?.deliverySlots?[
-                        int.parse(_addCartController.currentDay.value)]
-                    .slots
-                    ?.first;
+                _addCartController.selectTimeSheetIndex.value = 1;
+
+                _addCartController.dayTimeSlots.value?.startTime =
+                    _addCartController.remainingSlotForDay![0].startTime;
+
+                _addCartController.dayTimeSlots.value?.endTime =
+                    _addCartController.remainingSlotForDay![0].endTime;
+
+                _addCartController.dayTimeSlots.value?.cutOffTime =
+                    _addCartController.remainingSlotForDay![0].cutOffTime;
+                _addCartController.dayTimeSlots.value?.day =
+                    int.parse(_addCartController.currentDay.value);
+
+                _addCartController.timeZoneCustom.value = getTemp1(0);
+                _addCartController.dayTimeSlots.refresh();
+                // _addCartController.timeSlots.value?.cutOffTime = _addCartController.dayTimeSlots.value?.cutOffTime;
+                // _addCartController
+                //     .getOrderConfirmPageDataModel
+                //     .value
+                //     ?.data
+                //     ?.deliverySlots?[
+                //         int.parse(_addCartController.currentDay.value)]
+                //     .slots
+                //     ?.first; // it is giving the 1st slot for that day it shuold be the next available slot
                 _addCartController.deliveryMessage.value =
                     _addCartController.displayHour.value;
 
