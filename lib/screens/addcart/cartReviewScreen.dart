@@ -1355,99 +1355,98 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                             //           FontWeight
                                                             //               .w500),
                                                             // )),
-                                                            Obx(
-                                                              () =>
-                                                                  CustomPopMenu(
-                                                                title:
-                                                                    'Quantity',
-                                                                child:
-                                                                    DisplayProductCount(
-                                                                  count: _addCartController
-                                                                      .reviewCart
-                                                                      .value
-                                                                      ?.data
-                                                                      ?.inventories?[
-                                                                          index]
-                                                                      .quantity
-                                                                      ?.value,
-                                                                ),
-                                                                onSelected:
-                                                                    (value) async {
-                                                                  _addCartController
-                                                                      .reviewCart
-                                                                      .value
-                                                                      ?.data
-                                                                      ?.inventories?[
-                                                                          index]
-                                                                      .quantity
-                                                                      ?.value = value;
-
-                                                                  await _addCartController
-                                                                      .addToCartInventory(
-                                                                    name: _addCartController
-                                                                            .reviewCart
-                                                                            .value
-                                                                            ?.data
-                                                                            ?.inventories?[index]
-                                                                            .name ??
-                                                                        '',
-                                                                    quntity: _addCartController
+                                                            _addCartController
+                                                                        .reviewCart
+                                                                        .value
+                                                                        ?.data
+                                                                        ?.inventories?[
+                                                                            index]
+                                                                        .status ==
+                                                                    false
+                                                                ? Container(
+                                                                    width: 15.w,
+                                                                    child: Text(
+                                                                        "Not Available",
+                                                                        maxLines:
+                                                                            2,
+                                                                        textAlign:
+                                                                            TextAlign
+                                                                                .center,
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              SizeUtils.horizontalBlockSize * 3,
+                                                                        )),
+                                                                  )
+                                                                : Obx(
+                                                                    () =>
+                                                                        CustomPopMenu(
+                                                                      title:
+                                                                          'Quantity',
+                                                                      child:
+                                                                          DisplayProductCount(
+                                                                        count: _addCartController
                                                                             .reviewCart
                                                                             .value
                                                                             ?.data
                                                                             ?.inventories?[index]
                                                                             .quantity
-                                                                            ?.value ??
-                                                                        0,
-                                                                    sId: _addCartController
+                                                                            ?.value,
+                                                                      ),
+                                                                      onSelected:
+                                                                          (value) async {
+                                                                        _addCartController
                                                                             .reviewCart
                                                                             .value
                                                                             ?.data
                                                                             ?.inventories?[index]
-                                                                            .sId ??
-                                                                        '',
-                                                                    cart_id: _addCartController
-                                                                        .cartId
-                                                                        .value,
-                                                                    store_id: _addCartController
-                                                                            .store
-                                                                            .value
-                                                                            ?.sId ??
-                                                                        '',
-                                                                  );
-                                                                  // _moreStoreController
-                                                                  //     .totalItemsCount
-                                                                  //     .value = _moreStoreController
-                                                                  //         .addToCartModel
-                                                                  //         .value
-                                                                  //         ?.totalItemsCount ??
-                                                                  //     0;
-                                                                  _moreStoreController
-                                                                    ..getCartIDModel
-                                                                        .value
-                                                                        ?.totalItemsCount = _addCartController
-                                                                            .cart
-                                                                            .value
-                                                                            ?.totalItemsCount
-                                                                            ?.value ??
-                                                                        0;
+                                                                            .quantity
+                                                                            ?.value = value;
 
-                                                                  _addCartController
-                                                                      .totalCount
-                                                                      .value = _moreStoreController
-                                                                          .getCartIDModel
-                                                                          .value
-                                                                          ?.totalItemsCount
-                                                                          .toString() ??
-                                                                      '';
-                                                                  _addCartController
-                                                                      .reviewCart
-                                                                      .refresh();
-                                                                },
-                                                                list: _addCartController
-                                                                    .quntityList,
-                                                              ),
-                                                            ),
+                                                                        await _addCartController
+                                                                            .addToCartInventory(
+                                                                          name: _addCartController.reviewCart.value?.data?.inventories?[index].name ??
+                                                                              '',
+                                                                          quntity:
+                                                                              _addCartController.reviewCart.value?.data?.inventories?[index].quantity?.value ?? 0,
+                                                                          sId: _addCartController.reviewCart.value?.data?.inventories?[index].sId ??
+                                                                              '',
+                                                                          cart_id: _addCartController
+                                                                              .cartId
+                                                                              .value,
+                                                                          store_id:
+                                                                              _addCartController.store.value?.sId ?? '',
+                                                                        );
+                                                                        // _moreStoreController
+                                                                        //     .totalItemsCount
+                                                                        //     .value = _moreStoreController
+                                                                        //         .addToCartModel
+                                                                        //         .value
+                                                                        //         ?.totalItemsCount ??
+                                                                        //     0;
+                                                                        _moreStoreController
+                                                                          ..getCartIDModel
+                                                                              .value
+                                                                              ?.totalItemsCount = _addCartController
+                                                                                  .cart.value?.totalItemsCount?.value ??
+                                                                              0;
+
+                                                                        _addCartController
+                                                                            .totalCount
+                                                                            .value = _moreStoreController.getCartIDModel.value?.totalItemsCount
+                                                                                .toString() ??
+                                                                            '';
+                                                                        _addCartController
+                                                                            .reviewCart
+                                                                            .refresh();
+                                                                      },
+                                                                      list: _addCartController
+                                                                          .quntityList,
+                                                                    ),
+                                                                  ),
                                                           ],
                                                         ),
                                                         // Row(
@@ -1634,6 +1633,10 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                               .reviewCart.value?.data?.products
                               ?.indexWhere((Products element) =>
                                   element.status == false);
+                          var tempInventory = _addCartController
+                              .reviewCart.value?.data?.inventories
+                              ?.indexWhere((Products element) =>
+                                  element.status == false);
                           var totalProductCount = ((_addCartController
                                       .reviewCart
                                       .value
@@ -1654,12 +1657,16 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                               //             ?.products?.isEmpty &&_addCartController.reviewCart.value?.data
                               //             ?.products?.isEmpty )
                               (totalProductCount == 0)
-                                  ? SizedBox()
-                                  : temp != -1
+                                  ? SizedBox() // cart item becomes zero discuss on it
+                                  : ((temp != -1) || (tempInventory != -1))
                                       ? GestureDetector(
                                           onTap: () async {
                                             _addCartController.reviewCart.value
                                                 ?.data?.products
+                                                ?.removeWhere((element) =>
+                                                    element.status == false);
+                                            _addCartController.reviewCart.value
+                                                ?.data?.inventories
                                                 ?.removeWhere((element) =>
                                                     element.status == false);
                                             _addCartController.reviewCart
@@ -1687,7 +1694,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                                       child: Text(
                                                         "Remove Unavailable Items",
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: AppConst.white,
                                                           fontSize: SizeUtils
                                                                   .horizontalBlockSize *
                                                               4,
@@ -2156,7 +2163,8 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
     return Container(
       height: 50.h,
       decoration: BoxDecoration(
-          color: AppConst.white, borderRadius: BorderRadius.circular(18)),
+        color: AppConst.white,
+      ),
       child: Column(
         children: [
           Container(
@@ -2546,7 +2554,7 @@ class DisplayChatOrderTag extends StatelessWidget {
             decoration:
                 BoxDecoration(shape: BoxShape.circle, color: Color(0xff8a52ff)),
             child: Icon(
-              Icons.whatsapp_outlined,
+              FontAwesomeIcons.whatsapp,
               size: 1.6.h,
               color: Color(0xffe8ddff),
             ),

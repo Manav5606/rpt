@@ -31,6 +31,7 @@ class _InstoreSearch extends State<InstoreSearch> {
     super.initState();
     Map arg = Get.arguments ?? {};
     storeID = arg['storeId'] ?? '';
+    _moreStoreController.storeSearchController.text = "";
     log("storeID :$storeID");
   }
 
