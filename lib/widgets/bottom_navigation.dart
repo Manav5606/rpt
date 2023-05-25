@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:customer_app/app/controller/signInScreenController.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
@@ -80,8 +80,8 @@ class BottomNavigation extends StatelessWidget {
                       //               ),
                       //       )
                       //     :
-                      Badge(
-                    position: BadgePosition.topEnd(top: -10, end: -8),
+                      badge.Badge(
+                    position: badge.BadgePosition.topEnd(top: -10, end: -8),
                     badgeColor: AppConst.red,
                     //  Color(0xff5764da),
                     badgeContent: Text(""),

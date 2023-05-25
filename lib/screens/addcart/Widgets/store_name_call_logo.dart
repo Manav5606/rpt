@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:bubble/bubble.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -32,12 +32,12 @@ class StoreNameCallLogoWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Badge(
-            shape: BadgeShape.square,
+          badge.Badge(
+            shape: badge.BadgeShape.square,
             borderRadius: BorderRadius.circular(2),
             elevation: 0,
             padding: EdgeInsets.zero,
-            position: BadgePosition.bottomEnd(bottom: -4, end: -2),
+            position: badge.BadgePosition.bottomEnd(bottom: -4, end: -2),
             badgeColor: AppConst.white,
             badgeContent: Padding(
               padding: const EdgeInsets.all(0.8),

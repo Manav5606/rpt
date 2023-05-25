@@ -1,5 +1,4 @@
-
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -146,9 +145,9 @@ class HistoryCardWidget extends StatelessWidget {
                       child: (product?.length != 0 &&
                               product?.length != 1 &&
                               product?.length != 2)
-                          ? Badge(
+                          ? badge.Badge(
                               toAnimate: false,
-                              shape: BadgeShape.square,
+                              shape: badge.BadgeShape.square,
                               badgeColor: AppConst.lightGrey,
                               borderRadius: BorderRadius.circular(8),
                               badgeContent: Text("${product?.length ?? 0}+",

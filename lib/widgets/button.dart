@@ -26,10 +26,10 @@ class BaseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: RaisedButton(
-          color: this.filledColor,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+      child: OutlinedButton(
+          // color: this.filledColor,
+          // shape:
+          //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
           onPressed: isLoading! || !enabled! ? null : onTap as void Function(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

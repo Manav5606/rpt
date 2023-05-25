@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
@@ -308,12 +308,12 @@ class ModifiedItemsList extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Badge(
-            shape: BadgeShape.circle,
+          badge.Badge(
+            shape: badge.BadgeShape.circle,
             borderRadius: BorderRadius.circular(2),
             elevation: 0,
             padding: EdgeInsets.zero,
-            position: BadgePosition.topEnd(top: -4, end: -6),
+            position: badge.BadgePosition.topEnd(top: -4, end: -6),
             badgeColor: AppConst.white,
             badgeContent: Icon(
               Icons.edit_note_outlined,
@@ -967,12 +967,12 @@ class FoundItemsList extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Badge(
-            shape: BadgeShape.circle,
+          badge.Badge(
+            shape: badge.BadgeShape.circle,
             borderRadius: BorderRadius.circular(2),
             elevation: 0,
             padding: EdgeInsets.zero,
-            position: BadgePosition.topEnd(top: -4, end: -6),
+            position: badge.BadgePosition.topEnd(top: -4, end: -6),
             badgeColor: AppConst.white,
             badgeContent: Icon(
               Icons.check_circle_rounded,
