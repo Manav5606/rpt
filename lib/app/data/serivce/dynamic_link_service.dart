@@ -4,7 +4,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:get/route_manager.dart';
-import 'package:uni_links/uni_links.dart';
+
 
 class DynamicLinkService {
   // Future handleDynamicLinks() async {
@@ -31,34 +31,40 @@ class DynamicLinkService {
   //   return (link.shortUrl.origin + link.shortUrl.path);
   // }
 
-  Future<String> createDynamicLink(String _referCode) async {
-    log('dynamicUrl : 0.1');
-    final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: 'https://rider.page.link',
-      link: Uri.parse('https://recipto.in?refercode=$_referCode'),
-      androidParameters: AndroidParameters(
-        packageName: 'com.recipto.customer_app',
-        // minimumVersion: 0,
-      ),
-      iosParameters: IOSParameters(
-        bundleId: 'com.recipto.customerapp',
-        minimumVersion: '1',
-        appStoreId: '6444468019',
-      ),
-    );
 
-    final link = await FirebaseDynamicLinks.instance.buildShortLink(parameters);
-    log('link : ${link.shortUrl}');
-    var dynamicUrl = await parameters.link;
-    log('dynamicUrl : $dynamicUrl');
-    // log("link data: ${link.data}");
-    // log("link normalizePath: ${link.normalizePath()}");
-    String appUrl = link.shortUrl.toString();
-    log('appUrl : $appUrl');
-    String decodeUrl = Uri.decodeFull(appUrl);
-    log('appUrl : $decodeUrl');
-    return decodeUrl;
-  }
+Future<String> createDynamicLink(String referCode) async {
+  final Uri link = Uri.parse('https://recipto.in/$referCode');
+  return link.toString();
+}
+
+  // Future<String> createDynamicLink(String _referCode) async {
+  //   log('dynamicUrl : 0.1');
+  //   final DynamicLinkParameters parameters = DynamicLinkParameters(
+  //     uriPrefix: 'https://rider.page.link',
+  //     link: Uri.parse('https://recipto.in?refercode=$_referCode'),
+  //     androidParameters: AndroidParameters(
+  //       packageName: 'com.recipto.customer_app',
+  //       // minimumVersion: 0,
+  //     ),
+  //     iosParameters: IOSParameters(
+  //       bundleId: 'com.recipto.customerapp',
+  //       minimumVersion: '1',
+  //       appStoreId: '6444468019',
+  //     ),
+  //   );
+
+  //   final link = await FirebaseDynamicLinks.instance.buildShortLink(parameters);
+  //   log('link : ${link.shortUrl}');
+  //   var dynamicUrl = await parameters.link;
+  //   log('dynamicUrl : $dynamicUrl');
+  //   // log("link data: ${link.data}");
+  //   // log("link normalizePath: ${link.normalizePath()}");
+  //   String appUrl = link.shortUrl.toString();
+  //   log('appUrl : $appUrl');
+  //   String decodeUrl = Uri.decodeFull(appUrl);
+  //   log('appUrl : $decodeUrl');
+  //   return decodeUrl;
+  // }
 
   Future<void> retrieveDynamicLink() async {
     try {

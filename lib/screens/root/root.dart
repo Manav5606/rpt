@@ -27,6 +27,7 @@ import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as temp;
 import 'package:sizer/sizer.dart';
+// import 'package:uni_links/uni_links.dart';
 
 class Root extends StatefulWidget {
   @override
@@ -34,6 +35,23 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> with TickerProviderStateMixin {
+//   StreamSubscription? _sub;
+//   Future<void> initUniLinks() async {
+// // check initialLink
+// // Attach a listener to the stream
+//     _sub = linkStream.listen((String? link) {
+// // Parse the link and warn the user, if it is not correct
+//       if (link != null) {
+//         print('listener is working');
+//       } else {
+//         "nolinks";
+//       }
+//     }, onError: (err) {
+// // Handle exception by warning the user their action did not succeed
+//     });
+// // NOTE: Don't forget to call _sub.cancel() in dispose()
+//   }
+
   late bool error;
   final HiveRepository hiveRepository = HiveRepository();
   final AddLocationController _addLocationController = Get.find();
@@ -42,6 +60,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   void initState() {
     // checkNetwork();
     // checkPermission();
+    // initUniLinks();
     if (!mounted) {
       return;
     } else {

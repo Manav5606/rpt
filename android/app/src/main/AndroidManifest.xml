@@ -42,16 +42,17 @@
               android:resource="@drawable/launch_background"
               />
             <intent-filter>
-                android:exported="true"
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="rider.page.link" android:scheme="https"/>
-                <data android:host="recipto.in" android:scheme="https"/>
+                <category android:name="android.intent.category.DEFAULT" />
+I
+                <data android:scheme="https"
+                 android:host="recipto.in"/>
             </intent-filter>
+            
+            
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

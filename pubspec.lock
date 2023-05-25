@@ -2221,6 +2221,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  vadher:
+    dependency: "direct main"
+    description:
+      name: vadher
+      sha256: "3a27edd43356fbddb40459c1ca5fdf61cba34ac0452937270b1436a2fc062633"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   vector_math:
     dependency: transitive
     description:

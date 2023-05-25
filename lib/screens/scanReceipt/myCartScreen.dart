@@ -522,8 +522,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                                               FileImage(File(
                                                                   "${images![index].path}")),
                                                           tightMode: true,
-                                                          customSize:
-                                                              Size(98.w, 100.h),
+                                                          // customSize:
+                                                          //     Size(98.w, 100.h),
                                                           backgroundDecoration:
                                                               BoxDecoration(
                                                                   color: AppConst

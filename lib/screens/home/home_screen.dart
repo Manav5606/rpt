@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -46,6 +47,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../../controllers/userViewModel.dart';
@@ -85,9 +87,30 @@ class _HomeScreenState extends State<HomeScreen>
 
   final AddLocationController _addLocationController = Get.find();
 
+  StreamSubscription? _sub;
+
+  Future<void> initUniLinks() async {
+    // ... check initialLink
+
+    // Attach a listener to the stream
+    _sub = linkStream.listen((String? link) {
+      if (link != null) {
+        var uri = Uri.parse(link);
+        print(uri.path);
+        print("objectobjectobjectobjectobject");
+      }
+      // Parse the link and warn the user, if it is not correct
+    }, onError: (err) {
+      // Handle exception by warning the user their action did not succeed
+    });
+
+    // NOTE: Don't forget to call _sub.cancel() in dispose()
+  }
+
   @override
   void initState() {
     super.initState();
+    initUniLinks();
     percent = .50;
     _scrollController = ScrollController();
     _categoryController = ScrollController();

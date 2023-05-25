@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart' as badge;
+import 'package:badges/badges.dart' as badges;
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
@@ -308,13 +308,15 @@ class ModifiedItemsList extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          badge.Badge(
-            shape: badge.BadgeShape.circle,
-            borderRadius: BorderRadius.circular(2),
-            elevation: 0,
-            padding: EdgeInsets.zero,
-            position: badge.BadgePosition.topEnd(top: -4, end: -6),
-            badgeColor: AppConst.white,
+          badges.Badge(
+          
+              shape: badges.BadgeShape.circle,
+              borderRadius: BorderRadius.circular(2),
+              elevation: 0,
+              padding: EdgeInsets.zero,
+              badgeColor: AppConst.white,
+      
+            position: badges.BadgePosition.topEnd(top: -4, end: -6),
             badgeContent: Icon(
               Icons.edit_note_outlined,
               size: 2.3.h,
@@ -967,13 +969,14 @@ class FoundItemsList extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          badge.Badge(
-            shape: badge.BadgeShape.circle,
-            borderRadius: BorderRadius.circular(2),
-            elevation: 0,
-            padding: EdgeInsets.zero,
-            position: badge.BadgePosition.topEnd(top: -4, end: -6),
-            badgeColor: AppConst.white,
+badges.Badge(
+         shape: badges.BadgeShape.circle,
+              borderRadius: BorderRadius.circular(2),
+              elevation: 0,
+              padding: EdgeInsets.zero,
+              badgeColor: AppConst.white,
+            
+            position: badges.BadgePosition.topEnd(top: -4, end: -6),
             badgeContent: Icon(
               Icons.check_circle_rounded,
               size: 2.3.h,

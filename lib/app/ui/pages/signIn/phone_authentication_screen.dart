@@ -21,6 +21,7 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:keyboard_actions/keyboard_actions_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
+// import 'package:uni_links/uni_links.dart';
 
 import '../../../controller/signInScreenController.dart';
 
@@ -34,9 +35,27 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // int CurrentIndex = 0;
   // late PageController _controller;
+  // StreamSubscription? _sub;
+//   Future<void> initUniLinks() async {
+// // check initialLink
+// // Attach a listener to the stream
+//     _sub = linkStream.listen((String? link) {
+// // Parse the link and warn the user, if it is not correct
+//       if (link != null) {
+//         print('listener is working');
+//       } else {
+//         print("nolinks");
+//       }
+//     }, onError: (err) {
+// // Handle exception by warning the user their action did not succeed
+//     });
+// // NOTE: Don't forget to call _sub.cancel() in dispose()
+//   }
 
   @override
   void initState() {
+    // initUniLinks();
+    print("object");
     // _controller = PageController(initialPage: 0);
     // Timer.periodic(Duration(seconds: 3), (Timer timer) {
     //   if (CurrentIndex < 3) {

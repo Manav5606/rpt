@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -18,6 +20,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+// import 'package:uni_links/uni_links.dart';
 import 'package:upgrader/upgrader.dart';
 import 'app/constants/colors.dart';
 

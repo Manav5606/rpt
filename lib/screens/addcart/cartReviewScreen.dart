@@ -2554,7 +2554,10 @@ class DisplayChatOrderTag extends StatelessWidget {
             decoration:
                 BoxDecoration(shape: BoxShape.circle, color: Color(0xff8a52ff)),
             child: Icon(
+
               FontAwesomeIcons.whatsapp,
+
+            
               size: 1.6.h,
               color: Color(0xffe8ddff),
             ),
