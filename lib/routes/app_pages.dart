@@ -60,6 +60,7 @@ import 'package:customer_app/screens/wallet/paymentScreen.dart';
 import 'package:customer_app/screens/wallet/payview.dart';
 import 'package:get/route_manager.dart';
 
+import '../app/ui/pages/my_wallet/customer_wallet_details.dart';
 import '../screens/addcart/cartReviewScreen.dart';
 import '../screens/scanReceipt/myCartScreen.dart';
 
@@ -83,6 +84,12 @@ class AppPages {
       name: AppRoutes.AddressModel,
       page: () => AddressModel(),
       binding: NewLocationScreenBindings(),
+    ),
+    GetPage(
+      name: AppRoutes.CustomerWalletDetails,
+      page: () => CustomerWalletDetails(),
+      binding: MyWalletBinding()
+      // binding: NewLocationScreenBindings(),
     ),
     GetPage(
         name: AppRoutes.BaseScreen,

@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:ffi';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
@@ -9,7 +7,6 @@ import 'package:customer_app/app/data/serivce/dynamic_link_service.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
-import 'package:customer_app/data/repositories/mainRepoWithAllApi.dart';
 import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -22,11 +19,9 @@ import 'package:customer_app/utils/utils.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-// import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:lottie/lottie.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as temp;
-import 'package:sizer/sizer.dart';
+
+import '../../app/controller/my_wallet_controller.dart';
 // import 'package:uni_links/uni_links.dart';
 
 class Root extends StatefulWidget {
@@ -55,6 +50,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   late bool error;
   final HiveRepository hiveRepository = HiveRepository();
   final AddLocationController _addLocationController = Get.find();
+  final MyWalletController _myWalletController = Get.put(MyWalletController());
   temp.Location location = new temp.Location();
   @override
   void initState() {
@@ -119,8 +115,9 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           if (value.latitude != 0.0 && value.longitude != 0.0) {
             // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
             FireBaseNotification().firebaseCloudMessagingLSetup();
-            Future.delayed(Duration(seconds: 2), () {
-              Get.offAllNamed(AppRoutes.BaseScreen);
+            Future.delayed(Duration(seconds: 2), () async{
+             await _myWalletController.getAllWalletByCustomerByBusinessType();
+              Get.toNamed(AppRoutes.CustomerWalletDetails);
             });
             // });
           } else {

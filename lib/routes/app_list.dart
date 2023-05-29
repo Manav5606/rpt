@@ -61,4 +61,5 @@ class AppRoutes {
   static const String NewStoreChatScreen = '/StoreChatScreen';
   static const String NewStoreCartScreen = '/StoreCartScreen';
   static const String About = '/about';
+  static const String CustomerWalletDetails = '/CustomerWalletDetails';
 }

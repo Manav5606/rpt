@@ -612,6 +612,40 @@ class GraphQLQueries {
       }
     ''',
   );
+  static final getAllWalletByCustomerByBusinessType = new GraphQLQuery(
+    name: 'getAllWalletByCustomerByBusinessType',
+    query: r'''
+      
+    query($lat: Float, $lng: Float){
+    getAllWalletByCustomerByBusinessType (lat: $lat, lng: $lng) {
+    error
+    msg
+    data {
+        _id
+        total_stores
+        business_type {
+            _id
+            name
+            type
+        }
+        total_welcome_offer_by_business_type
+        stores {
+            _id
+            name
+            mobile
+            logo
+            actual_welcome_offer
+            actual_cashback
+            city
+            pincode
+            
+        }
+    }
+    total_welcome_offer_amount
+      }
+  }
+    ''',
+  );
 
   static final getAllWalletTransactionByCustomer = GraphQLQuery(
     name: 'getAllWalletTransactionByCustomer',
