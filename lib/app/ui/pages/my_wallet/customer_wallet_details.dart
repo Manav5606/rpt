@@ -1,5 +1,6 @@
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/my_wallet_controller.dart';
+import 'package:customer_app/app/ui/pages/my_wallet/select_business_type.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class _CustomerWalletDetailsState extends State<CustomerWalletDetails> {
                                       alignment: Alignment.centerLeft,
                                       child: GestureDetector(
                                         onTap: () {
-                                         
+                                          Get.to(SelectBusinessType());
                                         },
                                         child: Container(
                                           height: 30,

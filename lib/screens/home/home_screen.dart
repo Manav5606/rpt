@@ -121,6 +121,13 @@ class _HomeScreenState extends State<HomeScreen>
       duration: kThemeAnimationDuration,
       value: 1,
     );
+     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.delayed(Duration(seconds: 3), () {
+        Get.toNamed(
+          AppRoutes.SelectBusinessType,
+        );
+      });
+    });
 
     _addLocationController.checkPermission.listen((p0) async {
       // bool isEnable = await _homeController.getCurrentLocation();

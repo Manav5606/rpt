@@ -61,6 +61,7 @@ import 'package:customer_app/screens/wallet/payview.dart';
 import 'package:get/route_manager.dart';
 
 import '../app/ui/pages/my_wallet/customer_wallet_details.dart';
+import '../app/ui/pages/my_wallet/select_business_type.dart';
 import '../screens/addcart/cartReviewScreen.dart';
 import '../screens/scanReceipt/myCartScreen.dart';
 
@@ -90,6 +91,12 @@ class AppPages {
       page: () => CustomerWalletDetails(),
       binding: MyWalletBinding()
       // binding: NewLocationScreenBindings(),
+    ),
+    GetPage(
+      name: AppRoutes.SelectBusinessType,
+      page: () => SelectBusinessType(),
+      // binding: MyWalletBinding()
+      
     ),
     GetPage(
         name: AppRoutes.BaseScreen,
