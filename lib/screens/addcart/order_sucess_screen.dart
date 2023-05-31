@@ -27,7 +27,7 @@ class _OrderSucessScreenState extends State<OrderSucessScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Future.delayed(Duration(seconds: 2), () {
         Get.off(
             OrderSucessScreen2(
@@ -193,7 +193,7 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Future.delayed(Duration(seconds: 3), () {
         // Get.toNamed(AppRoutes.Root);
 

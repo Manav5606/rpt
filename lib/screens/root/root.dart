@@ -122,14 +122,14 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
             // });
           } else {
             if ((userModel.addresses?.length ?? 0) > 0) {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 FireBaseNotification().firebaseCloudMessagingLSetup();
                 Get.offAllNamed(AppRoutes.SelectLocationAddress,
                     arguments: {"locationListAvilable": true});
                 // _addLocationController.getCurrentLocation();
               });
             } else {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 FireBaseNotification().firebaseCloudMessagingLSetup();
                 Get.offAllNamed(AppRoutes.SelectLocationAddress,
                     arguments: {"locationListAvilable": false});

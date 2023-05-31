@@ -203,6 +203,7 @@ class MyAccountController extends GetxController {
   Future<void> getGenerateReferCode() async {
     referCode.value = await MyAccountRepository.getGenerateReferCode();
     log('referCode :${referCode.value}');
+    print(referCode.value);
   }
 
   @override
