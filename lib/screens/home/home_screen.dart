@@ -121,13 +121,13 @@ class _HomeScreenState extends State<HomeScreen>
       duration: kThemeAnimationDuration,
       value: 1,
     );
-     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Future.delayed(Duration(seconds: 3), () {
-        Get.toNamed(
-          AppRoutes.SelectBusinessType,
-        );
-      });
-    });
+    //  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Future.delayed(Duration(seconds: 3), () {
+    //     Get.toNamed(
+    //       AppRoutes.SelectBusinessType,
+    //     );
+    //   });
+    // });
 
     _addLocationController.checkPermission.listen((p0) async {
       // bool isEnable = await _homeController.getCurrentLocation();
@@ -959,57 +959,57 @@ class _HomeScreenState extends State<HomeScreen>
                                 //   color: AppConst.veryLightGrey,
                                 // ),
 
-                                Container(
-                                  color: AppConst.veryLightGrey,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 3.h,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 2.w, vertical: 1.h),
-                                            child: Container(
-                                                height: 5.5.h,
-                                                width: 30.w,
-                                                child: FittedBox(
-                                                  child: SvgPicture.asset(
-                                                    "assets/icons/logoname1.svg",
-                                                    fit: BoxFit.fill,
-                                                    color: AppConst.grey,
-                                                  ),
-                                                )),
-                                          )
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.w, vertical: 1.h),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Can't find your store ?",
-                                              style: TextStyle(
-                                                fontFamily: 'MuseoSans',
-                                                color: AppConst.grey,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    3.5,
-                                                fontWeight: FontWeight.w700,
-                                                fontStyle: FontStyle.normal,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 0.5.h,
-                                            ),
+                                // Container(
+                                //   color: AppConst.veryLightGrey,
+                                //   child: Column(
+                                //     crossAxisAlignment:
+                                //         CrossAxisAlignment.start,
+                                //     children: [
+                                //       SizedBox(
+                                //         height: 3.h,
+                                //       ),
+                                //       Row(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.start,
+                                //         children: [
+                                //           Padding(
+                                //             padding: EdgeInsets.symmetric(
+                                //                 horizontal: 2.w, vertical: 1.h),
+                                //             child: Container(
+                                //                 height: 5.5.h,
+                                //                 width: 30.w,
+                                //                 child: FittedBox(
+                                //                   child: SvgPicture.asset(
+                                //                     "assets/icons/logoname1.svg",
+                                //                     fit: BoxFit.fill,
+                                //                     color: AppConst.grey,
+                                //                   ),
+                                //                 )),
+                                //           )
+                                //         ],
+                                //       ),
+                                //       Padding(
+                                //         padding: EdgeInsets.symmetric(
+                                //             horizontal: 2.w, vertical: 1.h),
+                                //         child: Column(
+                                //           crossAxisAlignment:
+                                //               CrossAxisAlignment.start,
+                                //           children: [
+                                //             Text(
+                                //               "Can't find your store ?",
+                                //               style: TextStyle(
+                                //                 fontFamily: 'MuseoSans',
+                                //                 color: AppConst.grey,
+                                //                 fontSize: SizeUtils
+                                //                         .horizontalBlockSize *
+                                //                     3.5,
+                                //                 fontWeight: FontWeight.w700,
+                                //                 fontStyle: FontStyle.normal,
+                                //               ),
+                                //             ),
+                                //             SizedBox(
+                                //               height: 0.5.h,
+                                //             ),
                                             // Text(
                                             //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
                                             //   maxLines: 2,
@@ -1064,55 +1064,55 @@ class _HomeScreenState extends State<HomeScreen>
                                             //     ),
                                             //   ),
                                             // ])),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                dynamic value =
-                                                    Get.to(AddressModel(
-                                                  // isSavedAddress: false,
-                                                  isHomeScreen: true,
-                                                  page: "home",
-                                                ));
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Click here to change the location",
-                                                      maxLines: 1,
-                                                      style: TextStyle(
-                                                        fontFamily: 'MuseoSans',
-                                                        fontSize: SizeUtils
-                                                                .horizontalBlockSize *
-                                                            3.5,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        color:
-                                                            AppConst.darkGreen,
-                                                      ),
-                                                    ),
-                                                    Icon(
-                                                      Icons.location_on_sharp,
-                                                      color: AppConst.darkGreen,
-                                                      size: 2.h,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 7.h,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                            // GestureDetector(
+                                            //   onTap: () async {
+                                            //     dynamic value =
+                                            //         Get.to(AddressModel(
+                                            //       // isSavedAddress: false,
+                                            //       isHomeScreen: true,
+                                            //       page: "home",
+                                            //     ));
+                                            //   },
+                                            //   child: Container(
+                                            //     decoration: BoxDecoration(),
+                                            //     child: Row(
+                                            //       mainAxisAlignment:
+                                            //           MainAxisAlignment.start,
+                                            //       children: [
+                                            //         Text(
+                                            //           "Click here to change the location",
+                                            //           maxLines: 1,
+                                            //           style: TextStyle(
+                                            //             fontFamily: 'MuseoSans',
+                                            //             fontSize: SizeUtils
+                                            //                     .horizontalBlockSize *
+                                            //                 3.5,
+                                            //             fontWeight:
+                                            //                 FontWeight.w600,
+                                            //             fontStyle:
+                                            //                 FontStyle.normal,
+                                            //             color:
+                                            //                 AppConst.darkGreen,
+                                            //           ),
+                                            //         ),
+                                            //         Icon(
+                                            //           Icons.location_on_sharp,
+                                            //           color: AppConst.darkGreen,
+                                            //           size: 2.h,
+                                            //         )
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                //           ],
+                                //         ),
+                                //       ),
+                                //       SizedBox(
+                                //         height: 7.h,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

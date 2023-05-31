@@ -17,6 +17,7 @@ import 'package:customer_app/widgets/defaultstoreicon.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+import '../app/ui/pages/my_wallet/wallet_details_screen.dart';
 import '../screens/home/models/homePageRemoteConfigModel.dart';
 import '../screens/wallet/controller/paymentController.dart';
 
@@ -144,11 +145,16 @@ class HotProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (foundedStores!.isEmpty)
-        ? Center(
-            child: Text(
-            "Loading Hot products...",
-            style: AppStyles.STORES_SUBTITLE_STYLE,
-          ))
+        // ? Center(
+        //     child: Text(
+        //     "Loading Hot products...",
+        //     style: AppStyles.STORES_SUBTITLE_STYLE,
+        //   ))
+       ? EmptyScreen(
+                  text1: "Loading Hot Products",
+                  text2: "",
+                  icon: Icons.receipt,
+                )
         : Column(
             children: [
               Padding(

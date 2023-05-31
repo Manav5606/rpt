@@ -50,7 +50,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
   late bool error;
   final HiveRepository hiveRepository = HiveRepository();
   final AddLocationController _addLocationController = Get.find();
-  final MyWalletController _myWalletController = Get.put(MyWalletController());
+  // final MyWalletController _myWalletController = Get.put(MyWalletController());
   temp.Location location = new temp.Location();
   @override
   void initState() {
@@ -116,8 +116,8 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
             // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
             FireBaseNotification().firebaseCloudMessagingLSetup();
             Future.delayed(Duration(seconds: 2), () async{
-             await _myWalletController.getAllWalletByCustomerByBusinessType();
-              Get.toNamed(AppRoutes.CustomerWalletDetails);
+            //  await _myWalletController.getAllWalletByCustomerByBusinessType();
+              Get.toNamed(AppRoutes.BaseScreen);
             });
             // });
           } else {

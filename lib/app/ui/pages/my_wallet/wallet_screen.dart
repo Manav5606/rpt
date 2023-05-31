@@ -426,7 +426,7 @@ class WalletCardList extends StatelessWidget {
                   _myWalletController.myWalletModel.value?.data?.length == 0)
               ? EmptyScreen(
                   text1: "You haven't placed any",
-                  text2: "orders yet!",
+                  text2: "orders yett!",
                   icon: Icons.receipt,
                 )
               : ListView.separated(

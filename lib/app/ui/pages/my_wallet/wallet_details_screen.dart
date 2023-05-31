@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/utils/utils.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
@@ -9,23 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/my_wallet_controller.dart';
 import 'package:customer_app/app/data/model/my_wallet_model.dart';
-
 import 'package:customer_app/app/ui/common/loader.dart';
 import 'package:customer_app/app/ui/pages/my_wallet/wallet_details_screen_shimmer.dart';
 import 'package:customer_app/app/ui/pages/search/controller/exploreContoller.dart';
 import 'package:customer_app/constants/app_const.dart';
-
 import 'package:customer_app/models/getRedeemCashStorePageDataModel.dart';
-
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/scanReceipt/storeview_screen.dart';
 import 'package:customer_app/screens/wallet/controller/paymentController.dart';
-import 'package:customer_app/theme/styles.dart';
-import 'package:customer_app/widgets/backButton.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import '../location_picker/address_model.dart';
 
 class WalletDetailsScreen extends StatelessWidget {
   WalletDetailsScreen({
@@ -419,7 +414,95 @@ class EmptyScreen extends StatelessWidget {
             fontSize: SizeUtils.horizontalBlockSize * 5.5,
             fontWeight: FontWeight.w300,
           ),
-        )
+        ),
+        Container(
+          color: AppConst.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 3.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                    child: Container(
+                        height: 5.5.h,
+                        width: 30.w,
+                        child: FittedBox(
+                          child: SvgPicture.asset(
+                            "assets/icons/logoname1.svg",
+                            fit: BoxFit.fill,
+                            color: AppConst.grey,
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Can't find your store ?",
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: AppConst.grey,
+                        fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 0.5.h,
+                    ),
+                   
+                    GestureDetector(
+                      onTap: () async {
+                        dynamic value = Get.to(AddressModel(
+                          // isSavedAddress: false,
+                          isHomeScreen: true,
+                          page: "home",
+                        ));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Click here to change the location",
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                                color: AppConst.darkGreen,
+                              ),
+                            ),
+                            Icon(
+                              Icons.location_on_sharp,
+                              color: AppConst.darkGreen,
+                              size: 2.h,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 7.h,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
