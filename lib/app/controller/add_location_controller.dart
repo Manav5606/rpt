@@ -23,6 +23,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../controllers/userViewModel.dart';
+import '../data/model/customer_wallet.dart' as customer;
 
 class AddLocationController extends GetxController {
   RxBool checkPermission = false.obs;
@@ -57,6 +58,7 @@ class AddLocationController extends GetxController {
   RxBool isEditAddress = false.obs;
   final LocationRepository locationRepository = LocationRepository();
   List<Stores> allStores = [];
+  List<customer.Stores> allWalletStores = [];
   RxBool isSeeMoreEnable = false.obs;
   Rx<CameraPosition> initialLocation =
       const CameraPosition(target: LatLng(0.0, 0.0)).obs;
@@ -636,14 +638,7 @@ class AddLocationController extends GetxController {
 
       for (var allStoresList in allStores) {
         num offer = allStoresList.actualWelcomeOffer!;
-        // num offer = allStoresList.defaultWelcomeOffer!;
-        // final today = DateTime.now();
-        // if (allStoresList.promotionWelcomeOfferStatus == 'active') {
-        //   // if (allStoresList.promotionWelcomeOfferDate!.startDate!.isBefore(today) &&
-        //   //     allStoresList.promotionWelcomeOfferDate!.endDate!.isAfter(today)) {
-        //   // }
-        //   offer = allStoresList.promotionWelcomeOffer!;
-        // }
+
         if (allStoresList.flag == 'true') {
           data.add({
             'store': allStoresList.sId,
@@ -655,6 +650,27 @@ class AddLocationController extends GetxController {
       }
       await locationRepository.addMultipleStoreToWallet(
           currentPosition.latitude, currentPosition.longitude);
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("addMultipleStoreToWallet", "$e");
+      print(e);
+    }
+  }
+
+  Future<void> addMultipleStoreToWalletToClaimMore() async {
+    try {
+      List<Map<String, dynamic>> data = [];
+
+      for (var allStoresList in allWalletStores) {
+        num offer = allStoresList.actualWelcomeOffer ?? 0;
+
+        data.add({
+          'store': allStoresList.sId,
+          "name": allStoresList.name,
+          'balance': offer,
+        });
+      }
+      await locationRepository.addMultipleStoreToWalletToClaimMore(data);
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
       ReportCrashes().reportErrorCustomKey("addMultipleStoreToWallet", "$e");

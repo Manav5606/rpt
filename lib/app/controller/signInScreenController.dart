@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
+import 'package:customer_app/app/controller/my_wallet_controller.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/utils/firebas_crashlyatics.dart';
@@ -21,6 +22,7 @@ import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/utils/utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../data/provider/firebase/firebase_notification.dart';
@@ -44,6 +46,7 @@ class SignInScreenController extends GetxController {
   final HiveRepository hiveRepository = HiveRepository();
   final SignInRepository signInRepository = SignInRepository();
   final AddLocationController _addLocationController = Get.find();
+  final MyWalletController _myWalletController = Get.put(MyWalletController());
 
   RxString phoneNumbers = ''.obs;
 
@@ -264,8 +267,24 @@ class SignInScreenController extends GetxController {
       String firstName, String lastName, String email) async {
     var flag = await SignInRepository.updateCustomerInformation(
         firstName, lastName, email);
+
     if (flag) {
-      await checkSession(false);
+      // await checkSession(false);
+      if (_myWalletController.isNonVegSelected.value == true) {
+        for (int i = 0; i < (_myWalletController.NonVegStores.length); i++) {
+          _addLocationController.allWalletStores
+              .add(_myWalletController.NonVegStores[i]);
+        }
+      }
+      if (_myWalletController.isPetfoodSelected.value == true) {
+        for (int i = 0; i < (_myWalletController.PetfoodStores.length); i++) {
+          _addLocationController.allWalletStores
+              .add(_myWalletController.PetfoodStores[i]);
+        }
+      }
+      await _addLocationController.addMultipleStoreToWalletToClaimMore();
+      await _myWalletController.getAllWalletByCustomer();
+      Get.offNamed(AppRoutes.NewBaseScreen);
     }
   }
 
@@ -307,15 +326,16 @@ class SignInScreenController extends GetxController {
 
   Future<void> checkSession(bool SignUp) async {
     try {
-      if (SignUp) {
-        //check for siginupflag
-        // final box = Boxes.getCommonBoolBox();
-        // final flag = box.get(HiveConstants.SIGNUP_FLAG);
-        // log("SiginUp :$flag");
-        // if (flag!) {
-        return Get.to(SignUpScreen());
-        // }
-      }
+      // if (SignUp) {
+      //   //check for siginupflag
+      //   // final box = Boxes.getCommonBoolBox();
+      //   // final flag = box.get(HiveConstants.SIGNUP_FLAG);
+      //   // log("SiginUp :$flag");
+      //   // if (flag!) {
+      //   return Get.to(
+      //       SignUpScreen()); // brfore going to signup open wallet address details page which already have location
+      //   // }
+      // }
 
       //location permission check
 
@@ -324,13 +344,26 @@ class SignInScreenController extends GetxController {
           // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
           FireBaseNotification().firebaseCloudMessagingLSetup();
           Future.delayed(Duration(seconds: 2), () async {
-            await Get.offAllNamed(AppRoutes.BaseScreen);
-            isLoading.value = false;
+            if (SignUp) {
+              UserViewModel.setLocation(LatLng(
+                  _addLocationController.currentPosition.latitude,
+                  _addLocationController.currentPosition.longitude));
+              await _myWalletController.getAllWalletByCustomerByBusinessType();
+              int? value =
+                  await _myWalletController.updateBusinesstypeWallets();
+              if (value != null) {
+                Get.toNamed(AppRoutes.SelectBusinessType,
+                    arguments: {"signup": true});
+              }
+            } else {
+              await Get.offAllNamed(AppRoutes.NewBaseScreen);
+              isLoading.value = false;
+            }
           });
           // });
         } else {
           if ((userModel?.addresses?.length ?? 0) > 0) {
-            WidgetsBinding.instance!.addPostFrameCallback((_) async {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
               FireBaseNotification().firebaseCloudMessagingLSetup();
               await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": true});
@@ -338,7 +371,7 @@ class SignInScreenController extends GetxController {
               // _addLocationController.getCurrentLocation();
             });
           } else {
-            WidgetsBinding.instance!.addPostFrameCallback((_) async {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
               FireBaseNotification().firebaseCloudMessagingLSetup();
               await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": false});

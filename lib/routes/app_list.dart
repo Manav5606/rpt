@@ -1,5 +1,6 @@
 class AppRoutes {
   static const String BaseScreen = '/';
+  static const String NewBaseScreen = '/newbasescreen';
   static const String Root = '/root';
   static const String SplashScreen = '/splashscreen';
   static const String MyAccount = '/myaccount';

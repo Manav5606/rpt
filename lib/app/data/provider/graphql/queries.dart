@@ -638,6 +638,16 @@ class GraphQLQueries {
             actual_cashback
             city
             pincode
+            address
+                {
+                    location
+                    {
+                        lat
+                        lng
+                    }
+                }
+
+
             
         }
     }
@@ -884,8 +894,8 @@ query($lat: Float, $lng: Float) {
   static final addMultipleStoreToWallet = new GraphQLQuery(
     name: 'addMultipleStoreToWallet',
     query: r'''
- mutation($lat: Float $lng: Float){
-  addMultipleStoreToWallet(addMultipleStoresToWallet:$data) {
+ mutation($addMultipleStoresToWallet: [AddStoreToWalletInput]){
+  addMultipleStoreToWallet(addMultipleStoresToWallet:$addMultipleStoresToWallet) {
     error
     msg
   }

@@ -50,7 +50,7 @@ class GetAllWalletByCustomerByBusinessType {
 
   GetAllWalletByCustomerByBusinessType.fromJson(Map<String, dynamic> json) {
     error = json['error'] ?? "";
-    msg = json['msg']?? "";
+    msg = json['msg'] ?? "";
     if (json['data'] != null) {
       data = <Dataa>[];
       json['data'].forEach((v) {
@@ -145,6 +145,7 @@ class Stores {
   int? actualCashback;
   String? city;
   int? pincode;
+  Address? address;
 
   Stores(
       {this.sId,
@@ -154,7 +155,8 @@ class Stores {
       this.actualWelcomeOffer,
       this.actualCashback,
       this.city,
-      this.pincode});
+      this.pincode,
+      this.address});
 
   Stores.fromJson(Map<String, dynamic> json) {
     sId = json['_id'] ?? "";
@@ -165,6 +167,8 @@ class Stores {
     actualCashback = json['actual_cashback'] ?? "";
     city = json['city'] ?? "";
     pincode = json['pincode'] ?? "";
+    address =
+        json['address'] != null ? new Address.fromJson(json['address']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -177,6 +181,50 @@ class Stores {
     data['actual_cashback'] = this.actualCashback;
     data['city'] = this.city;
     data['pincode'] = this.pincode;
+    if (this.address != null) {
+      data['address'] = this.address!.toJson();
+    }
+    return data;
+  }
+}
+
+class Address {
+  Location? location;
+
+  Address({this.location});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    location = json['location'] != null
+        ? new Location.fromJson(json['location'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    return data;
+  }
+}
+
+class Location {
+  double? lat;
+  double? lng;
+
+  Location({this.lat, this.lng});
+
+  Location.fromJson(Map<String, dynamic> json) {
+    lat = json['lat'];
+    lng = json['lng'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['lat'] = this.lat;
+    data['lng'] = this.lng;
     return data;
   }
 }

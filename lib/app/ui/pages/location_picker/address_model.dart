@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:customer_app/app/controller/my_wallet_controller.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
@@ -48,7 +49,7 @@ class _AddressModelState extends State<AddressModel> {
   final AddLocationController _addLocationController =
       Get.put(AddLocationController());
   final HomeController _homeController = Get.put(HomeController());
-
+  final MyWalletController _myWalletController = Get.put(MyWalletController());
   FocusNode focusNode = FocusNode();
 
   Timer? _debounce;
@@ -77,6 +78,7 @@ class _AddressModelState extends State<AddressModel> {
     //     Get.put(AddLocationController());
     final AddLocationController _addLocationController = Get.find()
       ..getUserData();
+
     // final HomeController _homeController = Get.lazyPut(HomeController());
     //  final islocationPermission = HomeController().getCurrentLocation();
     _addLocationController.isRecentAddress.value = widget.isHomeScreen;
@@ -318,15 +320,37 @@ class _AddressModelState extends State<AddressModel> {
                               // Get.back();
                               _addLocationController
                                   .getCurrentLocation2()
-                                  .then((value) {
+                                  .then((value) async {
                                 if (value.latitude != 0.0 &&
                                     value.longitude != 0.0) {
-                                  Get.toNamed(AppRoutes.NewLocationScreen,
-                                      arguments: {
-                                        "isFalse": false,
-                                        "page": widget.page,
-                                        // "isHome": widget.isHomeScreen
-                                      });
+                                  if (widget.page == "claimmore") {
+                                    await _addLocationController
+                                        .getCurrentLocation();
+
+                                    UserViewModel.setLocation(LatLng(
+                                        _addLocationController
+                                            .currentPosition.latitude,
+                                        _addLocationController
+                                            .currentPosition.longitude));
+
+                                    await _myWalletController
+                                        .getAllWalletByCustomerByBusinessType();
+                                    int? value = await _myWalletController
+                                        .updateBusinesstypeWallets();
+
+                                    // Get.back();
+
+                                    Get.toNamed(
+                                      AppRoutes.SelectBusinessType,
+                                    );
+                                  } else {
+                                    Get.toNamed(AppRoutes.NewLocationScreen,
+                                        arguments: {
+                                          "isFalse": false,
+                                          "page": widget.page,
+                                          // "isHome": widget.isHomeScreen
+                                        });
+                                  }
                                 }
                               });
 
@@ -547,8 +571,7 @@ class _AddressModelState extends State<AddressModel> {
                                                   padding: EdgeInsets.symmetric(
                                                       vertical: 1.h),
                                                   child: Text(
-                                                    StringContants
-                                                        .savedAddresses,
+                                                    "Saved Addresses",
                                                     style: TextStyle(
                                                       fontSize: SizeUtils
                                                               .horizontalBlockSize *
@@ -613,12 +636,15 @@ class _AddressModelState extends State<AddressModel> {
                                                             .isLoading
                                                             .value = true;
 
-                                                        widget.isHomeScreen
-                                                            ? Get.offAllNamed(
-                                                                AppRoutes
-                                                                    .BaseScreen)
-                                                            : Get.back();
-
+                                                        _addLocationController
+                                                                .currentAddress
+                                                                .value =
+                                                            _addLocationController
+                                                                    .userModel
+                                                                    ?.addresses?[
+                                                                        index]
+                                                                    .address ??
+                                                                '';
                                                         _addLocationController
                                                                 .userAddress
                                                                 .value =
@@ -706,16 +732,31 @@ class _AddressModelState extends State<AddressModel> {
                                                         _homeController
                                                             .isPageLoading
                                                             .value = false;
-                                                        _homeController
-                                                            .homePageFavoriteShopsList
-                                                            .clear();
-                                                        await _homeController
-                                                            .getHomePageFavoriteShops();
-                                                        await _homeController
-                                                            .getAllCartsData();
-                                                        _homeController
-                                                            .getHomePageFavoriteShopsModel
-                                                            .refresh();
+                                                        if (widget.page ==
+                                                            "claimmore") {
+                                                          await _myWalletController
+                                                              .getAllWalletByCustomerByBusinessType();
+                                                          int? value =
+                                                              await _myWalletController
+                                                                  .updateBusinesstypeWallets();
+                                                        } else {
+                                                          _homeController
+                                                              .homePageFavoriteShopsList
+                                                              .clear();
+                                                          await _homeController
+                                                              .getHomePageFavoriteShops();
+                                                          await _homeController
+                                                              .getAllCartsData();
+                                                          _homeController
+                                                              .getHomePageFavoriteShopsModel
+                                                              .refresh();
+                                                        }
+
+                                                        widget.isHomeScreen
+                                                            ? Get.offAllNamed(
+                                                                AppRoutes
+                                                                    .BaseScreen) // update the intialize map lat and lng
+                                                            : Get.back();
                                                         _homeController
                                                             .isLoading
                                                             .value = false;

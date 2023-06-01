@@ -83,6 +83,25 @@ class LocationRepository {
     }
   }
 
+  Future<void> addMultipleStoreToWalletToClaimMore(dynamic data) async {
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.addMultipleStoreToWallet,
+          variables: {
+            'addMultipleStoresToWallet': data,
+          });
+      if (result['error'] == false) {
+        log("getClaimRewardsPageCount--->$result");
+      } else {
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("addMultipleStoreToWalletToClaimMore", "$e");
+    }
+  }
+
   Future<void> replaceCustomerAddress(AddressModel addressModel) async {
     Map<String, dynamic> variables = {
       'id': addressModel.id,

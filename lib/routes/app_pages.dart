@@ -1,4 +1,6 @@
+import 'package:customer_app/app/bindings/payment_controller_bindings.dart';
 import 'package:customer_app/app/ui/pages/my_account/about_screen.dart';
+import 'package:customer_app/screens/new_base_screen.dart';
 import 'package:customer_app/screens/root/splashscreen.dart';
 import 'package:customer_app/widgets/all_chatview.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +62,8 @@ import 'package:customer_app/screens/wallet/paymentScreen.dart';
 import 'package:customer_app/screens/wallet/payview.dart';
 import 'package:get/route_manager.dart';
 
-import '../app/ui/pages/my_wallet/customer_wallet_details.dart';
 import '../app/ui/pages/my_wallet/select_business_type.dart';
+import '../app/ui/pages/my_wallet/customer_wallet_details.dart';
 import '../screens/addcart/cartReviewScreen.dart';
 import '../screens/scanReceipt/myCartScreen.dart';
 
@@ -87,21 +89,19 @@ class AppPages {
       binding: NewLocationScreenBindings(),
     ),
     GetPage(
-      name: AppRoutes.CustomerWalletDetails,
-      page: () => CustomerWalletDetails(),
-      binding: MyWalletBinding()
-      // binding: NewLocationScreenBindings(),
-    ),
-    GetPage(
-      name: AppRoutes.SelectBusinessType,
-      page: () => SelectBusinessType(),
-      // binding: MyWalletBinding()
-      
-    ),
+        name: AppRoutes.CustomerWalletDetails,
+        page: () => CustomerWalletDetails(),
+        binding: MyWalletBinding()
+        // binding: NewLocationScreenBindings(),
+        ),
     GetPage(
         name: AppRoutes.BaseScreen,
         page: () => BaseScreen(),
         binding: HomeControllerBindings()),
+    GetPage(
+        name: AppRoutes.NewBaseScreen,
+        page: () => NewBaseScreen(),
+        binding: MyWalletBinding()),
     GetPage(
         name: AppRoutes.MyAccount,
         page: () => MyAccountPage(),
@@ -125,6 +125,11 @@ class AppPages {
         name: AppRoutes.WalletDetails,
         page: () => WalletDetailsScreen(),
         binding: MyWalletBinding()),
+    GetPage(
+      name: AppRoutes.SelectBusinessType,
+      page: () => SelectBusinessType(),
+      // binding: MyWalletBinding()
+    ),
     GetPage(name: AppRoutes.WalletOffer, page: () => WalletOfferScreen()),
     // GetPage(name: AppRoutes.MyAddresses, page: () => MyAddressesScreen()),
     // GetPage(
@@ -178,7 +183,11 @@ class AppPages {
     GetPage(
         name: AppRoutes.SearchRecipeScreen, page: () => SearchRecipeScreen()),
     GetPage(name: AppRoutes.paymentList, page: () => PaymentModeScreen()),
-    GetPage(name: AppRoutes.PayView, page: () => PayView()),
+    GetPage(
+      name: AppRoutes.PayView,
+      page: () => PayView(),
+      binding: PaymentControllerBindings(),
+    ),
     GetPage(name: AppRoutes.MyCartScreen, page: () => MyCartScreen()),
 
     // GetPage(name: AppRoutes.OrderTreckScreen, page: () => OrderTreckScreen()),
