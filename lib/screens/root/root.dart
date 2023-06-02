@@ -19,10 +19,10 @@ import 'package:customer_app/utils/utils.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as temp;
 
 import '../../app/controller/my_wallet_controller.dart';
-// import 'package:uni_links/uni_links.dart';
 
 class Root extends StatefulWidget {
   @override
@@ -30,27 +30,10 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> with TickerProviderStateMixin {
-//   StreamSubscription? _sub;
-//   Future<void> initUniLinks() async {
-// // check initialLink
-// // Attach a listener to the stream
-//     _sub = linkStream.listen((String? link) {
-// // Parse the link and warn the user, if it is not correct
-//       if (link != null) {
-//         print('listener is working');
-//       } else {
-//         "nolinks";
-//       }
-//     }, onError: (err) {
-// // Handle exception by warning the user their action did not succeed
-//     });
-// // NOTE: Don't forget to call _sub.cancel() in dispose()
-//   }
-
   late bool error;
   final HiveRepository hiveRepository = HiveRepository();
   final AddLocationController _addLocationController = Get.find();
-  // final MyWalletController _myWalletController = Get.put(MyWalletController());
+  final MyWalletController _myWalletController = Get.put(MyWalletController());
   temp.Location location = new temp.Location();
   @override
   void initState() {
@@ -106,18 +89,33 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
         final UserModel userModel = hiveRepository.getCurrentUser();
 
         //check user exit
-        if (!((userModel.email != null && userModel.email != "") &&
-            (userModel.firstName != null && userModel.firstName != ""))) {
-          return Get.to(SignUpScreen());
-        }
+        // if (!((userModel.email != null && userModel.email != "") &&
+        //     (userModel.firstName != null && userModel.firstName != ""))) {
+        //   return Get.to(SignUpScreen());
+        // }
 
         _addLocationController.getCurrentLocation1().then((value) {
           if (value.latitude != 0.0 && value.longitude != 0.0) {
             // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
             FireBaseNotification().firebaseCloudMessagingLSetup();
-            Future.delayed(Duration(seconds: 2), () async{
-            //  await _myWalletController.getAllWalletByCustomerByBusinessType();
-              Get.toNamed(AppRoutes.BaseScreen);
+            Future.delayed(Duration(seconds: 2), () async {
+              if (!((userModel.email != null && userModel.email != "") &&
+                  (userModel.firstName != null && userModel.firstName != ""))) {
+                UserViewModel.setLocation(LatLng(
+                    _addLocationController.currentPosition.latitude,
+                    _addLocationController.currentPosition.longitude));
+                await _myWalletController
+                    .getAllWalletByCustomerByBusinessType();
+                int? value =
+                    await _myWalletController.updateBusinesstypeWallets();
+                if (value != null) {
+                  Get.toNamed(AppRoutes.SelectBusinessType,
+                      arguments: {"signup": true});
+                }
+              } else {
+                await Get.offAllNamed(AppRoutes.NewBaseScreen);
+              }
+              // Get.offAllNamed(AppRoutes.BaseScreen);
             });
             // });
           } else {

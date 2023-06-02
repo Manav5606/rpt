@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/colors.dart';
+import 'package:customer_app/app/controller/my_wallet_controller.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/screens/addcart/order_sucess_screen.dart';
@@ -20,6 +21,7 @@ import 'package:customer_app/screens/wallet/controller/paymentController.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:customer_app/widgets/backButton.dart';
 import 'package:flutter/services.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -30,7 +32,8 @@ class PayView extends StatefulWidget {
 
 class _PayViewState extends State<PayView> {
   final PaymentController paycontroller = Get.find();
-  final HomeController _homeController = Get.find();
+  final MyWalletController _walletController = Get.find();
+  // final HomeController _homeController = Get.find();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController billAmountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -1024,7 +1027,33 @@ class _PayViewState extends State<PayView> {
                                         ),
                                       ),
                                       (Route<dynamic> route) => route.isFirst);
-                                  _homeController.apiCall();
+                                  // _homeController.apiCall();
+                                  await _walletController
+                                      .getAllWalletByCustomer();
+                                  _walletController
+                                          .walletbalanceOfBusinessType.value =
+                                      await _walletController
+                                          .StoreTotalWelcomeAmount();
+                                  //   .then((value) async {
+                                  // if (_walletController
+                                  //         .myWalletModel.value?.data !=
+                                  //     null) {
+                                  //   List<num> walletamounts = [];
+                                  //   _walletController
+                                  //       .myWalletModel.value?.data
+                                  //       ?.map((e) {
+                                  //     return walletamounts.add(
+                                  //         (e.earnedCashback ?? 0) +
+                                  //             (e.welcomeOfferAmount ?? 0));
+                                  //   });
+                                  //   var TotalWalletBalance =
+                                  //       walletamounts.sum;
+                                  //   _walletController
+                                  //           .walletbalanceOfBusinessType
+                                  //           .value =
+                                  //       double.parse("${TotalWalletBalance}");
+                                  // }
+                                  // });
 
                                   paycontroller.isLoading.value = false;
                                 } else {

@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:customer_app/app/constants/responsive.dart';
+import 'package:customer_app/app/controller/my_wallet_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/edit_address_screen.dart';
+import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/bottom_confim_location.dart';
@@ -24,6 +26,7 @@ class AddLocationScreen extends StatefulWidget {
 
 class _AddLocationScreenState extends State<AddLocationScreen> {
   final AddLocationController _addLocationController = Get.find();
+  final MyWalletController _myWalletController = Get.find();
   bool isHome = false;
   String page = "";
 
@@ -132,6 +135,20 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                         address: _addLocationController.currentAddress.value
                             .toString(),
                         notifyParent: () async {
+                          if (page == "claimmore") {
+                            UserViewModel.setLocation(LatLng(
+                                _addLocationController
+                                    .middlePointOfScreenOnMap!.latitude,
+                                _addLocationController
+                                    .middlePointOfScreenOnMap!.longitude));
+
+                            await _myWalletController
+                                .getAllWalletByCustomerByBusinessType();
+                            int? value = await _myWalletController
+                                .updateBusinesstypeWallets();
+
+                            Get.back();
+                          } else {}
                           await _addLocationController
                               .getClaimRewardsPageCount();
                           await _addLocationController

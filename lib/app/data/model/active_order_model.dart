@@ -13,7 +13,7 @@ class ActiveOrderModel {
       json['data'].forEach((v) {
         data!.add(new ActiveOrderData.fromJson(v));
       });
-    }
+    } 
   }
 
   Map<String, dynamic> toJson() {

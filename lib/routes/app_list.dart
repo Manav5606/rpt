@@ -1,5 +1,6 @@
 class AppRoutes {
   static const String BaseScreen = '/';
+  static const String NewBaseScreen = '/newbasescreen';
   static const String Root = '/root';
   static const String SplashScreen = '/splashscreen';
   static const String MyAccount = '/myaccount';
@@ -63,4 +64,5 @@ class AppRoutes {
   static const String About = '/about';
   static const String CustomerWalletDetails = '/CustomerWalletDetails';
   static const String SelectBusinessType = '/SelectBusinessType';
+  static const String DeleteAccount = '/DeleteAccount';
 }

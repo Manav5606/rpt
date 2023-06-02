@@ -11,8 +11,10 @@ import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:customer_app/widgets/snack.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../../constants/app_const.dart';
 import '../model/address_model.dart';
 
 class LocationRepository {
@@ -83,6 +85,25 @@ class LocationRepository {
     }
   }
 
+  Future<void> addMultipleStoreToWalletToClaimMore(dynamic data) async {
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.addMultipleStoreToWallet,
+          variables: {
+            'addMultipleStoresToWallet': data,
+          });
+      if (result['error'] == false) {
+        log("getClaimRewardsPageCount--->$result");
+      } else {
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes()
+          .reportErrorCustomKey("addMultipleStoreToWalletToClaimMore", "$e");
+    }
+  }
+
   Future<void> replaceCustomerAddress(AddressModel addressModel) async {
     Map<String, dynamic> variables = {
       'id': addressModel.id,
@@ -124,6 +145,33 @@ class LocationRepository {
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
       ReportCrashes().reportErrorCustomKey("deleteCustomerAddress", "$e");
+    }
+  }
+  Future<void> deleteCustomer(String comments) async {
+    Map<String, dynamic> variables = {
+      'comments': comments,
+    };
+
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.deleteCustomer, variables: variables);
+      log("deleteCustomer--->$result");
+      if (result['error'] == false) {
+         Get.showSnackbar(GetSnackBar(
+              backgroundColor: AppConst.black,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              snackStyle: SnackStyle.FLOATING,
+              borderRadius: 12,
+              duration: Duration(seconds: 2),
+              message: "Account Deleted Successfully.",
+              // title: "Amount must be at least \u{20b9}1"
+            ));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("deleteCustomer", "$e");
     }
   }
 

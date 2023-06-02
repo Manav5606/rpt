@@ -1,6 +1,7 @@
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/ui/pages/signIn/privacy_policy.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -62,6 +63,12 @@ class AboutScreen extends StatelessWidget {
                     title: "Contact Us",
                     url: "https://recipto.in/About/contactUs/",
                   ))
+              // onTap: () => launchUrlString('https://recipto.in/About/contactUs/'),
+              ),
+          ListTile(
+              title: Text('Delete Account'),
+              trailing: Icon(Icons.arrow_forward_ios_rounded),
+              onTap: () => Get.toNamed(AppRoutes.DeleteAccount)
               // onTap: () => launchUrlString('https://recipto.in/About/contactUs/'),
               ),
         ],

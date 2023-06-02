@@ -36,17 +36,21 @@ class MyWalletRepository {
     }
   }
 
-  static Future<GetAllWalletByCustomerByBusinessType?> getAllWalletByCustomerByBusinessType() async {
+  static Future<GetAllWalletByCustomerByBusinessType?>
+      getAllWalletByCustomerByBusinessType() async {
     try {
       final result = await GraphQLRequest.query(
           query: GraphQLQueries.getAllWalletByCustomerByBusinessType,
           variables: {
-            'lat': 17.487541708927512,
-            'lng': 78.39534625411034,
+            'lat': UserViewModel
+                .currentLocation.value.latitude, // 17.487541708927512,
+            'lng': UserViewModel
+                .currentLocation.value.longitude, //78.39534625411034,
           });
       log('result getAllWalletByCustomerByBusinessType: $result');
       if (result['error'] == false) {
-        final GetAllWalletByCustomerByBusinessType _getAllWalletByCustomerByBusinessType =
+        final GetAllWalletByCustomerByBusinessType
+            _getAllWalletByCustomerByBusinessType =
             GetAllWalletByCustomerByBusinessType.fromJson(result);
 
         // log('_getAllWalletByCustomer :${_getAllWalletByCustomer.toJson()}');

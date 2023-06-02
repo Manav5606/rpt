@@ -68,7 +68,7 @@ class WalletData {
   String? createdAt;
   String? updatedAt;
   String? storeType;
-  num? distance;
+  int? distance;
   bool? online;
   double? calculatedDistance;
   Null customerWalletAmount;
@@ -109,8 +109,8 @@ class WalletData {
     recentlyVisited = json['recently_visited'];
     sId = json['_id'];
     welcomeOffer = json['welcome_offer'];
-    welcomeOfferAmount = json['welcome_offer_amount'];
-    earnedCashback = json['earned_cashback'];
+    welcomeOfferAmount = json['welcome_offer_amount'] ?? 0;
+    earnedCashback = json['earned_cashback'] ?? 0;
     user = json['user'];
     password = json['password'];
     name = json['name'];
