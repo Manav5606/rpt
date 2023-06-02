@@ -72,7 +72,7 @@ class _ExploreScreen extends State<ExploreScreen> {
           children: [
             GestureDetector(
               child: Obx(
-                () => Container(
+                () =>  Container(
                   padding: EdgeInsets.only(
                       left: 2.w, top: 1.h, bottom: 2.h, right: 2.w),
                   color: Color(0xff005b41),

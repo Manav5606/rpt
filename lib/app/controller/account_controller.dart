@@ -2,8 +2,6 @@ import 'dart:developer';
 import 'package:customer_app/app/data/model/active_order_model.dart';
 import 'package:customer_app/app/data/repository/my_account_repository.dart';
 import 'package:customer_app/utils/firebas_crashlyatics.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:customer_app/app/data/model/order_model.dart';
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/data/model/wallet_model.dart';
@@ -12,6 +10,7 @@ import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
 import 'package:customer_app/app/data/repository/hive_repository.dart';
 import 'package:customer_app/app/data/serivce/dynamic_link_service.dart';
 import 'package:customer_app/app/utils/image_util.dart';
+import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:get/get.dart';
 
 class MyAccountController extends GetxController {

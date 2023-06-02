@@ -1,28 +1,16 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
-import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/screens/root/network_check.dart';
 import 'package:customer_app/widgets/signup_feilds.dart';
-import 'package:customer_app/widgets/textfield_clear_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/data/provider/hive/hive.dart';
 import 'package:customer_app/app/data/provider/hive/hive_constants.dart';
-import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen_shimmer.dart';
 import 'package:customer_app/constants/app_const.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-import 'package:keyboard_actions/keyboard_actions_config.dart';
-import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
-// import 'package:uni_links/uni_links.dart';
-
 import '../../../controller/signInScreenController.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -33,9 +21,9 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final SignInScreenController _signInController = Get.find();
 
-  // int CurrentIndex = 0;
-  // late PageController _controller;
-  // StreamSubscription? _sub;
+// int CurrentIndex = 0;
+// late PageController _controller;
+// StreamSubscription? _sub;
 //   Future<void> initUniLinks() async {
 // // check initialLink
 // // Attach a listener to the stream

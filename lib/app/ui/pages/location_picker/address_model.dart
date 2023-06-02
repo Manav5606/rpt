@@ -26,6 +26,8 @@ import 'package:sizer/sizer.dart';
 import '../../../../controllers/userViewModel.dart';
 import 'package:location/location.dart' as temp;
 
+import 'address_model_shimmer.dart';
+
 class AddressModel extends StatefulWidget {
   final bool isHomeScreen;
   final bool isSavedAddress;
@@ -54,16 +56,24 @@ class _AddressModelState extends State<AddressModel> {
   Timer? _debounce;
   bool selected = false;
 
+  bool isLoading = true;
+
   @override
   void initState() {
-    // TODO: implement initState
-
-    // HomeController().getCurrentLocation();b
     super.initState();
-    // final AddLocationController _addLocationController =
-    //     Get.put(AddLocationController());
-    // final HomeController _homeController = Get.put(HomeController());
+    _startLoadingTimer();
   }
+
+  void _startLoadingTimer() {
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+
+
 
   @override
   void dispose() {
@@ -80,7 +90,7 @@ class _AddressModelState extends State<AddressModel> {
     // final HomeController _homeController = Get.lazyPut(HomeController());
     //  final islocationPermission = HomeController().getCurrentLocation();
     _addLocationController.isRecentAddress.value = widget.isHomeScreen;
-    return Scaffold(
+    return isLoading ? AddresShimmer() : Scaffold(
       appBar: AppBar(
         // automaticallyImplyLeading: false,
         elevation: 0,

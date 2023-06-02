@@ -1,32 +1,22 @@
-import 'package:customer_app/app/constants/responsive.dart';
-import 'package:customer_app/app/ui/pages/refer_and_earn/refer_and_earn_shimmer.dart';
-import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
-import 'package:customer_app/screens/profile/edit_profile_shimmer.dart';
-import 'package:customer_app/widgets/signup_feilds.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_app/app/controller/account_controller.dart';
-import 'package:customer_app/app/controller/signInScreenController.dart';
-import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
-import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen_shimmer.dart';
-import 'package:customer_app/constants/app_const.dart';
-
-import 'package:customer_app/constants/string_constants.dart';
-import 'package:customer_app/widgets/textfield_clear_button.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+import '../../app/constants/responsive.dart';
+import '../../app/ui/pages/signIn/phone_authentication_screen.dart';
+import '../../constants/app_const.dart';
+import '../../widgets/signup_feilds.dart';
+
+class EditProfileShimmer extends StatefulWidget {
+  const EditProfileShimmer({Key? key}) : super(key: key);
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  _EditProfileShimmerState createState() => _EditProfileShimmerState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  final SignInScreenController _signInController =
-      Get.put(SignInScreenController());
-  final MyAccountController _Controller = Get.find();
+class _EditProfileShimmerState extends State<EditProfileShimmer> {
+ 
 
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -36,10 +26,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    emailIdController.text = _Controller.user.email ?? "";
-    firstNameController.text = _Controller.user.firstName ?? "";
-    lastNameController.text = _Controller.user.lastName ?? "";
-    mobileNumberController.text = _Controller.user.mobile ?? "";
+   
     _startLoadingTimer();
   }
 
@@ -66,17 +53,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ? EditProfileShimmer() : Scaffold(
+    return Scaffold(
       appBar: AppBar(
         elevation: 0,
       ),
       bottomSheet: GestureDetector(
           onTap: () async {
-            _signInController.UpdateInfo(firstNameController.text,
-                lastNameController.text, mobileNumberController.text);
-            _Controller.getUserData();
+           
           },
-
+    
           // onTap: (_signInController
           //             .phoneNumberController.value.text.length ==
           //         10)
@@ -92,10 +77,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           )),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.w),
-        child: Obx(
-          () => _signInController.isLoading.value
-              ? SignupScreenShimmerEffect()
-              : Column(
+        child: ShimmerEffect(
+          child:
+           Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
@@ -126,7 +110,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           //       width: 45.w,
                           //       child: SignUpFeilds(
                           //         labelText: "First Name*",
-
+    
                           //         hinttext: (_Controller.user.firstName) ??
                           //             "First name", //"Enter your first name ",
                           //         controller: firstNameController,
@@ -139,7 +123,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           //       width: 45.w,
                           //       child: SignUpFeilds(
                           //         labelText: "Last Name*",
-
+    
                           //         hinttext: _Controller.user.lastName ??
                           //             "Last name", //"Enter your last name ",
                           //         controller: lastNameController,
@@ -147,10 +131,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           //     ),
                           //   ],
                           // ),
-
+    
                           SignUpFeilds(
                             labelText: "First Name*",
-
+    
                             // hinttext: (_Controller.user.firstName) ??
                             //     "First name", //"Enter your first name ",
                             controller: firstNameController,
@@ -160,7 +144,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           SignUpFeilds(
                             labelText: "Last Name*",
-
+    
                             // hinttext: _Controller.user.lastName ??
                             //     "Last name", //"Enter your last name ",
                             controller: lastNameController,
@@ -168,7 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           SizedBox(
                             height: 1.h,
                           ),
-
+    
                           SignUpFeilds(
                             labelText: "Email ID",
                             // hinttext: _Controller
@@ -430,60 +414,6 @@ class EditPhoto extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-}
-
-class ReceiptoContainer extends StatelessWidget {
-  const ReceiptoContainer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppConst.kPrimaryColor,
-            AppConst.kSecondaryTextColor,
-          ],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-        ),
-      ),
-      child: Stack(
-        children: [
-          Center(
-            child: Text(
-              StringContants.receipto,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 22.sp,
-                letterSpacing: 1,
-                color: AppConst.white,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 5,
-            child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  primary: AppConst.black,
-                ),
-                onPressed: () {},
-                icon: Icon(
-                  Icons.camera_alt,
-                  size: 15,
-                ),
-                label: Text("Edit")),
-          )
-        ],
-      ),
     );
   }
 }
