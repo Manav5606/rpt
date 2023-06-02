@@ -160,6 +160,8 @@ class MyWalletController extends GetxController {
       var eachStoreTotal =
           ((myWalletModel.value?.data![i].earnedCashback ?? 0) +
               (myWalletModel.value?.data![i].welcomeOffer ?? 0));
+
+
       walletamounts.add(eachStoreTotal);
     }
 
