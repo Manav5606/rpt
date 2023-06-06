@@ -1337,7 +1337,8 @@ class RecentCarts12 extends StatelessWidget {
       required MoreStoreController moreStoreController,
       required HomeController homeController,
       required this.recentCount,
-      required this.itemIndex})
+      required this.itemIndex,
+      this.navBackTo = ""})
       : _moreStoreController = moreStoreController,
         _homeController = homeController,
         super(key: key);
@@ -1346,6 +1347,7 @@ class RecentCarts12 extends StatelessWidget {
   final HomeController _homeController;
   int itemIndex;
   int recentCount;
+  String navBackTo = "";
 
   @override
   Widget build(BuildContext context) {
@@ -1355,10 +1357,10 @@ class RecentCarts12 extends StatelessWidget {
                 .getAllCartsModel.value?.carts?[itemIndex].store?.sId ??
             '';
         await _moreStoreController.getStoreData(
-          id: _homeController
-                  .getAllCartsModel.value?.carts?[itemIndex].store?.sId ??
-              '',
-        );
+            id: _homeController
+                    .getAllCartsModel.value?.carts?[itemIndex].store?.sId ??
+                '',
+            navBackTo: navBackTo);
       },
       child: (recentCount == 1 || recentCount == 2)
           ? Padding(
@@ -1484,13 +1486,14 @@ class RecentCarts12 extends StatelessWidget {
                   ],
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       padding: EdgeInsets.only(
                         left: 1.w,
                       ),
                       width: 26.w,
-                      height: 10.h,
+                      // height: 10.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: AppConst.white),
@@ -1498,16 +1501,21 @@ class RecentCarts12 extends StatelessWidget {
                         padding: EdgeInsets.only(
                             bottom: 0.5.h, top: 1.h, right: 1.w, left: 1.w),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              height: 3.5.h,
+                              height: 4.h,
+                              width: 8.w,
                               child: Image(
                                 image: AssetImage(
                                   'assets/images/eCART.png',
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            // Spacer(),
+                            SizedBox(
+                              height: 0.5.h,
+                            ),
                             Text(
                               "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? "Go to Order"}",
                               // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
@@ -1819,7 +1827,8 @@ class RecentActiveOrders1 extends StatelessWidget {
       {Key? key,
       required MyAccountController myAccountController,
       required this.itemIndex,
-      required this.recentCount})
+      required this.recentCount,
+      this.navBackTo = ""})
       : _myAccountController = myAccountController,
         super(key: key);
 
@@ -1829,6 +1838,7 @@ class RecentActiveOrders1 extends StatelessWidget {
   int itemIndex;
   RxInt recentCount;
 
+  String navBackTo;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -1837,6 +1847,7 @@ class RecentActiveOrders1 extends StatelessWidget {
             ActiveOrderTrackingScreen(
               activeOrder: (_myAccountController
                   .activeOrdersModel.value?.data![itemIndex]),
+              navBackTo: navBackTo,
             ),
           );
         },
@@ -2062,20 +2073,10 @@ class RecentActiveOrders1 extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(12)),
                     boxShadow: [
                       BoxShadow(
-                          color: AppConst.veryLightGrey, //New
+                          color: AppConst.Lightgrey, //New
                           blurRadius: 2,
-                          spreadRadius: 3,
-                          offset: Offset(0, 2)),
-                      // BoxShadow(
-                      //     color: AppConst.white, //New
-                      //     blurRadius: 2,
-                      //     spreadRadius: 3,
-                      //     offset: Offset(-2, -2)),
-                      // BoxShadow(
-                      //     color: AppConst.lightGrey, //New
-                      //     blurRadius: 2,
-                      //     spreadRadius: 3,
-                      //     offset: Offset(2, 0)),
+                          spreadRadius: 2,
+                          offset: Offset(1, 1)),
                     ],
                   ),
                   child: Column(
@@ -2085,7 +2086,7 @@ class RecentActiveOrders1 extends StatelessWidget {
                           left: 1.w,
                         ),
                         width: 26.w,
-                        // height: 9.h,
+                        // height: 10.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: AppConst.white),

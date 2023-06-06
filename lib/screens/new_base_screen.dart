@@ -1,3 +1,4 @@
+import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/account_controller.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/controller/my_wallet_controller.dart';
@@ -13,6 +14,7 @@ import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
+import 'package:customer_app/screens/home/home_screen.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/screens/root/network_check.dart';
@@ -69,12 +71,14 @@ class SignInWalletScreen extends StatefulWidget {
 
 class _SignInWalletScreenState extends State<SignInWalletScreen> {
   final MyWalletController _myWalletController = Get.find();
-  final HomeController _homeController = Get.put(HomeController());
+  final HomeController _homeController = Get.put(HomeController())
+    ..getAllCartsData();
 
   final PaymentController _paymentController = Get.put(PaymentController());
   final AddCartController _addCartController = Get.put(AddCartController());
   final MyAccountController _myAccountController =
-      Get.put(MyAccountController(MyAccountRepository(), HiveRepository()));
+      Get.put(MyAccountController(MyAccountRepository(), HiveRepository()))
+        ..getActiveOrders();
   final freshChatController _freshChat = Get.put(freshChatController());
   final UserViewModel userViewModel = Get.put(UserViewModel());
   final MoreStoreController _moreStoreController =
@@ -238,58 +242,238 @@ class ScanReceiptStores extends StatelessWidget {
   }
 }
 
-class RecentOrdersAndStores extends StatelessWidget {
+class RecentOrdersAndStores extends StatefulWidget {
   RecentOrdersAndStores({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<RecentOrdersAndStores> createState() => _RecentOrdersAndStoresState();
+}
+
+class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
   final MyWalletController _myWalletController = Get.find();
+
   final MoreStoreController _moreStoreController = Get.find();
+
+  final MyAccountController _myAccountController = Get.find();
+
+  final HomeController _homeController = Get.find();
+
   @override
   Widget build(BuildContext context) {
+    RxInt recentCount = ((_myAccountController.activeOrderCount.value) +
+            (_homeController.cartsCount.value))
+        .obs;
     return SingleChildScrollView(
       child: Container(
         color: AppConst.white,
         child: Obx(
           () => _myWalletController.isLoading.value
               ? Container(height: 90.h, child: LoadingWidget())
-              : (_myWalletController.myWalletModel.value?.data == null ||
-                      _myWalletController.myWalletModel.value?.data?.length ==
-                          0)
-                  ? EmptyHistoryPage(
-                      text1: "You Don't have any stores yet",
-                      text2: "Add stores to get the Cashback",
-                      text3: "",
-                      icon: Icons.currency_rupee_sharp,
-                    )
-                  : ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: _myWalletController
-                              .myWalletModel.value?.data?.length ??
-                          0,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () async {
-                            _moreStoreController.storeId.value =
-                                _myWalletController.myWalletModel.value!
-                                        .data![index].sId ??
-                                    '';
-                            await _moreStoreController.getStoreData(
-                                id: _myWalletController.myWalletModel.value!
-                                        .data![index].sId ??
-                                    '',
-                                businessId: '');
-                          },
-                          child: ListOfAllWallets(
-                            walletData: _myWalletController
-                                .myWalletModel.value!.data![index],
+              : Column(
+                  children: [
+                    ((_myAccountController.activeOrdersModel.value?.data
+                                        ?.length ??
+                                    0) >
+                                0) ||
+                            ((_homeController.getAllCartsModel.value?.carts
+                                        ?.length) ??
+                                    0) >
+                                0
+                        ? Container(
+                            height: 20.h,
+                            decoration: BoxDecoration(color: Color(0xfff2f3f7)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 2.w, top: 1.h, right: 1.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Recent Orders",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: AppConst.black,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize *
+                                                    4.5,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Container(
+                                    height: 14.h,
+                                    color: AppConst.Lightgrey,
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Obx(() => ((_myAccountController
+                                                      .activeOrderCount.value) >
+                                                  0)
+                                              ? ListView.builder(
+                                                  // controller: _recentController,
+                                                  itemCount: ((_myAccountController
+                                                              .activeOrdersModel
+                                                              .value
+                                                              ?.data)
+                                                          ?.length) ??
+                                                      0,
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  shrinkWrap: true,
+                                                  itemExtent: (recentCount
+                                                              .value ==
+                                                          1)
+                                                      ? SizeUtils
+                                                              .horizontalBlockSize *
+                                                          95
+                                                      : (recentCount.value == 2)
+                                                          ? SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              80
+                                                          : SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              30,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    //currentItems = index;
+                                                    return RecentActiveOrders1(
+                                                      recentCount: recentCount,
+                                                      myAccountController:
+                                                          _myAccountController,
+                                                      itemIndex:
+                                                          (_myAccountController
+                                                                      .activeOrdersModel
+                                                                      .value
+                                                                      ?.data!
+                                                                      .length ??
+                                                                  0) -
+                                                              1 -
+                                                              index,
+                                                      navBackTo:
+                                                          "newbasescreen",
+                                                    );
+                                                  },
+                                                )
+                                              : SizedBox()),
+                                          Obx(() => ((_homeController
+                                                      .cartsCount.value) >
+                                                  0)
+                                              ? ListView.builder(
+                                                  // controller: _recentCartController,
+                                                  itemCount:
+                                                      // 1,
+                                                      ((_homeController
+                                                              .getAllCartsModel
+                                                              .value
+                                                              ?.carts
+                                                              ?.length) ??
+                                                          0),
+                                                  physics: PageScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  shrinkWrap: true,
+                                                  itemExtent: (recentCount
+                                                              .value ==
+                                                          1)
+                                                      ? SizeUtils
+                                                              .horizontalBlockSize *
+                                                          95
+                                                      : (recentCount.value == 2)
+                                                          ? SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              80
+                                                          : SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              30,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    // currentItems = index;
+                                                    return RecentCarts12(
+                                                      recentCount:
+                                                          recentCount.value,
+                                                      moreStoreController:
+                                                          _moreStoreController,
+                                                      homeController:
+                                                          _homeController,
+                                                      itemIndex: (_homeController
+                                                              .getAllCartsModel
+                                                              .value
+                                                              ?.carts
+                                                              ?.length)! -
+                                                          1 -
+                                                          index,
+                                                      navBackTo:
+                                                          "newbasescreen",
+                                                    );
+                                                  },
+                                                )
+                                              : SizedBox()),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
+                    (_myWalletController.myWalletModel.value?.data == null ||
+                            _myWalletController
+                                    .myWalletModel.value?.data?.length ==
+                                0)
+                        ? EmptyHistoryPage(
+                            text1: "You Don't have any stores yet",
+                            text2: "Add stores to get the Cashback",
+                            text3: "",
+                            icon: Icons.currency_rupee_sharp,
+                          )
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: _myWalletController
+                                    .myWalletModel.value?.data?.length ??
+                                0,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () async {
+                                  _moreStoreController.storeId.value =
+                                      _myWalletController.myWalletModel.value!
+                                              .data![index].sId ??
+                                          '';
+                                  await _moreStoreController.getStoreData(
+                                      id: _myWalletController.myWalletModel
+                                              .value!.data![index].sId ??
+                                          '',
+                                      businessId: '',
+                                      navBackTo: "newbasescreen");
+                                },
+                                child: ListOfAllWallets(
+                                  walletData: _myWalletController
+                                      .myWalletModel.value!.data![index],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox();
+                            },
                           ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox();
-                      },
-                    ),
+                  ],
+                ),
         ),
       ),
     );
@@ -528,8 +712,8 @@ class ListOfAllWallets extends StatelessWidget {
             // StoreID: "${storeSearchModel.sId ?? ""}",
             StoreName: "${walletData.name ?? ""}",
             distance: walletData.distance ?? 0,
-            // Balance: (storeSearchModel.earnedCashback ?? 0) +
-            //     (storeSearchModel.welcomeOfferAmount ?? 0)),
+            balance: (walletData.earnedCashback ?? 0) +
+                (walletData.welcomeOfferAmount ?? 0),
           ),
         ],
       ),
@@ -541,8 +725,10 @@ class ListViewStoreDetails extends StatelessWidget {
   String? StoreName;
   String? logo;
   num? distance;
+  num? balance;
 
-  ListViewStoreDetails({Key? key, this.StoreName, this.distance = 0, this.logo})
+  ListViewStoreDetails(
+      {Key? key, this.StoreName, this.distance = 0, this.logo, this.balance})
       : super(key: key);
 
   @override
@@ -579,15 +765,18 @@ class ListViewStoreDetails extends StatelessWidget {
                           fontStyle: FontStyle.normal,
                         )),
                   ),
-                  Text(
-                    "${(distance!.toInt() / 1000).toStringAsFixed(2)} km",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 10,
-                      fontFamily: 'MuseoSans',
-                      fontWeight: FontWeight.w500,
-                    ),
+                  DisplayDistance(
+                    distance: distance,
                   ),
+                  // Text(
+                  //   "${(distance!.toInt() / 1000).toStringAsFixed(2)} km",
+                  //   style: TextStyle(
+                  //     color: Colors.grey,
+                  //     fontSize: 10,
+                  //     fontFamily: 'MuseoSans',
+                  //     fontWeight: FontWeight.w500,
+                  //   ),
+                  // ),
                 ],
               ),
               Padding(
@@ -599,7 +788,15 @@ class ListViewStoreDetails extends StatelessWidget {
                     SizedBox(
                       width: 3.w,
                     ),
-                    DisplayFreshStore()
+                    Text(
+                      "Balance: \u{20b9}${balance?.toStringAsFixed(2)}",
+                      style: TextStyle(
+                        color: AppConst.black,
+                        fontSize: 11.sp,
+                        fontFamily: 'MuseoSans',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               )

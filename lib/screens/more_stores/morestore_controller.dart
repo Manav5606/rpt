@@ -48,12 +48,13 @@ class MoreStoreController extends GetxController {
       {required String id,
       bool isScanFunction = false,
       String businessId = '',
-      bool isNeedToNevigate = true}) async {
+      bool isNeedToNevigate = true,
+      String navBackTo = ""}) async {
     try {
       // addToCartModel.value?.sId = '';
       isLoadingStoreData.value = true;
       Get.toNamed(AppRoutes.MoreStoreProductView,
-          arguments: {"businessId": businessId});
+          arguments: {"businessId": businessId, "navBackTo": navBackTo});
 
       try {
         getCartIDModel.value = await MoreStoreService.getcartID(id);

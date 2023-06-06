@@ -113,6 +113,7 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
 
   final AddCartController _addCartController = Get.find();
   String businessID = "";
+  String navBackTo = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -120,6 +121,7 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
     Map arg = Get.arguments ?? {};
 
     businessID = arg['businessID'] ?? "";
+    navBackTo = arg['navBackTo'] ?? "";
   }
 
   @override
@@ -155,7 +157,8 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                           .getCartIDModel.value?.totalItemsCount
                                           .toString() ??
                                       "",
-                                  "businessID": businessID
+                                  "businessID": businessID,
+                                  "navBackTo": navBackTo,
                                 },
                               );
                               await _addCartController.getReviewCartData(
