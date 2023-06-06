@@ -638,6 +638,7 @@ class GraphQLQueries {
             actual_cashback
             city
             pincode
+            distance
             address
                 {
                     location

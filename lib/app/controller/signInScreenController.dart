@@ -284,6 +284,8 @@ class SignInScreenController extends GetxController {
       }
       await _addLocationController.addMultipleStoreToWalletToClaimMore();
       await _myWalletController.getAllWalletByCustomer();
+      _myWalletController.walletbalanceOfBusinessType.value =
+          _myWalletController.StoreTotalWelcomeAmount();
       Get.offNamed(AppRoutes.NewBaseScreen);
     }
   }
@@ -344,14 +346,16 @@ class SignInScreenController extends GetxController {
           // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
           FireBaseNotification().firebaseCloudMessagingLSetup();
           Future.delayed(Duration(seconds: 2), () async {
-            if (SignUp) {
+            if (SignUp && (userModel?.firstName != null)) {
               UserViewModel.setLocation(LatLng(
                   _addLocationController.currentPosition.latitude,
                   _addLocationController.currentPosition.longitude));
               await _myWalletController.getAllWalletByCustomerByBusinessType();
               int? value =
                   await _myWalletController.updateBusinesstypeWallets();
+
               if (value != null) {
+                _addLocationController.isRecentAddress.value = false;
                 Get.toNamed(AppRoutes.SelectBusinessType,
                     arguments: {"signup": true});
               }

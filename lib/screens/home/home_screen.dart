@@ -1008,100 +1008,100 @@ class _HomeScreenState extends State<HomeScreen>
                                 //             SizedBox(
                                 //               height: 0.5.h,
                                 //             ),
-                                            // Text(
-                                            //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
-                                            //   maxLines: 2,
-                                            //   style: TextStyle(
-                                            //     fontFamily: 'MuseoSans',
-                                            //     color: AppConst.grey,
-                                            //     fontSize:
-                                            //         SizeUtils.horizontalBlockSize * 3.5,
-                                            //     fontWeight: FontWeight.w500,
-                                            //     fontStyle: FontStyle.normal,
-                                            //   ),
-                                            // ),
-                                            // RichText(
-                                            //     text: TextSpan(children: [
-                                            //   TextSpan(
-                                            //     text:
-                                            //         "currently showing the stores in ",
-                                            //     style: TextStyle(
-                                            //       fontFamily: 'MuseoSans',
-                                            //       color: AppConst.grey,
-                                            //       fontSize:
-                                            //           SizeUtils.horizontalBlockSize *
-                                            //               3.5,
-                                            //       fontWeight: FontWeight.w500,
-                                            //       fontStyle: FontStyle.normal,
-                                            //     ),
-                                            //   ),
-                                            //   TextSpan(
-                                            //     text:
-                                            //         "${_addLocationController.userAddress.value}. ",
-                                            //     style: TextStyle(
-                                            //       fontFamily: 'MuseoSans',
-                                            //       color: AppConst.darkGrey,
-                                            //       fontSize:
-                                            //           SizeUtils.horizontalBlockSize *
-                                            //               3.5,
-                                            //       fontWeight: FontWeight.w500,
-                                            //       fontStyle: FontStyle.normal,
-                                            //     ),
-                                            //   ),
-                                            //   TextSpan(
-                                            //     text:
-                                            //         "Please change the location to see local store.",
-                                            //     style: TextStyle(
-                                            //       fontFamily: 'MuseoSans',
-                                            //       color: AppConst.grey,
-                                            //       fontSize:
-                                            //           SizeUtils.horizontalBlockSize *
-                                            //               3.5,
-                                            //       fontWeight: FontWeight.w500,
-                                            //       fontStyle: FontStyle.normal,
-                                            //     ),
-                                            //   ),
-                                            // ])),
-                                            // GestureDetector(
-                                            //   onTap: () async {
-                                            //     dynamic value =
-                                            //         Get.to(AddressModel(
-                                            //       // isSavedAddress: false,
-                                            //       isHomeScreen: true,
-                                            //       page: "home",
-                                            //     ));
-                                            //   },
-                                            //   child: Container(
-                                            //     decoration: BoxDecoration(),
-                                            //     child: Row(
-                                            //       mainAxisAlignment:
-                                            //           MainAxisAlignment.start,
-                                            //       children: [
-                                            //         Text(
-                                            //           "Click here to change the location",
-                                            //           maxLines: 1,
-                                            //           style: TextStyle(
-                                            //             fontFamily: 'MuseoSans',
-                                            //             fontSize: SizeUtils
-                                            //                     .horizontalBlockSize *
-                                            //                 3.5,
-                                            //             fontWeight:
-                                            //                 FontWeight.w600,
-                                            //             fontStyle:
-                                            //                 FontStyle.normal,
-                                            //             color:
-                                            //                 AppConst.darkGreen,
-                                            //           ),
-                                            //         ),
-                                            //         Icon(
-                                            //           Icons.location_on_sharp,
-                                            //           color: AppConst.darkGreen,
-                                            //           size: 2.h,
-                                            //         )
-                                            //       ],
-                                            //     ),
-                                            //   ),
-                                            // ),
+                                // Text(
+                                //   "currently showing the stores in ${_addLocationController.userAddress.value}. Please change the location to see local store.",
+                                //   maxLines: 2,
+                                //   style: TextStyle(
+                                //     fontFamily: 'MuseoSans',
+                                //     color: AppConst.grey,
+                                //     fontSize:
+                                //         SizeUtils.horizontalBlockSize * 3.5,
+                                //     fontWeight: FontWeight.w500,
+                                //     fontStyle: FontStyle.normal,
+                                //   ),
+                                // ),
+                                // RichText(
+                                //     text: TextSpan(children: [
+                                //   TextSpan(
+                                //     text:
+                                //         "currently showing the stores in ",
+                                //     style: TextStyle(
+                                //       fontFamily: 'MuseoSans',
+                                //       color: AppConst.grey,
+                                //       fontSize:
+                                //           SizeUtils.horizontalBlockSize *
+                                //               3.5,
+                                //       fontWeight: FontWeight.w500,
+                                //       fontStyle: FontStyle.normal,
+                                //     ),
+                                //   ),
+                                //   TextSpan(
+                                //     text:
+                                //         "${_addLocationController.userAddress.value}. ",
+                                //     style: TextStyle(
+                                //       fontFamily: 'MuseoSans',
+                                //       color: AppConst.darkGrey,
+                                //       fontSize:
+                                //           SizeUtils.horizontalBlockSize *
+                                //               3.5,
+                                //       fontWeight: FontWeight.w500,
+                                //       fontStyle: FontStyle.normal,
+                                //     ),
+                                //   ),
+                                //   TextSpan(
+                                //     text:
+                                //         "Please change the location to see local store.",
+                                //     style: TextStyle(
+                                //       fontFamily: 'MuseoSans',
+                                //       color: AppConst.grey,
+                                //       fontSize:
+                                //           SizeUtils.horizontalBlockSize *
+                                //               3.5,
+                                //       fontWeight: FontWeight.w500,
+                                //       fontStyle: FontStyle.normal,
+                                //     ),
+                                //   ),
+                                // ])),
+                                // GestureDetector(
+                                //   onTap: () async {
+                                //     dynamic value =
+                                //         Get.to(AddressModel(
+                                //       // isSavedAddress: false,
+                                //       isHomeScreen: true,
+                                //       page: "home",
+                                //     ));
+                                //   },
+                                //   child: Container(
+                                //     decoration: BoxDecoration(),
+                                //     child: Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.start,
+                                //       children: [
+                                //         Text(
+                                //           "Click here to change the location",
+                                //           maxLines: 1,
+                                //           style: TextStyle(
+                                //             fontFamily: 'MuseoSans',
+                                //             fontSize: SizeUtils
+                                //                     .horizontalBlockSize *
+                                //                 3.5,
+                                //             fontWeight:
+                                //                 FontWeight.w600,
+                                //             fontStyle:
+                                //                 FontStyle.normal,
+                                //             color:
+                                //                 AppConst.darkGreen,
+                                //           ),
+                                //         ),
+                                //         Icon(
+                                //           Icons.location_on_sharp,
+                                //           color: AppConst.darkGreen,
+                                //           size: 2.h,
+                                //         )
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                                 //           ],
                                 //         ),
                                 //       ),
@@ -1377,7 +1377,7 @@ class RecentCarts12 extends StatelessWidget {
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 3.w),
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

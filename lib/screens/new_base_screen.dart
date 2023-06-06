@@ -82,9 +82,7 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _myWalletController.walletbalanceOfBusinessType.value =
-        _myWalletController.StoreTotalWelcomeAmount();
-
+    var balance = _myWalletController.StoreTotalWelcomeAmount();
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
             statusBarColor: AppConst.darkGreen,
@@ -696,6 +694,7 @@ class ClaimMoreButton extends StatelessWidget {
                 int? value =
                     await _myWalletController.updateBusinesstypeWallets();
                 if (value != null) {
+                  _addLocationController.isRecentAddress.value = false;
                   Get.toNamed(
                     AppRoutes.SelectBusinessType,
                   );

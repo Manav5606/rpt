@@ -44,11 +44,11 @@ class HistoryOrderTrackingScreen extends StatefulWidget {
 
 class _HistoryOrderTrackingScreenState
     extends State<HistoryOrderTrackingScreen> {
-  final ChatController _chatController = Get.find();
+  final ChatController _chatController = Get.put(ChatController());
 
-  final freshChatController _freshChat = Get.find();
+  final freshChatController _freshChat = Get.put(freshChatController());
 
-  final AddCartController _addCartController = Get.find();
+  final AddCartController _addCartController = Get.put(AddCartController());
   late Razorpay _razorpay;
   @override
   void initState() {

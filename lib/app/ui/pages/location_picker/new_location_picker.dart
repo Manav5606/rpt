@@ -65,8 +65,11 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                 ? 26.h
                 : double.infinity,
             child: GoogleMap(
-              initialCameraPosition:
-                  _addLocationController.initialLocation.value,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(_addLocationController.currentPosition.latitude,
+                    _addLocationController.currentPosition.longitude),
+                zoom: 17,
+              ),
               myLocationEnabled: false,
               myLocationButtonEnabled: false,
               onCameraIdle: _addLocationController.onCameraIdle,

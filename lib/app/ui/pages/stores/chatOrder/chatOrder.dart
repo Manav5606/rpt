@@ -357,7 +357,7 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                 ))),
         ),
         Obx(() {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             chatOrderController.setValue(widget.isNewStore);
           });
 
