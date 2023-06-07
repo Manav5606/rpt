@@ -951,7 +951,7 @@ class DisplayAmountAndSkipButton extends StatelessWidget {
                       fontStyle: FontStyle.normal,
                     )),
                 new TextSpan(
-                    text: "${walletAmount}",
+                    text: "${walletAmount?.toStringAsFixed(2)}",
                     style: TextStyle(
                       fontFamily: 'MuseoSans',
                       color: AppConst.white,

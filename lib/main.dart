@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
           title: 'Recipto',
           theme: appThemeData,
           getPages: AppPages.list,
-          initialRoute: AppRoutes.SplashScreen,
+          initialRoute: AppRoutes.Root,
           // builder: EasyLoading.init(),
           initialBinding: AppBinding(),
           builder: (context, child) {

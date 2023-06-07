@@ -47,6 +47,7 @@ class MyWalletController extends GetxController {
   RxBool isTransactionLoading = false.obs;
   final AddLocationController _addLocationController = Get.find();
   BitmapDescriptor? storeIcon, currentPositionIcon;
+  final Set<Marker> markers = {};
 
   // final _walletsTransaction = <GetAllWalletTransactionByCustomer>[].obs;
 
@@ -78,8 +79,9 @@ class MyWalletController extends GetxController {
       log('hiiiiwallet Store$storeId');
       myWalletModel.value = await MyWalletRepository.getAllWalletByCustomer();
       log('hiiiiwalletAfterQuery Store$storeId');
+      myWalletModel.value?.data
+          ?.sort((a, b) => a.distance!.compareTo(b.distance as num));
       myWalletModel.refresh();
-      // log("myWalletModel.valuemyWalletModel.value22:${myWalletModel.value?.data?.length ?? 'nullll'}");
 
       isLoading.value = false;
     } catch (e, st) {
@@ -92,6 +94,7 @@ class MyWalletController extends GetxController {
       isCustomerLoading.value = true;
       myCustomerWalletModel.value =
           await MyWalletRepository.getAllWalletByCustomerByBusinessType();
+
       myCustomerWalletModel.refresh();
 
       isCustomerLoading.value = false;
@@ -120,6 +123,7 @@ class MyWalletController extends GetxController {
 
         for (int i = 0; i < (storelist?.length ?? 0); i++) {
           GroceryStores.add(storelist![i]);
+
           _addLocationController.allWalletStores.add(storelist[i]);
         }
       } else if (id == "625cc6c0c30c356c00c6a9bb") {
@@ -164,6 +168,39 @@ class MyWalletController extends GetxController {
         }
       }
     }
+    GroceryStores.sort((a, b) => a.distance!.compareTo(b.distance as num));
+    GroceryStores.refresh();
+    for (int i = 0; i < (GroceryStores.length); i++) {
+      markers.add(markerViewCard(GroceryStores[i].address!.location!.lat!,
+          GroceryStores[i].address!.location!.lng!));
+    }
+
+    MedicsStores.sort((a, b) => a.distance!.compareTo(b.distance as num));
+    MedicsStores.refresh();
+    for (int i = 0; i < (MedicsStores.length); i++) {
+      markers.add(markerViewCard(MedicsStores[i].address!.location!.lat!,
+          MedicsStores[i].address!.location!.lng!));
+    }
+    DryFruitStores.sort((a, b) => a.distance!.compareTo(b.distance as num));
+    DryFruitStores.refresh();
+    for (int i = 0; i < (DryFruitStores.length); i++) {
+      markers.add(markerViewCard(DryFruitStores[i].address!.location!.lat!,
+          DryFruitStores[i].address!.location!.lng!));
+    }
+    NonVegStores.sort((a, b) => a.distance!.compareTo(b.distance as num));
+    NonVegStores.refresh();
+
+    for (int i = 0; i < (NonVegStores.length); i++) {
+      markers.add(markerViewCard(NonVegStores[i].address!.location!.lat!,
+          NonVegStores[i].address!.location!.lng!));
+    }
+    PetfoodStores.sort((a, b) => a.distance!.compareTo(b.distance as num));
+    PetfoodStores.refresh();
+    for (int i = 0; i < (PetfoodStores.length); i++) {
+      markers.add(markerViewCard(PetfoodStores[i].address!.location!.lat!,
+          PetfoodStores[i].address!.location!.lng!));
+    }
+
     walletbalanceOfSignup.value = (GroceryWalletAmount.value +
         NonvegWalletAmount.value +
         DryFruitWalletAmount.value +
@@ -207,6 +244,14 @@ class MyWalletController extends GetxController {
     } catch (e, st) {
       isTransactionLoading.value = false;
     }
+  }
+
+  Marker markerViewCard(double lat, double lng) {
+    return Marker(
+        position: LatLng(lat, lng),
+        markerId: MarkerId('1'),
+        icon: storeIcon ?? BitmapDescriptor.defaultMarker,
+        infoWindow: InfoWindow(title: ""));
   }
 
   List<CategoryModel> category = [

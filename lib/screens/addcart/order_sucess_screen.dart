@@ -13,9 +13,14 @@ class OrderSucessScreen extends StatefulWidget {
   final OrderData? order;
   final String? type;
   num? redeemAmount;
+  String navBackTo;
 
   OrderSucessScreen(
-      {Key? key, this.order, this.type = "order", this.redeemAmount = 0})
+      {Key? key,
+      this.order,
+      this.type = "order",
+      this.redeemAmount = 0,
+      this.navBackTo = ""})
       : super(key: key);
 
   @override
@@ -31,9 +36,11 @@ class _OrderSucessScreenState extends State<OrderSucessScreen> {
       Future.delayed(Duration(seconds: 2), () {
         Get.off(
             OrderSucessScreen2(
-                order: widget.order,
-                type: widget.type,
-                redeemAmount: widget.redeemAmount),
+              order: widget.order,
+              type: widget.type,
+              redeemAmount: widget.redeemAmount,
+              navBackTo: widget.navBackTo,
+            ),
             transition: Transition.fadeIn);
         // (widget.type == "order")
         //     ? Get.off(
@@ -181,7 +188,14 @@ class OrderSucessScreen2 extends StatefulWidget {
   final OrderData? order;
   final String? type;
   num? redeemAmount;
-  OrderSucessScreen2({Key? key, this.order, this.type, this.redeemAmount = 0})
+  String navBackTo;
+
+  OrderSucessScreen2(
+      {Key? key,
+      this.order,
+      this.type,
+      this.redeemAmount = 0,
+      this.navBackTo = ""})
       : super(key: key);
 
   @override
@@ -199,9 +213,11 @@ class _OrderSucessScreen2State extends State<OrderSucessScreen2> {
 
         Get.off(
             HistoryOrderTrackingScreen(
-                // displayHour: _addCartController.displayHour.value,
-                order: widget.order,
-                type: widget.type),
+              // displayHour: _addCartController.displayHour.value,
+              order: widget.order,
+              type: widget.type,
+              navBackTo: widget.navBackTo,
+            ),
             transition: Transition.fade);
       });
     });

@@ -33,8 +33,10 @@ import 'package:url_launcher/url_launcher.dart';
 class HistoryOrderTrackingScreen extends StatefulWidget {
   final OrderData? order;
   String? type;
+  String navBackTo;
 
-  HistoryOrderTrackingScreen({Key? key, this.order, this.type})
+  HistoryOrderTrackingScreen(
+      {Key? key, this.order, this.type, this.navBackTo = ""})
       : super(key: key);
 
   @override
@@ -190,8 +192,14 @@ class _HistoryOrderTrackingScreenState
                                     height: 36,
                                     child: GestureDetector(
                                       // color: Colors.white,
-                                      onTap: (() =>
-                                          Get.offAll(() => BaseScreen())),
+                                      onTap: (() {
+                                        if (widget.navBackTo ==
+                                            "newbasescreen") {
+                                          Get.toNamed(AppRoutes.NewBaseScreen);
+                                        } else {
+                                          Get.toNamed(AppRoutes.BaseScreen);
+                                        }
+                                      }),
                                       child: Icon(
                                         Icons.close,
                                         size:

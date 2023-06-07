@@ -98,7 +98,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           if (value.latitude != 0.0 && value.longitude != 0.0) {
             // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
             FireBaseNotification().firebaseCloudMessagingLSetup();
-            Future.delayed(Duration(seconds: 2), () async {
+            Future.delayed(Duration(seconds: 4), () async {
               if (!((userModel.email != null && userModel.email != "") &&
                   (userModel.firstName != null && userModel.firstName != ""))) {
                 UserViewModel.setLocation(LatLng(
@@ -143,11 +143,11 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
       } catch (e) {
         ReportCrashes().reportRecorderror(e);
         ReportCrashes().reportErrorCustomKey("checksessionRoot", "");
-        Future.delayed(Duration(seconds: 2),
+        Future.delayed(Duration(seconds: 4),
             () => Get.offAllNamed(AppRoutes.Authentication));
       }
     } else {
-      Future.delayed(Duration(seconds: 2),
+      Future.delayed(Duration(seconds: 4),
           () => Get.offAllNamed(AppRoutes.Authentication));
     }
   }
@@ -166,14 +166,17 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           decoration: BoxDecoration(
             color: Color(0xff0a3453), // AppConst.white,
             image: DecorationImage(
-                image: AssetImage("assets/images/rootsplash.png"),
+                image: AssetImage("assets/images/bgsplash.png"),
                 fit: BoxFit.fill),
           ),
           height: double.infinity,
           width: double.infinity,
-          // child: FittedBox(
-          //   child: Center(child: Bloyallogo()),
-          // ),
+          child: FittedBox(
+            child: Center(
+                child: Image.asset(
+              "assets/images/splashscreen1.gif",
+            )),
+          ),
         ),
       ),
     );
