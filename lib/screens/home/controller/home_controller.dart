@@ -119,6 +119,9 @@ class HomeController extends GetxController {
         isRemoteConfigPageAvailable = false;
       }
       storeDataList.addAll(homePageRemoteConfigModel.value?.data ?? []);
+      storeDataList.sort(
+        (a, b) => (b.products?.length ?? 0).compareTo(a.products?.length ?? 0),
+      );
       isRemoteConfigPageLoading1.value = true;
     } catch (e) {
       print(e);

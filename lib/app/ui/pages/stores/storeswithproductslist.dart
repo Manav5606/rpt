@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:customer_app/app/constants/app_constants.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/my_wallet/wallet_details_screen.dart';
@@ -11,6 +10,7 @@ import 'package:customer_app/screens/more_stores/morestore_productlist.dart';
 import 'package:customer_app/widgets/custom_popupmenu.dart';
 import 'package:customer_app/widgets/instorelist.dart';
 import 'package:customer_app/widgets/snack.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
@@ -390,16 +390,19 @@ class ListViewChild extends StatelessWidget {
                                 return Container(
                                   width: 45.w,
                                   height: 25.h,
+
                                   // color: AppConst.yellow,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
+                                  
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                     
                                       DisplayProductInGridView(
                                           logo: product.logo),
                                       SizedBox(
-                                        // height: 4.5.h,
+                                        height: 4.5.h,
                                         child: Text(product.name.toString(),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,

@@ -206,7 +206,7 @@ class AddLocationController extends GetxController {
     }
   }
 
-  Future<void> onCameraIdle() async {
+  Future<void>  onCameraIdle() async {
     log('onMapCreated:----onCameraIdle>>> 0000 $middlePointOfScreenOnMap');
     try {
       final List<Placemark> p = await placemarkFromCoordinates(

@@ -60,7 +60,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>App needs location access to display the nearby stores in that location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App needs location access to display the nearby stores in that location .</string>
+	<string>App needs location access to display the nearby stores in that location and We need your location to provide precise delivery services .</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used by image picker plugin while capturing videos during chat</string>
 	<key>NSPhotoLibraryUsageDescription</key>

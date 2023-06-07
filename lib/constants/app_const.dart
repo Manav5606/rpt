@@ -34,6 +34,7 @@ class AppConst {
   static const Color lightYellow = Color(0xffFFECA7);
   static const Color yellow = Color(0xffFFFC38);
   static const Color yellowText = Color(0xffB87A00);
+  static const Color pastalGreen = Color(0xFF005B41);
   static const Color containerGreenBackground = Color(0xffE6FAF1);
   static const Color darkGreen = Color(0xff003d29);
   static const Color orange = Color(0xffEF6400);

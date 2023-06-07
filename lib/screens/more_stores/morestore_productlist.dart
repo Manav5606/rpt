@@ -916,8 +916,9 @@ class MoewStoreViewProductsList extends StatelessWidget {
                   0,
               //data.length,
               itemBuilder: (context, index) {
-                MainProducts? storesWithProductsModel = _moreStoreController
-                    .getStoreDataModel.value?.data?.mainProducts?[index];
+               final mainProducts = _moreStoreController.getStoreDataModel.value!.data!.mainProducts!;
+              mainProducts.sort((a, b) => (b.products?.length ?? 0).compareTo(a.products?.length ?? 0));
+              final storesWithProductsModel = mainProducts[index];
                 return Column(
                   children: [
                     Padding(
@@ -991,7 +992,7 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                         )),
                                         Container(
                                           // color: AppConst.red,
-                                          // height: 4.5.h,
+                                          height: 4.5.h,
                                           child: Text(product.name.toString(),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
