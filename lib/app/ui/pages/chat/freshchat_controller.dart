@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:customer_app/app/data/provider/graphql/queries.dart';
 import 'package:customer_app/app/data/provider/graphql/request.dart';
+import 'package:customer_app/app/data/repository/hive_repository.dart';
+import 'package:customer_app/app/data/repository/my_account_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,8 @@ class freshChatController extends GetxController {
       APP_KEY = Constants.APP_KEY, //"6b9a4433-5a91-4105-a4d6-e48eedee2ef9",
       DOMAIN = Constants.DOMAIN; //"msdk.in.freshchat.com";
   final GlobalKey<ScaffoldState>? scaffoldKey = new GlobalKey<ScaffoldState>();
-  final MyAccountController _myAccountController = Get.find();
+  final MyAccountController _myAccountController =
+      Get.put(MyAccountController(MyAccountRepository(), HiveRepository()));
 
   void registerFcmToken() async {
     if (Platform.isAndroid) {

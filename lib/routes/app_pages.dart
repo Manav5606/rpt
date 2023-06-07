@@ -126,10 +126,9 @@ class AppPages {
         page: () => WalletDetailsScreen(),
         binding: MyWalletBinding()),
     GetPage(
-      name: AppRoutes.SelectBusinessType,
-      page: () => SelectBusinessType(),
-      // binding: MyWalletBinding()
-    ),
+        name: AppRoutes.SelectBusinessType,
+        page: () => SelectBusinessType(),
+        binding: MyWalletBinding()),
     GetPage(name: AppRoutes.WalletOffer, page: () => WalletOfferScreen()),
     // GetPage(name: AppRoutes.MyAddresses, page: () => MyAddressesScreen()),
     // GetPage(

@@ -1,11 +1,14 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
+import 'package:customer_app/app/utils/bytes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:customer_app/app/data/repository/my_wallet_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../data/models/category_model.dart';
 import '../data/model/customer_wallet.dart';
@@ -29,11 +32,13 @@ class MyWalletController extends GetxController {
   RxInt MedicsWalletAmount = 0.obs;
   RxBool isNonVegSelected = true.obs;
   RxBool isPetfoodSelected = true.obs;
+  RxBool issignup = false.obs;
   RxList<Stores> GroceryStores = <Stores>[].obs;
   RxList<Stores> DryFruitStores = <Stores>[].obs;
   RxList<Stores> NonVegStores = <Stores>[].obs;
   RxList<Stores> PetfoodStores = <Stores>[].obs;
   RxList<Stores> MedicsStores = <Stores>[].obs;
+  RxList<Stores> nearbyGroceryStores = <Stores>[].obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RxString storeId = ''.obs;
   // LatLng latLng = LatLng(0.0, 0.0);
@@ -41,6 +46,7 @@ class MyWalletController extends GetxController {
   RxBool isCustomerLoading = false.obs;
   RxBool isTransactionLoading = false.obs;
   final AddLocationController _addLocationController = Get.find();
+  BitmapDescriptor? storeIcon, currentPositionIcon;
 
   // final _walletsTransaction = <GetAllWalletTransactionByCustomer>[].obs;
 
@@ -49,11 +55,21 @@ class MyWalletController extends GetxController {
   //   await getAllWalletTransactionByCustomer(storeId: storeId.string);
 
   // }
+  void handleLoad() async {
+    final Uint8List storeIcon1 =
+        await getBytesFromAsset('assets/icons/storeicon.png', 60);
+    storeIcon = BitmapDescriptor.fromBytes(storeIcon1);
+    final Uint8List pinpoint =
+        await getBytesFromAsset('assets/icons/pinsmall.png', 60);
+    currentPositionIcon = BitmapDescriptor.fromBytes(pinpoint);
+  }
 
   @override
   void onInit() async {
     super.onInit();
     await getAllWalletByCustomer();
+    await StoreTotalWelcomeAmount();
+    handleLoad();
   }
 
   Future<void> getAllWalletByCustomer() async {
@@ -90,6 +106,8 @@ class MyWalletController extends GetxController {
     PetfoodWalletAmount.value = 0;
     MedicsWalletAmount.value = 0;
     DryFruitWalletAmount.value = 0;
+    isNonVegSelected.value = true;
+    isPetfoodSelected.value = true;
     _addLocationController.allWalletStores.clear();
     for (int i = 0; i < (myCustomerWalletModel.value?.data?.length ?? 7); i++) {
       String? id = myCustomerWalletModel.value?.data?[i].businessType?.sId;
@@ -156,18 +174,20 @@ class MyWalletController extends GetxController {
 
   double StoreTotalWelcomeAmount() {
     List<num> walletamounts = [];
-    for (int i = 0; i < (myWalletModel.value?.data?.length ?? 0); i++) {
-      var eachStoreTotal =
-          ((myWalletModel.value?.data![i].earnedCashback ?? 0) +
-              (myWalletModel.value?.data![i].welcomeOffer ?? 0));
+    if (myWalletModel.value?.data != null) {
+      for (int i = 0; i < (myWalletModel.value?.data?.length ?? 0); i++) {
+        var eachStoreTotal =
+            ((myWalletModel.value?.data![i].earnedCashback ?? 0) +
+                (myWalletModel.value?.data![i].welcomeOffer ?? 0));
 
+        walletamounts.add(eachStoreTotal);
+      }
 
-      walletamounts.add(eachStoreTotal);
+      var TotalWalletBalance = walletamounts.sum;
+      walletbalanceOfBusinessType.value = double.parse("${TotalWalletBalance}");
+      return walletbalanceOfBusinessType.value;
     }
-
-    var TotalWalletBalance = walletamounts.sum;
-    walletbalanceOfBusinessType.value = double.parse("${TotalWalletBalance}");
-    return walletbalanceOfBusinessType.value;
+    return 0.0;
   }
 
   Future<void> getAllWalletTransactionByCustomer(

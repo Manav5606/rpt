@@ -32,11 +32,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ActiveOrderTrackingScreen extends StatefulWidget {
   final ActiveOrderData? activeOrder;
+  String navBackTo;
 
-  ActiveOrderTrackingScreen({
-    Key? key,
-    this.activeOrder,
-  }) : super(key: key);
+  ActiveOrderTrackingScreen({Key? key, this.activeOrder, this.navBackTo = ""})
+      : super(key: key);
 
   @override
   State<ActiveOrderTrackingScreen> createState() =>
@@ -182,7 +181,11 @@ class _ActiveOrderTrackingScreenState extends State<ActiveOrderTrackingScreen> {
                     children: [
                       InkWell(
                           onTap: (() {
-                            Get.toNamed(AppRoutes.BaseScreen);
+                            if (widget.navBackTo == "newbasescreen") {
+                              Get.toNamed(AppRoutes.NewBaseScreen);
+                            } else {
+                              Get.toNamed(AppRoutes.BaseScreen);
+                            }
                           }),
                           child: Container(
                             width: 36,

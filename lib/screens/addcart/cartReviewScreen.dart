@@ -47,6 +47,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
   String storeID = "";
   String businessID = "";
   bool addressAdd = false;
+  String navBackTo = "";
 
   // String totalCount = '';
 
@@ -60,6 +61,7 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
     storeID = arg['id'] ?? "";
     storeName = arg['storeName'] ?? "";
     addressAdd = arg['addressAdd'] ?? false;
+    navBackTo = arg['navBackTo'] ?? '';
     _addCartController.totalCount.value = arg['totalCount'].toString();
   }
 
@@ -77,8 +79,13 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
           //exit the dialog;
           Get.back();
           //exit this screen
-          Get.offAllNamed(AppRoutes.BaseScreen);
-          // Get.back();
+
+          if (navBackTo == "newbasescreen") {
+            Get.offAllNamed(AppRoutes.NewBaseScreen);
+          } else {
+            Get.offAllNamed(AppRoutes.BaseScreen);
+            // Get.back();
+          }
         }).show(context);
     return false;
   }
@@ -2554,10 +2561,7 @@ class DisplayChatOrderTag extends StatelessWidget {
             decoration:
                 BoxDecoration(shape: BoxShape.circle, color: Color(0xff8a52ff)),
             child: Icon(
-
               FontAwesomeIcons.whatsapp,
-
-            
               size: 1.6.h,
               color: Color(0xffe8ddff),
             ),

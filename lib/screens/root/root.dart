@@ -108,12 +108,13 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
                     .getAllWalletByCustomerByBusinessType();
                 int? value =
                     await _myWalletController.updateBusinesstypeWallets();
+
                 if (value != null) {
-                  Get.toNamed(AppRoutes.SelectBusinessType,
+                  Get.offNamed(AppRoutes.SelectBusinessType,
                       arguments: {"signup": true});
                 }
               } else {
-                await Get.offAllNamed(AppRoutes.NewBaseScreen);
+                await Get.offNamed(AppRoutes.NewBaseScreen);
               }
               // Get.offAllNamed(AppRoutes.BaseScreen);
             });

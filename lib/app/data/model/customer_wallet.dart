@@ -146,6 +146,7 @@ class Stores {
   String? city;
   int? pincode;
   Address? address;
+  num? distance;
 
   Stores(
       {this.sId,
@@ -156,15 +157,17 @@ class Stores {
       this.actualCashback,
       this.city,
       this.pincode,
-      this.address});
+      this.address,
+      this.distance});
 
   Stores.fromJson(Map<String, dynamic> json) {
     sId = json['_id'] ?? "";
     name = json['name'] ?? "";
     mobile = json['mobile'] ?? "";
     logo = json['logo'] ?? "";
-    actualWelcomeOffer = json['actual_welcome_offer'] ?? "";
-    actualCashback = json['actual_cashback'] ?? "";
+    actualWelcomeOffer = json['actual_welcome_offer'] ?? 0;
+    actualCashback = json['actual_cashback'] ?? 0;
+    distance = json['distance'] ?? 0.0;
     city = json['city'] ?? "";
     pincode = json['pincode'] ?? "";
     address =
@@ -181,6 +184,7 @@ class Stores {
     data['actual_cashback'] = this.actualCashback;
     data['city'] = this.city;
     data['pincode'] = this.pincode;
+    data['distance'] = this.distance;
     if (this.address != null) {
       data['address'] = this.address!.toJson();
     }
