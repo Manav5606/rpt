@@ -11,7 +11,18 @@ class StoreSearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-      decoration: BoxDecoration(color: AppConst.veryLightGrey),
+      decoration: BoxDecoration(
+        color: AppConst.white,
+        // border: Border.all(color: AppConst.grey, width: 0.5),
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: AppConst.grey,
+            blurRadius: 1,
+            // offset: Offset(1, 1),
+          ),
+        ],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -23,14 +34,14 @@ class StoreSearchField extends StatelessWidget {
           SizedBox(
             width: 3.w,
           ),
-          Text("Search for items",
+          Text("Search for item",
               overflow: TextOverflow.clip,
               maxLines: 1,
               style: TextStyle(
                 fontFamily: 'MuseoSans',
-                color: AppConst.grey,
-                fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                fontWeight: FontWeight.w500,
+                color: AppConst.black,
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
               )),
         ],

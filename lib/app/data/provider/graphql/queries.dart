@@ -1069,10 +1069,21 @@ query($lat: Float, $lng: Float) {
         store_type
         color
         actual_cashback
+        actual_welcome_offer
         default_welcome_offer
-        
+        bill_discount_offer_amount
+        bill_discount_offer_status
+        bill_discount_offer_target
         promotion_cashback
         logo
+        refern_and_earn{
+          status
+          amount
+        }
+        lead_generation_promotion{
+          status
+          amount
+        }
         delivery_slots
         {
           day

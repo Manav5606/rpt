@@ -68,9 +68,15 @@ class Store {
   int? defaultCashback;
   int? defaultWelcomeOffer;
   num? actual_cashback;
+  num? actual_welcome_offer;
   int? promotionCashback;
   String? logo;
   List<DeliverySlots>? deliverySlots;
+  int? bill_discount_offer_amount;
+  bool? bill_discount_offer_status;
+  int? bill_discount_offer_target;
+  RefernAndEarn? refernAndEarn;
+  RefernAndEarn? leadGenerationPromotion;
 
   Store(
       {this.name,
@@ -80,9 +86,15 @@ class Store {
       this.defaultWelcomeOffer,
       this.promotionCashback,
       this.actual_cashback,
+      this.actual_welcome_offer,
       this.logo,
       this.deliverySlots,
-      this.sId});
+      this.sId,
+      this.bill_discount_offer_amount,
+      this.bill_discount_offer_status,
+      this.bill_discount_offer_target,
+      this.leadGenerationPromotion,
+      this.refernAndEarn});
 
   Store.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -93,7 +105,17 @@ class Store {
     defaultWelcomeOffer = json['default_welcome_offer'];
     promotionCashback = json['promotion_cashback'];
     actual_cashback = json['actual_cashback'];
+    actual_welcome_offer = json['actual_welcome_offer'] ?? 0;
     logo = json['logo'];
+    bill_discount_offer_amount = json['bill_discount_offer_amount'] ?? 0;
+    bill_discount_offer_status = json['bill_discount_offer_status'];
+    bill_discount_offer_target = json['bill_discount_offer_target'] ?? 0;
+    refernAndEarn = json['refern_and_earn'] != null
+        ? new RefernAndEarn.fromJson(json['refern_and_earn'])
+        : null;
+    leadGenerationPromotion = json['lead_generation_promotion'] != null
+        ? new RefernAndEarn.fromJson(json['lead_generation_promotion'])
+        : null;
     if (json['delivery_slots'] != null) {
       deliverySlots = <DeliverySlots>[];
       json['delivery_slots'].forEach((v) {
@@ -109,14 +131,44 @@ class Store {
     data['color'] = this.color;
     data['store_type'] = this.storeType;
     data['actual_cashback'] = this.actual_cashback;
+    data['actual_welcome_offer'] = this.actual_welcome_offer;
     data['default_cashback'] = this.defaultCashback;
     data['default_welcome_offer'] = this.defaultWelcomeOffer;
     data['promotion_cashback'] = this.promotionCashback;
+    data['bill_discount_offer_amount'] = this.bill_discount_offer_amount;
+    data['bill_discount_offer_status'] = this.bill_discount_offer_status;
+    data['bill_discount_offer_target'] = this.bill_discount_offer_target;
     data['logo'] = this.logo;
+    if (this.refernAndEarn != null) {
+      data['refern_and_earn'] = this.refernAndEarn!.toJson();
+    }
+    if (this.leadGenerationPromotion != null) {
+      data['lead_generation_promotion'] =
+          this.leadGenerationPromotion!.toJson();
+    }
     if (this.deliverySlots != null) {
       data['delivery_slots'] =
           this.deliverySlots!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class RefernAndEarn {
+  bool? status;
+  int? amount;
+
+  RefernAndEarn({this.status, this.amount});
+
+  RefernAndEarn.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    amount = json['amount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['amount'] = this.amount;
     return data;
   }
 }
