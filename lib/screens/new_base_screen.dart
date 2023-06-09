@@ -154,50 +154,7 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
         ));
   }
   Widget shimmer(){
-   return Column(
-                    children: [
-                      Obx(
-                        () => DisplayAmountAndSkipButton(
-                          walletAmount:
-                              _myWalletController.walletbalanceOfBusinessType.value,
-                        ),
-                      ),
-                      TabBar(
-                          isScrollable: true,
-                          indicator: BoxDecoration(
-                            color: AppConst.white,
-                          ),
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          labelColor: AppConst.darkGreen,
-                          unselectedLabelColor: AppConst.white,
-                          // labelStyle: TextStyle(fontSize: 16),
-
-                          labelStyle: TextStyle(
-                              fontSize: (SizerUtil.deviceType == DeviceType.tablet)
-                                  ? 10.sp
-                                  : 13.sp,
-                              color: AppConst.white,
-                              fontWeight: FontWeight.w500),
-                          tabs: [
-                            Text("Pay At Store"),
-                            Text("Scan"),
-                            Text("Order")
-                          ]),
-                      ClaimMoreButton(),
-                      Container(
-                        color: AppConst.white,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.w, vertical: 1.5.h),
-                          child: Container(
-                            height: 1,
-                            color: AppConst.grey,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                          child: TabBarView(children: [
-                        ListView(
+   return ListView(
       // controller:
       children: [
         Container(
@@ -222,112 +179,86 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
                 Container(
                   height: 6.h,
                   color: AppConst.Lightgrey,
-                  child: ListView(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      DisplayBusinessType(
-                        text: "Grocery",
-                      ),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      DisplayBusinessType(
-                        text: "Pet food",
-                      ),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      DisplayBusinessType(
-                        text: "Pharmacy",
-                      ),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      DisplayBusinessType(
-                        text: "Meat",
-                      ),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      DisplayBusinessType(
-                        text: "Meat",
-                      ),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                    ],
+                  child: ShimmerEffect(
+                    child: ListView(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        DisplayBusinessType(
+                          text: "Grocery",
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        DisplayBusinessType(
+                          text: "Pet food",
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        DisplayBusinessType(
+                          text: "Pharmacy",
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        DisplayBusinessType(
+                          text: "Meat",
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        DisplayBusinessType(
+                          text: "Meat",
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Obx(
-                  () => ListView.separated(
+                  () =>  (_myWalletController.myWalletModel.value?.data == null ||
+                              _myWalletController
+                                      .myWalletModel.value?.data?.length ==
+                                  0)
+                          ? ListView.separated(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: _myWalletController
-                                      .myWalletModel.value?.data?.length ??
-                                  0,
+                              itemCount: 10,
                               itemBuilder: (context, index) {
-                                print(
-                                  _myWalletController.myWalletModel.value!
-                                      .data![index].storeType,
-                                );
+                              
                                 return InkWell(
                                   onTap: () {
                                     
-                                    RedeemCashInStorePageData payviewData =
-                                        RedeemCashInStorePageData(
-                                            name: _myWalletController
-                                                .myWalletModel
-                                                .value!
-                                                .data![index]
-                                                .name,
-                                            sId: _myWalletController.myWalletModel
-                                                .value!.data![index].sId,
-                                            storeType: _myWalletController
-                                                .myWalletModel
-                                                .value!
-                                                .data![index]
-                                                .storeType,
-                                            earnedCashback: _myWalletController
-                                                .myWalletModel
-                                                .value!
-                                                .data![index]
-                                                .earnedCashback,
-                                            updatedAt: _myWalletController
-                                                .myWalletModel
-                                                .value!
-                                                .data![index]
-                                                .updatedAt,
-                                            distance: _myWalletController
-                                                .myWalletModel
-                                                .value!
-                                                .data![index]
-                                                .distance,
-                                            logo: _myWalletController
-                                                .myWalletModel
-                                                .value!
-                                                .data![index]
-                                                .logo,
-                                            // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
-                                            actual_cashback: _myWalletController
-                                                .myWalletModel
-                                                .value!
-                                                .data![index]
-                                                .earnedCashback,
-                                            premium: _myWalletController.myWalletModel.value!.data![index].premium,
-                                            welcomeOfferAmount: _myWalletController.myWalletModel.value!.data![index].welcomeOfferAmount);
-                                    _paymentController
-                                        .redeemCashInStorePageDataIndex
-                                        .value = payviewData;
-          
-                                    Get.toNamed(AppRoutes.PayView, arguments: {});
+                                  
                                   },
-                                  child: ShimmerEffect(
-                                    child: ListOfAllWalletsShimmer(
-                                      walletData: _myWalletController
-                                          .myWalletModel.value!.data![index],
-                                    ),
+                                  child: ListOfAllWalletsShimmer(
+                                    walletData: _myWalletController
+                                        .myWalletModel.value!.data![index],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox();
+                              },
+                            )
+                          : ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 10,
+                              itemBuilder: (context, index) {
+                              
+                                return InkWell(
+                                  onTap: () {
+                                    
+                                  
+                                  },
+                                  child: ListOfAllWalletsShimmer(
+                                    walletData: _myWalletController
+                                        .myWalletModel.value!.data![index],
                                   ),
                                 );
                               },
@@ -341,12 +272,7 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
           ),
         ),
       ],
-    ),
-                        ScanReceiptStores(),
-                        RecentOrdersAndStores()
-                      ]))
-                    ],
-                  );
+    );
   }
 }
 
@@ -922,16 +848,15 @@ class ListOfAllWallets extends StatelessWidget {
     );
   }
 }
-
 class ListOfAllWalletsShimmer extends StatelessWidget {
-  WalletData walletData;
+  WalletData? walletData;
 
   ListOfAllWalletsShimmer({
     Key? key,
-    required this.walletData,
+     this.walletData,
   }) : super(key: key);
 
-  final MyWalletController _myWalletController = Get.find();
+
 
   @override
   Widget build(BuildContext context) {
@@ -941,14 +866,13 @@ class ListOfAllWalletsShimmer extends StatelessWidget {
         children: [
           ShimmerEffect(
             child: ListViewStoreDetails(
-              logo: "${walletData.logo ?? ""}",
+              logo: "",
               // color: color,
               // isDisplayDistance: true,
               // StoreID: "${storeSearchModel.sId ?? ""}",
-              StoreName: "${walletData.name ?? ""}",
-              distance: walletData.distance ?? 0,
-              balance: (walletData.earnedCashback ?? 0) +
-                  (walletData.welcomeOfferAmount ?? 0),
+              StoreName: "",
+              distance:  0,
+              balance: 0,
             ),
           ),
         ],
