@@ -96,58 +96,257 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
           body: SafeArea(
             child: DefaultTabController(
               length: 3,
-              child: Column(
-                children: [
-                  Obx(
-                    () => DisplayAmountAndSkipButton(
-                      walletAmount:
-                          _myWalletController.walletbalanceOfBusinessType.value,
-                    ),
-                  ),
-                  TabBar(
-                      isScrollable: true,
-                      indicator: BoxDecoration(
-                        color: AppConst.white,
+              child: Obx(
+                ()=>  
+                  _myWalletController.isLoading.value? shimmer() : Column(
+                    children: [
+                      Obx(
+                        () => DisplayAmountAndSkipButton(
+                          walletAmount:
+                              _myWalletController.walletbalanceOfBusinessType.value,
+                        ),
                       ),
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      labelColor: AppConst.darkGreen,
-                      unselectedLabelColor: AppConst.white,
-                      // labelStyle: TextStyle(fontSize: 16),
+                      TabBar(
+                          isScrollable: true,
+                          indicator: BoxDecoration(
+                            color: AppConst.white,
+                          ),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelColor: AppConst.darkGreen,
+                          unselectedLabelColor: AppConst.white,
+                          // labelStyle: TextStyle(fontSize: 16),
 
-                      labelStyle: TextStyle(
-                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
-                              ? 10.sp
-                              : 13.sp,
-                          color: AppConst.white,
-                          fontWeight: FontWeight.w500),
-                      tabs: [
-                        Text("Pay At Store"),
-                        Text("Scan"),
-                        Text("Order")
-                      ]),
-                  ClaimMoreButton(),
-                  Container(
-                    color: AppConst.white,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 4.w, vertical: 1.5.h),
-                      child: Container(
-                        height: 1,
-                        color: AppConst.grey,
+                          labelStyle: TextStyle(
+                              fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                                  ? 10.sp
+                                  : 13.sp,
+                              color: AppConst.white,
+                              fontWeight: FontWeight.w500),
+                          tabs: [
+                            Text("Pay At Store"),
+                            Text("Scan"),
+                            Text("Order")
+                          ]),
+                      ClaimMoreButton(),
+                      Container(
+                        color: AppConst.white,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.w, vertical: 1.5.h),
+                          child: Container(
+                            height: 1,
+                            color: AppConst.grey,
+                          ),
+                        ),
                       ),
-                    ),
+                      Flexible(
+                          child: TabBarView(children: [
+                        PayAtStore(),
+                        ScanReceiptStores(),
+                        RecentOrdersAndStores()
+                      ]))
+                    ],
                   ),
-                  Flexible(
-                      child: TabBarView(children: [
-                    PayAtStore(),
-                    ScanReceiptStores(),
-                    RecentOrdersAndStores()
-                  ]))
-                ],
+                
               ),
             ),
           ),
         ));
+  }
+  Widget shimmer(){
+   return Column(
+                    children: [
+                      Obx(
+                        () => DisplayAmountAndSkipButton(
+                          walletAmount:
+                              _myWalletController.walletbalanceOfBusinessType.value,
+                        ),
+                      ),
+                      TabBar(
+                          isScrollable: true,
+                          indicator: BoxDecoration(
+                            color: AppConst.white,
+                          ),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelColor: AppConst.darkGreen,
+                          unselectedLabelColor: AppConst.white,
+                          // labelStyle: TextStyle(fontSize: 16),
+
+                          labelStyle: TextStyle(
+                              fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                                  ? 10.sp
+                                  : 13.sp,
+                              color: AppConst.white,
+                              fontWeight: FontWeight.w500),
+                          tabs: [
+                            Text("Pay At Store"),
+                            Text("Scan"),
+                            Text("Order")
+                          ]),
+                      ClaimMoreButton(),
+                      Container(
+                        color: AppConst.white,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.w, vertical: 1.5.h),
+                          child: Container(
+                            height: 1,
+                            color: AppConst.grey,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                          child: TabBarView(children: [
+                        ListView(
+      // controller:
+      children: [
+        Container(
+          decoration: BoxDecoration(color: AppConst.white),
+          child: ShimmerEffect(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 4.w, top: 1.h, bottom: 2.h),
+                  child: Text(
+                    'Recent Stores',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: 'MuseoSans',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 6.h,
+                  color: AppConst.Lightgrey,
+                  child: ListView(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      DisplayBusinessType(
+                        text: "Grocery",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Pet food",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Pharmacy",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Meat",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Meat",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                    ],
+                  ),
+                ),
+                Obx(
+                  () => ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: _myWalletController
+                                      .myWalletModel.value?.data?.length ??
+                                  0,
+                              itemBuilder: (context, index) {
+                                print(
+                                  _myWalletController.myWalletModel.value!
+                                      .data![index].storeType,
+                                );
+                                return InkWell(
+                                  onTap: () {
+                                    
+                                    RedeemCashInStorePageData payviewData =
+                                        RedeemCashInStorePageData(
+                                            name: _myWalletController
+                                                .myWalletModel
+                                                .value!
+                                                .data![index]
+                                                .name,
+                                            sId: _myWalletController.myWalletModel
+                                                .value!.data![index].sId,
+                                            storeType: _myWalletController
+                                                .myWalletModel
+                                                .value!
+                                                .data![index]
+                                                .storeType,
+                                            earnedCashback: _myWalletController
+                                                .myWalletModel
+                                                .value!
+                                                .data![index]
+                                                .earnedCashback,
+                                            updatedAt: _myWalletController
+                                                .myWalletModel
+                                                .value!
+                                                .data![index]
+                                                .updatedAt,
+                                            distance: _myWalletController
+                                                .myWalletModel
+                                                .value!
+                                                .data![index]
+                                                .distance,
+                                            logo: _myWalletController
+                                                .myWalletModel
+                                                .value!
+                                                .data![index]
+                                                .logo,
+                                            // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
+                                            actual_cashback: _myWalletController
+                                                .myWalletModel
+                                                .value!
+                                                .data![index]
+                                                .earnedCashback,
+                                            premium: _myWalletController.myWalletModel.value!.data![index].premium,
+                                            welcomeOfferAmount: _myWalletController.myWalletModel.value!.data![index].welcomeOfferAmount);
+                                    _paymentController
+                                        .redeemCashInStorePageDataIndex
+                                        .value = payviewData;
+          
+                                    Get.toNamed(AppRoutes.PayView, arguments: {});
+                                  },
+                                  child: ShimmerEffect(
+                                    child: ListOfAllWalletsShimmer(
+                                      walletData: _myWalletController
+                                          .myWalletModel.value!.data![index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox();
+                              },
+                            ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+                        ScanReceiptStores(),
+                        RecentOrdersAndStores()
+                      ]))
+                    ],
+                  );
   }
 }
 
@@ -553,9 +752,7 @@ class PayAtStore extends StatelessWidget {
                 ),
               ),
               Obx(
-                () => _myWalletController.isLoading.value
-                    ? Center(child: ListViewShimmer())
-                    : (_myWalletController.myWalletModel.value?.data == null ||
+                () =>  (_myWalletController.myWalletModel.value?.data == null ||
                             _myWalletController
                                     .myWalletModel.value?.data?.length ==
                                 0)
@@ -572,8 +769,13 @@ class PayAtStore extends StatelessWidget {
                                     .myWalletModel.value?.data?.length ??
                                 0,
                             itemBuilder: (context, index) {
+                              print(
+                                _myWalletController.myWalletModel.value!
+                                    .data![index].storeType,
+                              );
                               return InkWell(
                                 onTap: () {
+                                  
                                   RedeemCashInStorePageData payviewData =
                                       RedeemCashInStorePageData(
                                           name: _myWalletController
@@ -714,6 +916,40 @@ class ListOfAllWallets extends StatelessWidget {
             distance: walletData.distance ?? 0,
             balance: (walletData.earnedCashback ?? 0) +
                 (walletData.welcomeOfferAmount ?? 0),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ListOfAllWalletsShimmer extends StatelessWidget {
+  WalletData walletData;
+
+  ListOfAllWalletsShimmer({
+    Key? key,
+    required this.walletData,
+  }) : super(key: key);
+
+  final MyWalletController _myWalletController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+      child: Column(
+        children: [
+          ShimmerEffect(
+            child: ListViewStoreDetails(
+              logo: "${walletData.logo ?? ""}",
+              // color: color,
+              // isDisplayDistance: true,
+              // StoreID: "${storeSearchModel.sId ?? ""}",
+              StoreName: "${walletData.name ?? ""}",
+              distance: walletData.distance ?? 0,
+              balance: (walletData.earnedCashback ?? 0) +
+                  (walletData.welcomeOfferAmount ?? 0),
+            ),
           ),
         ],
       ),
