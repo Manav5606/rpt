@@ -18,6 +18,7 @@ class SignUpFeilds extends StatelessWidget {
       this.focusNode,
       this.prefixIcon,
       this.validator,
+      this.autFocus,
       this.readOnly})
       : super(key: key);
   // String? text;
@@ -27,6 +28,7 @@ class SignUpFeilds extends StatelessWidget {
   TextInputType? keyboardtype;
   int? maxlength;
   bool? readOnly;
+  bool? autFocus;
   FocusNode? focusNode;
   Widget? prefixIcon;
   final void Function(String)? onChange;
@@ -66,6 +68,7 @@ class SignUpFeilds extends StatelessWidget {
                     fontStyle: FontStyle.normal,
                     fontSize: SizeUtils.horizontalBlockSize * 4),
                 focusNode: focusNode,
+                autofocus: autFocus ?? false,
                 textAlign: TextAlign.start,
                 cursorColor: AppConst.black,
                 maxLength: maxlength,

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
@@ -9,6 +10,7 @@ import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/constants/app_const.dart';
 
 import 'package:customer_app/theme/styles.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:sizer/sizer.dart';
@@ -24,16 +26,37 @@ class _OtpScreenState extends State<OtpScreen> {
   final SignInScreenController _signInScreenController = Get.find()
     ..startTimer();
 
+  
+
   TextEditingController otpController = TextEditingController();
+  FocusNode _otpFocusNode = FocusNode();
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+
+   Timer.run(() {
+      FocusScope.of(context).requestFocus(_otpFocusNode);
+    });
+
+  }
+
+
+
   @override
   void dispose() {
     otpController.dispose();
-
+    _otpFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_otpFocusNode);
+    });
     return WillPopScope(
       onWillPop: () async {
         _signInScreenController.isFromOTP.value = false;
@@ -144,6 +167,8 @@ class _OtpScreenState extends State<OtpScreen> {
                             hinttext: "Enter OTP",
                             keyboardtype: TextInputType.number,
                             maxlength: 6,
+                            focusNode:_otpFocusNode,
+                            autFocus: true,
                             controller: _signInScreenController.otpController,
                             // onChange: (pin) async {
                             //   _signInScreenController.submitOTP();
@@ -226,6 +251,8 @@ class _OtpScreenState extends State<OtpScreen> {
                           keyboardtype: TextInputType.number,
                           maxlength: 6,
                           controller: otpController,
+                          focusNode: _otpFocusNode,
+                          autFocus: true,
                           // onChange: (pin) async {
                           //   _signInScreenController.submitOTP();
                           //   // _signInScreenController.otpController.clear();
