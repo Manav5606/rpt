@@ -1,7 +1,9 @@
 import 'package:customer_app/app/constants/colors.dart';
+import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
 import 'package:customer_app/app/utils/utils.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
+import 'package:customer_app/widgets/copied/confirm_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -57,7 +59,8 @@ class WalletTransactionCard extends StatelessWidget {
     dynamic argumentData = Get.arguments;
     // Color color = argumentData['color'];
     Color color = Color(0xff003d29);
-    String name = argumentData['name'] ?? "S";
+    String name = argumentData['name'] ?? "";
+    String StoreId = argumentData['storeId'] ?? "";
     String logo = argumentData['logo'] ?? "";
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -167,6 +170,51 @@ class WalletTransactionCard extends StatelessWidget {
                           :
                           // EmptyOrderScreen(),
                           TransactionList(),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        SeeyaConfirmDialog(
+                            title: "Are you sure!",
+                            subTitle: (walletData?.deactivated == false)
+                                ? "You Want to Deactivate the Wallet?"
+                                : "You Want to Activate the Wallet?",
+                            onCancel: () => Get.back(),
+                            onConfirm: () async {
+                              //exit the dialog;
+                              Get.back();
+                              //exit this screen
+
+                              if (walletData?.deactivated == false) {
+                                _myWalletController
+                                    .updateWalletStatusByCustomer(
+                                        storeId: walletData?.sId, status: true);
+                                walletData?.deactivated = true;
+                              } else {
+                                _myWalletController
+                                    .updateWalletStatusByCustomer(
+                                        storeId: walletData?.sId,
+                                        status: false);
+                                walletData?.deactivated = false;
+                              }
+                            }).show(context);
+                      },
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 2.h, horizontal: 3.w),
+                          child: BottomWideButton(
+                            text: (walletData?.deactivated == false)
+                                ? "Deactivate Wallet"
+                                : "Activate Wallet",
+                            color: (walletData?.deactivated == false)
+                                ? AppConst.white
+                                : AppConst.darkGreen,
+                            Textcolor: (walletData?.deactivated == false)
+                                ? AppConst.red
+                                : AppConst.white,
+                            borderColor: (walletData?.deactivated == false)
+                                ? AppConst.red
+                                : AppConst.darkGreen,
+                          )),
                     ),
                   ],
                 ),
@@ -460,7 +508,6 @@ class EmptyScreen extends StatelessWidget {
                     SizedBox(
                       height: 0.5.h,
                     ),
-                   
                     GestureDetector(
                       onTap: () async {
                         dynamic value = Get.to(AddressModel(

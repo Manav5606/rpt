@@ -155,7 +155,7 @@ class ListViewChild extends StatelessWidget {
                 //         ),
                 //       ),
                 DispalyStoreLogo(
-                  logo: storeSearchModel.logo,
+                  logo: storeSearchModel.store?.logo,
                   bottomPadding: 2,
                 ),
                 SizedBox(
@@ -182,7 +182,7 @@ class ListViewChild extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        (storeSearchModel.distance != null)
+                        (storeSearchModel.store?.distance != null)
                             ? Container(
                                 // margin: EdgeInsets.only(top: 1.h),
                                 padding: EdgeInsets.all(1.w),
@@ -191,7 +191,7 @@ class ListViewChild extends StatelessWidget {
                                   // border: Border.all(color: AppConst.grey),
                                 ),
                                 child: Text(
-                                    "${(storeSearchModel.distance!.toInt() / 1000).toStringAsFixed(2)} km",
+                                    "${(storeSearchModel.store!.distance!.toInt() / 1000).toStringAsFixed(2)} km",
                                     style: TextStyle(
                                         fontSize:
                                             SizeUtils.horizontalBlockSize * 3,
@@ -210,8 +210,10 @@ class ListViewChild extends StatelessWidget {
                             size: 0.8.h,
                           ),
                         ),
-                        if (storeSearchModel.storeType?.isNotEmpty ?? false)
-                          if ((storeSearchModel.storeType ?? '') == 'online')
+                        if (storeSearchModel.store?.storeType?.isNotEmpty ??
+                            false)
+                          if ((storeSearchModel.store?.storeType ?? '') ==
+                              'online')
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -260,7 +262,8 @@ class ListViewChild extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        (storeSearchModel.businesstype == Constants.fresh)
+                        (storeSearchModel.store?.businesstype ==
+                                Constants.fresh)
                             ? Container(
                                 width: 18.w,
                                 padding: EdgeInsets.all(4),
@@ -287,7 +290,8 @@ class ListViewChild extends StatelessWidget {
                                 ),
                               )
                             : SizedBox(),
-                        (storeSearchModel.businesstype == Constants.fresh)
+                        (storeSearchModel.store?.businesstype ==
+                                Constants.fresh)
                             ? SizedBox(
                                 width: 3.w,
                               )
@@ -319,12 +323,13 @@ class ListViewChild extends StatelessWidget {
                                 ),
                               )
                             : SizedBox(),
-                        (storeSearchModel.businesstype == Constants.fresh)
+                        (storeSearchModel.store?.businesstype ==
+                                Constants.fresh)
                             ? SizedBox(
                                 width: 3.w,
                               )
                             : SizedBox(),
-                        (storeSearchModel.actual_cashback != null)
+                        (storeSearchModel.store?.actualCashback != null)
                             ? Container(
                                 width: 32.w,
                                 padding: EdgeInsets.all(4),
@@ -345,7 +350,7 @@ class ListViewChild extends StatelessWidget {
                                           color: Color(0xffebf7f3)),
                                     ),
                                     Text(
-                                        "${storeSearchModel.actual_cashback ?? 0}% Cashback",
+                                        "${storeSearchModel.store?.actualCashback ?? 0}% Cashback",
                                         style: TextStyle(
                                           fontFamily: 'MuseoSans',
                                           color: Color(0xff053e2a),

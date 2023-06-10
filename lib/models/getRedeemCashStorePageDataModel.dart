@@ -30,40 +30,28 @@ class GetRedeemCashInStorePageData {
 class RedeemCashInStorePageData {
   String? name;
   String? sId;
-  String? storeType;
-  num? earnedCashback;
-  String? updatedAt;
-  int? distance;
-  String? logo;
-  String? businesstype;
-  bool? premium;
-  num? actual_cashback;
+  bool? deactivated;
+  Store? store;
+  int? earnedCashback;
+  int? welcomeOffer;
   int? welcomeOfferAmount;
 
   RedeemCashInStorePageData(
       {this.name,
       this.sId,
-      this.storeType,
+      this.deactivated,
+      this.store,
       this.earnedCashback,
-      this.updatedAt,
-      this.distance,
-      this.logo,
-      this.businesstype,
-      this.actual_cashback,
-      this.premium,
+      this.welcomeOffer,
       this.welcomeOfferAmount});
 
   RedeemCashInStorePageData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     sId = json['_id'];
-    storeType = json['store_type'];
+    deactivated = json['deactivated'];
+    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
     earnedCashback = json['earned_cashback'];
-    updatedAt = json['updatedAt'];
-    distance = json['distance'];
-    logo = json['logo'];
-    businesstype = json['businesstype'];
-    actual_cashback = json['actual_cashback'];
-    premium = json['premium'];
+    welcomeOffer = json['welcome_offer'];
     welcomeOfferAmount = json['welcome_offer_amount'];
   }
 
@@ -71,15 +59,52 @@ class RedeemCashInStorePageData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['_id'] = this.sId;
-    data['store_type'] = this.storeType;
+    data['deactivated'] = this.deactivated;
+    if (this.store != null) {
+      data['store'] = this.store!.toJson();
+    }
     data['earned_cashback'] = this.earnedCashback;
-    data['updatedAt'] = this.updatedAt;
+    data['welcome_offer'] = this.welcomeOffer;
+    data['welcome_offer_amount'] = this.welcomeOfferAmount;
+
+    return data;
+  }
+}
+
+class Store {
+  String? storeType;
+  Null? premium;
+  int? actualCashback;
+  int? distance;
+  String? logo;
+  String? businesstype;
+
+  Store(
+      {this.storeType,
+      this.premium,
+      this.actualCashback,
+      this.distance,
+      this.logo,
+      this.businesstype});
+
+  Store.fromJson(Map<String, dynamic> json) {
+    storeType = json['store_type'];
+    premium = json['premium'];
+    actualCashback = json['actual_cashback'];
+    distance = json['distance'];
+    logo = json['logo'];
+    businesstype = json['businesstype'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['store_type'] = this.storeType;
+    data['premium'] = this.premium;
+    data['actual_cashback'] = this.actualCashback;
     data['distance'] = this.distance;
     data['logo'] = this.logo;
     data['businesstype'] = this.businesstype;
-    data['actual_cashback'] = this.actual_cashback;
-    data['premium'] = this.premium;
-    data['welcome_offer_amount'] = this.welcomeOfferAmount;
     return data;
   }
 }

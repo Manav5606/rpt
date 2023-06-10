@@ -75,6 +75,7 @@ class WalletData {
   bool? lead;
   int? leadWelcomeOffer; // int
   Address? address;
+  bool? deactivated;
 
   WalletData(
       {this.recentlyVisited,
@@ -103,7 +104,8 @@ class WalletData {
       this.customerWalletAmount,
       this.lead,
       this.leadWelcomeOffer,
-      this.address});
+      this.address,
+      this.deactivated});
 
   WalletData.fromJson(Map<String, dynamic> json) {
     recentlyVisited = json['recently_visited'];
@@ -134,6 +136,7 @@ class WalletData {
     leadWelcomeOffer = json['lead_welcome_offer'];
     address =
         json['address'] != null ? new Address.fromJson(json['address']) : null;
+    deactivated = json['deactivated'];
   }
 
   Map<String, dynamic> toJson() {
@@ -165,6 +168,7 @@ class WalletData {
     data['lead'] = this.lead;
     data['lead_welcome_offer'] = this.leadWelcomeOffer;
     data['address'] = this.address!.toJson();
+    data['deactivated'] = this.deactivated;
     return data;
   }
 }

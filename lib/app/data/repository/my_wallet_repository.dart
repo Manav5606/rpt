@@ -91,4 +91,24 @@ class MyWalletRepository {
       rethrow;
     }
   }
+
+  static Future<bool?> updateWalletStatusByCustomer(
+      String? storeId, bool? status) async {
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.updateWalletStatusByCustomer,
+          variables: {'store_id': storeId, "status": status});
+
+      if (result['error'] == false) {
+        return result['error'];
+      } else {
+        return result['error'];
+      }
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("deactivateWallet", "$e");
+      log("$e , $st");
+      rethrow;
+    }
+  }
 }

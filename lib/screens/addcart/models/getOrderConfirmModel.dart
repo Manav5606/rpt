@@ -37,6 +37,7 @@ class Data {
   bool? billDiscountOfferStatus;
   int? billDiscountOfferTarget;
   int? omit_bill_amount;
+  bool? deactivated;
   // BillDiscountOfferDate? billDiscountOfferDate;
 
   Data(
@@ -53,8 +54,8 @@ class Data {
       this.billDiscountOfferAmount,
       this.billDiscountOfferStatus,
       this.billDiscountOfferTarget,
-      this.omit_bill_amount
-      // this.billDiscountOfferDate
+      this.omit_bill_amount,
+      this.deactivated // this.billDiscountOfferDate
       });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -77,6 +78,7 @@ class Data {
     billDiscountOfferStatus = json['bill_discount_offer_status'];
     billDiscountOfferTarget = json['bill_discount_offer_target'];
     omit_bill_amount = json['omit_bill_amount'];
+    deactivated = json['deactivated'];
     // billDiscountOfferDate = json['bill_discount_offer_date'] != null
     //     ? new BillDiscountOfferDate.fromJson(json['bill_discount_offer_date'])
     //     : null;
@@ -101,6 +103,7 @@ class Data {
     data['bill_discount_offer_status'] = this.billDiscountOfferStatus;
     data['bill_discount_offer_target'] = this.billDiscountOfferTarget;
     data['omit_bill_amount'] = this.omit_bill_amount;
+    data['deactivated'] = this.deactivated;
     // if (this.billDiscountOfferDate != null) {
     //   data['bill_discount_offer_date'] = this.billDiscountOfferDate!.toJson();
     // }

@@ -179,7 +179,6 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
                       height: 20,
                       width: 80,
                       color: AppConst.grey,
-                      
                     ),
                   ),
                   ShimmerEffect(
@@ -187,7 +186,6 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
                       height: 20,
                       width: 80,
                       color: AppConst.grey,
-                      
                     ),
                   ),
                   ShimmerEffect(
@@ -195,7 +193,6 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
                       height: 20,
                       width: 80,
                       color: AppConst.grey,
-                      
                     ),
                   )
                 ],
@@ -203,71 +200,65 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
               ClaimMoreButtonShimmer(),
               ShimmerEffect(
                 child: Container(
-                height: 6.h,
-                // color: AppConst.Lightgrey,
-                child: ListView(
-                  
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    DisplayBusinessType(
-                      text: "Grocery ",
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    DisplayBusinessType(
-                      text: "Grocery ",
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    DisplayBusinessType(
-                      text: "Grocery ",
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    DisplayBusinessType(
-                      text: "Grocery ",
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    DisplayBusinessType(
-                      text: "Meat",
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                  ],
+                  height: 6.h,
+                  // color: AppConst.Lightgrey,
+                  child: ListView(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      DisplayBusinessType(
+                        text: "Grocery ",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Grocery ",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Grocery ",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Grocery ",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      DisplayBusinessType(
+                        text: "Meat",
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               ),
               Expanded(
                 child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: ListView.separated(
-                    scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                 
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {},
-                                      child: ListOfAllWalletsShimmer(
-                                       
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox();
-                                  },
-                                )
-                ),
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {},
+                          child: ListOfAllWalletsShimmer(),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return SizedBox();
+                      },
+                    )),
               )
-              
             ],
           ),
         ),
@@ -302,9 +293,11 @@ class ScanReceiptStores extends StatelessWidget {
                 : ListView.separated(
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
-                    itemCount:
-                        _myWalletController.myWalletModel.value?.data?.length ??
-                            0,
+                    itemCount: _myWalletController.myWalletModel.value?.data
+                            ?.where((c) => c.deactivated == false)
+                            .toList()
+                            .length ??
+                        0,
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () async {
@@ -321,27 +314,27 @@ class ScanReceiptStores extends StatelessWidget {
                                       .myWalletModel.value!.data![index].name,
                                   sId: _myWalletController
                                       .myWalletModel.value!.data![index].sId,
-                                  storeType: _myWalletController.myWalletModel
-                                      .value!.data![index].storeType,
-                                  earnedCashback: _myWalletController
-                                      .myWalletModel
-                                      .value!
-                                      .data![index]
-                                      .earnedCashback,
-                                  updatedAt: _myWalletController.myWalletModel
-                                      .value!.data![index].updatedAt,
-                                  distance: _myWalletController.myWalletModel
-                                      .value!.data![index].distance,
-                                  logo: _myWalletController
-                                      .myWalletModel.value!.data![index].logo,
-                                  // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
-                                  actual_cashback: _myWalletController
-                                      .myWalletModel
-                                      .value!
-                                      .data![index]
-                                      .earnedCashback,
-                                  premium: _myWalletController.myWalletModel
-                                      .value!.data![index].premium,
+                                  // storeType: _myWalletController.myWalletModel
+                                  //     .value!.data![index].storeType,
+                                  // earnedCashback: _myWalletController
+                                  //     .myWalletModel
+                                  //     .value!
+                                  //     .data![index]
+                                  //     .earnedCashback,
+                                  // updatedAt: _myWalletController.myWalletModel
+                                  //     .value!.data![index].updatedAt,
+                                  // distance: _myWalletController.myWalletModel
+                                  //     .value!.data![index].distance,
+                                  // logo: _myWalletController
+                                  //     .myWalletModel.value!.data![index].logo,
+                                  // // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
+                                  // actual_cashback: _myWalletController
+                                  //     .myWalletModel
+                                  //     .value!
+                                  //     .data![index]
+                                  //     .earnedCashback,
+                                  // premium: _myWalletController.myWalletModel
+                                  //     .value!.data![index].premium,
                                   welcomeOfferAmount: _myWalletController
                                       .myWalletModel
                                       .value!
@@ -354,7 +347,9 @@ class ScanReceiptStores extends StatelessWidget {
                         },
                         child: ListOfAllWallets(
                           walletData: _myWalletController
-                              .myWalletModel.value!.data![index],
+                              .myWalletModel.value!.data!
+                              .where((c) => c.deactivated == false)
+                              .toList()[index],
                         ),
                       );
                     },
@@ -571,7 +566,10 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: _myWalletController
-                                    .myWalletModel.value?.data?.length ??
+                                    .myWalletModel.value?.data
+                                    ?.where((c) => c.deactivated == false)
+                                    .toList()
+                                    .length ??
                                 0,
                             itemBuilder: (context, index) {
                               return InkWell(
@@ -589,7 +587,9 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
                                 },
                                 child: ListOfAllWallets(
                                   walletData: _myWalletController
-                                      .myWalletModel.value!.data![index],
+                                      .myWalletModel.value!.data!
+                                      .where((c) => c.deactivated == false)
+                                      .toList()[index],
                                 ),
                               );
                             },
@@ -690,8 +690,10 @@ class PayAtStore extends StatelessWidget {
                     : ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: _myWalletController
-                                .myWalletModel.value?.data?.length ??
+                        itemCount: _myWalletController.myWalletModel.value?.data
+                                ?.where((c) => c.deactivated == false)
+                                .toList()
+                                .length ??
                             0,
                         itemBuilder: (context, index) {
                           return InkWell(
@@ -702,36 +704,40 @@ class PayAtStore extends StatelessWidget {
                                           .value!.data![index].name,
                                       sId: _myWalletController.myWalletModel
                                           .value!.data![index].sId,
-                                      storeType: _myWalletController
+                                      // storeType: _myWalletController
+                                      //     .myWalletModel
+                                      //     .value!
+                                      //     .data![index]
+                                      //     .storeType,
+                                      // earnedCashback: _myWalletController
+                                      //     .myWalletModel
+                                      //     .value!
+                                      //     .data![index]
+                                      //     .earnedCashback,
+                                      // updatedAt: _myWalletController
+                                      //     .myWalletModel
+                                      //     .value!
+                                      //     .data![index]
+                                      //     .updatedAt,
+                                      // distance: _myWalletController
+                                      //     .myWalletModel
+                                      //     .value!
+                                      //     .data![index]
+                                      //     .distance,
+                                      // logo: _myWalletController.myWalletModel
+                                      //     .value!.data![index].logo,
+                                      // // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
+                                      // actual_cashback: _myWalletController
+                                      //     .myWalletModel
+                                      //     .value!
+                                      //     .data![index]
+                                      //     .earnedCashback,
+                                      // premium: _myWalletController.myWalletModel.value!.data![index].premium,
+                                      welcomeOfferAmount: _myWalletController
                                           .myWalletModel
                                           .value!
                                           .data![index]
-                                          .storeType,
-                                      earnedCashback: _myWalletController
-                                          .myWalletModel
-                                          .value!
-                                          .data![index]
-                                          .earnedCashback,
-                                      updatedAt: _myWalletController
-                                          .myWalletModel
-                                          .value!
-                                          .data![index]
-                                          .updatedAt,
-                                      distance: _myWalletController
-                                          .myWalletModel
-                                          .value!
-                                          .data![index]
-                                          .distance,
-                                      logo: _myWalletController.myWalletModel
-                                          .value!.data![index].logo,
-                                      // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
-                                      actual_cashback: _myWalletController
-                                          .myWalletModel
-                                          .value!
-                                          .data![index]
-                                          .earnedCashback,
-                                      premium: _myWalletController.myWalletModel.value!.data![index].premium,
-                                      welcomeOfferAmount: _myWalletController.myWalletModel.value!.data![index].welcomeOfferAmount);
+                                          .welcomeOfferAmount);
                               _paymentController.redeemCashInStorePageDataIndex
                                   .value = payviewData;
 
@@ -739,7 +745,9 @@ class PayAtStore extends StatelessWidget {
                             },
                             child: ListOfAllWallets(
                               walletData: _myWalletController
-                                  .myWalletModel.value!.data![index],
+                                  .myWalletModel.value!.data!
+                                  .where((c) => c.deactivated == false)
+                                  .toList()[index],
                             ),
                           );
                         },
@@ -754,8 +762,6 @@ class PayAtStore extends StatelessWidget {
       ],
     );
   }
-
-  
 }
 
 class ListOfAllWallets extends StatelessWidget {
@@ -791,11 +797,8 @@ class ListOfAllWallets extends StatelessWidget {
 }
 
 class ListOfAllWalletsShimmer extends StatelessWidget {
- 
-
   ListOfAllWalletsShimmer({
     Key? key,
-   
   }) : super(key: key);
 
   @override
@@ -811,7 +814,6 @@ class ListOfAllWalletsShimmer extends StatelessWidget {
               // isDisplayDistance: true,
               // StoreID: "${storeSearchModel.sId ?? ""}",
               StoreName: "",
-              
             ),
           ),
         ],
@@ -906,6 +908,7 @@ class ListViewStoreDetails extends StatelessWidget {
     );
   }
 }
+
 class ListViewStoreDetailsShimmer extends StatelessWidget {
   String? StoreName;
   String? logo;
@@ -944,13 +947,15 @@ class ListViewStoreDetailsShimmer extends StatelessWidget {
                       color: AppConst.grey,
                     ),
                   ),
-                  SizedBox(width: 20,),
+                  SizedBox(
+                    width: 20,
+                  ),
                   Container(
                     height: 20,
-                    width: 40,color: AppConst.grey,
+                    width: 40,
+                    color: AppConst.grey,
                   )
-                  
-                
+
                   // Text(
                   //   "${(distance!.toInt() / 1000).toStringAsFixed(2)} km",
                   //   style: TextStyle(
@@ -1164,16 +1169,13 @@ class ClaimMoreButtonShimmer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-                onTap: () async {
-                  
-                },
+                onTap: () async {},
                 child: ShimmerEffect(
                   child: Container(
                     decoration: BoxDecoration(
@@ -1181,8 +1183,10 @@ class ClaimMoreButtonShimmer extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h,),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 3.w,
+                        vertical: 1.h,
+                      ),
                       child: Center(
                         child: Text(
                           'Claim More',
@@ -1316,9 +1320,7 @@ class DisplayAmountAndSkipButtonShimmer extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              
-            },
+            onTap: () {},
             child: ShimmerEffect(
               child: Container(
                 decoration: BoxDecoration(
