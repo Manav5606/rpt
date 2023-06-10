@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/controller/my_wallet_controller.dart';
+import 'package:customer_app/app/ui/pages/signIn/activate_account.dart';
 import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/utils/firebas_crashlyatics.dart';
@@ -216,7 +217,12 @@ class SignInScreenController extends GetxController {
             if (referralController.text.isNotEmpty) {
               UserViewModel.setReferFlag(true);
             }
-            await checkSession(flag ?? false);
+
+            if (userModel?.deactivated == true) {
+              Get.off(ActivateAccountScreen());
+            } else {
+              await checkSession(flag ?? false);
+            }
           } else {
             isLoading.value = false;
             Get.showSnackbar(GetSnackBar(

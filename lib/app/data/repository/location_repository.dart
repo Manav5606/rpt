@@ -147,31 +147,44 @@ class LocationRepository {
       ReportCrashes().reportErrorCustomKey("deleteCustomerAddress", "$e");
     }
   }
-  Future<void> deleteCustomer(String comments) async {
-    Map<String, dynamic> variables = {
-      'comments': comments,
-    };
+
+  Future<bool?> deleteCustomer(String comments, isdelete) async {
+    Map<String, dynamic> variables = {'comments': comments, "status": isdelete};
 
     try {
       final result = await GraphQLRequest.query(
           query: GraphQLQueries.deleteCustomer, variables: variables);
       log("deleteCustomer--->$result");
       if (result['error'] == false) {
-         Get.showSnackbar(GetSnackBar(
-              backgroundColor: AppConst.black,
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-              snackStyle: SnackStyle.FLOATING,
-              borderRadius: 12,
-              duration: Duration(seconds: 2),
-              message: "Account Deleted Successfully.",
-              // title: "Amount must be at least \u{20b9}1"
-            ));
+        if (isdelete == true) {
+          Get.showSnackbar(GetSnackBar(
+            backgroundColor: AppConst.black,
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            snackStyle: SnackStyle.FLOATING,
+            borderRadius: 12,
+            duration: Duration(seconds: 2),
+            message: "Account Deactivated Successfully.",
+            // title: "Amount must be at least \u{20b9}1"
+          ));
+        } else {
+          Get.showSnackbar(GetSnackBar(
+            backgroundColor: AppConst.black,
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            snackStyle: SnackStyle.FLOATING,
+            borderRadius: 12,
+            duration: Duration(seconds: 2),
+            message: "Activated Successfully Please SignIn again",
+            // title: "Amount must be at least \u{20b9}1"
+          ));
+        }
+
+        return true;
       } else {
-        return null;
+        return false;
       }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
-      ReportCrashes().reportErrorCustomKey("deleteCustomer", "$e");
+      ReportCrashes().reportErrorCustomKey("deactivateCustomer", "$e");
     }
   }
 

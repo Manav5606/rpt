@@ -42,6 +42,7 @@ class GraphQLQueries {
             mobile
             email
             type
+            deactivated
             status
             addresses{
             	_id
@@ -108,6 +109,7 @@ class GraphQLQueries {
           mobile
           email
           type
+          deactivated
           status
           addresses{
            _id
@@ -585,6 +587,7 @@ class GraphQLQueries {
             earned_cashback
             user
             password
+            deactivated
             name
             premium
             logo
@@ -677,6 +680,17 @@ class GraphQLQueries {
         }
       }
     }
+    ''',
+  );
+  static final updateWalletStatusByCustomer = GraphQLQuery(
+    name: 'updateWalletStatusByCustomer',
+    query: r'''
+            mutation($store_id:ID $status:Boolean){
+  updateWalletStatusByCustomer(store_id:$store_id,status:$status){
+    error
+    msg
+  }
+}
     ''',
   );
   static final getRiderOrderHistoryPageData = new GraphQLQuery(
@@ -1593,15 +1607,20 @@ getAllcarts{
     {
       name
       _id
-      store_type
-      premium
-      actual_cashback
+      deactivated
+      store{
+        store_type
+        premium
+        actual_cashback
+        distance
+        logo
+        businesstype
+      }
       earned_cashback
-      updatedAt
-      distance
-      logo
-      businesstype
+      
+      welcome_offer
       welcome_offer_amount
+      
     }
 }
 }''',
@@ -2704,8 +2723,8 @@ mutation($id: ID){
   static final deleteCustomer = new GraphQLQuery(
     name: 'deleteCustomer',
     query: r'''
-mutation($comments: String){
-  deleteCustomer(comments: $comments){
+mutation($comments: String $status:Boolean){
+  deleteCustomer(comments: $comments, status:$status){
     error
     msg
   }

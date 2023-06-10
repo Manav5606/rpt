@@ -20,7 +20,8 @@ class UserModel {
       this.dateOfBirth,
       this.maleOrFemale,
       this.rank,
-      this.restoreID});
+      this.restoreID,
+      this.deactivated});
 
   @HiveField(0)
   String? id;
@@ -61,20 +62,28 @@ class UserModel {
   @HiveField(12)
   String? restoreID;
 
+  @HiveField(13)
+  bool? deactivated;
+
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
         firstName: json["first_name"] ?? '',
         lastName: json["last_name"] ?? '',
         mobile: json["mobile"],
         email: json["email"] ?? '',
-        addresses: json["addresses"] == null ? [] : List<AddressModel>.from(json["addresses"].map((x) => AddressModel.fromJson(x))),
-        balance: json["balance"] != null ? double.parse(json["balance"].toString()) : 0.0,
+        addresses: json["addresses"] == null
+            ? []
+            : List<AddressModel>.from(
+                json["addresses"].map((x) => AddressModel.fromJson(x))),
+        balance: json["balance"] != null
+            ? double.parse(json["balance"].toString())
+            : 0.0,
         logo: json["logo"] ?? '',
         dateOfBirth: json["date_of_birth"] ?? '',
         maleOrFemale: json["male_or_female"] ?? '',
         rank: json["rank"] ?? 0,
         restoreID: json["restoreID"] ?? '',
-
+        deactivated: json["deactivated"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -83,12 +92,15 @@ class UserModel {
         "last_name": lastName,
         "mobile": mobile == null ? null : mobile,
         "email": email,
-        "addresses": addresses == null ? null : List<dynamic>.from(addresses!.map((x) => x)),
+        "addresses": addresses == null
+            ? null
+            : List<dynamic>.from(addresses!.map((x) => x)),
         "balance": balance,
         "logo": logo,
         "date_of_birth": dateOfBirth,
         "male_or_female": maleOrFemale,
         "rank": rank,
-        "restoreID": restoreID
+        "restoreID": restoreID,
+        "deactivated": deactivated
       };
 }
