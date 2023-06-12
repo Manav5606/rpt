@@ -1633,17 +1633,23 @@ getAllcarts{
       error
     msg
         data
-    {
+     {
       name
       _id
-      store_type
-      premium
-      actual_cashback
+      deactivated
+      store{
+        store_type
+        premium
+        actual_cashback
+        distance
+        logo
+        businesstype
+      }
       earned_cashback
-      updatedAt
-      distance
-      logo
-      businesstype
+      
+      welcome_offer
+      welcome_offer_amount
+      
     }
 }
 }''',

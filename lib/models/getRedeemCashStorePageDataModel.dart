@@ -73,7 +73,7 @@ class RedeemCashInStorePageData {
 
 class Store {
   String? storeType;
-  Null? premium;
+  bool? premium;
   int? actualCashback;
   int? distance;
   String? logo;
