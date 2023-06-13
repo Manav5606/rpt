@@ -61,6 +61,7 @@ import 'package:customer_app/screens/wallet/loyaltycardscreen.dart';
 import 'package:customer_app/screens/wallet/paymentScreen.dart';
 import 'package:customer_app/screens/wallet/payview.dart';
 import 'package:get/route_manager.dart';
+import '../app/ui/pages/location_picker/select_location_address.dart';
 import '../app/ui/pages/my_account/delete_account_screen.dart';
 import '../app/ui/pages/my_wallet/select_business_type.dart';
 import '../app/ui/pages/my_wallet/customer_wallet_details.dart';

@@ -378,15 +378,27 @@ class SignInScreenController extends GetxController {
               await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                   arguments: {"locationListAvilable": true});
               isLoading.value = false;
-              // _addLocationController.getCurrentLocation();
             });
           } else {
             WidgetsBinding.instance.addPostFrameCallback((_) async {
-              FireBaseNotification().firebaseCloudMessagingLSetup();
-              await Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                  arguments: {"locationListAvilable": false});
-              isLoading.value = false;
-              // _addLocationController.getCurrentLocation();
+              if (SignUp && (userModel?.firstName != null)) {
+                _myWalletController.issignup.value = true;
+
+                FireBaseNotification().firebaseCloudMessagingLSetup();
+                await Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                    arguments: {
+                      "locationListAvilable": false,
+                      "issignup": true
+                    });
+                isLoading.value = false;
+              } else {
+                FireBaseNotification().firebaseCloudMessagingLSetup();
+                await Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                    arguments: {"locationListAvilable": false});
+                isLoading.value = false;
+                // _addLocationController.getCurrentLocation();
+                // }
+              }
             });
           }
         }

@@ -79,7 +79,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
     // final value;
     // value = _addLocationController.getCurrentLocation1() as double;
     UserViewModel.setRefferralCode('');
-    await DynamicLinkService().retrieveDynamicLink();
+    // await DynamicLinkService().retrieveDynamicLink();
     final box = Boxes.getCommonBox();
     final token = box.get(HiveConstants.USER_TOKEN);
     if (token != null && token != "") {
@@ -108,9 +108,9 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
                     .getAllWalletByCustomerByBusinessType();
                 int? value =
                     await _myWalletController.updateBusinesstypeWallets();
-
+                _addLocationController.isRecentAddress.value = false;
                 if (value != null) {
-                  Get.offNamed(AppRoutes.SelectBusinessType,
+                  Get.toNamed(AppRoutes.SelectBusinessType,
                       arguments: {"signup": true});
                 }
               } else {
@@ -125,14 +125,24 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
                 FireBaseNotification().firebaseCloudMessagingLSetup();
                 Get.offAllNamed(AppRoutes.SelectLocationAddress,
                     arguments: {"locationListAvilable": true});
-                // _addLocationController.getCurrentLocation();
               });
             } else {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                FireBaseNotification().firebaseCloudMessagingLSetup();
-                Get.offAllNamed(AppRoutes.SelectLocationAddress,
-                    arguments: {"locationListAvilable": false});
-                // _addLocationController.getCurrentLocation();
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                if (!((userModel.email != null && userModel.email != "") &&
+                    (userModel.firstName != null &&
+                        userModel.firstName != ""))) {
+                  FireBaseNotification().firebaseCloudMessagingLSetup();
+                  await Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                      arguments: {
+                        "locationListAvilable": false,
+                        "issignup": true
+                      });
+                } else {
+                  FireBaseNotification().firebaseCloudMessagingLSetup();
+                  Get.offAllNamed(AppRoutes.SelectLocationAddress,
+                      arguments: {"locationListAvilable": false});
+                  // _addLocationController.getCurrentLocation();
+                }
               });
             }
           }
