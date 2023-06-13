@@ -26,7 +26,7 @@ class SelectBusinessType extends StatefulWidget {
 class _SelectBusinessTypeState extends State<SelectBusinessType> {
   final AddLocationController _addLocationController = Get.find();
   final MyWalletController _myWalletcontroller = Get.put(MyWalletController());
-  List<Marker> markers = [];
+  // late GoogleMapController mapController;
 
   Future<bool> handleBackPressed() async {
     SeeyaConfirmDialog(
@@ -233,140 +233,55 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20)),
                               child: GoogleMap(
-                                initialCameraPosition: CameraPosition(
-                                  target: LatLng(
-                                      _addLocationController
-                                          .currentPosition.latitude,
-                                      _addLocationController
-                                          .currentPosition.longitude),
-                                  zoom: 16,
-                                ),
-                                myLocationEnabled: true,
-                                myLocationButtonEnabled: false,
-                                onCameraIdle:
-                                    _addLocationController.onCameraIdle,
-                                zoomControlsEnabled: false,
-                                // onCameraMove: _addLocationController.onCameraMove,
-                                onMapCreated:
-                                    //  (mapController) {
-                                    //   _addLocationController.mapController =
-                                    //       mapController;
-                                    // },
-
-                                    _addLocationController.onMapCreated,
-                                markers:
-                                    // markers.toSet(),
-
-                                    Set.from([
-                                  //   Marker(
-                                  //     position: LatLng(
-                                  //         _myWalletcontroller.GroceryStores.first
-                                  //                 .address?.location?.lat ??
-                                  //             0.0,
-                                  //         _myWalletcontroller.GroceryStores.first
-                                  //                 .address?.location?.lng ??
-                                  //             0.0),
-                                  //     markerId: MarkerId('1'),
-                                  //     icon: _myWalletcontroller.storeIcon ??
-                                  //         BitmapDescriptor.defaultMarker,
-                                  //   ),
-                                  //   Marker(
-                                  //     position: LatLng(
-                                  //         _myWalletcontroller.GroceryStores.last
-                                  //                 .address?.location?.lat ??
-                                  //             0.0,
-                                  //         _myWalletcontroller.GroceryStores.last
-                                  //                 .address?.location?.lng ??
-                                  //             0.0),
-                                  //     markerId: MarkerId('2'),
-                                  //     icon: _myWalletcontroller.storeIcon ??
-                                  //         BitmapDescriptor.defaultMarker,
-                                  //   ),
-                                  //   Marker(
-                                  //     position: LatLng(
-                                  //         _myWalletcontroller.MedicsStores.first
-                                  //                 .address?.location?.lat ??
-                                  //             0.0,
-                                  //         _myWalletcontroller.MedicsStores.first
-                                  //                 .address?.location?.lng ??
-                                  //             0.0),
-                                  //     markerId: MarkerId('1'),
-                                  //     icon: _myWalletcontroller.storeIcon ??
-                                  //         BitmapDescriptor.defaultMarker,
-                                  //   ),
-                                  //   Marker(
-                                  //     position: LatLng(
-                                  //         _myWalletcontroller.MedicsStores.last
-                                  //                 .address?.location?.lat ??
-                                  //             0.0,
-                                  //         _myWalletcontroller.MedicsStores.last
-                                  //                 .address?.location?.lng ??
-                                  //             0.0),
-                                  //     markerId: MarkerId('2'),
-                                  //     icon: _myWalletcontroller.storeIcon ??
-                                  //         BitmapDescriptor.defaultMarker,
-                                  //   ),
-                                  //   Marker(
-                                  //     position: LatLng(
-                                  //         _myWalletcontroller.DryFruitStores.first
-                                  //                 .address?.location?.lat ??
-                                  //             0.0,
-                                  //         _myWalletcontroller.DryFruitStores.first
-                                  //                 .address?.location?.lng ??
-                                  //             0.0),
-                                  //     markerId: MarkerId('1'),
-                                  //     icon: _myWalletcontroller.storeIcon ??
-                                  //         BitmapDescriptor.defaultMarker,
-                                  //   ),
-                                  //   Marker(
-                                  //     position: LatLng(
-                                  //         _myWalletcontroller.DryFruitStores.last
-                                  //                 .address?.location?.lat ??
-                                  //             0.0,
-                                  //         _myWalletcontroller.DryFruitStores.last
-                                  //                 .address?.location?.lng ??
-                                  //             0.0),
-                                  //     markerId: MarkerId('2'),
-                                  //     icon: _myWalletcontroller.storeIcon ??
-                                  //         BitmapDescriptor.defaultMarker,
-                                  //   ),
-                                  //   //   // Marker(
-                                  //   //   //   position: LatLng(
-                                  //   //   //       _myWalletcontroller.GroceryStores[2].address
-                                  //   //   //               ?.location?.lat ??
-                                  //   //   //           0.0,
-                                  //   //   //       _myWalletcontroller.GroceryStores[2].address
-                                  //   //   //               ?.location?.lng ??
-                                  //   //   //           0.0),
-                                  //   //   //   markerId: MarkerId('3'),
-                                  //   //   //   icon: _myWalletcontroller.storeIcon ??
-                                  //   //   //       BitmapDescriptor.defaultMarker,
-                                  //   //   // ),
-                                  //   //   // Marker(
-                                  //   //   //   position: LatLng(
-                                  //   //   //       _myWalletcontroller.GroceryStores[3].address
-                                  //   //   //               ?.location?.lat ??
-                                  //   //   //           0.0,
-                                  //   //   //       _myWalletcontroller.GroceryStores[3].address
-                                  //   //   //               ?.location?.lng ??
-                                  //   //   //           0.0),
-                                  //   //   //   markerId: MarkerId('4'),
-                                  //   //   //   icon: _myWalletcontroller.storeIcon ??
-                                  //   //   //       BitmapDescriptor.defaultMarker,
-                                  //   //   // ),
-                                  Marker(
-                                    position:   LatLng(
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(
                                         _addLocationController
                                             .currentPosition.latitude,
                                         _addLocationController
                                             .currentPosition.longitude),
-                                    markerId: MarkerId('5'),
-                                    icon: _myWalletcontroller
-                                            .currentPositionIcon ??
-                                        BitmapDescriptor.defaultMarker,
-                                  )
-                                ]),
-                              ),
+                                    zoom: 16,
+                                  ),
+                                  myLocationEnabled: true,
+                                  myLocationButtonEnabled: false,
+                                  onCameraIdle:
+                                      _addLocationController.onCameraIdle,
+                                  zoomControlsEnabled: false,
+                                  onCameraMove:
+                                      _addLocationController.onCameraMove,
+                                  onMapCreated:
+                                      _addLocationController.onMapCreated,
+                                  markers: _myWalletcontroller.markers
+
+                                  // _markers,
+                                  // markers.toSet(),
+
+                                  //     Set.from([
+                                  // Marker(
+                                  //   position: LatLng(
+                                  //       _myWalletcontroller.GroceryStores.first
+                                  //               .address?.location?.lat ??
+                                  //           0.0,
+                                  //       _myWalletcontroller.GroceryStores.first
+                                  //               .address?.location?.lng ??
+                                  //           0.0),
+                                  //   markerId: MarkerId('1'),
+                                  //   icon: _myWalletcontroller.storeIcon ??
+                                  //       BitmapDescriptor.defaultMarker,
+                                  // ),
+
+                                  //   Marker(
+                                  //     position: LatLng(
+                                  //         _addLocationController
+                                  //             .currentPosition.latitude,
+                                  //         _addLocationController
+                                  //             .currentPosition.longitude),
+                                  //     markerId: MarkerId('5'),
+                                  //     icon: _myWalletcontroller
+                                  //             .currentPositionIcon ??
+                                  //         BitmapDescriptor.defaultMarker,
+                                  //   )
+                                  // ]),
+                                  ),
                             ),
                           ),
                           // Padding(
