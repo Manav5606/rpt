@@ -1,15 +1,15 @@
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/signInScreenController.dart';
 import 'package:customer_app/app/ui/pages/signIn/phone_authentication_screen.dart';
-import 'package:customer_app/app/ui/pages/signIn/privacy_policy.dart';
+
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/utils/form_validator.dart';
 import 'package:customer_app/widgets/signup_feilds.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class SignupBs extends StatelessWidget {
   SignupBs({Key? key}) : super(key: key);
@@ -165,10 +165,8 @@ class SignupBs extends StatelessWidget {
                     title: Container(
                       width: 75.w,
                       child: InkWell(
-                        onTap: () => Get.to(AboutWebView(
-                          title: "Terms and Conditions ",
-                          url: "https://recipto.in/TermsandConditions/terms/",
-                        )),
+                        onTap: () => _launchURL(context,
+                            'https://recipto.in/TermsandConditions/terms/'),
                         child: RichText(
                             overflow: TextOverflow.visible,
                             text: TextSpan(children: [
@@ -235,5 +233,31 @@ class SignupBs extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> _launchURL(BuildContext context, String url) async {
+  final theme = Theme.of(context);
+  try {
+    await launch(
+      url,
+      customTabsOption: CustomTabsOption(
+        toolbarColor: AppConst.darkGreen,
+        enableDefaultShare: true,
+        enableUrlBarHiding: true,
+        showPageTitle: true,
+        animation: CustomTabsSystemAnimation.slideIn(),
+      ),
+      safariVCOption: SafariViewControllerOption(
+        preferredBarTintColor: theme.primaryColor,
+        preferredControlTintColor: Colors.white,
+        barCollapsingEnabled: true,
+        entersReaderIfAvailable: false,
+        dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+      ),
+    );
+  } catch (e) {
+    // An exception is thrown if browser app is not installed on Android device.
+    debugPrint(e.toString());
   }
 }
