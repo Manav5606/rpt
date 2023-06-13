@@ -28,7 +28,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
 import '../app/data/repository/my_account_repository.dart';
 import '../app/ui/pages/search/controller/exploreContoller.dart';
 

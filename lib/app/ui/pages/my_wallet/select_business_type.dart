@@ -355,7 +355,7 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                                   //   //   //       BitmapDescriptor.defaultMarker,
                                   //   //   // ),
                                   Marker(
-                                    position: LatLng(
+                                    position:   LatLng(
                                         _addLocationController
                                             .currentPosition.latitude,
                                         _addLocationController

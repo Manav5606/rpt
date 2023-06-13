@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/app/ui/pages/stores/chatOrder/chatOrder.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -281,6 +282,7 @@ class DisplayDistance extends StatelessWidget {
     );
   }
 }
+
 
 class DispalyStoreLogo extends StatelessWidget {
   DispalyStoreLogo(

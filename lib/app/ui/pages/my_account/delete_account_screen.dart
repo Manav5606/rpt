@@ -9,7 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../routes/app_list.dart';
-import '../signIn/privacy_policy.dart';
+
 
 class DeleteAccount extends StatefulWidget {
   const DeleteAccount({Key? key}) : super(key: key);
