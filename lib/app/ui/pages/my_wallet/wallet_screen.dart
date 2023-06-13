@@ -485,6 +485,7 @@ class WalletListView extends StatelessWidget {
                       "name": walletData.name ?? "",
                       "logo": walletData.logo ?? "",
                       "color": color,
+                      "storeId": walletData.sId ?? "",
                     });
 
                 await _myWalletController.getAllWalletTransactionByCustomer(

@@ -394,11 +394,9 @@ class ListViewChild extends StatelessWidget {
                                   // color: AppConst.yellow,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                  
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                     
                                       DisplayProductInGridView(
                                           logo: product.logo),
                                       SizedBox(
@@ -695,7 +693,7 @@ class DisplayProductInGridView extends StatelessWidget {
               errorBuilder: (context, error, stackTrace) {
                 return SizedBox(
                   height: 11.h,
-                  width: 30.w,
+                  width: 24.w,
                   child: Image.asset("assets/images/noproducts.png"),
                 );
               },
@@ -706,7 +704,7 @@ class DisplayProductInGridView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               height: 11.h,
-              width: 30.w,
+              width: 24.w,
               child: Center(child: Image.asset("assets/images/noproducts.png")),
             ),
     );

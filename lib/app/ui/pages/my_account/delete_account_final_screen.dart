@@ -1,5 +1,6 @@
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/constants/app_const.dart';
+import 'package:customer_app/widgets/copied/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -37,7 +38,7 @@ class _DeleteAcccountFinalScreenState extends State<DeleteAcccountFinalScreen> {
           Align(
               alignment: Alignment.center,
               child: Text(
-                "You're about to delete your account",
+                "You're about to deactivate your account",
                 style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -60,11 +61,18 @@ class _DeleteAcccountFinalScreenState extends State<DeleteAcccountFinalScreen> {
             height: 4.h,
           ),
           GestureDetector(
-            onTap: () async{
-             await _addLocationController.deleteCustomer(widget.reason?? "");
-              await Hive.box<UserModel>('user').delete(HiveConstants.USER_KEY);
-            await Hive.box<String>('common').delete(HiveConstants.USER_TOKEN);
-            Get.offAllNamed(AppRoutes.Authentication);
+            onTap: () async {
+              SeeyaConfirmDialog(
+                  title: "Are you sure?",
+                  subTitle: "You Want to Deactivate Your account?",
+                  onCancel: () => Get.back(),
+                  onConfirm: () async {
+                    Get.back();
+                    //exit this screen
+
+                    await _addLocationController.deleteCustomer(
+                        widget.reason ?? "", true);
+                  }).show(context);
             },
             child: Container(
               height: 6.h,
@@ -75,7 +83,7 @@ class _DeleteAcccountFinalScreenState extends State<DeleteAcccountFinalScreen> {
               ),
               child: Center(
                   child: Text(
-                "Delete my account now",
+                "Deactivate Account",
                 style: TextStyle(
                     color: AppConst.white,
                     fontFamily: 'MuseoSans',

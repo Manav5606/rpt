@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:customer_app/app/utils/app_constants.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/utils/firebas_crashlyatics.dart';
 import 'package:customer_app/widgets/custom_alert_dialog.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as temp;
 
@@ -206,7 +208,7 @@ class AddLocationController extends GetxController {
     }
   }
 
-  Future<void>  onCameraIdle() async {
+  Future<void> onCameraIdle() async {
     log('onMapCreated:----onCameraIdle>>> 0000 $middlePointOfScreenOnMap');
     try {
       final List<Placemark> p = await placemarkFromCoordinates(
@@ -605,8 +607,14 @@ class AddLocationController extends GetxController {
   Future<void> deleteCustomerAddress(String id) async {
     await locationRepository.deleteCustomerAddress(id);
   }
-  Future<void> deleteCustomer(String comments) async {
-    await locationRepository.deleteCustomer(comments);
+
+  Future<void> deleteCustomer(String comments, bool isdelete) async {
+    bool? result = await locationRepository.deleteCustomer(comments, isdelete);
+    if (result = true) {
+      await Hive.box<UserModel>('user').delete(HiveConstants.USER_KEY);
+      await Hive.box<String>('common').delete(HiveConstants.USER_TOKEN);
+      Get.offAllNamed(AppRoutes.Authentication);
+    }
   }
 
   Future<void> addCustomerAddress(

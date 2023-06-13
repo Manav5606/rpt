@@ -202,7 +202,7 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                         Brightness.dark
                     // : Brightness.light
                     ),
-                expandedHeight: 12.h,
+                expandedHeight: 14.h,
                 elevation: 0,
                 automaticallyImplyLeading: false,
                 centerTitle: true,
@@ -219,7 +219,7 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                 // updatedColor,
                 bottom: (innerBoxIsScrolled)
                     ? PreferredSize(
-                        preferredSize: Size.fromHeight(110),
+                        preferredSize: Size.fromHeight(120),
                         child: InkWell(
                           highlightColor: AppConst.highLightColor,
                           onTap: () {
@@ -378,264 +378,265 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: false,
                   collapseMode: CollapseMode.parallax,
-                  background: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      // SizedBox(
-                      //   height: 2.h,
-                      // ),
-                      // SafeArea(
-                      //   child: Obx(
-                      //     () => CircleAvatar(
-                      //       radius: SizeUtils.horizontalBlockSize * 3.82,
-                      //       child: (_moreStoreController.getStoreDataModel.value
-                      //                   ?.data?.store?.logo?.isNotEmpty ??
-                      //               false)
-                      //           ? Image.network(_moreStoreController
-                      //               .getStoreDataModel.value!.data!.store!.logo
-                      //               .toString())
-                      //           : Image.asset("assets/images/image4.png"),
-                      //     ),
-                      //   ),
-                      // ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-
-                      Padding(
-                        padding: EdgeInsets.only(left: 5.w, top: 6.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                  background: (!innerBoxIsScrolled)
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Obx(
-                              () => (_moreStoreController
-                                      .isLoadingStoreData.value)
-                                  ? ShimmerEffect(
-                                      child: Container(
-                                        width: 75.w,
-                                        height: 2.5.h,
-                                        color: AppConst.black,
-                                      ),
-                                    )
-                                  : Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: 90.w,
-                                          child: Text(
-                                            _moreStoreController
-                                                    .getStoreDataModel
-                                                    .value
-                                                    ?.data
-                                                    ?.store
-                                                    ?.name
-                                                    .toString() ??
-                                                "",
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              color: AppConst.black,
-                                              // (colorinversion == "#FFFFFF")
-                                              //     ? AppConst.black
-                                              //     : AppConst.white,
-                                              fontFamily: 'MuseoSans',
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 15.sp,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                            width: 90.w,
-                                            child: Obx(
-                                              () => (_moreStoreController
-                                                      .isLoadingStoreData.value)
-                                                  ? ShimmerEffect(
-                                                      child: Container(
-                                                        width: 60.w,
-                                                        height: 2.h,
-                                                        color: AppConst.black,
-                                                      ),
-                                                    )
-                                                  : _moreStoreController
-                                                          .displayHour
-                                                          .isNotEmpty
-                                                      ? RichText(
-                                                          text: TextSpan(
-                                                              children: [
-                                                              TextSpan(
-                                                                text:
-                                                                    "Ready by ",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: AppConst
-                                                                      .darkGrey,
-                                                                  // (colorinversion == "#FFFFFF")
-                                                                  //     ? AppConst.black
-                                                                  //     : AppConst.white,
-                                                                  fontFamily:
-                                                                      'MuseoSans',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                  fontSize:
-                                                                      10.sp,
-                                                                ),
-                                                              ),
-                                                              TextSpan(
-                                                                text:
-                                                                    "${_moreStoreController.displayHour}",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: AppConst
-                                                                      .darkGrey,
-                                                                  // (colorinversion == "#FFFFFF")
-                                                                  //     ? AppConst.black
-                                                                  //     : AppConst.white,
-                                                                  fontFamily:
-                                                                      'MuseoSans',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                  fontSize:
-                                                                      10.sp,
-                                                                ),
-                                                              )
-                                                            ]))
-                                                      : SizedBox(),
-                                            )),
-                                      ],
-                                    ),
+                            // SizedBox(
+                            //   height: 2.h,
+                            // ),
+                            // SafeArea(
+                            //   child: Obx(
+                            //     () => CircleAvatar(
+                            //       radius: SizeUtils.horizontalBlockSize * 3.82,
+                            //       child: (_moreStoreController.getStoreDataModel.value
+                            //                   ?.data?.store?.logo?.isNotEmpty ??
+                            //               false)
+                            //           ? Image.network(_moreStoreController
+                            //               .getStoreDataModel.value!.data!.store!.logo
+                            //               .toString())
+                            //           : Image.asset("assets/images/image4.png"),
+                            //     ),
+                            //   ),
+                            // ),
+                            SizedBox(
+                              height: 3.h,
                             ),
-                          ],
-                        ),
-                      ),
-                      // SizedBox(
-                      //   height: 1.h,
-                      // ),
 
-                      // Padding(
-                      //   padding: EdgeInsets.only(left: 5.w, bottom: 0.h),
-                      //   child: Obx(
-                      //     () => (_moreStoreController.isLoadingStoreData.value)
-                      //         ? Row(
-                      //             mainAxisAlignment: MainAxisAlignment.start,
-                      //             children: [
-                      //               ShimmerEffect(
-                      //                 child: Container(
-                      //                   width: 60.w,
-                      //                   height: 2.h,
-                      //                   color: AppConst.black,
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           )
-                      //         : Row(
-                      //             mainAxisAlignment: MainAxisAlignment.start,
-                      //             children: [
-                      //               Obx(
-                      //                 () =>
-                      //                     // DisplayCashback(
-                      //                     //     iscashbackPercentage: true,
-                      //                     //     cashback: int.parse(
-                      //                     //         "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback}")),
-                      //                     RichText(
-                      //                         text: TextSpan(children: [
-                      //                   TextSpan(
-                      //                     text: "Cashback ",
-                      //                     style: TextStyle(
-                      //                       color: AppConst.darkGrey,
-                      //                       // (colorinversion == "#FFFFFF")
-                      //                       //     ? AppConst.black
-                      //                       //     : AppConst.white,
-                      //                       fontFamily: 'MuseoSans',
-                      //                       fontWeight: FontWeight.w400,
-                      //                       fontStyle: FontStyle.normal,
-                      //                       fontSize: 10.sp,
-                      //                     ),
-                      //                   ),
-                      //                   TextSpan(
-                      //                       text:
-                      //                           "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback ?? 0}%",
-                      //                       style: TextStyle(
-                      //                         color: AppConst.darkGrey,
-                      //                         // (colorinversion == "#FFFFFF")
-                      //                         //     ? AppConst.black
-                      //                         //     : AppConst.white,
-                      //                         fontFamily: 'MuseoSans',
-                      //                         fontWeight: FontWeight.w400,
-                      //                         fontStyle: FontStyle.normal,
-                      //                         fontSize: 10.sp,
-                      //                       ))
-                      //                 ])),
-                      //               ),
-                      //               Padding(
-                      //                 padding: EdgeInsets.only(
-                      //                     left: 3.w, right: 2.w, top: 0.5.h),
-                      //                 child: Icon(
-                      //                   Icons.circle,
-                      //                   color: AppConst.grey,
-                      //                   size: 0.8.h,
-                      //                 ),
-                      //               ),
-                      //               _moreStoreController.displayHour.isNotEmpty
-                      //                   ? RichText(
-                      //                       text: TextSpan(children: [
-                      //                       TextSpan(
-                      //                         text: "Ready by ",
-                      //                         style: TextStyle(
-                      //                           color: AppConst.darkGrey,
-                      //                           // (colorinversion == "#FFFFFF")
-                      //                           //     ? AppConst.black
-                      //                           //     : AppConst.white,
-                      //                           fontFamily: 'MuseoSans',
-                      //                           fontWeight: FontWeight.w400,
-                      //                           fontStyle: FontStyle.normal,
-                      //                           fontSize: 10.sp,
-                      //                         ),
-                      //                       ),
-                      //                       TextSpan(
-                      //                         text:
-                      //                             "${_moreStoreController.displayHour}",
-                      //                         style: TextStyle(
-                      //                           color: AppConst.darkGrey,
-                      //                           // (colorinversion == "#FFFFFF")
-                      //                           //     ? AppConst.black
-                      //                           //     : AppConst.white,
-                      //                           fontFamily: 'MuseoSans',
-                      //                           fontWeight: FontWeight.w400,
-                      //                           fontStyle: FontStyle.normal,
-                      //                           fontSize: 10.sp,
-                      //                         ),
-                      //                       )
-                      //                     ]))
-                      //                   : SizedBox(),
-                      //             ],
-                      //           ),
-                      //   ),
-                      // )
-                      // InkWell(
-                      //   highlightColor: AppConst.highLightColor,
-                      //   onTap: () {
-                      //     Get.toNamed(AppRoutes.InStoreSearch, arguments: {
-                      //       'storeId': _moreStoreController.storeId.value
-                      //     });
-                      //   },
-                      //   child: SizedBox(width: 90.w, child: StoreSearchField()),
-                      // ),
-                      // SizedBox(
-                      //   height: 1.h,
-                      // ),
-                    ],
-                  ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5.w, top: 6.h),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Obx(
+                                    () => (_moreStoreController
+                                            .isLoadingStoreData.value)
+                                        ? ShimmerEffect(
+                                            child: Container(
+                                              width: 75.w,
+                                              height: 2.5.h,
+                                              color: AppConst.black,
+                                            ),
+                                          )
+                                        : Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 90.w,
+                                                child: Text(
+                                                  _moreStoreController
+                                                          .getStoreDataModel
+                                                          .value
+                                                          ?.data
+                                                          ?.store
+                                                          ?.name
+                                                          .toString() ??
+                                                      "",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  style: TextStyle(
+                                                    color: AppConst.black,
+                                                    // (colorinversion == "#FFFFFF")
+                                                    //     ? AppConst.black
+                                                    //     : AppConst.white,
+                                                    fontFamily: 'MuseoSans',
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: 15.sp,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                  width: 90.w,
+                                                  child: Obx(
+                                                    () => (_moreStoreController
+                                                            .isLoadingStoreData
+                                                            .value)
+                                                        ? ShimmerEffect(
+                                                            child: Container(
+                                                              width: 60.w,
+                                                              height: 2.h,
+                                                              color: AppConst
+                                                                  .black,
+                                                            ),
+                                                          )
+                                                        : _moreStoreController
+                                                                .displayHour
+                                                                .isNotEmpty
+                                                            ? RichText(
+                                                                text: TextSpan(
+                                                                    children: [
+                                                                    TextSpan(
+                                                                      text:
+                                                                          "Ready by ",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: AppConst
+                                                                            .darkGrey,
+                                                                        // (colorinversion == "#FFFFFF")
+                                                                        //     ? AppConst.black
+                                                                        //     : AppConst.white,
+                                                                        fontFamily:
+                                                                            'MuseoSans',
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                        fontStyle:
+                                                                            FontStyle.normal,
+                                                                        fontSize:
+                                                                            10.sp,
+                                                                      ),
+                                                                    ),
+                                                                    TextSpan(
+                                                                      text:
+                                                                          "${_moreStoreController.displayHour}",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: AppConst
+                                                                            .darkGrey,
+                                                                        // (colorinversion == "#FFFFFF")
+                                                                        //     ? AppConst.black
+                                                                        //     : AppConst.white,
+                                                                        fontFamily:
+                                                                            'MuseoSans',
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                        fontStyle:
+                                                                            FontStyle.normal,
+                                                                        fontSize:
+                                                                            10.sp,
+                                                                      ),
+                                                                    )
+                                                                  ]))
+                                                            : SizedBox(),
+                                                  )),
+                                            ],
+                                          ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // SizedBox(
+                            //   height: 1.h,
+                            // ),
+
+                            // Padding(
+                            //   padding: EdgeInsets.only(left: 5.w, bottom: 0.h),
+                            //   child: Obx(
+                            //     () => (_moreStoreController.isLoadingStoreData.value)
+                            //         ? Row(
+                            //             mainAxisAlignment: MainAxisAlignment.start,
+                            //             children: [
+                            //               ShimmerEffect(
+                            //                 child: Container(
+                            //                   width: 60.w,
+                            //                   height: 2.h,
+                            //                   color: AppConst.black,
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           )
+                            //         : Row(
+                            //             mainAxisAlignment: MainAxisAlignment.start,
+                            //             children: [
+                            //               Obx(
+                            //                 () =>
+                            //                     // DisplayCashback(
+                            //                     //     iscashbackPercentage: true,
+                            //                     //     cashback: int.parse(
+                            //                     //         "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback}")),
+                            //                     RichText(
+                            //                         text: TextSpan(children: [
+                            //                   TextSpan(
+                            //                     text: "Cashback ",
+                            //                     style: TextStyle(
+                            //                       color: AppConst.darkGrey,
+                            //                       // (colorinversion == "#FFFFFF")
+                            //                       //     ? AppConst.black
+                            //                       //     : AppConst.white,
+                            //                       fontFamily: 'MuseoSans',
+                            //                       fontWeight: FontWeight.w400,
+                            //                       fontStyle: FontStyle.normal,
+                            //                       fontSize: 10.sp,
+                            //                     ),
+                            //                   ),
+                            //                   TextSpan(
+                            //                       text:
+                            //                           "${_moreStoreController.getStoreDataModel.value?.data?.store?.actual_cashback ?? 0}%",
+                            //                       style: TextStyle(
+                            //                         color: AppConst.darkGrey,
+                            //                         // (colorinversion == "#FFFFFF")
+                            //                         //     ? AppConst.black
+                            //                         //     : AppConst.white,
+                            //                         fontFamily: 'MuseoSans',
+                            //                         fontWeight: FontWeight.w400,
+                            //                         fontStyle: FontStyle.normal,
+                            //                         fontSize: 10.sp,
+                            //                       ))
+                            //                 ])),
+                            //               ),
+                            //               Padding(
+                            //                 padding: EdgeInsets.only(
+                            //                     left: 3.w, right: 2.w, top: 0.5.h),
+                            //                 child: Icon(
+                            //                   Icons.circle,
+                            //                   color: AppConst.grey,
+                            //                   size: 0.8.h,
+                            //                 ),
+                            //               ),
+                            //               _moreStoreController.displayHour.isNotEmpty
+                            //                   ? RichText(
+                            //                       text: TextSpan(children: [
+                            //                       TextSpan(
+                            //                         text: "Ready by ",
+                            //                         style: TextStyle(
+                            //                           color: AppConst.darkGrey,
+                            //                           // (colorinversion == "#FFFFFF")
+                            //                           //     ? AppConst.black
+                            //                           //     : AppConst.white,
+                            //                           fontFamily: 'MuseoSans',
+                            //                           fontWeight: FontWeight.w400,
+                            //                           fontStyle: FontStyle.normal,
+                            //                           fontSize: 10.sp,
+                            //                         ),
+                            //                       ),
+                            //                       TextSpan(
+                            //                         text:
+                            //                             "${_moreStoreController.displayHour}",
+                            //                         style: TextStyle(
+                            //                           color: AppConst.darkGrey,
+                            //                           // (colorinversion == "#FFFFFF")
+                            //                           //     ? AppConst.black
+                            //                           //     : AppConst.white,
+                            //                           fontFamily: 'MuseoSans',
+                            //                           fontWeight: FontWeight.w400,
+                            //                           fontStyle: FontStyle.normal,
+                            //                           fontSize: 10.sp,
+                            //                         ),
+                            //                       )
+                            //                     ]))
+                            //                   : SizedBox(),
+                            //             ],
+                            //           ),
+                            //   ),
+                            // )
+                            // InkWell(
+                            //   highlightColor: AppConst.highLightColor,
+                            //   onTap: () {
+                            //     Get.toNamed(AppRoutes.InStoreSearch, arguments: {
+                            //       'storeId': _moreStoreController.storeId.value
+                            //     });
+                            //   },
+                            //   child: SizedBox(width: 90.w, child: StoreSearchField()),
+                            // ),
+                            // SizedBox(
+                            //   height: 1.h,
+                            // ),
+                          ],
+                        )
+                      : SizedBox(),
                 ),
               ),
             ];
@@ -697,7 +698,7 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 3.w),
                                 child: Bubble(
-                                  color: AppConst.veryLightGrey,
+                                  color: AppConst.lightGreen.withOpacity(0.9),
                                   margin: BubbleEdges.only(top: 0.h),
                                   stick: true,
                                   nip: BubbleNip.leftTop,
@@ -731,7 +732,7 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                                 BorderRadius.circular(8),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: AppConst.grey,
+                                                color: AppConst.veryLightGrey,
                                                 blurRadius: 1,
                                                 // offset: Offset(1, 1),
                                               ),
@@ -869,6 +870,9 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                             isLeadGeneration: true,
                                           )
                                         : SizedBox(),
+                                    SizedBox(
+                                      width: 5.w,
+                                    )
                                   ],
                                 ),
                               ),
@@ -1288,15 +1292,18 @@ class CartRibbn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 9.h,
-      decoration: BoxDecoration(color: AppConst.green),
+      height: 8.h,
+      decoration: BoxDecoration(
+        color: AppConst.white.withOpacity(0.9),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 3.w),
         child: Row(
           children: [
             Icon(
-              Icons.shopping_cart,
-              color: AppConst.white,
+              Icons.shopping_cart_outlined,
+              size: 2.5.h,
+              color: AppConst.black,
             ),
             SizedBox(
               width: 3.w,
@@ -1304,28 +1311,52 @@ class CartRibbn extends StatelessWidget {
             Text("${totalItemsCount ?? 0} Item",
                 style: TextStyle(
                   fontFamily: 'MuseoSans',
-                  color: AppConst.white,
-                  fontSize: SizeUtils.horizontalBlockSize * 4,
-                  fontWeight: FontWeight.w700,
+                  color: AppConst.black,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
                   fontStyle: FontStyle.normal,
                 )),
             Spacer(),
-            Text("View Cart",
-                style: TextStyle(
-                  fontFamily: 'MuseoSans',
-                  color: AppConst.white,
-                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
-                )),
-            SizedBox(
-              width: 1.w,
+            Container(
+              decoration: BoxDecoration(
+                color: AppConst.green,
+                // border: Border.all(color: AppConst.grey, width: 0.5),
+                borderRadius: BorderRadius.circular(18),
+                // gradient: LinearGradient(colors: [
+
+                // Color(0xff068B2D),
+
+                // Color(0xff079B2E),
+                // ]),
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: AppConst.grey,
+                //     blurRadius: 1,
+                //     // offset: Offset(1, 1),
+                //   ),
+                // ],
+              ),
+              child: Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.3.h),
+                child: Text("View Cart",
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: AppConst.white,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    )),
+              ),
             ),
-            Icon(
-              Icons.arrow_forward_ios_outlined,
-              color: AppConst.white,
-              size: 2.2.h,
-            ),
+            // SizedBox(
+            //   width: 1.w,
+            // ),
+            // Icon(
+            //   Icons.send,
+            //   color: AppConst.black,
+            //   size: 2.2.h,
+            // ),
           ],
         ),
       ),
@@ -1472,7 +1503,7 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                 fontFamily: 'MuseoSans',
                                 color: AppConst.black,
                                 fontSize: 13.sp,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.normal,
                               )),
                           // ((storesWithProductsModel?.products?.length ?? 0) >
@@ -1494,432 +1525,661 @@ class MoewStoreViewProductsList extends StatelessWidget {
                     if (storesWithProductsModel.products!.isEmpty)
                       SizedBox()
                     else
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              // height: 20.h,
-                              width: double.infinity,
-                              child: GridView(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                // controller: gridViewScroll,
-                                scrollDirection: Axis.vertical,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 2.w,
-                                        mainAxisSpacing: 2.h),
-                                children: List.generate(
-                                    storesWithProductsModel.products?.length ??
-                                        0, (index) {
-                                  StoreModelProducts product =
-                                      storesWithProductsModel.products![index];
-                                  return Container(
-                                    width: 45.w,
-                                    height: 25.h,
-                                    // color: AppConst.yellow,
+                      Container(
+                        // height: 20.h,
+                        width: double.infinity,
+                        child: GridView(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          // controller: gridViewScroll,
+                          scrollDirection: Axis.vertical,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 2.w,
+                            mainAxisSpacing: 2.h,
+                            childAspectRatio: 2 / 3,
+                          ),
+                          children: List.generate(
+                              storesWithProductsModel.products?.length ?? 0,
+                              (index) {
+                            StoreModelProducts product =
+                                storesWithProductsModel.products![index];
+                            return Container(
+                              width: 45.w,
+                              // height: 40.h,
+                              // color: AppConst.yellow,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                          child: DisplayProductInGridView(
+                                        logo: product.logo,
+                                      )),
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: AppConst.white,
+                                          // border: Border.all(color: AppConst.grey, width: 0.5),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: AppConst.grey,
+                                              blurRadius: 1,
+                                              // offset: Offset(1, 1),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 0.5.h),
+                                          child: Center(
+                                            child: Text(
+                                                "\u20b9${product.cashback.toString()} OFF",
+                                                style: TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.green,
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontStyle: FontStyle.normal,
+                                                )),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Flexible(
                                     child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Center(
-                                            child: DisplayProductInGridView(
-                                          logo: product.logo,
-                                        )),
-                                        Container(
-                                          // color: AppConst.red,
-                                          height: 4.5.h,
-                                          child: Text(product.name.toString(),
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(product.name.toString(),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontFamily: 'MuseoSans',
                                                 color: AppConst.black,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    3.7,
+                                                fontSize: 12.sp,
                                                 fontWeight: FontWeight.w500,
                                                 fontStyle: FontStyle.normal,
                                               )),
-                                        ),
-                                        SizedBox(
-                                          height: 0.5.h,
-                                        ),
-                                        Text(
-                                            "Cashback \u20b9${product.cashback.toString()}",
-                                            style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              color: AppConst.black,
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  3.5,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                            )),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                "\u20b9${product.selling_price ?? ""}",
-                                                style: TextStyle(
-                                                  fontFamily: 'MuseoSans',
-                                                  color: AppConst.black,
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      3.5,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                            SizedBox(
-                                              width: 14.w,
-                                              child: Text(
-                                                  "/kg ${product.unit ?? ""}",
-                                                  maxLines: 1,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("${product.unit ?? ""}",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.darkGrey,
+                                                    fontSize: 10.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontStyle: FontStyle.normal,
+                                                  )),
+                                              SizedBox(),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  "\u{20b9}${product.selling_price ?? ""}",
                                                   style: TextStyle(
                                                     fontFamily: 'MuseoSans',
                                                     color: AppConst.black,
                                                     fontSize: SizeUtils
                                                             .horizontalBlockSize *
-                                                        3.3,
+                                                        3.5,
                                                     fontWeight: FontWeight.w500,
                                                     fontStyle: FontStyle.normal,
                                                   )),
-                                            ),
-                                            // RichText(
-                                            //     text: TextSpan(children: [
-                                            //   // TextSpan(
-                                            //   //     text:
-                                            //   //         "\u20b9${product.mrp ?? ""}",
-                                            //   //     style: TextStyle(
-                                            //   //         fontFamily: 'MuseoSans',
-                                            //   //         color: AppConst.grey,
-                                            //   //         fontSize: SizeUtils
-                                            //   //                 .horizontalBlockSize *
-                                            //   //             3.3,
-                                            //   //         fontWeight:
-                                            //   //             FontWeight.w500,
-                                            //   //         fontStyle:
-                                            //   //             FontStyle.normal,
-                                            //   //         decoration: TextDecoration
-                                            //   //             .lineThrough)),
-                                            //   TextSpan(
-                                            //       text:
-                                            //           " \u20b9${product.selling_price ?? ""}",
-                                            //       style: TextStyle(
-                                            //         fontFamily: 'MuseoSans',
-                                            //         color: AppConst.black,
-                                            //         fontSize: SizeUtils
-                                            //                 .horizontalBlockSize *
-                                            //             3.5,
-                                            //         fontWeight: FontWeight.w500,
-                                            //         fontStyle: FontStyle.normal,
-                                            //       )),
-                                            //   TextSpan(
-                                            //       text:
-                                            //           "/ ${product.unit ?? ""}",
-                                            //       style: TextStyle(
-                                            //         fontFamily: 'MuseoSans',
-                                            //         color: AppConst.black,
-                                            //         fontSize: SizeUtils
-                                            //                 .horizontalBlockSize *
-                                            //             3.3,
-                                            //         fontWeight: FontWeight.w500,
-                                            //         fontStyle: FontStyle.normal,
-                                            //       ))
-                                            // ])),
+                                              // SizedBox(
+                                              //   width: 14.w,
+                                              //   child: Text("/${product.unit ?? ""}",
+                                              //       maxLines: 1,
+                                              //       style: TextStyle(
+                                              //         fontFamily: 'MuseoSans',
+                                              //         color: AppConst.black,
+                                              //         fontSize: SizeUtils
+                                              //                 .horizontalBlockSize *
+                                              //             3.3,
+                                              //         fontWeight: FontWeight.w500,
+                                              //         fontStyle: FontStyle.normal,
+                                              //       )),
+                                              // ),
+                                              // RichText(
+                                              //     text: TextSpan(children: [
+                                              //   // TextSpan(
+                                              //   //     text:
+                                              //   //         "\u20b9${product.mrp ?? ""}",
+                                              //   //     style: TextStyle(
+                                              //   //         fontFamily: 'MuseoSans',
+                                              //   //         color: AppConst.grey,
+                                              //   //         fontSize: SizeUtils
+                                              //   //                 .horizontalBlockSize *
+                                              //   //             3.3,
+                                              //   //         fontWeight:
+                                              //   //             FontWeight.w500,
+                                              //   //         fontStyle:
+                                              //   //             FontStyle.normal,
+                                              //   //         decoration: TextDecoration
+                                              //   //             .lineThrough)),
+                                              //   TextSpan(
+                                              //       text:
+                                              //           " \u20b9${product.selling_price ?? ""}",
+                                              //       style: TextStyle(
+                                              //         fontFamily: 'MuseoSans',
+                                              //         color: AppConst.black,
+                                              //         fontSize: SizeUtils
+                                              //                 .horizontalBlockSize *
+                                              //             3.5,
+                                              //         fontWeight: FontWeight.w500,
+                                              //         fontStyle: FontStyle.normal,
+                                              //       )),
+                                              //   TextSpan(
+                                              //       text:
+                                              //           "/ ${product.unit ?? ""}",
+                                              //       style: TextStyle(
+                                              //         fontFamily: 'MuseoSans',
+                                              //         color: AppConst.black,
+                                              //         fontSize: SizeUtils
+                                              //                 .horizontalBlockSize *
+                                              //             3.3,
+                                              //         fontWeight: FontWeight.w500,
+                                              //         fontStyle: FontStyle.normal,
+                                              //       ))
+                                              // ])),
 
-                                            // Text(
-                                            //     "\u20b9${product.mrp ?? "--"}/ ${product.unit ?? ""}",
-                                            //     overflow: TextOverflow.ellipsis,
-                                            //     style: TextStyle(
-                                            //       fontFamily: 'MuseoSans',
-                                            //       color: AppConst.black,
-                                            //       fontSize: SizeUtils
-                                            //               .horizontalBlockSize *
-                                            //           3.3,
-                                            //       fontWeight: FontWeight.w500,
-                                            //       fontStyle: FontStyle.normal,
-                                            //     )),
-                                            Spacer(),
-                                            Obx(
-                                              () => product.quntity!.value >
-                                                          0 &&
-                                                      product.isQunitityAdd
-                                                              ?.value ==
-                                                          false
-                                                  ? _shoppingItem(product)
-                                                  : GestureDetector(
-                                                      onTap: () async {
-                                                        if (product.quntity!
-                                                                .value ==
-                                                            0) {
-                                                          product
-                                                              .quntity!.value++;
-                                                          if (_moreStoreController
+                                              // Text(
+                                              //     "\u20b9${product.mrp ?? "--"}/ ${product.unit ?? ""}",
+                                              //     overflow: TextOverflow.ellipsis,
+                                              //     style: TextStyle(
+                                              //       fontFamily: 'MuseoSans',
+                                              //       color: AppConst.black,
+                                              //       fontSize: SizeUtils
+                                              //               .horizontalBlockSize *
+                                              //           3.3,
+                                              //       fontWeight: FontWeight.w500,
+                                              //       fontStyle: FontStyle.normal,
+                                              //     )),
+                                              Spacer(),
+                                              Obx(
+                                                () => product.quntity!.value >
+                                                            0 &&
+                                                        product.isQunitityAdd
+                                                                ?.value ==
+                                                            false
+                                                    ? _shoppingItem(product)
+                                                    : GestureDetector(
+                                                        onTap: () async {
+                                                          if (product.quntity!
+                                                                  .value ==
+                                                              0) {
+                                                            product.quntity!
+                                                                .value++;
+                                                            if (_moreStoreController
+                                                                    .getCartIDModel
+                                                                    .value
+                                                                    ?.totalItemsCount ==
+                                                                0) {
+                                                              _moreStoreController
                                                                   .getCartIDModel
                                                                   .value
-                                                                  ?.totalItemsCount ==
-                                                              0) {
-                                                            _moreStoreController
-                                                                .getCartIDModel
-                                                                .value
-                                                                ?.sId = "";
+                                                                  ?.sId = "";
+                                                            }
+                                                            _moreStoreController.addToCart(
+                                                                store_id:
+                                                                    _moreStoreController
+                                                                        .storeId
+                                                                        .value,
+                                                                index: 0,
+                                                                increment: true,
+                                                                cart_id: _moreStoreController
+                                                                        .getCartIDModel
+                                                                        .value
+                                                                        ?.sId ??
+                                                                    '',
+                                                                product:
+                                                                    product);
+                                                            totalCalculated();
                                                           }
-                                                          _moreStoreController.addToCart(
-                                                              store_id:
-                                                                  _moreStoreController
-                                                                      .storeId
-                                                                      .value,
-                                                              index: 0,
-                                                              increment: true,
-                                                              cart_id: _moreStoreController
-                                                                      .getCartIDModel
-                                                                      .value
-                                                                      ?.sId ??
-                                                                  '',
-                                                              product: product);
-                                                          totalCalculated();
-                                                        }
-                                                        if (product.quntity!
-                                                                    .value !=
-                                                                0 &&
-                                                            product.isQunitityAdd
-                                                                    ?.value ==
-                                                                false) {
-                                                          product.isQunitityAdd
-                                                              ?.value = false;
-                                                          await Future.delayed(
-                                                                  Duration(
-                                                                      milliseconds:
-                                                                          500))
-                                                              .whenComplete(
-                                                                  () => product
-                                                                      .isQunitityAdd
-                                                                      ?.value = true);
-                                                        }
-                                                        // addItem(product);
-                                                      },
-                                                      child: product.isQunitityAdd
-                                                                      ?.value ==
-                                                                  true &&
-                                                              product.quntity!
+                                                          if (product.quntity!
                                                                       .value !=
-                                                                  0
-                                                          ? _dropDown(
-                                                              product,
-                                                              storesWithProductsModel
-                                                                      .sId ??
-                                                                  '')
-                                                          : DisplayAddPlus(),
-                                                    ),
-                                            ),
-                                            SizedBox(
-                                              width: 3.w,
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }),
-                              ),
+                                                                  0 &&
+                                                              product.isQunitityAdd
+                                                                      ?.value ==
+                                                                  false) {
+                                                            product
+                                                                .isQunitityAdd
+                                                                ?.value = false;
+                                                            await Future.delayed(
+                                                                    Duration(
+                                                                        milliseconds:
+                                                                            500))
+                                                                .whenComplete(
+                                                                    () => product
+                                                                        .isQunitityAdd
+                                                                        ?.value = true);
+                                                          }
+                                                          // addItem(product);
+                                                        },
+                                                        child: product.isQunitityAdd
+                                                                        ?.value ==
+                                                                    true &&
+                                                                product.quntity!
+                                                                        .value !=
+                                                                    0
+                                                            ? _dropDown(
+                                                                product,
+                                                                storesWithProductsModel
+                                                                        .sId ??
+                                                                    '')
+                                                            : DisplayAddPlus(),
+                                                      ),
+                                              ),
+                                              SizedBox(
+                                                width: 3.w,
+                                              )
+                                            ],
+                                          )
+                                        ]),
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  // Container(
+                                  //   // color: AppConst.red,
+                                  //   // height: 4.5.h,
+                                  //   child: Text(product.name.toString(),
+                                  //       maxLines: 2,
+                                  //       overflow: TextOverflow.ellipsis,
+                                  //       style: TextStyle(
+                                  //         fontFamily: 'MuseoSans',
+                                  //         color: AppConst.black,
+                                  //         fontSize: 12.sp,
+                                  //         fontWeight: FontWeight.w500,
+                                  //         fontStyle: FontStyle.normal,
+                                  //       )),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 1.h,
+                                  // ),
+                                  // Text(
+                                  //     " \u20b9${product.cashback.toString()} OFF",
+                                  //     style: TextStyle(
+                                  //       fontFamily: 'MuseoSans',
+                                  //       color: AppConst.black,
+                                  //       fontSize:
+                                  //           SizeUtils.horizontalBlockSize * 3.5,
+                                  //       fontWeight: FontWeight.w700,
+                                  //       fontStyle: FontStyle.normal,
+                                  //     )),
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.start,
+                                  //   children: [
+                                  //     Text(
+                                  //         "\u{20b9}${product.selling_price ?? ""}",
+                                  //         style: TextStyle(
+                                  //           fontFamily: 'MuseoSans',
+                                  //           color: AppConst.black,
+                                  //           fontSize:
+                                  //               SizeUtils.horizontalBlockSize *
+                                  //                   3.5,
+                                  //           fontWeight: FontWeight.w500,
+                                  //           fontStyle: FontStyle.normal,
+                                  //         )),
+                                  //     // SizedBox(
+                                  //     //   width: 14.w,
+                                  //     //   child: Text("/${product.unit ?? ""}",
+                                  //     //       maxLines: 1,
+                                  //     //       style: TextStyle(
+                                  //     //         fontFamily: 'MuseoSans',
+                                  //     //         color: AppConst.black,
+                                  //     //         fontSize: SizeUtils
+                                  //     //                 .horizontalBlockSize *
+                                  //     //             3.3,
+                                  //     //         fontWeight: FontWeight.w500,
+                                  //     //         fontStyle: FontStyle.normal,
+                                  //     //       )),
+                                  //     // ),
+                                  //     // RichText(
+                                  //     //     text: TextSpan(children: [
+                                  //     //   // TextSpan(
+                                  //     //   //     text:
+                                  //     //   //         "\u20b9${product.mrp ?? ""}",
+                                  //     //   //     style: TextStyle(
+                                  //     //   //         fontFamily: 'MuseoSans',
+                                  //     //   //         color: AppConst.grey,
+                                  //     //   //         fontSize: SizeUtils
+                                  //     //   //                 .horizontalBlockSize *
+                                  //     //   //             3.3,
+                                  //     //   //         fontWeight:
+                                  //     //   //             FontWeight.w500,
+                                  //     //   //         fontStyle:
+                                  //     //   //             FontStyle.normal,
+                                  //     //   //         decoration: TextDecoration
+                                  //     //   //             .lineThrough)),
+                                  //     //   TextSpan(
+                                  //     //       text:
+                                  //     //           " \u20b9${product.selling_price ?? ""}",
+                                  //     //       style: TextStyle(
+                                  //     //         fontFamily: 'MuseoSans',
+                                  //     //         color: AppConst.black,
+                                  //     //         fontSize: SizeUtils
+                                  //     //                 .horizontalBlockSize *
+                                  //     //             3.5,
+                                  //     //         fontWeight: FontWeight.w500,
+                                  //     //         fontStyle: FontStyle.normal,
+                                  //     //       )),
+                                  //     //   TextSpan(
+                                  //     //       text:
+                                  //     //           "/ ${product.unit ?? ""}",
+                                  //     //       style: TextStyle(
+                                  //     //         fontFamily: 'MuseoSans',
+                                  //     //         color: AppConst.black,
+                                  //     //         fontSize: SizeUtils
+                                  //     //                 .horizontalBlockSize *
+                                  //     //             3.3,
+                                  //     //         fontWeight: FontWeight.w500,
+                                  //     //         fontStyle: FontStyle.normal,
+                                  //     //       ))
+                                  //     // ])),
 
-                              // ListView.separated(
-                              //   physics: ClampingScrollPhysics(),
-                              //   shrinkWrap: true,
-                              //   scrollDirection: Axis.horizontal,
-                              //   itemCount: storesWithProductsModel
-                              //           .products?.length ??
-                              //       0,
-                              //   itemBuilder: (context, i) {
-                              //     StoreModelProducts product =
-                              //         storesWithProductsModel.products![i];
-                              //     return Container(
-                              //       width: 45.w,
-                              //       height: 25.h,
-                              //       child: Column(
-                              //         mainAxisSize: MainAxisSize.min,
-                              //         crossAxisAlignment:
-                              //             CrossAxisAlignment.start,
-                              //         children: [
-                              //           Center(
-                              //             child: (product.logo != null &&
-                              //                     product.logo != "")
-                              //                 ? Image.network(
-                              //                     product.logo!,
-                              //                     fit: BoxFit.cover,
-                              //                     height: 11.h,
-                              //                     width: 24.w,
-                              //                   )
-                              //                 : Container(
-                              //                     decoration: BoxDecoration(
-                              //                       color: AppConst
-                              //                           .veryLightGrey,
-                              //                       borderRadius:
-                              //                           BorderRadius
-                              //                               .circular(8),
-                              //                       // border: Border.all(
-                              //                       //     width: 0.1,
-                              //                       //     color:
-                              //                       //         AppConst.grey)
-                              //                     ),
-                              //                     height: 11.h,
-                              //                     width: 30.w,
-                              //                     child: Center(
-                              //                         child: Image.asset(
-                              //                             "assets/images/noimage.png")),
-                              //                   ),
-                              //           ),
-                              //           Obx(
-                              //             () =>
-                              //                 product.quntity!.value > 0 &&
-                              //                         product.isQunitityAdd
-                              //                                 ?.value ==
-                              //                             false
-                              //                     ? _shoppingItem(product)
-                              //                     : GestureDetector(
-                              //                         onTap: () async {
-                              //                           if (product.quntity!
-                              //                                   .value ==
-                              //                               0) {
-                              //                             product.quntity!
-                              //                                 .value++;
-                              //                             _moreStoreController.addToCart(
-                              //                                 store_id:
-                              //                                     _moreStoreController
-                              //                                         .storeId
-                              //                                         .value,
-                              //                                 index: 0,
-                              //                                 increment:
-                              //                                     true,
-                              //                                 cart_id: _moreStoreController
-                              //                                         .getCartIDModel
-                              //                                         .value
-                              //                                         ?.sId ??
-                              //                                     '',
-                              //                                 product:
-                              //                                     product);
-                              //                             totalCalculated();
-                              //                           }
-                              //                           if (product.quntity!
-                              //                                       .value !=
-                              //                                   0 &&
-                              //                               product.isQunitityAdd
-                              //                                       ?.value ==
-                              //                                   false) {
-                              //                             product
-                              //                                 .isQunitityAdd
-                              //                                 ?.value = false;
-                              //                             await Future.delayed(
-                              //                                     Duration(
-                              //                                         milliseconds:
-                              //                                             500))
-                              //                                 .whenComplete(
-                              //                                     () => product
-                              //                                         .isQunitityAdd
-                              //                                         ?.value = true);
-                              //                           }
-                              //                           // addItem(product);
-                              //                         },
-                              //                         child: product.isQunitityAdd
-                              //                                         ?.value ==
-                              //                                     true &&
-                              //                                 product.quntity!
-                              //                                         .value !=
-                              //                                     0
-                              //                             ? _dropDown(
-                              //                                 product,
-                              //                                 storesWithProductsModel
-                              //                                         .sId ??
-                              //                                     '')
-                              //                             : Container(
-                              //                                 height: 3.5.h,
-                              //                                 width: product.isQunitityAdd?.value ==
-                              //                                             true &&
-                              //                                         product.quntity!.value !=
-                              //                                             0
-                              //                                     ? 8.w
-                              //                                     : 15.w,
-                              //                                 decoration:
-                              //                                     BoxDecoration(
-                              //                                   border: Border.all(
-                              //                                       color: AppConst
-                              //                                           .green,
-                              //                                       width:
-                              //                                           0.8),
-                              //                                   borderRadius:
-                              //                                       BorderRadius.circular(product.isQunitityAdd?.value == true &&
-                              //                                               product.quntity!.value != 0
-                              //                                           ? 25
-                              //                                           : 8),
-                              //                                   color: AppConst
-                              //                                       .white,
-                              //                                 ),
-                              //                                 child: product.isQunitityAdd?.value ==
-                              //                                             true &&
-                              //                                         product.quntity!.value !=
-                              //                                             0
-                              //                                     ? Center(
-                              //                                         child: Text(
-                              //                                             "${product.quntity?.value ?? "0"}",
-                              //                                             style: TextStyle(
-                              //                                               fontFamily: 'MuseoSans',
-                              //                                               color: AppConst.green,
-                              //                                               fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                              //                                               fontWeight: FontWeight.w500,
-                              //                                               fontStyle: FontStyle.normal,
-                              //                                             )),
-                              //                                       )
-                              //                                     : Center(
-                              //                                         child:
-                              //                                             Text(
-                              //                                           " Add +",
-                              //                                           style:
-                              //                                               TextStyle(
-                              //                                             fontFamily: 'MuseoSans',
-                              //                                             color: AppConst.green,
-                              //                                             fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                              //                                             fontWeight: FontWeight.w500,
-                              //                                             fontStyle: FontStyle.normal,
-                              //                                           ),
-                              //                                         ),
-                              //                                       ),
-                              //                               ),
-                              //                       ),
-                              //           ),
-                              //           SizedBox(
-                              //             width: 3.w,
-                              //           ),
-                              //           Text(
-                              //             " \u20b9 ${product.cashback.toString()}",
-                              //             style: AppStyles.STORE_NAME_STYLE,
-                              //           ),
-                              //           Flexible(
-                              //             child: Text(
-                              //               product.name.toString(),
-                              //               maxLines: 2,
-                              //               overflow: TextOverflow.ellipsis,
-                              //               style:
-                              //                   AppStyles.STORE_NAME_STYLE,
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     );
-                              //   },
-                              //   separatorBuilder: (context, index) {
-                              //     return SizedBox(
-                              //       width: 2.w,
-                              //     );
-                              //   },
-                              // ),
-                            ),
-                          ),
-                        ],
+                                  //     // Text(
+                                  //     //     "\u20b9${product.mrp ?? "--"}/ ${product.unit ?? ""}",
+                                  //     //     overflow: TextOverflow.ellipsis,
+                                  //     //     style: TextStyle(
+                                  //     //       fontFamily: 'MuseoSans',
+                                  //     //       color: AppConst.black,
+                                  //     //       fontSize: SizeUtils
+                                  //     //               .horizontalBlockSize *
+                                  //     //           3.3,
+                                  //     //       fontWeight: FontWeight.w500,
+                                  //     //       fontStyle: FontStyle.normal,
+                                  //     //     )),
+                                  //     Spacer(),
+                                  //     Obx(
+                                  //       () => product.quntity!.value > 0 &&
+                                  //               product.isQunitityAdd?.value ==
+                                  //                   false
+                                  //           ? _shoppingItem(product)
+                                  //           : GestureDetector(
+                                  //               onTap: () async {
+                                  //                 if (product.quntity!.value ==
+                                  //                     0) {
+                                  //                   product.quntity!.value++;
+                                  //                   if (_moreStoreController
+                                  //                           .getCartIDModel
+                                  //                           .value
+                                  //                           ?.totalItemsCount ==
+                                  //                       0) {
+                                  //                     _moreStoreController
+                                  //                         .getCartIDModel
+                                  //                         .value
+                                  //                         ?.sId = "";
+                                  //                   }
+                                  //                   _moreStoreController.addToCart(
+                                  //                       store_id:
+                                  //                           _moreStoreController
+                                  //                               .storeId.value,
+                                  //                       index: 0,
+                                  //                       increment: true,
+                                  //                       cart_id:
+                                  //                           _moreStoreController
+                                  //                                   .getCartIDModel
+                                  //                                   .value
+                                  //                                   ?.sId ??
+                                  //                               '',
+                                  //                       product: product);
+                                  //                   totalCalculated();
+                                  //                 }
+                                  //                 if (product.quntity!.value !=
+                                  //                         0 &&
+                                  //                     product.isQunitityAdd
+                                  //                             ?.value ==
+                                  //                         false) {
+                                  //                   product.isQunitityAdd
+                                  //                       ?.value = false;
+                                  //                   await Future.delayed(
+                                  //                           Duration(
+                                  //                               milliseconds:
+                                  //                                   500))
+                                  //                       .whenComplete(() =>
+                                  //                           product
+                                  //                               .isQunitityAdd
+                                  //                               ?.value = true);
+                                  //                 }
+                                  //                 // addItem(product);
+                                  //               },
+                                  //               child: product.isQunitityAdd
+                                  //                               ?.value ==
+                                  //                           true &&
+                                  //                       product.quntity!
+                                  //                               .value !=
+                                  //                           0
+                                  //                   ? _dropDown(
+                                  //                       product,
+                                  //                       storesWithProductsModel
+                                  //                               .sId ??
+                                  //                           '')
+                                  //                   : DisplayAddPlus(),
+                                  //             ),
+                                  //     ),
+                                  //     SizedBox(
+                                  //       width: 3.w,
+                                  //     )
+                                  //   ],
+                                  // )
+                                ],
+                              ),
+                            );
+                          }),
+                        ),
+
+                        // ListView.separated(
+                        //   physics: ClampingScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   scrollDirection: Axis.horizontal,
+                        //   itemCount: storesWithProductsModel
+                        //           .products?.length ??
+                        //       0,
+                        //   itemBuilder: (context, i) {
+                        //     StoreModelProducts product =
+                        //         storesWithProductsModel.products![i];
+                        //     return Container(
+                        //       width: 45.w,
+                        //       height: 25.h,
+                        //       child: Column(
+                        //         mainAxisSize: MainAxisSize.min,
+                        //         crossAxisAlignment:
+                        //             CrossAxisAlignment.start,
+                        //         children: [
+                        //           Center(
+                        //             child: (product.logo != null &&
+                        //                     product.logo != "")
+                        //                 ? Image.network(
+                        //                     product.logo!,
+                        //                     fit: BoxFit.cover,
+                        //                     height: 11.h,
+                        //                     width: 24.w,
+                        //                   )
+                        //                 : Container(
+                        //                     decoration: BoxDecoration(
+                        //                       color: AppConst
+                        //                           .veryLightGrey,
+                        //                       borderRadius:
+                        //                           BorderRadius
+                        //                               .circular(8),
+                        //                       // border: Border.all(
+                        //                       //     width: 0.1,
+                        //                       //     color:
+                        //                       //         AppConst.grey)
+                        //                     ),
+                        //                     height: 11.h,
+                        //                     width: 30.w,
+                        //                     child: Center(
+                        //                         child: Image.asset(
+                        //                             "assets/images/noimage.png")),
+                        //                   ),
+                        //           ),
+                        //           Obx(
+                        //             () =>
+                        //                 product.quntity!.value > 0 &&
+                        //                         product.isQunitityAdd
+                        //                                 ?.value ==
+                        //                             false
+                        //                     ? _shoppingItem(product)
+                        //                     : GestureDetector(
+                        //                         onTap: () async {
+                        //                           if (product.quntity!
+                        //                                   .value ==
+                        //                               0) {
+                        //                             product.quntity!
+                        //                                 .value++;
+                        //                             _moreStoreController.addToCart(
+                        //                                 store_id:
+                        //                                     _moreStoreController
+                        //                                         .storeId
+                        //                                         .value,
+                        //                                 index: 0,
+                        //                                 increment:
+                        //                                     true,
+                        //                                 cart_id: _moreStoreController
+                        //                                         .getCartIDModel
+                        //                                         .value
+                        //                                         ?.sId ??
+                        //                                     '',
+                        //                                 product:
+                        //                                     product);
+                        //                             totalCalculated();
+                        //                           }
+                        //                           if (product.quntity!
+                        //                                       .value !=
+                        //                                   0 &&
+                        //                               product.isQunitityAdd
+                        //                                       ?.value ==
+                        //                                   false) {
+                        //                             product
+                        //                                 .isQunitityAdd
+                        //                                 ?.value = false;
+                        //                             await Future.delayed(
+                        //                                     Duration(
+                        //                                         milliseconds:
+                        //                                             500))
+                        //                                 .whenComplete(
+                        //                                     () => product
+                        //                                         .isQunitityAdd
+                        //                                         ?.value = true);
+                        //                           }
+                        //                           // addItem(product);
+                        //                         },
+                        //                         child: product.isQunitityAdd
+                        //                                         ?.value ==
+                        //                                     true &&
+                        //                                 product.quntity!
+                        //                                         .value !=
+                        //                                     0
+                        //                             ? _dropDown(
+                        //                                 product,
+                        //                                 storesWithProductsModel
+                        //                                         .sId ??
+                        //                                     '')
+                        //                             : Container(
+                        //                                 height: 3.5.h,
+                        //                                 width: product.isQunitityAdd?.value ==
+                        //                                             true &&
+                        //                                         product.quntity!.value !=
+                        //                                             0
+                        //                                     ? 8.w
+                        //                                     : 15.w,
+                        //                                 decoration:
+                        //                                     BoxDecoration(
+                        //                                   border: Border.all(
+                        //                                       color: AppConst
+                        //                                           .green,
+                        //                                       width:
+                        //                                           0.8),
+                        //                                   borderRadius:
+                        //                                       BorderRadius.circular(product.isQunitityAdd?.value == true &&
+                        //                                               product.quntity!.value != 0
+                        //                                           ? 25
+                        //                                           : 8),
+                        //                                   color: AppConst
+                        //                                       .white,
+                        //                                 ),
+                        //                                 child: product.isQunitityAdd?.value ==
+                        //                                             true &&
+                        //                                         product.quntity!.value !=
+                        //                                             0
+                        //                                     ? Center(
+                        //                                         child: Text(
+                        //                                             "${product.quntity?.value ?? "0"}",
+                        //                                             style: TextStyle(
+                        //                                               fontFamily: 'MuseoSans',
+                        //                                               color: AppConst.green,
+                        //                                               fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                        //                                               fontWeight: FontWeight.w500,
+                        //                                               fontStyle: FontStyle.normal,
+                        //                                             )),
+                        //                                       )
+                        //                                     : Center(
+                        //                                         child:
+                        //                                             Text(
+                        //                                           " Add +",
+                        //                                           style:
+                        //                                               TextStyle(
+                        //                                             fontFamily: 'MuseoSans',
+                        //                                             color: AppConst.green,
+                        //                                             fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                        //                                             fontWeight: FontWeight.w500,
+                        //                                             fontStyle: FontStyle.normal,
+                        //                                           ),
+                        //                                         ),
+                        //                                       ),
+                        //                               ),
+                        //                       ),
+                        //           ),
+                        //           SizedBox(
+                        //             width: 3.w,
+                        //           ),
+                        //           Text(
+                        //             " \u20b9 ${product.cashback.toString()}",
+                        //             style: AppStyles.STORE_NAME_STYLE,
+                        //           ),
+                        //           Flexible(
+                        //             child: Text(
+                        //               product.name.toString(),
+                        //               maxLines: 2,
+                        //               overflow: TextOverflow.ellipsis,
+                        //               style:
+                        //                   AppStyles.STORE_NAME_STYLE,
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     );
+                        //   },
+                        //   separatorBuilder: (context, index) {
+                        //     return SizedBox(
+                        //       width: 2.w,
+                        //     );
+                        //   },
+                        // ),
                       ),
                   ],
                 );
@@ -2197,14 +2457,14 @@ class DisplayAddPlus extends StatelessWidget {
           // :
           18.w,
       decoration: BoxDecoration(
-        border: Border.all(color: AppConst.green, width: 0.8),
-        borderRadius: BorderRadius.circular(
-            // product.isQunitityAdd?.value == true &&
-            //       product.quntity!.value != 0
-            //   ? 25
-            //   :
-            4),
         color: AppConst.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppConst.grey,
+            blurRadius: 1,
+          ),
+        ],
       ),
       child:
           // product.isQunitityAdd?.value ==

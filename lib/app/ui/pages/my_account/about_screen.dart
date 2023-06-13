@@ -61,7 +61,7 @@ class AboutScreen extends StatelessWidget {
               // onTap: () => launchUrlString('https://recipto.in/About/contactUs/'),
               
           ListTile(
-              title: Text('Delete Account'),
+              title: Text('Deactivate Account'),
               trailing: Icon(Icons.arrow_forward_ios_rounded),
               onTap: () => Get.toNamed(AppRoutes.DeleteAccount)
               // onTap: () => launchUrlString('https://recipto.in/About/contactUs/'),

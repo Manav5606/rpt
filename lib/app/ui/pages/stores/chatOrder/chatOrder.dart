@@ -1076,20 +1076,51 @@ class DisplayProductCount extends StatelessWidget {
       height: 3.5.h,
       width: 18.w,
       decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Color(0xff005b41),
-          borderRadius: BorderRadius.circular(4)),
-      child: Center(
-        child: Text(
-          " -   ${count ?? 0}   + ",
-          style: TextStyle(
-            fontFamily: 'MuseoSans',
-            color: AppConst.white,
-            fontSize: SizeUtils.horizontalBlockSize * 3.8,
-            fontWeight: FontWeight.w500,
-            fontStyle: FontStyle.normal,
+        color: AppConst.white,
+        // border: Border.all(color: AppConst.grey, width: 0.5),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppConst.grey,
+            blurRadius: 1,
+            // offset: Offset(1, 1),
           ),
-        ),
+        ],
+      ),
+      child: Center(
+        child: RichText(
+            text: TextSpan(children: [
+          TextSpan(
+            text: "-  ",
+            style: TextStyle(
+              fontFamily: 'MuseoSans',
+              color: AppConst.green,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          TextSpan(
+            text: "${count ?? 0}",
+            style: TextStyle(
+              fontFamily: 'MuseoSans',
+              color: AppConst.black,
+              fontSize: SizeUtils.horizontalBlockSize * 3.8,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          TextSpan(
+            text: "  +",
+            style: TextStyle(
+              fontFamily: 'MuseoSans',
+              color: AppConst.green,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
+          )
+        ])),
       ),
     );
   }

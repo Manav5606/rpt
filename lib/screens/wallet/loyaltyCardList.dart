@@ -43,12 +43,21 @@ class loyaltyCardList extends StatelessWidget {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: _paymentController
-                          .getRedeemCashInStorePageData.value?.data?.length ??
+                          .getRedeemCashInStorePageData.value?.data
+                          ?.where((c) => c.deactivated == false)
+                          .toList()
+                          .length ??
                       0,
                   itemBuilder: (context, index) {
+                    // print(
+                    //     "only activated wallets ${_paymentController.getRedeemCashInStorePageData.value?.data?.where((c) => c.deactivated == false).toList().length}");
+                    // print(
+                    //     "Total wallets ${_paymentController.getRedeemCashInStorePageData.value?.data?.length}");
                     return ListViewChild(
                       storeSearchModel: _paymentController
-                          .getRedeemCashInStorePageData.value!.data![index],
+                          .getRedeemCashInStorePageData.value!.data!
+                          .where((c) => c.deactivated == false)
+                          .toList()[index],
                     );
                   },
                   separatorBuilder: (context, index) {
@@ -87,7 +96,7 @@ class ListViewChild extends StatelessWidget {
                 isDisplayDistance: true,
                 StoreID: "${storeSearchModel.sId ?? ""}",
                 StoreName: "${storeSearchModel.name ?? ""}",
-                distanceOrOffer: storeSearchModel.distance ?? 0,
+                distanceOrOffer: storeSearchModel.store?.distance ?? 0,
                 Balance: (storeSearchModel.earnedCashback ?? 0) +
                     (storeSearchModel.welcomeOfferAmount ?? 0)),
           ),

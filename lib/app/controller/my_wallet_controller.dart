@@ -82,7 +82,7 @@ class MyWalletController extends GetxController {
       myWalletModel.value?.data
           ?.sort((a, b) => a.distance!.compareTo(b.distance as num));
       myWalletModel.refresh();
-      
+
       isLoading.value = false;
     } catch (e, st) {
       isLoading.value = false;
@@ -210,7 +210,6 @@ class MyWalletController extends GetxController {
   }
 
   double StoreTotalWelcomeAmount() {
-    
     List<num> walletamounts = [];
     if (myWalletModel.value?.data != null) {
       for (int i = 0; i < (myWalletModel.value?.data?.length ?? 0); i++) {
@@ -240,6 +239,19 @@ class MyWalletController extends GetxController {
 
       myWalletTransactionModel.refresh();
       // log("myWalletModel.value.data.1.name :${myWalletModel.value?.data?.length ?? 'nullll'}");
+
+      isTransactionLoading.value = false;
+    } catch (e, st) {
+      isTransactionLoading.value = false;
+    }
+  }
+
+  Future<void> updateWalletStatusByCustomer(
+      {required String? storeId, bool? status}) async {
+    try {
+      isTransactionLoading.value = true;
+
+      await MyWalletRepository.updateWalletStatusByCustomer(storeId, status);
 
       isTransactionLoading.value = false;
     } catch (e, st) {
