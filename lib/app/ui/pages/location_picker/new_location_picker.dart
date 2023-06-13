@@ -135,10 +135,11 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                         //     _addLocationController.getCurrentAddress,
                         )
                     : BottomConfirmLocationSheet(
-                        address: _addLocationController.currentAddress.value
-                            .toString(),
+                        address:
+                            "${_addLocationController.currentAddress.value} ",
                         notifyParent: () async {
                           if (page == "claimmore") {
+                            _addLocationController.isRecentAddress.value = true;
                             UserViewModel.setLocation(LatLng(
                                 _addLocationController
                                     .middlePointOfScreenOnMap!.latitude,
@@ -151,13 +152,14 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                                 .updateBusinesstypeWallets();
 
                             Get.back();
-                          } else {}
-                          await _addLocationController
-                              .getClaimRewardsPageCount();
-                          await _addLocationController
-                              .getClaimRewardsPageData();
-                          _addLocationController
-                              .isFullAddressBottomSheet.value = true;
+                          } else {
+                            await _addLocationController
+                                .getClaimRewardsPageCount();
+                            await _addLocationController
+                                .getClaimRewardsPageData();
+                            _addLocationController
+                                .isFullAddressBottomSheet.value = true;
+                          }
                         },
                         isFullAddesss: _addLocationController
                             .isFullAddressBottomSheet.value,
