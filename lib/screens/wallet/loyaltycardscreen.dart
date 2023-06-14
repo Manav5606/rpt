@@ -46,126 +46,133 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
       await _paymentController.getRedeemCashInStorePage();
     });
   }
+   Future<bool> handleBackPressed() async {
+    Get.offAllNamed(AppRoutes.BaseScreen);
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        automaticallyImplyLeading: false,
-        systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: AppConst.white,
-            statusBarIconBrightness: Brightness.dark),
-        // backgroundColor: Color(0xff005b41),
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoutes.BaseScreen);
-              },
-              child: Icon(
-                Icons.arrow_back,
-                size: 3.h,
-                color: AppConst.black,
-              ),
-            ),
-            Spacer(),
-            SizedBox(
-              height: 3.5.h,
-              child: Image(
-                image: AssetImage(
-                  'assets/images/Redeem.png',
+    return WillPopScope(
+      onWillPop:handleBackPressed,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          automaticallyImplyLeading: false,
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: AppConst.white,
+              statusBarIconBrightness: Brightness.dark),
+          // backgroundColor: Color(0xff005b41),
+          title: Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.BaseScreen);
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  size: 3.h,
+                  color: AppConst.black,
                 ),
               ),
-            ),
-            SizedBox(
-              width: 4.w,
-            ),
-            Text("Pay To Store",
-                style: TextStyle(
-                  fontFamily: 'MuseoSans',
-                  color: AppConst.black,
-                  fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                  fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.normal,
-                )),
-            Spacer(),
-            InkWell(
-                onTap: () async {
-                  dynamic value = await Get.to(AddressModel(
-                    isHomeScreen: false,
-                    page: "redeem",
-                  ));
-                  _paymentController.latLng = LatLng(
-                      UserViewModel.currentLocation.value.latitude,
-                      UserViewModel.currentLocation.value.longitude);
-                  await _paymentController.getScanReceiptPageNearMeStoresData();
-                  // if (Constants.isAbleToCallApi)
-                  //   await _homeController.getAllCartsData();
-                },
-                child: SizedBox(
-                  width: 10.w,
-                  child: Icon(
-                    Icons.location_on,
-                    size: 3.h,
+              Spacer(),
+              SizedBox(
+                height: 3.5.h,
+                child: Image(
+                  image: AssetImage(
+                    'assets/images/Redeem.png',
                   ),
-                ))
-          ],
-        ),
-        // title: Obx(
-        //   () => HomeAppBar(
-        //     onTap: () async {
-        //       dynamic value = await Get.to(AddressModel(
-        //         isHomeScreen: true,
-        //       ));
-        //       _paymentController.latLng = LatLng(
-        //           UserViewModel.currentLocation.value.latitude,
-        //           UserViewModel.currentLocation.value.longitude);
-        //       await _paymentController.getRedeemCashInStorePage();
-        //       if (Constants.isAbleToCallApi)
-        //         await _homeController.getAllCartsData();
-        //     },
-        //     isRedDot:
-        //         _homeController.getAllCartsModel.value?.cartItemsTotal != 0
-        //             ? true
-        //             : false,
-        //     address: _homeController.userAddress.value,
-        //     balance: (_myaccount.user.balance ?? 0),
-        //     onTapWallet: () {
-        //       Get.toNamed(AppRoutes.Wallet);
-        //     },
-        //   ),
-        // ),
-      ),
-      body:
-          // Obx(
-          //   () =>
-          Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
-              child: Text(
-                  "The cashback you have earned from each stores are shown below. ",
+                ),
+              ),
+              SizedBox(
+                width: 4.w,
+              ),
+              Text("Pay To Store",
                   style: TextStyle(
                     fontFamily: 'MuseoSans',
                     color: AppConst.black,
-                    fontSize: SizeUtils.horizontalBlockSize * 4,
-                    fontWeight: FontWeight.w300,
+                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                    fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
                   )),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: loyaltyCardList(),
-              ),
-            ),
-          ],
+              Spacer(),
+              InkWell(
+                  onTap: () async {
+                    dynamic value = await Get.to(AddressModel(
+                      isHomeScreen: false,
+                      page: "redeem",
+                    ));
+                    _paymentController.latLng = LatLng(
+                        UserViewModel.currentLocation.value.latitude,
+                        UserViewModel.currentLocation.value.longitude);
+                    await _paymentController.getScanReceiptPageNearMeStoresData();
+                    // if (Constants.isAbleToCallApi)
+                    //   await _homeController.getAllCartsData();
+                  },
+                  child: SizedBox(
+                    width: 10.w,
+                    child: Icon(
+                      Icons.location_on,
+                      size: 3.h,
+                    ),
+                  ))
+            ],
+          ),
+          // title: Obx(
+          //   () => HomeAppBar(
+          //     onTap: () async {
+          //       dynamic value = await Get.to(AddressModel(
+          //         isHomeScreen: true,
+          //       ));
+          //       _paymentController.latLng = LatLng(
+          //           UserViewModel.currentLocation.value.latitude,
+          //           UserViewModel.currentLocation.value.longitude);
+          //       await _paymentController.getRedeemCashInStorePage();
+          //       if (Constants.isAbleToCallApi)
+          //         await _homeController.getAllCartsData();
+          //     },
+          //     isRedDot:
+          //         _homeController.getAllCartsModel.value?.cartItemsTotal != 0
+          //             ? true
+          //             : false,
+          //     address: _homeController.userAddress.value,
+          //     balance: (_myaccount.user.balance ?? 0),
+          //     onTapWallet: () {
+          //       Get.toNamed(AppRoutes.Wallet);
+          //     },
+          //   ),
+          // ),
         ),
+        body:
+            // Obx(
+            //   () =>
+            Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
+                child: Text(
+                    "The cashback you have earned from each stores are shown below. ",
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: AppConst.black,
+                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.normal,
+                    )),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: loyaltyCardList(),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // ),
       ),
-      // ),
     );
   }
 }

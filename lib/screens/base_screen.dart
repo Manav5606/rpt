@@ -8,9 +8,14 @@ import 'package:customer_app/app/ui/pages/my_account/my_account_page.dart';
 import 'package:customer_app/app/ui/pages/search/explorescreen.dart';
 import 'package:customer_app/screens/home/home_screen.dart';
 import 'package:customer_app/widgets/bottom_navigation.dart';
+import 'package:get/get.dart';
 
 class BaseScreen extends StatefulWidget {
-  const BaseScreen({Key? key}) : super(key: key);
+    final int? index;
+
+
+  
+  const BaseScreen({Key? key, this.index}) : super(key: key);
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
@@ -22,12 +27,15 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   void initState() {
     super.initState();
-    BottomNavigation.pageIndex.value = 0;
+    Map arg = Get.arguments ?? {};
+     int? index = arg['index'] ?? 0;
+    BottomNavigation.pageIndex.value = index ?? 0;
     // _controller = PersistentTabController(initialIndex: 0);
   }
 
   @override
   Widget build(BuildContext context) {
+    
     Connectivity connectivity = Connectivity();
     return Scaffold(
         body: StreamBuilder<ConnectivityResult>(

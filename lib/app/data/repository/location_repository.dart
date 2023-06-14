@@ -233,14 +233,14 @@ class LocationRepository {
         // Get.offAllNamed(AppRoutes.BaseScreen);
       } else if (result['error'] == true &&
           result["msg"] == "Customer Address Already Available") {
-        await Snack.bottom('Add Location', result["msg"]);
+        await Snack.bottom('', result["msg"]);
         await MyAccountRepository().getCurrentUser();
         await Future.delayed(Duration(seconds: 2))
             .whenComplete(() => Get.offAllNamed(AppRoutes.BaseScreen));
       } else {
         await Snack.bottom('Add Location Error', result["msg"]);
         await Future.delayed(Duration(seconds: 2))
-            .whenComplete(() => Get.offNamed(AppRoutes.NewLocationScreen));
+            .whenComplete(() => Get.offNamed(AppRoutes.BaseScreen));
       }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
@@ -258,7 +258,8 @@ class LocationRepository {
   }
 
   void BackToExplore() {
-    Get.offNamed(AppRoutes.ExploreScreen);
+    // Get.offNamed(AppRoutes.ExploreScreen);
+    Get.toNamed(AppRoutes.BaseScreen, arguments: {"index": 2});
   }
 
   void BackToScan() {

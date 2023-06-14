@@ -727,172 +727,163 @@ import '../../../data/provider/hive/hive_constants.dart';
 class MyAccountPage extends GetView<MyAccountController> {
   final freshChatController _freshChat = Get.find();
   final AddLocationController _addLocationController = Get.find();
+   Future<bool> handleBackPressed() async {
+    Get.offAllNamed(AppRoutes.BaseScreen);
+    return false;
+  }
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: AppConst.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark,
-      ),
-      child: Scaffold(
-        key: RIKeys.riKey2,
-        body: SafeArea(
-          child: GetX<MyAccountController>(
-            initState: (state) {
-              Get.find<MyAccountController>().getUserData();
-            },
-            builder: (_) {
-              return _.user.id == null
-                  ? LoadingWidget() // throw an 404 error msg
-                  : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: 1.h, left: 5.w, right: 3.w),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        text: "Hi, ${_.user.firstName ?? ""}",
-                                        style: TextStyle(
-                                          color: AppConst.black,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize * 5,
-                                          fontFamily: 'MuseoSans',
-                                          fontWeight: FontWeight.w700,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: "\n${_.user.mobile ?? ""}",
-                                            style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              color: AppConst.black,
-                                              fontWeight: FontWeight.w300,
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  4,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Get.toNamed(AppRoutes.EditProfile),
-                                      child: Text(
-                                        'Edit',
-                                        style: TextStyle(
+    return WillPopScope(
+      onWillPop: handleBackPressed,
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: AppConst.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.dark,
+        ),
+        child: Scaffold(
+          key: RIKeys.riKey2,
+          body: SafeArea(
+            child: GetX<MyAccountController>(
+              initState: (state) {
+                Get.find<MyAccountController>().getUserData();
+              },
+              builder: (_) {
+                return _.user.id == null
+                    ? LoadingWidget() // throw an 404 error msg
+                    : SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 1.h, left: 5.w, right: 3.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          text: "Hi, ${_.user.firstName ?? ""}",
+                                          style: TextStyle(
+                                            color: AppConst.black,
+                                            fontSize:
+                                                SizeUtils.horizontalBlockSize * 5,
                                             fontFamily: 'MuseoSans',
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    4.2,
-                                            color: AppConst.green
-                                            // Color(0xff079b2e),
-                                            ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                color: AppConst.highLightColor,
-                                thickness: 1.h,
-                                height: 3.h,
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 78.h,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 4.w, vertical: 1.h),
-                                    child: Text(
-                                      'Settings',
-                                      style: TextStyle(
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 4.5,
-                                        fontFamily: 'MuseoSans',
-                                        color: AppConst.black,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      ),
-                                    ),
-                                  ),
-                                  ListView.builder(
-                                    itemCount: profileScreenDataNew.length,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      if (index == 3) {
-                                        return GestureDetector(
-                                          onTap: () =>
-                                              Get.to(ReferAndEarnScreen()),
-                                          child: Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: 2.h),
-                                            child: Image.asset(
-                                              'assets/icons/instant2.png',
-                                              fit: BoxFit.fitWidth,
-                                            ),
                                           ),
-                                        );
-                                      }
-                                      return ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 4.w, vertical: .4.h),
-                                        dense: true,
-                                        // trailing: Icon(
-                                        //   Icons.arrow_forward_ios_rounded,
-                                        //   color: AppConst.grey,
-                                        //   size: 2.7.h,
-                                        // ),
-                                        leading: Container(
-                                          width: 10.w,
-                                          height: 5.h,
-                                          decoration: BoxDecoration(
-                                              color: AppConst.veryLightGrey,
-                                              shape: BoxShape.circle),
-                                          child: Center(
-                                              child: profileScreenDataNew[index]
-                                                  .icon),
-                                        ),
-                                        horizontalTitleGap: 3.w,
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              profileScreenDataNew[index].name,
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: "\n${_.user.mobile ?? ""}",
                                               style: TextStyle(
+                                                fontFamily: 'MuseoSans',
+                                                color: AppConst.black,
+                                                fontWeight: FontWeight.w300,
+                                                fontStyle: FontStyle.normal,
                                                 fontSize: SizeUtils
                                                         .horizontalBlockSize *
                                                     4,
-                                                fontFamily: 'MuseoSans',
-                                                color: AppConst.black,
-                                                fontWeight: FontWeight.w400,
-                                                fontStyle: FontStyle.normal,
-                                                letterSpacing: -0.48,
                                               ),
                                             ),
-                                            if (index == 0)
+                                          ],
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () =>
+                                            Get.toNamed(AppRoutes.EditProfile),
+                                        child: Text(
+                                          'Edit',
+                                          style: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              fontWeight: FontWeight.w700,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize:
+                                                  SizeUtils.horizontalBlockSize *
+                                                      4.2,
+                                              color: AppConst.green
+                                              // Color(0xff079b2e),
+                                              ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Divider(
+                                  color: AppConst.highLightColor,
+                                  thickness: 1.h,
+                                  height: 3.h,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 78.h,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 4.w, vertical: 1.h),
+                                      child: Text(
+                                        'Settings',
+                                        style: TextStyle(
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize * 4.5,
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                      itemCount: profileScreenDataNew.length,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        if (index == 3) {
+                                          return GestureDetector(
+                                            onTap: () =>
+                                                Get.to(ReferAndEarnScreen()),
+                                            child: Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 2.h),
+                                              child: Image.asset(
+                                                'assets/icons/instant2.png',
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return ListTile(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 4.w, vertical: .4.h),
+                                          dense: true,
+                                          // trailing: Icon(
+                                          //   Icons.arrow_forward_ios_rounded,
+                                          //   color: AppConst.grey,
+                                          //   size: 2.7.h,
+                                          // ),
+                                          leading: Container(
+                                            width: 10.w,
+                                            height: 5.h,
+                                            decoration: BoxDecoration(
+                                                color: AppConst.veryLightGrey,
+                                                shape: BoxShape.circle),
+                                            child: Center(
+                                                child: profileScreenDataNew[index]
+                                                    .icon),
+                                          ),
+                                          horizontalTitleGap: 3.w,
+                                          title: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
                                               Text(
-                                                "Rs ${_addLocationController.convertor(_.user.balance ?? 0)}",
-                                                // 'Rs ${_.user.balance}',
+                                                profileScreenDataNew[index].name,
                                                 style: TextStyle(
                                                   fontSize: SizeUtils
                                                           .horizontalBlockSize *
@@ -904,48 +895,64 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                   letterSpacing: -0.48,
                                                 ),
                                               ),
-                                          ],
-                                        ),
-                                        onTap: () async {
-                                          if (index == 0) {
-                                            Get.toNamed(AppRoutes.Wallet);
-                                            // Get.toNamed(AppRoutes.EditProfile);
-                                          } else if (index == 1) {
-                                            Get.toNamed(AppRoutes.History);
-                                          } else if (index == 2) {
-                                            Get.to(AddressModel(
-                                              isHomeScreen: true,
-                                              // isSavedAddress: true,
-                                              editOrDelete: true,
-                                              page: "home",
-                                            ));
-
-                                            // Get.toNamed(AppRoutes.MyAddresses);
-                                          } else if (index == 4) {
-                                            Get.to(ReferAndEarnScreen());
-                                          } else if (index == 5) {
-                                            _freshChat.initState();
-                                            await _freshChat
-                                                .showChatConversation(
-                                                    "opening chat support \n");
-                                            // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.mobile ?? ''}
-                                          } else if (index == 6) {
-                                            Get.toNamed(AppRoutes.About);
-                                          } else if (index == 7) {
-                                            _showLogOutDialog();
-                                          }
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
+                                              if (index == 0)
+                                                Text(
+                                                  "Rs ${_addLocationController.convertor(_.user.balance ?? 0)}",
+                                                  // 'Rs ${_.user.balance}',
+                                                  style: TextStyle(
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        4,
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.black,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontStyle: FontStyle.normal,
+                                                    letterSpacing: -0.48,
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          onTap: () async {
+                                            if (index == 0) {
+                                              Get.toNamed(AppRoutes.Wallet);
+                                              // Get.toNamed(AppRoutes.EditProfile);
+                                            } else if (index == 1) {
+                                              Get.toNamed(AppRoutes.History);
+                                            } else if (index == 2) {
+                                              Get.to(AddressModel(
+                                                isHomeScreen: true,
+                                                // isSavedAddress: true,
+                                                editOrDelete: true,
+                                                page: "home",
+                                              ));
+    
+                                              // Get.toNamed(AppRoutes.MyAddresses);
+                                            } else if (index == 4) {
+                                              Get.to(ReferAndEarnScreen());
+                                            } else if (index == 5) {
+                                              _freshChat.initState();
+                                              await _freshChat
+                                                  .showChatConversation(
+                                                      "opening chat support \n");
+                                              // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.mobile ?? ''}
+                                            } else if (index == 6) {
+                                              Get.toNamed(AppRoutes.About);
+                                            } else if (index == 7) {
+                                              _showLogOutDialog();
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-            },
+                          ],
+                        ),
+                      );
+              },
+            ),
           ),
         ),
       ),
