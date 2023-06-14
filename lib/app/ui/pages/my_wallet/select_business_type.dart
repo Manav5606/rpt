@@ -30,7 +30,9 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
   @override
   void initState() {
     super.initState();
-    FocusScope.of(context).unfocus();
+    if (_myWalletcontroller.issignup.value == true) {
+      FocusScope.of(context).unfocus();
+    }
   }
 
   Future<bool> handleBackPressed() async {
@@ -58,7 +60,6 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
     Map arg = Get.arguments ?? {};
     bool signup = arg['signup'] ?? false;
     _myWalletcontroller.issignup.value = signup;
-    
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: AppConst.darkGreen,
@@ -239,27 +240,27 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20)),
                               child: GoogleMap(
-                                initialCameraPosition: CameraPosition(
-                                  target: LatLng(
-                                      _addLocationController
-                                          .currentPosition.latitude,
-                                      _addLocationController
-                                          .currentPosition.longitude),
-                                  zoom: 16,
-                                ),
-                                myLocationEnabled: true,
-                                myLocationButtonEnabled: false,
-                                onCameraIdle:
-                                    _addLocationController.onCameraIdle,
-                                zoomControlsEnabled: false,
-                                  onCameraMove:
-                                      _addLocationController.onCameraMove,
-                                onMapCreated:
-                                    _addLocationController.onMapCreated,
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(
+                                        _addLocationController
+                                            .currentPosition.latitude,
+                                        _addLocationController
+                                            .currentPosition.longitude),
+                                    zoom: 15,
+                                  ),
+                                  myLocationEnabled: true,
+                                  myLocationButtonEnabled: false,
+                                  onCameraIdle:
+                                      _addLocationController.onCameraIdle,
+                                  zoomControlsEnabled: false,
+                                  // onCameraMove:
+                                  //     _addLocationController.onCameraMove,
+                                  onMapCreated:
+                                      _addLocationController.onMapCreated,
                                   markers: _myWalletcontroller.markers
 
                                   // _markers,
-                                    // markers.toSet(),
+                                  // markers.toSet(),
 
                                   //     Set.from([
                                   // Marker(
@@ -275,19 +276,19 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                                   //       BitmapDescriptor.defaultMarker,
                                   // ),
 
-                                //   Marker(
-                                //     position: LatLng(
-                                //         _addLocationController
-                                //             .currentPosition.latitude,
-                                //         _addLocationController
-                                //             .currentPosition.longitude),
-                                //     markerId: MarkerId('5'),
-                                //     icon: _myWalletcontroller
-                                //             .currentPositionIcon ??
-                                //         BitmapDescriptor.defaultMarker,
-                                //   )
-                                // ]),
-                              ),
+                                  //   Marker(
+                                  //     position: LatLng(
+                                  //         _addLocationController
+                                  //             .currentPosition.latitude,
+                                  //         _addLocationController
+                                  //             .currentPosition.longitude),
+                                  //     markerId: MarkerId('5'),
+                                  //     icon: _myWalletcontroller
+                                  //             .currentPositionIcon ??
+                                  //         BitmapDescriptor.defaultMarker,
+                                  //   )
+                                  // ]),
+                                  ),
                             ),
                           ),
                           // Padding(
@@ -298,11 +299,11 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                           //     child: Image.asset('assets/icons/pinsmall.png'),
                           //   ),
                           // ),
-                          Container(
-                            height: 38.h,
-                            width: double.infinity,
-                            color: AppConst.transparent,
-                          )
+                          // Container(
+                          //   height: 38.h,
+                          //   width: double.infinity,
+                          //   color: AppConst.transparent,
+                          // )
                         ],
                       ),
                     ],

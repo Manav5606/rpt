@@ -127,7 +127,7 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                               width: 2.w,
                             ),
                             Container(
-                              width: 65.w,
+                              width: 64.w,
                               child: Text(
                                 _addLocationController.SortByCharactor(
                                     this.address.toString(), ","),
@@ -157,8 +157,8 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                             log('value is:--->>>$value');
                           },
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 1.h),
+                            padding: EdgeInsets.only(
+                                left: 2.w, top: 1.h, bottom: 1.h),
                             child: Container(
                               // width: 20.w,
                               // height: 4.h,

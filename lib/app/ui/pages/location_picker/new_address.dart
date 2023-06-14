@@ -104,11 +104,8 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      
-
                       Stack(
                         children: [
-                          
                           Container(
                             height: 28.h,
                             child: GoogleMap(
@@ -137,103 +134,118 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                             width: double.infinity,
                             color: AppConst.transparent,
                           ),
-                         
                           (widget.storesCount != 0)
-                          ? Positioned(
-                            top: 2.h,
-                            left: 0,
-                            right: 0,
-                            child: InkWell(  
-                                onTap: () async {
-                                  await _addLocationController
-                                      .getClaimRewardsPageData();
-                                  Get.toNamed(AppRoutes.WalletOffer);
-                                },
-                                child: Container(
-                                  height: 8.h,
-                                  decoration:
-                                      BoxDecoration(color: Color(0xfff0e6fa)),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 3.w,
-                                      
-                                    ).copyWith(top: 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Center(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  "\u{20B9}${widget.cashBackCount} Cashback. Want to know?",
-                                                  style: TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: Color(0xff2b0064),
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        4,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontStyle: FontStyle.normal,
-                                                  )),
-                                              RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                    text:
-                                                        "Earn \u{20B9}${widget.cashBackCount} from the ",
-                                                    style: TextStyle(
-                                                      fontFamily: 'MuseoSans',
-                                                      color: Color(0xff2b0064),
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          3.2,
-                                                      fontWeight: FontWeight.w500,
-                                                      fontStyle: FontStyle.normal,
-                                                    )),
-                                                TextSpan(
-                                                    text:
-                                                        "${widget.storesCount} Stores",
-                                                    style: TextStyle(
-                                                      fontFamily: 'MuseoSans',
-                                                      color: Color(0xff2b0064),
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          3.2,
-                                                      fontWeight: FontWeight.w700,
-                                                      fontStyle: FontStyle.normal,
-                                                    )),
-                                                TextSpan(
-                                                    text: " near your location",
-                                                    style: TextStyle(
-                                                      fontFamily: 'MuseoSans',
-                                                      color: Color(0xff2b0064),
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          3.2,
-                                                      fontWeight: FontWeight.w500,
-                                                      fontStyle: FontStyle.normal,
-                                                    )),
-                                              ]))
-                                            ],
-                                          ),
+                              ? Positioned(
+                                  top: 2.h,
+                                  left: 0,
+                                  right: 0,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await _addLocationController
+                                          .getClaimRewardsPageData();
+                                      Get.toNamed(AppRoutes.WalletOffer);
+                                    },
+                                    child: Container(
+                                      height: 8.h,
+                                      decoration: BoxDecoration(
+                                          color: Color(0xfff0e6fa)
+                                              .withOpacity(0.8)),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 3.w,
                                         ),
-                                        Icon(
-                                          Icons.arrow_forward,
-                                          size: 3.h,
-                                          color: Color(0xff2b0064),
-                                        )
-                                      ],
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Center(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      "\u{20B9}${widget.cashBackCount} Cashback. Want to know?",
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color:
+                                                            Color(0xff2b0064),
+                                                        fontSize: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            4,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
+                                                  RichText(
+                                                      text: TextSpan(children: [
+                                                    TextSpan(
+                                                        text:
+                                                            "Earn \u{20B9}${widget.cashBackCount} from the ",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'MuseoSans',
+                                                          color:
+                                                              Color(0xff2b0064),
+                                                          fontSize: SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              3.2,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        )),
+                                                    TextSpan(
+                                                        text:
+                                                            "${widget.storesCount} Stores",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'MuseoSans',
+                                                          color:
+                                                              Color(0xff2b0064),
+                                                          fontSize: SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              3.2,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        )),
+                                                    TextSpan(
+                                                        text:
+                                                            " near your location",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'MuseoSans',
+                                                          color:
+                                                              Color(0xff2b0064),
+                                                          fontSize: SizeUtils
+                                                                  .horizontalBlockSize *
+                                                              3.2,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        )),
+                                                  ]))
+                                                ],
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.arrow_forward,
+                                              size: 3.h,
+                                              color: Color(0xff2b0064),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                          )
-                          : SizedBox(),
+                                )
+                              : SizedBox(),
                         ],
                       ),
                       Padding(
