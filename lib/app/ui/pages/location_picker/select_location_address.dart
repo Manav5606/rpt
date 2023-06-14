@@ -45,7 +45,7 @@ class _SelectLocationAddressState extends State<SelectLocationAddress> {
   @override
   Widget build(BuildContext context) {
     Map arg = Get.arguments ?? {};
-    locationListAvilable = arg['locationListAvilable'];
+    locationListAvilable = arg['locationListAvilable'] ?? false;
     issignup = arg['issignup'] ?? false;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(

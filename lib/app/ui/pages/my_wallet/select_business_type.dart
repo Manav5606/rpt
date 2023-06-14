@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/address_model.dart';
@@ -31,7 +32,9 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
   void initState() {
     super.initState();
     if (_myWalletcontroller.issignup.value == true) {
-      FocusScope.of(context).unfocus();
+      Timer(Duration(seconds: 1), () {
+        FocusScope.of(context).unfocus();
+      });
     }
   }
 
@@ -205,10 +208,10 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                             GestureDetector(
                               onTap: () async {
                                 dynamic value = await Get.to(AddressModel(
-                                  isHomeScreen: false,
-                                  page: "claimmore",
-                                  isRecentAddress: false,
-                                ));
+                                    isHomeScreen: false,
+                                    page: "claimmore",
+                                    isRecentAddress: false,
+                                    issignup: signup));
                               },
                               child: Row(
                                 children: [

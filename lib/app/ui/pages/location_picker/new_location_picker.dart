@@ -5,6 +5,7 @@ import 'package:customer_app/app/controller/my_wallet_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/edit_address_screen.dart';
 import 'package:customer_app/app/ui/pages/location_picker/new_address.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
+import 'package:customer_app/routes/app_list.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/bottom_confim_location.dart';
@@ -29,6 +30,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
   final AddLocationController _addLocationController = Get.find();
   final MyWalletController _myWalletController = Get.find();
   bool isHome = false;
+  bool? issignup;
   String page = "";
 
   @override
@@ -36,11 +38,11 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     // print(_addLocationController.currentPosition.latitude);
     Map arg = Get.arguments ?? {};
     _addLocationController.isRecentAddress.value = arg['isFalse'] ?? true;
-
+    issignup = arg['issignup'] ?? false;
     isHome = arg['isHome'] ?? true;
     page = arg['page'] ?? "";
     log("_addLocationController.isRecentAddress.value :${_addLocationController.isRecentAddress.value}");
-    _addLocationController.initLocation();
+    // _addLocationController.initLocation();
     return Scaffold(
       appBar: AppBar(
         // automaticallyImplyLeading: false,
@@ -90,63 +92,65 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
           Obx(
             () => _addLocationController.loading.value
                 ? BottomConfirmLocationSheetShimmer()
-                : Expanded(
-                    child: BottomConfirmLocationSheet(
-                      address:
-                          "${_addLocationController.currentAddress.value} ",
-                      notifyParent: () async {
-                        if (page == "claimmore") {
-                          _addLocationController.isRecentAddress.value = true;
-                          UserViewModel.setLocation(LatLng(
-                              _addLocationController
+                : BottomConfirmLocationSheet(
+                    address: "${_addLocationController.currentAddress.value} ",
+                    notifyParent: () async {
+                      if (page == "claimmore") {
+                        _addLocationController.isRecentAddress.value = true;
+                        UserViewModel.setLocation(LatLng(
+                            _addLocationController
+                                .middlePointOfScreenOnMap!.latitude,
+                            _addLocationController
+                                .middlePointOfScreenOnMap!.longitude));
+
+                        await _myWalletController
+                            .getAllWalletByCustomerByBusinessType();
+                        int? value = await _myWalletController
+                            .updateBusinesstypeWallets();
+                        Get.toNamed(AppRoutes.SelectBusinessType,
+                            arguments: {"signup": issignup});
+                      } else {
+                        await _addLocationController.getClaimRewardsPageCount();
+                        await _addLocationController.getClaimRewardsPageData();
+                        _addLocationController.isRecentAddress.value = true;
+                        Get.to(() => NewAddressScreen(
+                              latt: _addLocationController
                                   .middlePointOfScreenOnMap!.latitude,
-                              _addLocationController
-                                  .middlePointOfScreenOnMap!.longitude));
-
-                          await _myWalletController
-                              .getAllWalletByCustomerByBusinessType();
-                          int? value = await _myWalletController
-                              .updateBusinesstypeWallets();
-
-                          Get.back();
-                        } else {
-                          await _addLocationController
-                              .getClaimRewardsPageCount();
-                          await _addLocationController
-                              .getClaimRewardsPageData();
-                          _addLocationController.isRecentAddress.value = true;
-                          Get.to(() => NewAddressScreen(latt: _addLocationController.middlePointOfScreenOnMap!.latitude,
-                          longg: _addLocationController.middlePointOfScreenOnMap!.longitude,
-                          cashBackCount:  _addLocationController.totalCashBack.value,
-                          add: _addLocationController.currentAddress.value,
-                          storesCount: _addLocationController.storesCount.value,
-                          page: page,));
-                        }
-                      },
-                      isFullAddesss:_addLocationController.isFullAddressBottomSheet.value,
-                      getUserLocation: _addLocationController.getCurrentAddress,
-                      isHome: isHome,
-                      skipButton: () async {
-                        await _addLocationController.addCustomerAddress(
-                          lng: _addLocationController
-                                  .middlePointOfScreenOnMap?.longitude ??
-                              0,
-                          lat: _addLocationController
-                                  .middlePointOfScreenOnMap?.latitude ??
-                              0,
-                          address: _addLocationController.currentAddress.value
-                              .toString(),
-                          title: '',
-                          house: '',
-                          apartment: '',
-                          directionToReach: '',
-                        );
-                      },
-                      getCurrentLocation: () async {
-                        await _addLocationController.getCurrentLocation();
-                      },
-                      page: page,
-                    ),
+                              longg: _addLocationController
+                                  .middlePointOfScreenOnMap!.longitude,
+                              cashBackCount:
+                                  _addLocationController.totalCashBack.value,
+                              add: _addLocationController.currentAddress.value,
+                              storesCount:
+                                  _addLocationController.storesCount.value,
+                              page: page,
+                            ));
+                      }
+                    },
+                    isFullAddesss:
+                        _addLocationController.isFullAddressBottomSheet.value,
+                    getUserLocation: _addLocationController.getCurrentAddress,
+                    isHome: isHome,
+                    skipButton: () async {
+                      await _addLocationController.addCustomerAddress(
+                        lng: _addLocationController
+                                .middlePointOfScreenOnMap?.longitude ??
+                            0,
+                        lat: _addLocationController
+                                .middlePointOfScreenOnMap?.latitude ??
+                            0,
+                        address: _addLocationController.currentAddress.value
+                            .toString(),
+                        title: '',
+                        house: '',
+                        apartment: '',
+                        directionToReach: '',
+                      );
+                    },
+                    getCurrentLocation: () async {
+                      await _addLocationController.getCurrentLocation();
+                    },
+                    page: page,
                   ),
           ),
 
@@ -289,4 +293,3 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     );
   }
 }
-

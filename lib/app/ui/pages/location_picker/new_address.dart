@@ -690,9 +690,8 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                             : false)
                                         : true)
                                 ? () async {
-                                    print(widget.page! + "=====");
-                                    _addLocationController
-                                        .bottomFullAddressLoading.value = true;
+                                    // _addLocationController
+                                    //     .bottomFullAddressLoading.value = true;
 
                                     try {
                                       if (widget.storesCount != 0 &&
@@ -702,14 +701,10 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                                 .storesCount.value !=
                                             _addLocationController
                                                 .updatedStoresCount.value) {
-                                          print("====>Changes");
-
                                           /// Changes
                                           await _addLocationController
                                               .addMultipleStoreToWallet();
                                         } else {
-                                          print("====> No Changes");
-
                                           /// No Changes
 
                                           await _addLocationController
@@ -774,9 +769,9 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                               .SelectedAddressForCart();
                                         }
 
-                                        _addLocationController
-                                            .bottomFullAddressLoading
-                                            .value = false;
+                                        // _addLocationController
+                                        //     .bottomFullAddressLoading
+                                        //     .value = false;
                                       } else {
                                         await _addLocationController
                                             .addCustomerAddress(
@@ -788,7 +783,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                                         .middlePointOfScreenOnMap
                                                         ?.latitude ??
                                                     0,
-                                                address: widget.add!,
+                                                address: widget.add ?? "",
                                                 title:
                                                     "${_tags[_selectedTag]}${_selectedTag == 3 ? "${_otherController.text}" : ""}",
                                                 house: _floorController.text,
@@ -836,14 +831,14 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                               .SelectedAddressForCart();
                                         }
 
-                                        _addLocationController
-                                            .bottomFullAddressLoading
-                                            .value = false;
+                                        // _addLocationController
+                                        //     .bottomFullAddressLoading
+                                        //     .value = false;
                                       }
                                     } catch (e) {
-                                      _addLocationController
-                                          .bottomFullAddressLoading
-                                          .value = false;
+                                      // _addLocationController
+                                      //     .bottomFullAddressLoading
+                                      //     .value = false;
                                     }
                                     _addLocationController.isLoading.value =
                                         false;

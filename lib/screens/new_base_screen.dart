@@ -1072,41 +1072,76 @@ class ClaimMoreButton extends StatelessWidget {
                     ))
               ],
             ),
-            GestureDetector(
-              onTap: () async {
-                UserViewModel.setLocation(LatLng(
-                    _addLocationController.currentPosition.latitude,
-                    _addLocationController.currentPosition.longitude));
-                await _myWalletController
-                    .getAllWalletByCustomerByBusinessType();
-                int? value =
-                    await _myWalletController.updateBusinesstypeWallets();
-                if (value != null) {
-                  _addLocationController.isRecentAddress.value = false;
-                  Get.toNamed(
-                    AppRoutes.SelectBusinessType,
-                  );
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: AppConst.green,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                  child: Center(
-                    child: Text(
-                      'Claim More',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontFamily: 'MuseoSans',
-                        fontWeight: FontWeight.w700,
+            Obx(
+              (() => (_addLocationController.isGpson.value == true)
+                  ? GestureDetector(
+                      onTap: () async {
+                        _addLocationController
+                            .getCurrentLocation2()
+                            .then((value) async {
+                          UserViewModel.setLocation(LatLng(
+                              _addLocationController.currentPosition.latitude,
+                              _addLocationController
+                                  .currentPosition.longitude));
+                          await _myWalletController
+                              .getAllWalletByCustomerByBusinessType();
+                          int? value = await _myWalletController
+                              .updateBusinesstypeWallets();
+                          if (value != null) {
+                            _addLocationController.isRecentAddress.value =
+                                false;
+                            Get.toNamed(
+                              AppRoutes.SelectBusinessType,
+                            );
+                          }
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppConst.green,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 1.h),
+                          child: Center(
+                            child: Text(
+                              'Claim More',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'MuseoSans',
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
+                    )
+                  : InkWell(
+                      onTap: (() {
+                        _addLocationController.getCurrentLocation2();
+                      }),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppConst.darkGreen,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 1.h),
+                          child: Center(
+                            child: Text(
+                              'Enable Location',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'MuseoSans',
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
             )
           ],
         ),

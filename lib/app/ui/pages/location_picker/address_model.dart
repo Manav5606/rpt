@@ -30,6 +30,7 @@ class AddressModel extends StatefulWidget {
   final String? page;
   final bool editOrDelete;
   final bool isRecentAddress;
+  bool issignup;
 
   AddressModel(
       {Key? key,
@@ -37,6 +38,7 @@ class AddressModel extends StatefulWidget {
       this.isSavedAddress = true,
       this.isRecentAddress = true,
       this.editOrDelete = false,
+      this.issignup = false,
       this.page})
       : super(key: key);
 
@@ -360,22 +362,25 @@ class _AddressModelState extends State<AddressModel> {
                                           // Get.back();
 
                                           Get.toNamed(
-                                            AppRoutes.SelectBusinessType,
-                                          );
+                                              AppRoutes.SelectBusinessType,
+                                              arguments: {
+                                                "signup": widget.issignup
+                                              });
                                         } else {
                                           Get.toNamed(
                                               AppRoutes.NewLocationScreen,
                                               arguments: {
                                                 "isFalse": false,
                                                 "page": widget.page,
+                                                "issignup": widget.issignup,
                                                 // "isHome": widget.isHomeScreen
                                               });
                                         }
                                       }
                                     });
 
-                                    _addLocationController
-                                        .isFullAddressBottomSheet.value = false;
+                                    // _addLocationController
+                                    //     .isFullAddressBottomSheet.value = false;
                                   },
                                   child: Padding(
                                     padding:
@@ -525,7 +530,9 @@ class _AddressModelState extends State<AddressModel> {
                                                               .NewLocationScreen,
                                                           arguments: {
                                                             "isFalse": true,
-                                                            "page": widget.page
+                                                            "page": widget.page,
+                                                            "issignup":
+                                                                widget.issignup,
                                                             // "isHome": widget.isHomeScreen
                                                           })?.whenComplete(() =>
                                                           Get.back(
@@ -778,6 +785,9 @@ class _AddressModelState extends State<AddressModel> {
                                                                 int? value =
                                                                     await _myWalletController
                                                                         .updateBusinesstypeWallets();
+                                                                _addLocationController
+                                                                    .isRecentAddress
+                                                                    .value = true;
                                                               } else {
                                                                 _homeController
                                                                     .homePageFavoriteShopsList
@@ -796,7 +806,16 @@ class _AddressModelState extends State<AddressModel> {
                                                                   ? Get.offAllNamed(
                                                                       AppRoutes
                                                                           .BaseScreen) // update the intialize map lat and lng
-                                                                  : Get.back();
+                                                                  : (widget.page ==
+                                                                          "claimmore")
+                                                                      ? Get.toNamed(
+                                                                          AppRoutes
+                                                                              .SelectBusinessType,
+                                                                          arguments: {
+                                                                              "signup": widget.issignup
+                                                                            })
+                                                                      : Get
+                                                                          .back();
                                                               _homeController
                                                                       .isLoading
                                                                       .value =
