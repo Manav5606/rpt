@@ -53,7 +53,7 @@ void configLoading() {
     ..loadingStyle = EasyLoadingStyle.custom
     // ..indicatorSize = 45.0
     ..radius = 10.0
-    // ..progressColor = Colors.yellow
+    // ..progressColor = Colors.
     ..backgroundColor = AppConst.lightGrey
     ..indicatorColor = hexToColor('#64DEE0')
     ..textColor = hexToColor('#64DEE0')
