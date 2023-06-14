@@ -184,6 +184,7 @@ class ListViewChild extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        
         InkWell(
           highlightColor: AppConst.highLightColor,
           onTap: () async {
@@ -303,6 +304,7 @@ class ListViewChild extends StatelessWidget {
             ),
           ),
         ),
+        // SizedBox(height: 40.h,),
         // SizedBox(
         //   height: 1.h,
         // ),
@@ -623,6 +625,7 @@ class ListViewChild extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 1.h),
           child: Container(height: 1.2.w, color: AppConst.veryLightGrey),
         ),
+       
       ],
     );
   }

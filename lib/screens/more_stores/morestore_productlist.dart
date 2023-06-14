@@ -256,16 +256,26 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      // InkWell(
+                                      //     onTap: () {
+                                      //       Get.back();
+                                      //       // Get.toNamed(AppRoutes.BaseScreen);
+                                      //     },
+                                      //     child: Icon(
+                                      //       Icons.arrow_back,
+                                      //       size: 3.h,
+                                      //       color: AppConst.black,
+                                      //     )),
                                       InkWell(
-                                          onTap: () {
+                                        onTap: (){
                                             Get.back();
-                                            // Get.toNamed(AppRoutes.BaseScreen);
-                                          },
-                                          child: Icon(
-                                            Icons.arrow_back,
-                                            size: 3.h,
-                                            color: AppConst.black,
-                                          )),
+                                        },
+                                        child: Container(
+                                            height: 20,
+                                            width: 5.w,
+                                            // color: AppConst.black,
+                                            child: SvgPicture.asset('assets/icons/Back button.svg',color: AppConst.black,)),
+                                      ),
                                       SizedBox(
                                         width: 4.w,
                                       ),

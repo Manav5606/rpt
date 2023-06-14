@@ -116,6 +116,7 @@ class _StoreListScreenState extends State<StoreListScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               StoreWithProductsList(),
+               SizedBox(height: 40.h,),
             ],
           ),
         ),
