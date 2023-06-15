@@ -252,77 +252,177 @@ class ExploreSearchProducts extends StatelessWidget {
         children: [
           Row(
             children: [
-              DisplayProductImage(
-                logo: product.logo ?? product.img,
+              Container(
+                height: 10.h,
+                width: 30.w,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                child: (product.logo == null || product.logo == "")
+                    ? Image.asset("assets/images/noproducts.png")
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(
+                          product.logo
+                              // chatOrderController.cartIndex.value?.rawItems?[index].logo
+                              ??
+                              '',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return SizedBox(
+                                height: 10.h,
+                                width: 30.w,
+                                child: Image.asset(
+                                    "assets/images/noproducts.png"));
+                          },
+                        ),
+                      ),
               ),
               SizedBox(
-                width: 2.w,
+                width: 3.w,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  DisplayProductName(
-                    name: product.name,
-                  ),
-                  SizedBox(
-                    height: 0.5.h,
-                  ),
-                  (product.cashback == null || product.cashback == "")
-                      ? SizedBox()
-                      : Text("Cashback \u20b9${product.cashback.toString()}",
-                          style: TextStyle(
-                            fontFamily: 'MuseoSans',
-                            color: AppConst.black,
-                            fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          )),
-                  SizedBox(
-                    height: 0.5.h,
+                  Container(
+                    width: 60.w,
+                    height: 4.5.h,
+                    // color: AppConst.yellow,
+                    child: Text(
+                        "${product.name ?? ''} - ${product.unit ?? "1 unit"}",
+                        maxLines: 2,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'MuseoSans',
+                          color: Colors.black87,
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 8.sp
+                              : 9.5.sp,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        )),
                   ),
                   Container(
+                    width: 60.w,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(4.0),
-                              height: 2.5.h,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppConst.lightGrey,
-                                  border: Border.all(
-                                    width: 0.1,
-                                    color: AppConst.lightGrey,
-                                  )),
-                              child: Image(
-                                image: AssetImage(
-                                  'assets/images/Store.png',
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 1.w,
-                            ),
-                            Container(
-                              width: 52.w,
-                              child: Text(product.store?.name ?? "",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.black,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.5,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                            ),
-                          ],
+                        Text(
+                            "\u{20b9}${product.selling_price?.toStringAsFixed(2) ?? 00}  ",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.black,
+                              fontSize:
+                                  (SizerUtil.deviceType == DeviceType.tablet)
+                                      ? 10.sp
+                                      : 12.sp,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                            )),
+                        Text(
+                            "\u{20b9}${product.mrp?.toStringAsFixed(2) ?? 00} ",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.grey,
+                              fontSize:
+                                  (SizerUtil.deviceType == DeviceType.tablet)
+                                      ? 7.5.sp
+                                      : 9.5.sp,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            )),
+                        SizedBox(
+                          width: 1.w,
                         ),
+                        (product.cashback != null &&
+                                (product.cashback ?? 0) > 0)
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: Color(0xffe6faf1),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                      "\u{20b9}${product.cashback ?? 00} OFF ",
+                                      //  "\u{20b9}${product.cashback ?? 00} CASHBACK ",
+                                      style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: Colors.green.shade900,
+                                        fontSize: (SizerUtil.deviceType ==
+                                                DeviceType.tablet)
+                                            ? 8.sp
+                                            : 9.5.sp,
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                                ),
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
+                  ),
+                  // (product.cashback == null || product.cashback == "")
+                  //     ? SizedBox()
+                  //     : Text("Cashback \u20b9${product.cashback.toString()}",
+                  //         style: TextStyle(
+                  //           fontFamily: 'MuseoSans',
+                  //           color: AppConst.black,
+                  //           fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                  //           fontWeight: FontWeight.w700,
+                  //           fontStyle: FontStyle.normal,
+                  //         )),
+                  // SizedBox(
+                  //   height: 0.5.h,
+                  // ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Container(
+                    width: 60.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   children: [
+                        //     Container(
+                        //       padding: const EdgeInsets.all(4.0),
+                        //       height: 2.5.h,
+                        //       decoration: BoxDecoration(
+                        //           shape: BoxShape.circle,
+                        //           color: AppConst.lightGrey,
+                        //           border: Border.all(
+                        //             width: 0.1,
+                        //             color: AppConst.lightGrey,
+                        //           )),
+                        //       child: Image(
+                        //         image: AssetImage(
+                        //           'assets/images/Store.png',
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 1.w,
+                        //     ),
+                        //     Container(
+                        //       width: 52.w,
+                        //       child: Text(product.store?.name ?? "",
+                        //           maxLines: 1,
+                        //           overflow: TextOverflow.ellipsis,
+                        //           style: TextStyle(
+                        //             fontFamily: 'MuseoSans',
+                        //             color: AppConst.black,
+                        //             fontSize:
+                        //                 SizeUtils.horizontalBlockSize * 3.5,
+                        //             fontWeight: FontWeight.w700,
+                        //             fontStyle: FontStyle.normal,
+                        //           )),
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(
                           width: 1.w,
                         ),
@@ -336,22 +436,26 @@ class ExploreSearchProducts extends StatelessWidget {
                             );
                           }),
                           child: Container(
-                            height: 3.h,
-                            width: 15.w,
+                            // width: 17.w,
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: AppConst.darkGreen, width: 0.8),
-                              borderRadius: BorderRadius.circular(12),
-                              color: Color(0xffe6faf1),
+                              border:
+                                  Border.all(color: AppConst.grey, width: 0.5),
+                              borderRadius: BorderRadius.circular(18),
+                              // color: Color(0xffe6faf1),
                             ),
-                            child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 3.w, vertical: 0.5.h),
                               child: Text(
                                 " Add +",
                                 style: TextStyle(
                                   fontFamily: 'MuseoSans',
                                   color: AppConst.darkGreen,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: (SizerUtil.deviceType ==
+                                          DeviceType.tablet)
+                                      ? 9.sp
+                                      : 11.5.sp,
+                                  fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
                                 ),
                               ),
@@ -432,7 +536,7 @@ class ExploreSearchProducts extends StatelessWidget {
           ),
           Padding(
             padding:
-                EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 0.5.h),
+                EdgeInsets.only(left: 2.w, right: 2.w, top: 2.h, bottom: 0.5.h),
             child: Container(
               height: 1,
               width: double.infinity,

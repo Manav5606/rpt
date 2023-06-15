@@ -993,6 +993,8 @@ query($lat: Float, $lng: Float) {
     _id
     logo 
     mrp
+    selling_price
+    unit
     cashback
     store{
        name
@@ -1006,9 +1008,12 @@ query($lat: Float, $lng: Float) {
     inventories
       {
         mrp
+        selling_price
         img
         name
+        unit
         _id
+        
      
   store{
        name
@@ -1202,6 +1207,7 @@ wallet_amount
       inventories
       {
         mrp
+        selling_price
         unit
         name
         img

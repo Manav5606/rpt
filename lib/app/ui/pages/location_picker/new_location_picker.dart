@@ -93,7 +93,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
             () => _addLocationController.loading.value
                 ? BottomConfirmLocationSheetShimmer()
                 : BottomConfirmLocationSheet(
-                    address: "${_addLocationController.currentAddress.value} ",
+                    address: "${_addLocationController.currentAddress.value}",
                     notifyParent: () async {
                       if (page == "claimmore") {
                         _addLocationController.isRecentAddress.value = true;

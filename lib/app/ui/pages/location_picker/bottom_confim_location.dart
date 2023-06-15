@@ -129,8 +129,10 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                             Container(
                               width: 64.w,
                               child: Text(
-                                _addLocationController.SortByCharactor(
-                                    this.address.toString(), ","),
+                                (address != null && address != "")
+                                    ? _addLocationController.SortByCharactor(
+                                        this.address.toString(), ",")
+                                    : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
