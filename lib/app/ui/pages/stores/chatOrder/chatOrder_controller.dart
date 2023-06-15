@@ -7,10 +7,13 @@ import 'package:customer_app/app/ui/pages/stores/chatOrder/chatorder_service.dar
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/screens/home/models/GetAllCartsModel.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_size_getter/image_size_getter.dart';
 
 import '../../../../../screens/more_stores/morestore_controller.dart';
+import '../../../../../widgets/snack.dart';
 
 class ChatOrderController extends GetxController {
   Rx<Carts?> cartIndex = Carts().obs;
@@ -21,6 +24,7 @@ class ChatOrderController extends GetxController {
   RxString oldItem = ''.obs;
   RxString Oldlogo = ''.obs;
   RxString imagePath = ''.obs;
+  RxString compressedImagePath = ''.obs;
   RxString logo = ''.obs;
   RxInt oldQuntity = 0.obs;
   final TextEditingController itemController = TextEditingController();
@@ -135,10 +139,42 @@ class ChatOrderController extends GetxController {
 
   Future<void> imagePicker() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
     if (image != null) {
       file = File(image.path);
       imagePath.value = file!.path;
-      log('file :${imagePath.value}');
+      log('file: ${imagePath.value}');
+
+      if (file!.lengthSync() > 5 * 1024 * 1024) {
+        imagePath.value = '';
+        await Snack.bottom(
+            'Invalid Image Size', 'Image size should be less than 5 MB');
+        return;
+      }
+
+      // Image size is within the limit, compress the image
+      final XFile? compressedImage = await compressImage(image);
+      if (compressedImage != null) {
+        compressedImagePath.value = compressedImage.path;
+        log('file: ${compressedImagePath.value}');
+      } else {
+        // Handle the case where image compression fails
+      }
     }
+  }
+
+  Future<XFile?> compressImage(XFile image) async {
+    final originalImagePath = image.path;
+    final compressedImagePath = "${originalImagePath}_compressed.jpg";
+
+    final compressedImage = await FlutterImageCompress.compressAndGetFile(
+      originalImagePath,
+      compressedImagePath,
+      quality: 70, // Adjust the quality as per your requirements
+      minHeight: 1920, // Set the minimum height of the compressed image
+      minWidth: 1080, // Set the minimum width of the compressed image
+    );
+
+    return compressedImage != null ? XFile(compressedImagePath) : null;
   }
 }

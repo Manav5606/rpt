@@ -443,24 +443,27 @@ class _ChatOrderScreenState extends State<ChatOrderScreen> {
                                 chatOrderController.Oldlogo.value != ""))
                         ? 49.w
                         : 62.w,
-                    child: TextFormField(
-                      inputFormatters: [
-                        NoLeadingSpaceFormatter(),
-                      ],
-                      controller: chatOrderController.itemController,
-                      keyboardType: TextInputType.multiline,
-                      cursorColor: AppConst.black,
-                      maxLines: null,
-                      style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4),
-                      onChanged: (value) {},
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 2.w),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: TextFormField(
+                        inputFormatters: [
+                          NoLeadingSpaceFormatter(),
+                        ],
+                        controller: chatOrderController.itemController,
+                        keyboardType: TextInputType.multiline,
+                        cursorColor: AppConst.black,
+                        maxLines: null,
+                        style: TextStyle(
+                            fontSize: SizeUtils.horizontalBlockSize * 4),
+                        onChanged: (value) {},
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 2.w),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          hintText: 'Type your Order Here',
                         ),
-                        hintText: 'Type your Order Here',
                       ),
                     ),
                   ),
