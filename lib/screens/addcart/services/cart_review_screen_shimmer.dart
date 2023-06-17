@@ -24,143 +24,72 @@ class CartReviewScreenShimmer extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             horizontal: SizeUtils.horizontalBlockSize * 2,
             vertical: SizeUtils.verticalBlockSize * 1),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 3.w, vertical: 1.h),
-                          child: ShimmerEffect(
-                            child: Container(
-                              width: double.infinity,
-                              height: 10.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3.w),
-                                  color: Color(0xfffe6faf1)),
-                            ),
-                          ),
-                        ),
-                        ListView.separated(
-                          itemCount: _addCartController
-                                  .reviewCart.value?.data?.products?.length ??
-                              0,
-                          separatorBuilder: (context, index) {
-                            return SizedBox(
-                              height: SizeUtils.verticalBlockSize * 1,
-                            );
-                          },
-                          shrinkWrap: true,
-                          primary: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, i) {
-                            return RevewCartShimmerWidget();
-                          },
-                        ),
-                        ListView.separated(
-                          itemCount: _addCartController
-                                  .reviewCart.value?.data?.rawItems?.length ??
-                              0,
-                          separatorBuilder: (context, index) {
-                            return SizedBox(
-                              height: SizeUtils.verticalBlockSize * 1,
-                            );
-                          },
-                          shrinkWrap: true,
-                          primary: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, i) {
-                            return RevewCartShimmerWidget();
-                          },
-                        ),
-                        ListView.separated(
-                          itemCount: _addCartController.reviewCart.value?.data
-                                  ?.inventories?.length ??
-                              0,
-                          separatorBuilder: (context, index) {
-                            return SizedBox(
-                              height: SizeUtils.verticalBlockSize * 1,
-                            );
-                          },
-                          shrinkWrap: true,
-                          primary: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, i) {
-                            return RevewCartShimmerWidget();
-                          },
-                        ),
-                      ],
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                child: ShimmerEffect(
+                  child: Container(
+                    width: double.infinity,
+                    height: 10.h,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3.w),
+                        color: Color(0xfffe6faf1)),
                   ),
                 ),
-              ],
-            ),
-            // Container(
-            //   padding:
-            //       EdgeInsets.only(left: 2.w, bottom: 1.h, right: 2.w, top: 1.h),
-            //   height: 16.h,
-            //   color: AppConst.white,
-            //   child: Column(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: [
-            //       Column(
-            //         children: [
-            //           Row(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               ShimmerEffect(
-            //                 child: Icon(
-            //                   Icons.location_on_rounded,
-            //                   color: AppConst.black,
-            //                 ),
-            //               ),
-            //               SizedBox(
-            //                 width: 2.w,
-            //               ),
-            //               ShimmerEffect(
-            //                 child: Container(
-            //                   width: 70.w,
-            //                   height: 2.5.h,
-            //                   color: AppConst.black,
-            //                 ),
-            //               ),
-            //               SizedBox(
-            //                 width: 2.w,
-            //               ),
-            //               ShimmerEffect(
-            //                 child: Icon(
-            //                   Icons.keyboard_arrow_down_rounded,
-            //                   color: AppConst.grey,
-            //                 ),
-            //               ),
-            //               SizedBox(
-            //                 width: 2.w,
-            //               ),
-            //             ],
-            //           ),
-            //           SizedBox(
-            //             height: 2.h,
-            //           ),
-            //           ShimmerEffect(
-            //             child: Container(
-            //               width: double.infinity,
-            //               height: 6.h,
-            //               color: AppConst.black,
-            //             ),
-            //           )
-            //         ],
-            //       )
-            //     ],
-            //   ),
-            // )
-          ],
+              ),
+              ListView.separated(
+                itemCount: _addCartController
+                        .reviewCart.value?.data?.products?.length ??
+                    0,
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: SizeUtils.verticalBlockSize * 1,
+                  );
+                },
+                shrinkWrap: true,
+                primary: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) {
+                  return RevewCartShimmerWidget();
+                },
+              ),
+              ListView.separated(
+                itemCount: _addCartController
+                        .reviewCart.value?.data?.rawItems?.length ??
+                    0,
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: SizeUtils.verticalBlockSize * 1,
+                  );
+                },
+                shrinkWrap: true,
+                primary: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) {
+                  return RevewCartShimmerWidget();
+                },
+              ),
+              ListView.separated(
+                itemCount: _addCartController
+                        .reviewCart.value?.data?.inventories?.length ??
+                    0,
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: SizeUtils.verticalBlockSize * 1,
+                  );
+                },
+                shrinkWrap: true,
+                primary: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) {
+                  return RevewCartShimmerWidget();
+                },
+              ),
+            ],
+          ),
         ),
       )),
     );

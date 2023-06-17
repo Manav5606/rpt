@@ -2070,6 +2070,126 @@ data{
     ''',
   );
 
+  static final addToReviewCartProduct = new GraphQLQuery(
+    name: 'cart',
+    query: r'''
+    mutation($store_id: ID $product: CartProductInput $increment:Boolean $index: Int $cart_id: ID){
+  cart(cartInput: {flag: "addToReviewCart" raw_or_product: "product"
+        product: $product
+        store_id: $store_id
+        increment: $increment
+        index: $index
+        cart_id: $cart_id}){
+    error
+    msg
+data{
+      total
+      total_items_count
+      storeDoc{
+        actual_welcome_offer
+        actual_cashback
+        bill_discount_offer_status
+        bill_discount_offer_amount
+        bill_discount_offer_target
+        store_type
+        distance
+        _id
+        name
+      }
+      products{
+        _id
+        name
+        status
+        gst_amount
+        mrp
+        selling_price
+        quantity
+        cashback
+        logo
+        unit
+      }
+    rawitems
+      {_id
+        item
+        quantity
+        logo
+      }
+              inventories
+      {
+        mrp
+        name
+        _id
+        quantity
+        status
+        img
+        unit
+        
+      }
+    }
+  }
+}
+    ''',
+  );
+
+  static final addToReviewCartInventory = new GraphQLQuery(
+    name: 'cart',
+    query: r'''
+    mutation($store_id: ID $inventory: CartInventoryInput $cart_id: ID){
+  cart(cartInput: {flag: "addToReviewCart" raw_or_product: "Inventory"
+       inventory: $inventory
+        store_id: $store_id
+        cart_id: $cart_id}){
+    error
+    msg
+data{
+      total
+      total_items_count
+      storeDoc{
+        actual_welcome_offer
+        actual_cashback
+        bill_discount_offer_status
+        bill_discount_offer_amount
+        bill_discount_offer_target
+        store_type
+        distance
+        _id
+        name
+      }
+      products{
+        _id
+        name
+        status
+        gst_amount
+        mrp
+        selling_price
+        quantity
+        cashback
+        logo
+        unit
+      }
+    rawitems
+      {_id
+        item
+        quantity
+        logo
+      }
+              inventories
+      {
+        mrp
+        name
+        _id
+        quantity
+        status
+        img
+        unit
+        
+      }
+    }
+  }
+}
+    ''',
+  );
+
 //   static final getCartPageInformation = new GraphQLQuery(
 //     name: 'getCartPageInformation',
 //     query: r'''

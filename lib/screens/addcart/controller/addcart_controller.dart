@@ -294,8 +294,98 @@ class AddCartController extends GetxController {
     try {
       isLoading.value = true;
       reviewCart.value = await AddCartService.getReviewCartData(cartId);
-      totalCount.value =
-          reviewCart.value?.data?.totalItemsCount.toString() ?? '';
+      totalCount.value = "${reviewCart.value?.data?.totalItemsCount ?? 0}";
+      log('totalCount.value:${totalCount.value}');
+      isLoading.value = false;
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getReviewCartData", "$e");
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addToReviewCartProduct(
+      {required String store_id,
+      required String cart_id,
+      required bool increment,
+      required int index,
+      required String name,
+      required String sId,
+      required int quntity}) async {
+    try {
+      var products = ProductsClass(
+        name: name,
+        sId: sId,
+        quantity: quntity.obs,
+      );
+      isLoading.value = true;
+      reviewCart.value = await AddCartService.addToReviewCartProduct(
+          product: products,
+          store_id: store_id,
+          increment: increment,
+          index: index,
+          cart_id: cart_id);
+      totalCount.value = "${reviewCart.value?.data?.totalItemsCount ?? 0}";
+      reviewCart.refresh();
+      log('totalCount.value:${totalCount.value}');
+      isLoading.value = false;
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getReviewCartData", "$e");
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addToReviewCartRawItem(
+      {required String store_id,
+      required String cart_id,
+      required bool increment,
+      required int index,
+      required String name,
+      required String sId,
+      required int quntity}) async {
+    try {
+      var products = ProductsClass(
+        name: name,
+        sId: sId,
+        quantity: quntity.obs,
+      );
+      isLoading.value = true;
+      reviewCart.value = await AddCartService.addToReviewCartProduct(
+          product: products,
+          store_id: store_id,
+          increment: increment,
+          index: index,
+          cart_id: cart_id);
+      totalCount.value = "${reviewCart.value?.data?.totalItemsCount ?? 0}";
+      reviewCart.refresh();
+      log('totalCount.value:${totalCount.value}');
+      isLoading.value = false;
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("getReviewCartData", "$e");
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addToReviewCartInventory({
+    required String store_id,
+    required String cart_id,
+    required String name,
+    required String sId,
+    required int quntity,
+  }) async {
+    try {
+      var products = ProductsClass(
+        name: name,
+        sId: sId,
+        quantity: quntity.obs,
+      );
+      isLoading.value = true;
+      reviewCart.value = await AddCartService.addToReviewCartInventory(
+          inventory: products, store_id: store_id, cart_id: cart_id);
+      totalCount.value = "${reviewCart.value?.data?.totalItemsCount ?? 0}";
+      reviewCart.refresh();
       log('totalCount.value:${totalCount.value}');
       isLoading.value = false;
     } catch (e, st) {
@@ -418,6 +508,10 @@ class AddCartController extends GetxController {
       //     }
       //   }
       // }
+
+      totalCount.value = "${addToCartModel.value?.totalItemsCount ?? 0}";
+      log('totalCount.value :${totalCount.value}');
+      reviewCart.refresh();
       getCartIDModel.refresh();
       log("addToCartInventory.addToCartModel ${getCartIDModel.toJson()}");
       isLoading.value = false;

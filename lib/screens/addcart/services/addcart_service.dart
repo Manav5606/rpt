@@ -34,6 +34,61 @@ class AddCartService {
     }
   }
 
+  static Future<Cart?> addToReviewCartProduct({
+    var product,
+    required String store_id,
+    required String cart_id,
+    required bool increment,
+    required int index,
+  }) async {
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.addToReviewCartProduct,
+          variables: {
+            'store_id': store_id,
+            'product': product,
+            'increment': increment,
+            'index': index,
+            'cart_id': cart_id,
+          });
+      log("result------${result}");
+      if (result['error'] == false) {
+        final Cart _reviewCart = Cart.fromJson(result);
+        return _reviewCart;
+      }
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("reviewCart", "$e");
+      log("$e , $st");
+      rethrow;
+    }
+  }
+
+  static Future<Cart?> addToReviewCartInventory({
+    var inventory,
+    required String store_id,
+    required String cart_id,
+  }) async {
+    try {
+      final result = await GraphQLRequest.query(
+          query: GraphQLQueries.addToReviewCartInventory,
+          variables: {
+            'store_id': store_id,
+            'inventory': inventory,
+            'cart_id': cart_id,
+          });
+      log("result------${result}");
+      if (result['error'] == false) {
+        final Cart _reviewCart = Cart.fromJson(result);
+        return _reviewCart;
+      }
+    } catch (e, st) {
+      ReportCrashes().reportRecorderror(e);
+      ReportCrashes().reportErrorCustomKey("reviewCart", "$e");
+      log("$e , $st");
+      rethrow;
+    }
+  }
 // //change remove  the query
 //   static Future<GetOrderConfirmPageData?> getCartPageInformation(
 //       String storeId) async {

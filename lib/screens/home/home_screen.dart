@@ -940,11 +940,8 @@ class _HomeScreenState extends State<HomeScreen>
                                     //           child: AllOffers()),
                                     //     ],
                                     //   )
-                                    : SizedBox(
-                                        height: 55.h,
-                                        child: WalletCardList(
-                                          navWithOutTransaction: true,
-                                        ),
+                                    : WalletCardList(
+                                        navWithOutTransaction: true,
                                       ),
                                 AllOffersListView(
                                   controller: _scrollController,
