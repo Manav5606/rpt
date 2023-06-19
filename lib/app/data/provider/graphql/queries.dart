@@ -610,6 +610,9 @@ class GraphQLQueries {
              address{
               address
             }
+            businesstype{
+              _id
+            }
           }
         }
       }
@@ -2057,6 +2060,7 @@ data{
       {
         mrp
         name
+        selling_price
         _id
         quantity
         status
@@ -2117,6 +2121,7 @@ data{
               inventories
       {
         mrp
+        selling_price
         name
         _id
         quantity
@@ -2177,6 +2182,7 @@ data{
       {
         mrp
         name
+        selling_price
         _id
         quantity
         status

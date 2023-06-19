@@ -473,8 +473,10 @@ class WalletListView extends StatelessWidget {
           InkWell(
             onTap: () async {
               if (navWithOutTransaction) {
+                _moreStoreController.storeId.value = walletData.sId ?? '';
                 await _moreStoreController.getStoreData(
-                    id: '${walletData.sId}');
+                  id: walletData.sId ?? '',
+                );
               } else {
                 Get.to(
                     () => WalletTransactionCard(

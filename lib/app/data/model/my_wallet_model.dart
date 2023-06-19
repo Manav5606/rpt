@@ -76,6 +76,7 @@ class WalletData {
   int? leadWelcomeOffer; // int
   Address? address;
   bool? deactivated;
+  Businesstype? businesstype;
 
   WalletData(
       {this.recentlyVisited,
@@ -105,7 +106,8 @@ class WalletData {
       this.lead,
       this.leadWelcomeOffer,
       this.address,
-      this.deactivated});
+      this.deactivated,
+      this.businesstype});
 
   WalletData.fromJson(Map<String, dynamic> json) {
     recentlyVisited = json['recently_visited'];
@@ -137,6 +139,9 @@ class WalletData {
     address =
         json['address'] != null ? new Address.fromJson(json['address']) : null;
     deactivated = json['deactivated'];
+    businesstype = json['businesstype'] != null
+        ? new Businesstype.fromJson(json['businesstype'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -169,6 +174,26 @@ class WalletData {
     data['lead_welcome_offer'] = this.leadWelcomeOffer;
     data['address'] = this.address!.toJson();
     data['deactivated'] = this.deactivated;
+    if (this.businesstype != null) {
+      data['businesstype'] = this.businesstype!.toJson();
+    }
+    return data;
+  }
+}
+
+class Businesstype {
+  String? sId;
+
+  Businesstype({this.sId});
+
+  Businesstype.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['_id'] = this.sId;
     return data;
   }
 }

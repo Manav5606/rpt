@@ -643,6 +643,7 @@ class PayAtStore extends StatelessWidget {
                       EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
                   scrollDirection: Axis.horizontal,
                   children: [
+                    //_myWalletController.myWalletModel.value?.data.first.businesstype.sId on basis of this id filter the list for each category
                     DisplayBusinessType(
                       text: "Grocery",
                     ),
@@ -650,7 +651,7 @@ class PayAtStore extends StatelessWidget {
                       width: 3.w,
                     ),
                     DisplayBusinessType(
-                      text: "Pet food",
+                      text: "Dry Fruits",
                     ),
                     SizedBox(
                       width: 3.w,
@@ -668,7 +669,7 @@ class PayAtStore extends StatelessWidget {
                       width: 3.w,
                     ),
                     DisplayBusinessType(
-                      text: "Meat",
+                      text: "Pet food",
                     ),
                     SizedBox(
                       width: 3.w,
