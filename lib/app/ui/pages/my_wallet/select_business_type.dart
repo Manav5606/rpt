@@ -7,7 +7,7 @@ import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/widgets/copied/confirm_dialog.dart';
-import 'package:fluster/fluster.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,8 +58,6 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
         }).show(context);
     return false;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -744,27 +742,4 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
       ),
     );
   }
-}
-class MapMarker extends Clusterable {
-  String? locationName;
-  String? thumbnailSrc;
-
-  MapMarker(
-      {this.locationName,
-      latitude,
-      longitude,
-      this.thumbnailSrc,
-      isCluster = false,
-      clusterId,
-      pointsSize,
-      markerId,
-      childMarkerId})
-      : super(
-            latitude: latitude,
-            longitude: longitude,
-            isCluster: isCluster,
-            clusterId: clusterId,
-            pointsSize: pointsSize,
-            markerId: markerId,
-            childMarkerId: childMarkerId);
 }
