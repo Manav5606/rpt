@@ -7,10 +7,12 @@ import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/widgets/copied/confirm_dialog.dart';
+import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
@@ -56,6 +58,8 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
         }).show(context);
     return false;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -243,55 +247,57 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20)),
                               child: GoogleMap(
-                                  initialCameraPosition: CameraPosition(
-                                    target: LatLng(
-                                        _addLocationController
-                                            .currentPosition.latitude,
-                                        _addLocationController
-                                            .currentPosition.longitude),
-                                    zoom: 15,
-                                  ),
-                                  myLocationEnabled: true,
-                                  myLocationButtonEnabled: false,
-                                  onCameraIdle:
-                                      _addLocationController.onCameraIdle,
-                                  zoomControlsEnabled: false,
-                                  // onCameraMove:
-                                  //     _addLocationController.onCameraMove,
-                                  onMapCreated:
-                                      _addLocationController.onMapCreated,
-                                  markers: _myWalletcontroller.markers
+                                initialCameraPosition: CameraPosition(
+                                  target: LatLng(
+                                      _addLocationController
+                                          .currentPosition.latitude,
+                                      _addLocationController
+                                          .currentPosition.longitude),
+                                  zoom: 15,
+                                ),
+                                myLocationEnabled: true,
+                                myLocationButtonEnabled: false,
+                                onCameraIdle:
+                                    _addLocationController.onCameraIdle,
+                                zoomControlsEnabled: false,
+                                // onCameraMove:
+                                //     _addLocationController.onCameraMove,
+                                onMapCreated:
+                                    _addLocationController.onMapCreated,
+                                markers: _myWalletcontroller.markers,
+                                minMaxZoomPreference:
+                                    MinMaxZoomPreference(5, 15),
 
-                                  // _markers,
-                                  // markers.toSet(),
+                                // _markers,
+                                // markers.toSet(),
 
-                                  //     Set.from([
-                                  // Marker(
-                                  //   position: LatLng(
-                                  //       _myWalletcontroller.GroceryStores.first
-                                  //               .address?.location?.lat ??
-                                  //           0.0,
-                                  //       _myWalletcontroller.GroceryStores.first
-                                  //               .address?.location?.lng ??
-                                  //           0.0),
-                                  //   markerId: MarkerId('1'),
-                                  //   icon: _myWalletcontroller.storeIcon ??
-                                  //       BitmapDescriptor.defaultMarker,
-                                  // ),
+                                //     Set.from([
+                                // Marker(
+                                //   position: LatLng(
+                                //       _myWalletcontroller.GroceryStores.first
+                                //               .address?.location?.lat ??
+                                //           0.0,
+                                //       _myWalletcontroller.GroceryStores.first
+                                //               .address?.location?.lng ??
+                                //           0.0),
+                                //   markerId: MarkerId('1'),
+                                //   icon: _myWalletcontroller.storeIcon ??
+                                //       BitmapDescriptor.defaultMarker,
+                                // ),
 
-                                  //   Marker(
-                                  //     position: LatLng(
-                                  //         _addLocationController
-                                  //             .currentPosition.latitude,
-                                  //         _addLocationController
-                                  //             .currentPosition.longitude),
-                                  //     markerId: MarkerId('5'),
-                                  //     icon: _myWalletcontroller
-                                  //             .currentPositionIcon ??
-                                  //         BitmapDescriptor.defaultMarker,
-                                  //   )
-                                  // ]),
-                                  ),
+                                //   Marker(
+                                //     position: LatLng(
+                                //         _addLocationController
+                                //             .currentPosition.latitude,
+                                //         _addLocationController
+                                //             .currentPosition.longitude),
+                                //     markerId: MarkerId('5'),
+                                //     icon: _myWalletcontroller
+                                //             .currentPositionIcon ??
+                                //         BitmapDescriptor.defaultMarker,
+                                //   )
+                                // ]),
+                              ),
                             ),
                           ),
                           // Padding(
@@ -738,4 +744,27 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
       ),
     );
   }
+}
+class MapMarker extends Clusterable {
+  String? locationName;
+  String? thumbnailSrc;
+
+  MapMarker(
+      {this.locationName,
+      latitude,
+      longitude,
+      this.thumbnailSrc,
+      isCluster = false,
+      clusterId,
+      pointsSize,
+      markerId,
+      childMarkerId})
+      : super(
+            latitude: latitude,
+            longitude: longitude,
+            isCluster: isCluster,
+            clusterId: clusterId,
+            pointsSize: pointsSize,
+            markerId: markerId,
+            childMarkerId: childMarkerId);
 }

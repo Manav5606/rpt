@@ -32,6 +32,7 @@ class SignupBs extends StatelessWidget {
     bool checkbox = false;
     return SingleChildScrollView(
       child: Container(
+        height: 100,
         color: AppConst.white,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 1.h),

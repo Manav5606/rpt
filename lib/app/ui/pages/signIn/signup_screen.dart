@@ -270,6 +270,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../screens/new_base_screen.dart';
+
 class Bloyallogo extends StatelessWidget {
   const Bloyallogo({
     Key? key,
@@ -384,9 +386,7 @@ class SignupScreenShimmerEffect extends StatelessWidget {
 }
 
 class SignUpScreen extends StatefulWidget {
-  final SignInScreenController _signInController =
-      Get.put(SignInScreenController());
-
+ 
   SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -427,8 +427,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           statusBarColor: AppConst.darkGreen,
           statusBarIconBrightness: Brightness.light),
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
+        // resizeToAvoidBottomInset: true,
         bottomSheet: Container(
+         
             decoration: BoxDecoration(
                 color: AppConst.white, borderRadius: BorderRadius.circular(12)),
             child: SignupBs()),
@@ -445,69 +446,282 @@ class SignUpBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Container(
-              width: double.infinity,
-              color: AppConst.darkGreen,
-              child: SafeArea(
-                bottom: false,
-                child: HomeAppBar(
-                  onTap: () async {},
-                  isRedDot: false,
-                  address: 'Your Location',
-                  balance: "",
-                  onTapWallet: () {},
-                  isHomeScreen: true,
-                ),
-              ),
-            ),
-            Container(
-              height: 35.h,
-              child: GridView.count(
-                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                crossAxisCount: 3,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+            statusBarColor: AppConst.darkGreen,
+            statusBarIconBrightness: Brightness.light),
+        child: Scaffold(
+          backgroundColor: AppConst.darkGreen,
+          body: SafeArea(
+            child: DefaultTabController(
+              length: 3,
+              child: Column(
                 children: [
-                  Image.asset(
-                    "assets/images/Fresh.png",
+                
+                  TabBar(
+                      isScrollable: true,
+                      indicator: BoxDecoration(
+                        color: AppConst.white,
+                      ),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      labelColor: AppConst.darkGreen,
+                      unselectedLabelColor: AppConst.white,
+                      // labelStyle: TextStyle(fontSize: 16),
+
+                      labelStyle: TextStyle(
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 10.sp
+                              : 13.sp,
+                          color: AppConst.white,
+                          fontWeight: FontWeight.w500),
+                      tabs: [
+                        Text("Pay At Store"),
+                        Text("Scan"),
+                        Text("Order")
+                      ]),
+                  ClaimMoreButton(),
+                  Container(
+                    color: AppConst.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 4.w, vertical: 1.5.h),
+                      child: Container(
+                        height: 1,
+                        color: AppConst.grey,
+                      ),
+                    ),
                   ),
-                  Image.asset(
-                    "assets/images/groceryImage.png",
-                  ),
-                  Image.asset(
-                    "assets/images/Nonveg.png",
-                  ),
-                  Image.asset(
-                    "assets/images/Pickup.png",
-                  ),
-                  Image.asset(
-                    "assets/images/Premium.png",
-                  ),
-                  Image.asset(
-                    "assets/images/Medics.png",
-                  ),
+                  Flexible(
+                      child: TabBarView(children: [
+                    DummyPayAtStore(),
+                    DummyScanReceiptStores(),
+                    DummyScanReceiptStores(),
+                    // RecentOrdersAndStores()
+                  ]))
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 0.5.h),
-              child: Container(
-                height: 1.2.w,
-                color: AppConst.lightGrey,
+          ),
+        ));
+    // Stack(
+    //   children: [
+    //     Column(
+    //       children: [
+    //         Container(
+    //           width: double.infinity,
+    //           color: AppConst.darkGreen,
+    //           child: SafeArea(
+    //             bottom: false,
+    //             child: HomeAppBar(
+    //               onTap: () async {},
+    //               isRedDot: false,
+    //               address: 'Your Location',
+    //               balance: "",
+    //               onTapWallet: () {},
+    //               isHomeScreen: true,
+    //             ),
+    //           ),
+    //         ),
+    //         Container(
+    //           height: 35.h,
+    //           child: GridView.count(
+    //             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+    //             crossAxisCount: 3,
+    //             children: [
+    //               Image.asset(
+    //                 "assets/images/Fresh.png",
+    //               ),
+    //               Image.asset(
+    //                 "assets/images/groceryImage.png",
+    //               ),
+    //               Image.asset(
+    //                 "assets/images/Nonveg.png",
+    //               ),
+    //               Image.asset(
+    //                 "assets/images/Pickup.png",
+    //               ),
+    //               Image.asset(
+    //                 "assets/images/Premium.png",
+    //               ),
+    //               Image.asset(
+    //                 "assets/images/Medics.png",
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //         Padding(
+    //           padding: EdgeInsets.symmetric(vertical: 0.5.h),
+    //           child: Container(
+    //             height: 1.2.w,
+    //             color: AppConst.lightGrey,
+    //           ),
+    //         ),
+    //         AllOffers()
+    //       ],
+    //     ),
+    //     Positioned(
+    //         child: Container(
+    //       height: 100.h,
+    //       width: double.infinity,
+    //       color: AppConst.black.withOpacity(0.3),
+    //     ))
+    //   ],
+    // );
+  }
+
+  
+}
+
+class DummyPayAtStore extends StatelessWidget {
+  DummyPayAtStore({
+    Key? key,
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      // controller:
+      children: [
+        Container(
+          decoration: BoxDecoration(color: AppConst.white),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 4.w, top: 1.h, bottom: 2.h),
+                child: Text(
+                  'Recent Stores',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
-            ),
-            AllOffers()
-          ],
+              Container(
+                height: 6.h,
+                color: AppConst.Lightgrey,
+                child: ListView(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    DisplayBusinessType(
+                      text: "Grocery",
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    DisplayBusinessType(
+                      text: "Pet food",
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    DisplayBusinessType(
+                      text: "Pharmacy",
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    DisplayBusinessType(
+                      text: "Meat",
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    DisplayBusinessType(
+                      text: "Meat",
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                  ],
+                ),
+              ),
+             ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                           
+                            child: DummyListOfAllWallets(
+                             
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox();
+                        },
+                      ),
+              
+            ],
+          ),
         ),
-        Positioned(
-            child: Container(
-          height: 100.h,
-          width: double.infinity,
-          color: AppConst.black.withOpacity(0.3),
-        ))
       ],
+    );
+  }
+}
+
+class DummyListOfAllWallets extends StatelessWidget {
+ 
+
+  DummyListOfAllWallets({
+    Key? key,
+  
+  }) : super(key: key);
+
+  
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+      child: Column(
+        children: [
+          ListViewStoreDetails(
+            logo: "",
+            // color: color,
+            // isDisplayDistance: true,
+            // StoreID: "${storeSearchModel.sId ?? ""}",
+            StoreName: "robin mall",
+            distance: 1,
+            balance: 200,
+          ),
+        ],
+      ),
+    );
+  }
+}
+class DummyScanReceiptStores extends StatelessWidget {
+  DummyScanReceiptStores({
+    Key? key,
+  }) : super(key: key);
+ 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppConst.white,
+      child:ListView.separated(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        
+                        child: DummyListOfAllWallets(
+                         
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox();
+                    },
+                  ),
+      
     );
   }
 }
