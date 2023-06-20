@@ -62,7 +62,7 @@ class _ExploreScreen extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-     onWillPop: handleBackPressed,
+      onWillPop: handleBackPressed,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
             statusBarColor: AppConst.darkGreen,
@@ -75,7 +75,7 @@ class _ExploreScreen extends State<ExploreScreen> {
             children: [
               GestureDetector(
                 child: Obx(
-                  () =>  Container(
+                  () => Container(
                     padding: EdgeInsets.only(
                         left: 2.w, top: 1.h, bottom: 2.h, right: 2.w),
                     color: Color(0xff005b41),
@@ -123,7 +123,8 @@ class _ExploreScreen extends State<ExploreScreen> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      fontSize: SizeUtils.horizontalBlockSize * 4,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 4,
                                       fontFamily: 'MuseoSans',
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
@@ -146,25 +147,39 @@ class _ExploreScreen extends State<ExploreScreen> {
                 () {
                   print(_exploreController.isLoading.value);
                   return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
                     child: Container(
-                      decoration: BoxDecoration(color: AppConst.veryLightGrey),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h),
+                      decoration: BoxDecoration(
+                        color: AppConst.white,
+                        // border: Border.all(color: AppConst.grey, width: 0.5),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppConst.grey,
+                            blurRadius: 1,
+                            // offset: Offset(1, 1),
+                          ),
+                        ],
+                      ),
                       child: TextField(
                           textAlign: TextAlign.left,
-                          textDirection: TextDirection.rtl,
+                          // textDirection: TextDirection.rtl,
                           controller: _exploreController.searchController,
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(left: 3.w),
                               isDense: true,
-                              prefixIcon:
-                                  (_exploreController.searchText.value.isEmpty)
-                                      ? Icon(
-                                          Icons.search,
-                                          size: SizeUtils.horizontalBlockSize * 6,
-                                          color: AppConst.grey,
-                                        )
-                                      : null,
+                              prefixIcon: (_exploreController
+                                      .searchText.value.isEmpty)
+                                  ? Icon(
+                                      Icons.search,
+                                      size: SizeUtils.horizontalBlockSize * 6,
+                                      color: AppConst.grey,
+                                    )
+                                  : null,
                               suffixIcon: (_exploreController
                                       .searchText.value.isEmpty)
                                   ? null
@@ -172,14 +187,22 @@ class _ExploreScreen extends State<ExploreScreen> {
                                       onPressed: () {
                                         _exploreController.searchController
                                             .clear();
-                                        _exploreController.searchText.value = '';
-                                        _exploreController.getNearMePageDataModel
-                                            .value?.data?.products
+                                        _exploreController.searchText.value =
+                                            '';
+                                        _exploreController
+                                            .getNearMePageDataModel
+                                            .value
+                                            ?.data
+                                            ?.products
                                             ?.clear();
-                                        _exploreController.getNearMePageDataModel
-                                            .value?.data?.stores
+                                        _exploreController
+                                            .getNearMePageDataModel
+                                            .value
+                                            ?.data
+                                            ?.stores
                                             ?.clear();
-                                        _exploreController.getNearMePageDataModel
+                                        _exploreController
+                                            .getNearMePageDataModel
                                             .refresh();
                                       },
                                       icon: Icon(
@@ -236,11 +259,11 @@ class _ExploreScreen extends State<ExploreScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 3.w),
                         child: Obx(
-                          () => (((_exploreController.getNearMePageDataModel.value
-                                          ?.data?.products?.isEmpty ??
+                          () => (((_exploreController.getNearMePageDataModel
+                                          .value?.data?.products?.isEmpty ??
                                       true) &&
-                                  (_exploreController.getNearMePageDataModel.value
-                                          ?.data?.stores?.isEmpty ??
+                                  (_exploreController.getNearMePageDataModel
+                                          .value?.data?.stores?.isEmpty ??
                                       true)))
                               ? _exploreController.searchText.value.isNotEmpty
                                   ? Center(
@@ -249,7 +272,7 @@ class _ExploreScreen extends State<ExploreScreen> {
                                           text1: "No Product/Store found !",
                                           text2: "",
                                           text3: "")
-    
+
                                       // Text('No Results found !',
                                       //     style: TextStyle(
                                       //       fontFamily: 'MuseoSans',
@@ -269,9 +292,9 @@ class _ExploreScreen extends State<ExploreScreen> {
                                             style: TextStyle(
                                               fontFamily: 'MuseoSans',
                                               color: AppConst.black,
-                                              fontSize:
-                                                  SizeUtils.horizontalBlockSize *
-                                                      3.5,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  3.5,
                                               fontWeight: FontWeight.w700,
                                               fontStyle: FontStyle.normal,
                                             )),
@@ -300,7 +323,8 @@ class _ExploreScreen extends State<ExploreScreen> {
                                   style: TextStyle(
                                     fontFamily: 'MuseoSans',
                                     color: AppConst.black,
-                                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.5,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                   )),
@@ -362,10 +386,12 @@ class _ExploreScreen extends State<ExploreScreen> {
                                                     mainAxisSize:
                                                         MainAxisSize.min,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Icon(
-                                                        Icons.access_time_rounded,
+                                                        Icons
+                                                            .access_time_rounded,
                                                         color: AppConst.grey,
                                                         size: 2.h,
                                                       ),
@@ -378,7 +404,8 @@ class _ExploreScreen extends State<ExploreScreen> {
                                                           fontSize: SizeUtils
                                                                   .horizontalBlockSize *
                                                               3,
-                                                          fontFamily: 'MuseoSans',
+                                                          fontFamily:
+                                                              'MuseoSans',
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           fontStyle:
@@ -417,7 +444,8 @@ class _ExploreScreen extends State<ExploreScreen> {
       ),
     );
   }
-    Future<bool> handleBackPressed() async {
+
+  Future<bool> handleBackPressed() async {
     Get.offAllNamed(AppRoutes.BaseScreen);
     return false;
   }
