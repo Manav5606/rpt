@@ -20,6 +20,7 @@ class NewAddressScreen extends StatefulWidget {
   final int? storesCount;
   final String? add;
   final String? page;
+  final bool? isHome;
 
   NewAddressScreen(
       {this.latt,
@@ -27,7 +28,8 @@ class NewAddressScreen extends StatefulWidget {
       this.add,
       this.storesCount,
       this.page,
-      this.cashBackCount});
+      this.cashBackCount,
+      this.isHome});
   @override
   State<NewAddressScreen> createState() => _NewAddressScreenState();
 }
@@ -57,12 +59,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Map arg = Get.arguments ?? {};
-    addressModel = arg['addresses'];
-    // _addressController.text = addressModel?.address ?? '';
-    _completeAddressController.text = addressModel?.apartment ?? '';
-    _floorController.text = addressModel?.house ?? '';
-    _howToReachController.text = addressModel?.directionReach ?? '';
+    print(widget.isHome);
     var index = _tags.indexWhere((element) =>
         element.toUpperCase() ==
         addressModel?.title?.substring(0, 3).toUpperCase());
@@ -694,24 +691,37 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                     //     .bottomFullAddressLoading.value = true;
 
                                     try {
-                                      if (widget.storesCount != 0 &&
-                                          (_key.currentState?.validate() ??
-                                              false)) {
-                                        if (_addLocationController
-                                                .storesCount.value !=
-                                            _addLocationController
-                                                .updatedStoresCount.value) {
-                                          /// Changes
-                                          await _addLocationController
-                                              .addMultipleStoreToWallet();
+                                      if (_selectedTag == 0) {
+                                        if (widget.isHome == true) {
+                                          Get.showSnackbar(GetSnackBar(
+                                            backgroundColor: AppConst.black,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 12),
+                                            snackStyle: SnackStyle.FLOATING,
+                                            borderRadius: 12,
+                                            duration: Duration(seconds: 2),
+                                            message:
+                                                "You Have Already Added the Home Address.",
+                                            // title: "Amount must be at least \u{20b9}1"
+                                          ));
                                         } else {
-                                          /// No Changes
+                                          if (widget.storesCount != 0 &&
+                                              (_key.currentState?.validate() ??
+                                                  false)) {
+                                            if (_addLocationController
+                                                    .storesCount.value !=
+                                                _addLocationController
+                                                    .updatedStoresCount.value) {
+                                              /// Changes
+                                              await _addLocationController
+                                                  .addMultipleStoreToWallet();
+                                            } else {
+                                              /// No Changes
 
-                                          await _addLocationController
-                                              .addMultipleStoreToWallet();
-                                        }
-                                        await _addLocationController
-                                            .addCustomerAddress(
+                                              await _addLocationController
+                                                  .addMultipleStoreToWallet();
+                                            }
+                                            await _addLocationController.addCustomerAddress(
                                                 lng: _addLocationController
                                                         .middlePointOfScreenOnMap
                                                         ?.longitude ??
@@ -731,50 +741,52 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                                     _howToReachController.text,
                                                 page: widget.page);
 
-                                        _addLocationController
-                                            .userAddress.value = widget.add!;
+                                            _addLocationController.userAddress
+                                                .value = widget.add!;
 
-                                        _addLocationController
-                                                .userAddressTitle.value =
-                                            "${_selectedTag == 3 ? _otherController.text : "${_tags[_selectedTag]}"}";
-
-                                        _addLocationController.userHouse.value =
-                                            _floorController.text;
-                                        _addLocationController
-                                                .userAppartment.value =
-                                            _completeAddressController.text;
-
-                                        _addLocationController.latitude.value =
                                             _addLocationController
+                                                    .userAddressTitle.value =
+                                                "${_selectedTag == 3 ? _otherController.text : "${_tags[_selectedTag]}"}";
+
+                                            _addLocationController.userHouse
+                                                .value = _floorController.text;
+                                            _addLocationController
+                                                    .userAppartment.value =
+                                                _completeAddressController.text;
+
+                                            _addLocationController.latitude
+                                                .value = _addLocationController
                                                     .middlePointOfScreenOnMap
                                                     ?.latitude ??
                                                 0.0;
 
-                                        _addLocationController.longitude.value =
-                                            _addLocationController
+                                            _addLocationController.longitude
+                                                .value = _addLocationController
                                                     .middlePointOfScreenOnMap
                                                     ?.longitude ??
                                                 0;
 
-                                        if (widget.page == "review") {
-                                          await _addCartController
-                                              .getCartLocation(
-                                                  storeId: _addCartController
-                                                          .store.value?.sId ??
-                                                      "",
-                                                  cartId: _addCartController
-                                                      .cartId.value);
+                                            if (widget.page == "review") {
+                                              await _addCartController
+                                                  .getCartLocation(
+                                                      storeId:
+                                                          _addCartController
+                                                                  .store
+                                                                  .value
+                                                                  ?.sId ??
+                                                              "",
+                                                      cartId: _addCartController
+                                                          .cartId.value);
 
-                                          _addCartController
-                                              .SelectedAddressForCart();
-                                        }
+                                              _addCartController
+                                                  .SelectedAddressForCart();
+                                            }
 
-                                        // _addLocationController
-                                        //     .bottomFullAddressLoading
-                                        //     .value = false;
-                                      } else {
-                                        await _addLocationController
-                                            .addCustomerAddress(
+                                            // _addLocationController
+                                            //     .bottomFullAddressLoading
+                                            //     .value = false;
+                                          } else {
+                                            await _addLocationController.addCustomerAddress(
                                                 lng: _addLocationController
                                                         .middlePointOfScreenOnMap
                                                         ?.longitude ??
@@ -785,7 +797,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                                     0,
                                                 address: widget.add ?? "",
                                                 title:
-                                                    "${_tags[_selectedTag]}${_selectedTag == 3 ? "${_otherController.text}" : ""}",
+                                                    "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}",
                                                 house: _floorController.text,
                                                 apartment:
                                                     _completeAddressController
@@ -794,46 +806,191 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                                     _howToReachController.text,
                                                 page: widget.page);
 
-                                        _addLocationController
-                                            .userAddress.value = widget.add!;
-                                        _addLocationController
-                                                .userAddressTitle.value =
-                                            "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
-
-                                        _addLocationController.userHouse.value =
-                                            _floorController.text;
-                                        _addLocationController
-                                                .userAppartment.value =
-                                            _completeAddressController.text;
-
-                                        _addLocationController.latitude.value =
+                                            _addLocationController.userAddress
+                                                .value = widget.add!;
                                             _addLocationController
+                                                    .userAddressTitle.value =
+                                                "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+
+                                            _addLocationController.userHouse
+                                                .value = _floorController.text;
+                                            _addLocationController
+                                                    .userAppartment.value =
+                                                _completeAddressController.text;
+
+                                            _addLocationController.latitude
+                                                .value = _addLocationController
                                                     .middlePointOfScreenOnMap
                                                     ?.latitude ??
                                                 0.0;
 
-                                        _addLocationController.longitude.value =
-                                            _addLocationController
+                                            _addLocationController.longitude
+                                                .value = _addLocationController
                                                     .middlePointOfScreenOnMap
                                                     ?.longitude ??
                                                 0;
 
-                                        if (widget.page == "review") {
-                                          await _addCartController
-                                              .getCartLocation(
-                                                  storeId: _addCartController
-                                                          .store.value?.sId ??
-                                                      "",
-                                                  cartId: _addCartController
-                                                      .cartId.value);
+                                            if (widget.page == "review") {
+                                              await _addCartController
+                                                  .getCartLocation(
+                                                      storeId:
+                                                          _addCartController
+                                                                  .store
+                                                                  .value
+                                                                  ?.sId ??
+                                                              "",
+                                                      cartId: _addCartController
+                                                          .cartId.value);
 
-                                          _addCartController
-                                              .SelectedAddressForCart();
+                                              _addCartController
+                                                  .SelectedAddressForCart();
+                                            }
+
+                                            // _addLocationController
+                                            //     .bottomFullAddressLoading
+                                            //     .value = false;
+                                          }
                                         }
+                                      } else {
+                                        if (widget.storesCount != 0 &&
+                                            (_key.currentState?.validate() ??
+                                                false)) {
+                                          if (_addLocationController
+                                                  .storesCount.value !=
+                                              _addLocationController
+                                                  .updatedStoresCount.value) {
+                                            /// Changes
+                                            await _addLocationController
+                                                .addMultipleStoreToWallet();
+                                          } else {
+                                            /// No Changes
 
-                                        // _addLocationController
-                                        //     .bottomFullAddressLoading
-                                        //     .value = false;
+                                            await _addLocationController
+                                                .addMultipleStoreToWallet();
+                                          }
+                                          await _addLocationController.addCustomerAddress(
+                                              lng: _addLocationController
+                                                      .middlePointOfScreenOnMap
+                                                      ?.longitude ??
+                                                  0,
+                                              lat: _addLocationController
+                                                      .middlePointOfScreenOnMap
+                                                      ?.latitude ??
+                                                  0,
+                                              address: widget.add!,
+                                              title:
+                                                  "${_tags[_selectedTag]}${_selectedTag == 3 ? "${_otherController.text}" : ""}",
+                                              house: _floorController.text,
+                                              apartment:
+                                                  _completeAddressController
+                                                      .text,
+                                              directionToReach:
+                                                  _howToReachController.text,
+                                              page: widget.page);
+
+                                          _addLocationController
+                                              .userAddress.value = widget.add!;
+
+                                          _addLocationController
+                                                  .userAddressTitle.value =
+                                              "${_selectedTag == 3 ? _otherController.text : "${_tags[_selectedTag]}"}";
+
+                                          _addLocationController.userHouse
+                                              .value = _floorController.text;
+                                          _addLocationController
+                                                  .userAppartment.value =
+                                              _completeAddressController.text;
+
+                                          _addLocationController.latitude
+                                              .value = _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.latitude ??
+                                              0.0;
+
+                                          _addLocationController.longitude
+                                              .value = _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.longitude ??
+                                              0;
+
+                                          if (widget.page == "review") {
+                                            await _addCartController
+                                                .getCartLocation(
+                                                    storeId: _addCartController
+                                                            .store.value?.sId ??
+                                                        "",
+                                                    cartId: _addCartController
+                                                        .cartId.value);
+
+                                            _addCartController
+                                                .SelectedAddressForCart();
+                                          }
+
+                                          // _addLocationController
+                                          //     .bottomFullAddressLoading
+                                          //     .value = false;
+                                        } else {
+                                          await _addLocationController.addCustomerAddress(
+                                              lng: _addLocationController
+                                                      .middlePointOfScreenOnMap
+                                                      ?.longitude ??
+                                                  0,
+                                              lat: _addLocationController
+                                                      .middlePointOfScreenOnMap
+                                                      ?.latitude ??
+                                                  0,
+                                              address: widget.add ?? "",
+                                              title:
+                                                  "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}",
+                                              house: _floorController.text,
+                                              apartment:
+                                                  _completeAddressController
+                                                      .text,
+                                              directionToReach:
+                                                  _howToReachController.text,
+                                              page: widget.page);
+
+                                          _addLocationController
+                                              .userAddress.value = widget.add!;
+                                          _addLocationController
+                                                  .userAddressTitle.value =
+                                              "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+
+                                          _addLocationController.userHouse
+                                              .value = _floorController.text;
+                                          _addLocationController
+                                                  .userAppartment.value =
+                                              _completeAddressController.text;
+
+                                          _addLocationController.latitude
+                                              .value = _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.latitude ??
+                                              0.0;
+
+                                          _addLocationController.longitude
+                                              .value = _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.longitude ??
+                                              0;
+
+                                          if (widget.page == "review") {
+                                            await _addCartController
+                                                .getCartLocation(
+                                                    storeId: _addCartController
+                                                            .store.value?.sId ??
+                                                        "",
+                                                    cartId: _addCartController
+                                                        .cartId.value);
+
+                                            _addCartController
+                                                .SelectedAddressForCart();
+                                          }
+
+                                          // _addLocationController
+                                          //     .bottomFullAddressLoading
+                                          //     .value = false;
+                                        }
                                       }
                                     } catch (e) {
                                       // _addLocationController

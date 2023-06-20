@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
@@ -28,6 +30,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
 
   int _selectedTag = 0;
   AddressModel? addressModel;
+  bool? isHomeSelected;
   final AddLocationController _addLocationController = Get.find();
 
   @override
@@ -36,6 +39,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     super.initState();
     Map arg = Get.arguments ?? {};
     addressModel = arg['addresses'];
+    isHomeSelected = arg['isHomeSelected'];
     // _addressController.text = addressModel?.address ?? '';
     _completeAddressController.text = addressModel?.apartment ?? '';
     _floorController.text = addressModel?.house ?? '';
@@ -43,9 +47,18 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     var index = _tags.indexWhere((element) =>
         element.toUpperCase() ==
         addressModel?.title?.substring(0, 3).toUpperCase());
-    if (index != -1) {
-      _selectedTag = index;
+
+    if (addressModel!.title == _tags[0]) {
+      _selectedTag = 0;
+    } else if (addressModel!.title == _tags[1]) {
+      _selectedTag = 1;
+    } else if (addressModel!.title == _tags[2]) {
+      _selectedTag = 2;
+    } else {
+      _selectedTag = 3;
+      _otherController.text = addressModel!.title!;
     }
+    // _selectedTag = index;
   }
 
   @override
@@ -605,61 +618,139 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                             : false)
                                         : true)
                                 ? () {
-                                    addressModel?.address =
+                                    if (_selectedTag == 0) {
+                                      if (isHomeSelected == true) {
+                                        Get.showSnackbar(GetSnackBar(
+                                          backgroundColor: AppConst.black,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 12),
+                                          snackStyle: SnackStyle.FLOATING,
+                                          borderRadius: 12,
+                                          duration: Duration(seconds: 2),
+                                          message:
+                                              "You Have Already Added the Home Address.",
+                                          // title: "Amount must be at least \u{20b9}1"
+                                        ));
+                                      } else {
+                                        addressModel?.address =
+                                            _addLocationController
+                                                .currentAddress.value;
+
+                                        addressModel?.title =
+                                            "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+
+                                        addressModel?.apartment =
+                                            _completeAddressController.text;
+                                        addressModel?.house =
+                                            _floorController.text;
+
+                                        addressModel?.directionReach =
+                                            _howToReachController.text;
+                                        // addressModel?.location?.lat =
+                                        //     _addLocationController.latitude.value;
+                                        // addressModel?.location?.lng =
+                                        //     _addLocationController.longitude.value;
                                         _addLocationController
-                                            .currentAddress.value;
+                                            .replaceCustomerAddress(
+                                                addressModel);
+                                        UserViewModel.setUser(
+                                            _addLocationController.userModel!);
 
-                                    addressModel?.title =
-                                        "${_selectedTag == 3 ? "${_tags[_selectedTag]} ${_otherController.text}" : "${_tags[_selectedTag]}"}";
-
-                                    addressModel?.apartment =
-                                        _completeAddressController.text;
-                                    addressModel?.house = _floorController.text;
-
-                                    addressModel?.directionReach =
-                                        _howToReachController.text;
-                                    // addressModel?.location?.lat =
-                                    //     _addLocationController.latitude.value;
-                                    // addressModel?.location?.lng =
-                                    //     _addLocationController.longitude.value;
-                                    _addLocationController
-                                        .replaceCustomerAddress(addressModel);
-                                    UserViewModel.setUser(
-                                        _addLocationController.userModel!);
-
-                                    if (!((_addLocationController.userModel
-                                                    ?.addresses?.length ??
-                                                0) >
-                                            1 &&
-                                        _addLocationController
-                                                .userAddress.value !=
-                                            addressModel?.address)) {
-                                      _addLocationController.userAddress.value =
+                                        if (!((_addLocationController.userModel
+                                                        ?.addresses?.length ??
+                                                    0) >
+                                                1 &&
+                                            _addLocationController
+                                                    .userAddress.value !=
+                                                addressModel?.address)) {
                                           _addLocationController
-                                              .currentAddress.value;
-                                      _addLocationController
-                                              .userAddressTitle.value =
-                                          "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
-
-                                      _addLocationController.userHouse.value =
-                                          _floorController.text;
-                                      _addLocationController
-                                              .userAppartment.value =
-                                          _completeAddressController.text;
-
-                                      _addLocationController.latitude.value =
+                                                  .userAddress.value =
+                                              _addLocationController
+                                                  .currentAddress.value;
                                           _addLocationController
+                                                  .userAddressTitle.value =
+                                              "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+
+                                          _addLocationController.userHouse
+                                              .value = _floorController.text;
+                                          _addLocationController
+                                                  .userAppartment.value =
+                                              _completeAddressController.text;
+
+                                          _addLocationController.latitude
+                                              .value = _addLocationController
                                                   .middlePointOfScreenOnMap
                                                   ?.latitude ??
                                               0.0;
 
-                                      _addLocationController.longitude.value =
-                                          _addLocationController
+                                          _addLocationController.longitude
+                                              .value = _addLocationController
                                                   .middlePointOfScreenOnMap
                                                   ?.longitude ??
                                               0;
+                                        }
+                                        Get.back();
+                                      }
+                                    }else{
+                                      addressModel?.address =
+                                            _addLocationController
+                                                .currentAddress.value;
+
+                                        addressModel?.title =
+                                            "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+
+                                        addressModel?.apartment =
+                                            _completeAddressController.text;
+                                        addressModel?.house =
+                                            _floorController.text;
+
+                                        addressModel?.directionReach =
+                                            _howToReachController.text;
+                                        // addressModel?.location?.lat =
+                                        //     _addLocationController.latitude.value;
+                                        // addressModel?.location?.lng =
+                                        //     _addLocationController.longitude.value;
+                                        _addLocationController
+                                            .replaceCustomerAddress(
+                                                addressModel);
+                                        UserViewModel.setUser(
+                                            _addLocationController.userModel!);
+
+                                        if (!((_addLocationController.userModel
+                                                        ?.addresses?.length ??
+                                                    0) >
+                                                1 &&
+                                            _addLocationController
+                                                    .userAddress.value !=
+                                                addressModel?.address)) {
+                                          _addLocationController
+                                                  .userAddress.value =
+                                              _addLocationController
+                                                  .currentAddress.value;
+                                          _addLocationController
+                                                  .userAddressTitle.value =
+                                              "${_selectedTag == 3 ? "${_otherController.text}" : "${_tags[_selectedTag]}"}";
+
+                                          _addLocationController.userHouse
+                                              .value = _floorController.text;
+                                          _addLocationController
+                                                  .userAppartment.value =
+                                              _completeAddressController.text;
+
+                                          _addLocationController.latitude
+                                              .value = _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.latitude ??
+                                              0.0;
+
+                                          _addLocationController.longitude
+                                              .value = _addLocationController
+                                                  .middlePointOfScreenOnMap
+                                                  ?.longitude ??
+                                              0;
+                                        }
+                                        Get.back();
                                     }
-                                    Get.back();
                                   }
                                 : null,
                             child: Text(
@@ -774,11 +865,15 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   }
 
   Widget _buildTags(int index) {
+    print(index);
+    print(_selectedTag);
     return GestureDetector(
       onTap: () {
         setState(() {
           // if (!isDisabled.value) {
           _selectedTag = index;
+          print(index);
+          print(_selectedTag);
           // }
         });
       },

@@ -23,7 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FireBaseNotification.initializeFirebase();
   await GetStorage.init();
-  await FirebaseRemoteConfigUtils().initMethod();
+  // await FirebaseRemoteConfigUtils().initMethod();
 
   await HiveHelper.init();
 

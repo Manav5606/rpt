@@ -31,6 +31,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
   final MyWalletController _myWalletController = Get.find();
   bool isHome = false;
   bool? issignup;
+  bool? homeTrue;
   String page = "";
 
   @override
@@ -40,7 +41,9 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     _addLocationController.isRecentAddress.value = arg['isFalse'] ?? true;
     issignup = arg['issignup'] ?? false;
     isHome = arg['isHome'] ?? true;
+    homeTrue = arg['homeTrue'];
     page = arg['page'] ?? "";
+    print(homeTrue);
     log("_addLocationController.isRecentAddress.value :${_addLocationController.isRecentAddress.value}");
     // _addLocationController.initLocation();
     return Scaffold(
@@ -124,6 +127,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                               storesCount:
                                   _addLocationController.storesCount.value,
                               page: page,
+                              isHome: homeTrue,
                             ));
                       }
                     },

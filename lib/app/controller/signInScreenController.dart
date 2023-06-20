@@ -383,7 +383,7 @@ class SignInScreenController extends GetxController {
             WidgetsBinding.instance.addPostFrameCallback((_) async {
               if (SignUp && (userModel?.firstName != null)) {
                 _myWalletController.issignup.value = true;
-
+              
                 FireBaseNotification().firebaseCloudMessagingLSetup();
                 await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                     arguments: {

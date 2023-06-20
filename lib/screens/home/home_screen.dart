@@ -226,8 +226,8 @@ class _HomeScreenState extends State<HomeScreen>
             ((_addLocationController.userAppartment.value != "") ? "," : "") +
             (" ${_addLocationController.userAddress.value}");
     SizeUtils().init(context);
-    Data tempModel = Data.fromJson(
-        jsonDecode(FirebaseRemoteConfigUtils.homeScreenTempString));
+    // Data tempModel = Data.fromJson(
+    //     jsonDecode(FirebaseRemoteConfigUtils.homeScreenTempString));
     // _homeController.checkLocationPermission();
 
     RxInt recentCount = ((_myAccountController.activeOrderCount.value) +

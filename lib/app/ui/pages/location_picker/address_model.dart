@@ -57,11 +57,35 @@ class _AddressModelState extends State<AddressModel> {
   bool selected = false;
 
   bool isLoading = true;
+  bool? isHomeSelected;
+  bool? isHome;
+  List<String> isHomeTrue = [];
 
   @override
   void initState() {
     super.initState();
+    updateAddressStatus();
     _startLoadingTimer();
+  }
+
+  void updateAddressStatus() {
+    isHomeTrue.clear();
+    int? addressesLength =
+        _addLocationController.userModel?.addresses?.length ?? 0;
+    print(addressesLength);
+
+    for (int index = 0; index < addressesLength; index++) {
+      if (_addLocationController.userModel!.addresses![index].title == "Home") {
+        isHomeTrue
+            .add(_addLocationController.userModel!.addresses![index].title!);
+      }
+    }
+    if (isHomeTrue.contains("Home")) {
+      isHome = true;
+    } else {
+      isHome = false;
+    }
+    print(isHome);
   }
 
   void _startLoadingTimer() {
@@ -80,6 +104,7 @@ class _AddressModelState extends State<AddressModel> {
 
   @override
   Widget build(BuildContext context) {
+    updateAddressStatus();
     // final AddLocationController _addLocationController =
     //     Get.put(AddLocationController());
     final AddLocationController _addLocationController = Get.find()
@@ -373,6 +398,7 @@ class _AddressModelState extends State<AddressModel> {
                                                 "isFalse": false,
                                                 "page": widget.page,
                                                 "issignup": widget.issignup,
+                                                "homeTrue": isHome,
                                                 // "isHome": widget.isHomeScreen
                                               });
                                         }
@@ -533,6 +559,7 @@ class _AddressModelState extends State<AddressModel> {
                                                             "page": widget.page,
                                                             "issignup":
                                                                 widget.issignup,
+                                                            "homeTrue": isHome,
                                                             // "isHome": widget.isHomeScreen
                                                           })?.whenComplete(() =>
                                                           Get.back(
@@ -675,6 +702,20 @@ class _AddressModelState extends State<AddressModel> {
                                                         //         : 3,
                                                         itemBuilder:
                                                             (context, index) {
+                                                          if (_addLocationController
+                                                                  .userModel!
+                                                                  .addresses![
+                                                                      index]
+                                                                  .title ==
+                                                              "Home") {
+                                                            // setState(() {
+
+                                                            isHomeSelected =
+                                                                true;
+                                                          } else {
+                                                            isHomeSelected =
+                                                                false;
+                                                          }
                                                           return
                                                               // Obx(
                                                               //   () =>
@@ -976,7 +1017,8 @@ class _AddressModelState extends State<AddressModel> {
 
                                                                                     await Future.delayed(Duration(milliseconds: 200));
                                                                                     Get.toNamed(AppRoutes.EditAddressScreen, arguments: {
-                                                                                      'addresses': _addLocationController.userModel?.addresses?[index]
+                                                                                      'addresses': _addLocationController.userModel?.addresses?[index],
+                                                                                      'isHomeSelected': isHomeSelected
                                                                                     })?.whenComplete(() => setState(() {}));
                                                                                   },
                                                                                 ),
