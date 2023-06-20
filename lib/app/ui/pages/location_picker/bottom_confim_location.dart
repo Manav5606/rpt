@@ -60,18 +60,18 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                       bottom: 3.h,
                     ),
                     decoration: BoxDecoration(
-                      // shape: BoxShape.circle,
+                      shape: BoxShape.circle,
                       color: AppConst.white,
-                      borderRadius: BorderRadius.circular(12),
+                      // borderRadius: BorderRadius.circular(12),
                       // border: Border.all(
                       //     // color: AppConst.black,
                       //     // width: SizeUtils.horizontalBlockSize - 2.92
                       //     ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppConst.grey,
+                          color: AppConst.grey.withOpacity(0.6),
                           blurRadius: 3,
-                          offset: Offset(1, 1),
+                          offset: Offset(0, 0),
                         ),
                       ],
                     ),
@@ -81,7 +81,7 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                         child: Icon(
                           Icons.gps_fixed_rounded,
                           color: AppConst.black,
-                          size: SizeUtils.horizontalBlockSize * 6.5,
+                          size: 2.7.h,
                         ),
                       ),
                     ),
@@ -102,7 +102,7 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: AppConst.grey,
-                    blurRadius: 8,
+                    blurRadius: 3,
                     offset: Offset(1, 1),
                   ),
                 ],
@@ -166,9 +166,9 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                               // height: 4.h,
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      width: 1, color: Color(0xff0082ab)),
+                                      width: 0.5, color: Color(0xff0082ab)),
                                   color: Color(0xffe1f7ff),
-                                  borderRadius: BorderRadius.circular(5)),
+                                  borderRadius: BorderRadius.circular(18)),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 2.w, vertical: 0.5.h),
@@ -178,9 +178,12 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                                     style: TextStyle(
                                       color: Color(0xff003d51),
                                       fontFamily: 'MuseoSans',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3,
+                                      fontSize: (SizerUtil.deviceType ==
+                                              DeviceType.tablet)
+                                          ? 7.5.sp
+                                          : 8.5.sp,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
                                     ),
                                   ),
                                 ),
@@ -193,7 +196,7 @@ class BottomConfirmLocationSheet extends StatelessWidget {
 
                     Padding(
                       padding:
-                          EdgeInsets.only(left: 2.w, bottom: 1.h, right: 2.w),
+                          EdgeInsets.only(left: 4.w, bottom: 1.h, right: 2.w),
                       child: Container(
                         width: 85.w,
                         child: Text(
@@ -202,16 +205,19 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                           overflow: TextOverflow.visible,
                           style: TextStyle(
                             fontFamily: 'MuseoSans',
-                            fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
-                            color: AppConst.black,
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
+                            color: AppConst.DarkColor,
+                            fontSize:
+                                (SizerUtil.deviceType == DeviceType.tablet)
+                                    ? 8.5.sp
+                                    : 9.5.sp,
                           ),
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 1.h,
+                      height: 0.5.h,
                     ),
                     // Row(
                     //   children: [
@@ -396,12 +402,18 @@ class BottomConfirmLocationSheet extends StatelessWidget {
                     // ),
                     // Divider(),
                     // SizedBox(height: 3.h),
-                    ConfirmLocationWideButton(
-                      isHome: isHome,
-                      notifyParent: notifyParent,
-                      skipButton: skipButton,
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 2.w,
+                        right: 2.w,
+                      ),
+                      child: ConfirmLocationWideButton(
+                        isHome: isHome,
+                        notifyParent: notifyParent,
+                        skipButton: skipButton,
+                      ),
                     ),
-                    SizedBox(height: 1.h),
+                    // SizedBox(height: 1.h),
                   ],
                 ),
               ),
@@ -445,7 +457,8 @@ class ConfirmLocationWideButton extends StatelessWidget {
               fontFamily: 'MuseoSans',
               fontWeight: FontWeight.w600,
               fontStyle: FontStyle.normal,
-              fontSize: SizeUtils.horizontalBlockSize * 4,
+              fontSize:
+                  (SizerUtil.deviceType == DeviceType.tablet) ? 10.sp : 12.sp,
               color: AppConst.white,
             ),
           ),

@@ -37,26 +37,12 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  // height: 5.h,
-                  // width: 50.w,
                   margin: EdgeInsets.only(
                     bottom: 3.h,
                   ),
                   decoration: BoxDecoration(
-                    // shape: BoxShape.circle,
+                    shape: BoxShape.circle,
                     color: AppConst.white,
-                    borderRadius: BorderRadius.circular(12),
-                    // border: Border.all(
-                    //     // color: AppConst.black,
-                    //     // width: SizeUtils.horizontalBlockSize - 2.92
-                    //     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppConst.grey,
-                        blurRadius: 3,
-                        offset: Offset(1, 1),
-                      ),
-                    ],
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -65,7 +51,7 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                         child: Icon(
                           Icons.gps_fixed_rounded,
                           color: AppConst.black,
-                          size: SizeUtils.horizontalBlockSize * 6.5,
+                          size: 2.7.h,
                         ),
                       ),
                     ),
@@ -86,7 +72,7 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: AppConst.grey,
-                    blurRadius: 8,
+                    blurRadius: 3,
                     offset: Offset(1, 1),
                   ),
                 ],
@@ -112,64 +98,75 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                             SizedBox(
                               width: 2.w,
                             ),
-                            ShimmerEffect(
-                              child: Container(
+                            Text(
+                              "Loading ...",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
                                 color: AppConst.black,
-                                child: Text(
-                                  "Display the addresss",
-                                  style: TextStyle(
-                                    color: AppConst.black,
-                                    fontFamily: 'MuseoSans',
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 4.2,
-                                  ),
-                                ),
+                                fontFamily: 'MuseoSans',
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                                fontSize:
+                                    (SizerUtil.deviceType == DeviceType.tablet)
+                                        ? 13.sp
+                                        : 15.sp,
                               ),
                             ),
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.w, vertical: 1.h),
-                          child: ShimmerEffect(
-                            child: Container(
-                              // width: 20.w,
-                              // height: 4.h,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1, color: Color(0xff0082ab)),
-                                  color: Color(0xffe1f7ff),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.w, vertical: 0.5.h),
-                                child: Center(
-                                  child: Text(
-                                    "CHANGE",
-                                    style: TextStyle(
-                                      color: Color(0xff003d51),
-                                      fontFamily: 'MuseoSans',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2.w, vertical: 1.h),
+                            child: ShimmerEffect(
+                              child: Container(
+                                // width: 20.w,
+                                // height: 4.h,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 0.5, color: Color(0xff0082ab)),
+                                    color: Color(0xffe1f7ff),
+                                    borderRadius: BorderRadius.circular(18)),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 2.w, vertical: 0.5.h),
+                                  child: Center(
+                                    child: Text(
+                                      "CHANGE",
+                                      style: TextStyle(
+                                        color: Color(0xff003d51),
+                                        fontFamily: 'MuseoSans',
+                                        fontSize: (SizerUtil.deviceType ==
+                                                DeviceType.tablet)
+                                            ? 7.5.sp
+                                            : 8.5.sp,
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.normal,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
+                            ))
                       ],
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.only(left: 2.w, bottom: 1.h, right: 2.w),
+                      padding: EdgeInsets.only(
+                          left: 4.w, bottom: 0.5.h, right: 2.w, top: 1.h),
                       child: ShimmerEffect(
                           child: Container(
                         width: 80.w,
-                        height: 3.5.h,
+                        height: 1.5.h,
+                        color: AppConst.black,
+                      )),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 4.w, bottom: 0.5.h, right: 2.w),
+                      child: ShimmerEffect(
+                          child: Container(
+                        width: 60.w,
+                        height: 1.5.h,
                         color: AppConst.black,
                       )),
                     ),
@@ -177,8 +174,14 @@ class BottomConfirmLocationSheetShimmer extends StatelessWidget {
                       height: 1.h,
                     ),
                     ShimmerEffect(
-                      child: BottomWideButton(
-                        text: "Confirm Location",
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 2.w,
+                          right: 2.w,
+                        ),
+                        child: BottomWideButton(
+                          text: "Confirm Location",
+                        ),
                       ),
                     )
                   ],

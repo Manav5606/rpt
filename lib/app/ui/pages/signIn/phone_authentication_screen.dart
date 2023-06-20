@@ -665,7 +665,7 @@ class BottomWideButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 1.h),
-      height: 6.h,
+      height: 5.5.h,
       decoration: BoxDecoration(
           color: color,
           border: Border.all(width: 1.5, color: borderColor),
