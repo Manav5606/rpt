@@ -104,7 +104,7 @@ class AddLocationController extends GetxController {
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(lat, lng),
-          zoom: 18.0,
+          zoom: 17.3,
         ),
       ),
     );
@@ -216,12 +216,42 @@ class AddLocationController extends GetxController {
         middlePointOfScreenOnMap?.longitude ?? 0.0,
       );
       log('onMapCreated:----onCameraIdle>>> p$p');
-      final Placemark place = p[0];
-      // Address address = await GeoCode().reverseGeocoding(
-      //     latitude: _addLocationController.middlePointOfScreenOnMap.latitude, longitude: _addLocationController.middlePointOfScreenOnMap.longitude);
-      // currentAddress.value = "${place.subLocality}, ${place.locality}, ${place.postalCode}";
-      currentAddress.value =
-          "${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+
+      if (!(p[0].name!.contains("Unnamed")) &&
+          ((p[0].name?.length ?? 0) > 6) &&
+          !(p[0].name!.contains("+"))) {
+        final Placemark place = p[0];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[1].name!.contains("Unnamed")) &&
+          ((p[1].name?.length ?? 0) > 6) &&
+          !(p[1].name!.contains("+"))) {
+        final Placemark place = p[1];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[2].name!.contains("Unnamed")) &&
+          ((p[2].name?.length ?? 0) > 6) &&
+          !(p[2].name!.contains("+"))) {
+        final Placemark place = p[2];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[3].name!.contains("Unnamed")) &&
+          ((p[3].name?.length ?? 0) > 6) &&
+          !(p[3].name!.contains("+"))) {
+        final Placemark place = p[3];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else {
+        final Placemark place = p[4];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      }
+      // final Placemark place = p[0];
+      // // Address address = await GeoCode().reverseGeocoding(
+      // //     latitude: _addLocationController.middlePointOfScreenOnMap.latitude, longitude: _addLocationController.middlePointOfScreenOnMap.longitude);
+      // // currentAddress.value = "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      // currentAddress.value =
+      //     "${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
       loading.value = false;
     } catch (e, st) {
       ReportCrashes().reportRecorderror(e);
@@ -305,9 +335,39 @@ class AddLocationController extends GetxController {
           box.put(HiveConstants.LONGITUDE, "${position.longitude}");
           final List<Placemark> p = await placemarkFromCoordinates(
               position.latitude, position.longitude);
-          log('p :$p');
-          userAddress.value =
-              '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
+
+          if (!(p[0].name!.contains("Unnamed")) &&
+              ((p[0].name?.length ?? 0) > 6) &&
+              !(p[0].name!.contains("+"))) {
+            final Placemark place = p[0];
+            userAddress.value =
+                "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+          } else if (!(p[1].name!.contains("Unnamed")) &&
+              ((p[1].name?.length ?? 0) > 6) &&
+              !(p[1].name!.contains("+"))) {
+            final Placemark place = p[1];
+            userAddress.value =
+                "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+          } else if (!(p[2].name!.contains("Unnamed")) &&
+              ((p[2].name?.length ?? 0) > 6) &&
+              !(p[2].name!.contains("+"))) {
+            final Placemark place = p[2];
+            userAddress.value =
+                "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+          } else if (!(p[3].name!.contains("Unnamed")) &&
+              ((p[3].name?.length ?? 0) > 6) &&
+              !(p[3].name!.contains("+"))) {
+            final Placemark place = p[3];
+            userAddress.value =
+                "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+          } else {
+            final Placemark place = p[4];
+            userAddress.value =
+                "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+          }
+          // log('p :$p');
+          // userAddress.value =
+          //     '${p.first.street ?? ''}, ${p.first.name ?? ''}, ${p.first.subLocality ?? ''}, ${p.first.locality ?? ''}, ${p.first.administrativeArea ?? ''}, ${p.first.postalCode ?? ''}.';
           // userAddressTitle.value =
           //     '${p.first.subLocality ?? ''} ${p.first.locality ?? ''}';
           UserViewModel.setLocation(
@@ -469,7 +529,7 @@ class AddLocationController extends GetxController {
     if (permission == LocationPermission.always ||
         permission == LocationPermission.whileInUse) {
       await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high)
+              desiredAccuracy: LocationAccuracy.bestForNavigation)
           .then((Position position) async {
         log('onMapCreated:---getCurrentLocation->>> position $position');
         currentPosition = position;
@@ -480,7 +540,7 @@ class AddLocationController extends GetxController {
           CameraUpdate.newCameraPosition(
             CameraPosition(
               target: LatLng(position.latitude, position.longitude),
-              zoom: 18.0,
+              zoom: 17.3,
             ),
           ),
         );
@@ -496,7 +556,8 @@ class AddLocationController extends GetxController {
   Future getRecentLocation() async {
     log('getRecentLocation : ');
     loading.value = true;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+    await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.bestForNavigation)
         .then((Position position) async {
       // currentPosition = position;
       middlePointOfScreenOnMap = LatLng(latitude.value, longitude.value);
@@ -505,7 +566,7 @@ class AddLocationController extends GetxController {
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(latitude.value, longitude.value),
-            zoom: 18.0,
+            zoom: 17.3,
           ),
         ),
       );
@@ -524,10 +585,35 @@ class AddLocationController extends GetxController {
       final List<Placemark> p =
           await placemarkFromCoordinates(latitude.value, longitude.value);
       log(' getAddress : $p');
-      final Placemark place = p[0];
-
-      currentAddress.value =
-          "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      if (!(p[0].name!.contains("Unnamed")) &&
+          ((p[0].name?.length ?? 0) > 6) &&
+          !(p[0].name!.contains("+"))) {
+        final Placemark place = p[0];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[1].name!.contains("Unnamed")) &&
+          ((p[1].name?.length ?? 0) > 6) &&
+          !(p[1].name!.contains("+"))) {
+        final Placemark place = p[1];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[2].name!.contains("Unnamed")) &&
+          ((p[2].name?.length ?? 0) > 6) &&
+          !(p[2].name!.contains("+"))) {
+        final Placemark place = p[2];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[3].name!.contains("Unnamed")) &&
+          ((p[3].name?.length ?? 0) > 6) &&
+          !(p[3].name!.contains("+"))) {
+        final Placemark place = p[3];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else {
+        final Placemark place = p[4];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
       ReportCrashes().reportErrorCustomKey("getRecentAddress", "$e");
@@ -540,10 +626,36 @@ class AddLocationController extends GetxController {
       final List<Placemark> p = await placemarkFromCoordinates(
           currentPosition.latitude, currentPosition.longitude);
       log(' getAddress : $p');
-      final Placemark place = p[0];
-
-      currentAddress.value =
-          "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      final Placemark place;
+      if (!(p[0].name!.contains("Unnamed")) &&
+          ((p[0].name?.length ?? 0) > 6) &&
+          !(p[0].name!.contains("+"))) {
+        final Placemark place = p[0];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[1].name!.contains("Unnamed")) &&
+          ((p[1].name?.length ?? 0) > 6) &&
+          !(p[1].name!.contains("+"))) {
+        final Placemark place = p[1];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[2].name!.contains("Unnamed")) &&
+          ((p[2].name?.length ?? 0) > 6) &&
+          !(p[2].name!.contains("+"))) {
+        final Placemark place = p[2];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[3].name!.contains("Unnamed")) &&
+          ((p[3].name?.length ?? 0) > 6) &&
+          !(p[3].name!.contains("+"))) {
+        final Placemark place = p[3];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else {
+        final Placemark place = p[4];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
       ReportCrashes().reportErrorCustomKey("placemarkFromCoordinates", "$e");
@@ -560,13 +672,39 @@ class AddLocationController extends GetxController {
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(currentPosition.latitude, currentPosition.longitude),
-            zoom: 18.0,
+            zoom: 17.3,
           ),
         ),
       );
-      final Placemark place = p[0];
-      currentAddress.value =
-          "${place.subLocality}, ${place.locality}, ${place.postalCode}";
+      if (!(p[0].name!.contains("Unnamed")) &&
+          ((p[0].name?.length ?? 0) > 6) &&
+          !(p[0].name!.contains("+"))) {
+        final Placemark place = p[0];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[1].name!.contains("Unnamed")) &&
+          ((p[1].name?.length ?? 0) > 6) &&
+          !(p[1].name!.contains("+"))) {
+        final Placemark place = p[1];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[2].name!.contains("Unnamed")) &&
+          ((p[2].name?.length ?? 0) > 6) &&
+          !(p[2].name!.contains("+"))) {
+        final Placemark place = p[2];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else if (!(p[3].name!.contains("Unnamed")) &&
+          ((p[3].name?.length ?? 0) > 6) &&
+          !(p[3].name!.contains("+"))) {
+        final Placemark place = p[3];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      } else {
+        final Placemark place = p[4];
+        currentAddress.value =
+            "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+      }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
       ReportCrashes().reportErrorCustomKey("getCurrentAddress", "$e");

@@ -73,9 +73,9 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
               initialCameraPosition: CameraPosition(
                 target: LatLng(_addLocationController.currentPosition.latitude,
                     _addLocationController.currentPosition.longitude),
-                zoom: 17,
+                zoom: 17.3,
               ),
-              myLocationEnabled: false,
+              myLocationEnabled: true,
               myLocationButtonEnabled: false,
               onCameraIdle: _addLocationController.onCameraIdle,
               zoomControlsEnabled: false,
@@ -86,10 +86,16 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
 
           Align(
             alignment: Alignment.center,
-            child: Container(
-              height: 7.h,
-              width: 10.w,
-              child: Image.asset('assets/icons/pinsmall.png'),
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: 28,
+                left: 6,
+              ),
+              child: Container(
+                height: 6.h,
+                width: 8.w,
+                child: Image.asset('assets/icons/pinsmall.png'),
+              ),
             ),
           ),
           Obx(
