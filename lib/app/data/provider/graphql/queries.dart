@@ -590,6 +590,9 @@ class GraphQLQueries {
             deactivated
             name
             premium
+            total_cashback_sub_business_type{
+              sub_business_type
+            }
             logo
             default_cashback
             default_welcome_offer

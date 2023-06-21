@@ -1,3 +1,4 @@
+import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/constants/responsive.dart';
 import 'package:customer_app/app/controller/account_controller.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
@@ -644,33 +645,172 @@ class PayAtStore extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     //_myWalletController.myWalletModel.value?.data.first.businesstype.sId on basis of this id filter the list for each category
-                    DisplayBusinessType(
-                      text: "Grocery",
+                    Obx(()=> 
+                    (_myWalletController.intSelected.value == 1) ?
+                    GestureDetector(
+                        onTap: () {
+                          _myWalletController.intSelected.value = 1;
+                          _myWalletController.selectBusineesTypeId.value = '';
+                        },
+                        child: SelectedDisplayBusinessType(
+                          text: "All",
+                        ),
+                      ):
+                    GestureDetector(
+                        onTap: () {
+                          _myWalletController.intSelected.value = 1;
+                          _myWalletController.selectBusineesTypeId.value = '';
+                        },
+                        child: DisplayBusinessType(
+                          text: "All",
+                        ),
+                      ),
                     ),
                     SizedBox(
                       width: 3.w,
                     ),
-                    DisplayBusinessType(
-                      text: "Dry Fruits",
+                    Obx(()=> 
+                    (_myWalletController.intSelected.value == 2) ?
+                   GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 2;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "61f95fcd0a984e3d1c8f9ec9";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: SelectedDisplayBusinessType  (
+                        text: "Grocery",
+                      ),
+                    ):
+                   GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 2;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "61f95fcd0a984e3d1c8f9ec9";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: DisplayBusinessType(
+                        text: "Grocery",
+                      ),
+                    ),
+                    ),
+                    
+
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Obx(()=> 
+                    (_myWalletController.intSelected.value == 3) ?
+                  GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 3;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "641ecc4ad9f0df5fa16d708d";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: SelectedDisplayBusinessType(
+                        text: "Dry Fruits",
+                      ),
+                    ):
+                   GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 3;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "641ecc4ad9f0df5fa16d708d";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: DisplayBusinessType(
+                        text: "Dry Fruits",
+                      ),
+                    ),
+                    ),
+                    
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Obx(()=> 
+                    (_myWalletController.intSelected.value == 4) ?
+                  GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 4;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "63a68a03f5416c5c5b0ab0a5";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: SelectedDisplayBusinessType(
+                        text: "Pharmacy",
+                      ),
+                    ):
+                   GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 4;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "63a68a03f5416c5c5b0ab0a5";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: DisplayBusinessType(
+                        text: "Pharmacy",
+                      ),
+                    ),
                     ),
                     SizedBox(
                       width: 3.w,
                     ),
-                    DisplayBusinessType(
-                      text: "Pharmacy",
+                    Obx(()=> 
+                    (_myWalletController.intSelected.value == 5) ?
+                 GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 5;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "625cc6c0c30c356c00c6a9bb";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: SelectedDisplayBusinessType(
+                        text: "Meat",
+                      ),
+                    ):
+                   GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 5;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "625cc6c0c30c356c00c6a9bb";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: DisplayBusinessType(
+                        text: "Meat",
+                      ),
                     ),
+                    ),
+                    
                     SizedBox(
                       width: 3.w,
                     ),
-                    DisplayBusinessType(
-                      text: "Meat",
+                    Obx(()=> 
+                    (_myWalletController.intSelected.value == 6) ?
+                 GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 6;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "63a689eff5416c5c5b0ab0a4";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: SelectedDisplayBusinessType(
+                        text: "Pet food",
+                      ),
+                    ):
+                   GestureDetector(
+                      onTap: () {
+                        _myWalletController.intSelected.value = 6;
+                        _myWalletController.selectBusineesTypeId.value =
+                            "63a689eff5416c5c5b0ab0a4";
+                        // print(_myWalletController.intSelected.value);
+                      },
+                      child: DisplayBusinessType(
+                        text: "Pet food",
+                      ),
                     ),
-                    SizedBox(
-                      width: 3.w,
                     ),
-                    DisplayBusinessType(
-                      text: "Pet food",
-                    ),
+                    
                     SizedBox(
                       width: 3.w,
                     ),
@@ -687,73 +827,105 @@ class PayAtStore extends StatelessWidget {
                         text3: "",
                         icon: Icons.currency_rupee_sharp,
                       )
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _myWalletController.myWalletModel.value?.data
-                                ?.where((c) => c.deactivated == false)
-                                .toList()
-                                .length ??
-                            0,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              RedeemCashInStorePageData payviewData =
-                                  RedeemCashInStorePageData(
-                                      name: _myWalletController.myWalletModel
-                                          .value!.data![index].name,
-                                      sId: _myWalletController.myWalletModel
-                                          .value!.data![index].sId,
-                                      // storeType: _myWalletController
-                                      //     .myWalletModel
-                                      //     .value!
-                                      //     .data![index]
-                                      //     .storeType,
-                                      // earnedCashback: _myWalletController
-                                      //     .myWalletModel
-                                      //     .value!
-                                      //     .data![index]
-                                      //     .earnedCashback,
-                                      // updatedAt: _myWalletController
-                                      //     .myWalletModel
-                                      //     .value!
-                                      //     .data![index]
-                                      //     .updatedAt,
-                                      // distance: _myWalletController
-                                      //     .myWalletModel
-                                      //     .value!
-                                      //     .data![index]
-                                      //     .distance,
-                                      // logo: _myWalletController.myWalletModel
-                                      //     .value!.data![index].logo,
-                                      // // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
-                                      // actual_cashback: _myWalletController
-                                      //     .myWalletModel
-                                      //     .value!
-                                      //     .data![index]
-                                      //     .earnedCashback,
-                                      // premium: _myWalletController.myWalletModel.value!.data![index].premium,
-                                      welcomeOfferAmount: _myWalletController
-                                          .myWalletModel
-                                          .value!
-                                          .data![index]
-                                          .welcomeOfferAmount);
-                              _paymentController.redeemCashInStorePageDataIndex
-                                  .value = payviewData;
+                    : Obx(
+                        () => ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _myWalletController
+                                      .selectBusineesTypeId.value ==
+                                  ''
+                              ? _myWalletController.myWalletModel.value?.data
+                                      ?.where((c) => c.deactivated == false)
+                                      .toList()
+                                      .length ??
+                                  0
+                              : _myWalletController.myWalletModel.value?.data
+                                      ?.where((c) =>
+                                          c.deactivated == false &&
+                                          c.totalCashbackSubBusinessType!.first
+                                                  .subBusinessType ==
+                                              _myWalletController
+                                                  .selectBusineesTypeId.value)
+                                      .toList()
+                                      .length ??
+                                  0,
+                          itemBuilder: (context, index) {
+                            print(_myWalletController.selectBusineesTypeId);
+                            return InkWell(
+                              onTap: () {
+                                RedeemCashInStorePageData payviewData =
+                                    RedeemCashInStorePageData(
+                                        name: _myWalletController.myWalletModel
+                                            .value!.data![index].name,
+                                        sId: _myWalletController.myWalletModel
+                                            .value!.data![index].sId,
+                                        // storeType: _myWalletController
+                                        //     .myWalletModel
+                                        //     .value!
+                                        //     .data![index]
+                                        //     .storeType,
+                                        // earnedCashback: _myWalletController
+                                        //     .myWalletModel
+                                        //     .value!
+                                        //     .data![index]
+                                        //     .earnedCashback,
+                                        // updatedAt: _myWalletController
+                                        //     .myWalletModel
+                                        //     .value!
+                                        //     .data![index]
+                                        //     .updatedAt,
+                                        // distance: _myWalletController
+                                        //     .myWalletModel
+                                        //     .value!
+                                        //     .data![index]
+                                        //     .distance,
+                                        // logo: _myWalletController.myWalletModel
+                                        //     .value!.data![index].logo,
+                                        // // businesstype: _myWalletController.myWalletModel.value!.data![index].storeType,
+                                        // actual_cashback: _myWalletController
+                                        //     .myWalletModel
+                                        //     .value!
+                                        //     .data![index]
+                                        //     .earnedCashback,
+                                        // premium: _myWalletController.myWalletModel.value!.data![index].premium,
+                                        welcomeOfferAmount: _myWalletController
+                                            .myWalletModel
+                                            .value!
+                                            .data![index]
+                                            .welcomeOfferAmount);
+                                _paymentController
+                                    .redeemCashInStorePageDataIndex
+                                    .value = payviewData;
 
-                              Get.toNamed(AppRoutes.PayView, arguments: {});
-                            },
-                            child: ListOfAllWallets(
-                              walletData: _myWalletController
-                                  .myWalletModel.value!.data!
-                                  .where((c) => c.deactivated == false)
-                                  .toList()[index],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox();
-                        },
+                                Get.toNamed(AppRoutes.PayView, arguments: {});
+                              },
+                              child: Obx(
+                                () => ListOfAllWallets(
+                                  walletData: _myWalletController
+                                              .selectBusineesTypeId.value ==
+                                          ''
+                                      ? _myWalletController
+                                          .myWalletModel.value!.data!
+                                          .where((c) => c.deactivated == false)
+                                          .toList()[index]
+                                      : _myWalletController
+                                          .myWalletModel.value!.data!
+                                          .where((c) =>
+                                              c.deactivated == false &&
+                                              c.totalCashbackSubBusinessType!
+                                                      .first.subBusinessType ==
+                                                  _myWalletController
+                                                      .selectBusineesTypeId
+                                                      .value)
+                                          .toList()[index],
+                                ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox();
+                          },
+                        ),
                       ),
               ),
             ],
@@ -1021,6 +1193,36 @@ class DisplayBusinessType extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'MuseoSans',
                 color: Color(0xff462f03),
+                fontSize: 10.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              )),
+        ],
+      ),
+    );
+  }
+}
+class SelectedDisplayBusinessType extends StatelessWidget {
+  String? text;
+  SelectedDisplayBusinessType({Key? key, this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: AppConst.grey),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(FontAwesomeIcons.crown, size: 1.8.h, color: AppConst.white),
+          SizedBox(
+            width: 2.w,
+          ),
+          Text(text ?? "",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: ColorConstants.white,
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w500,
                 fontStyle: FontStyle.normal,

@@ -25,6 +25,7 @@ class MyWalletController extends GetxController {
   Rx<Transaction> transactionData = Transaction().obs;
   RxDouble walletbalanceOfBusinessType = 0.0.obs;
   RxInt walletbalanceOfSignup = 0.obs;
+  RxInt intSelected = 1.obs;
   RxInt GroceryWalletAmount = 0.obs;
   RxInt DryFruitWalletAmount = 0.obs;
   RxInt NonvegWalletAmount = 0.obs;
@@ -41,6 +42,7 @@ class MyWalletController extends GetxController {
   RxList<Stores> nearbyGroceryStores = <Stores>[].obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RxString storeId = ''.obs;
+  RxString selectBusineesTypeId = ''.obs;
   // LatLng latLng = LatLng(0.0, 0.0);
   RxBool isLoading = false.obs;
   RxBool isCustomerLoading = false.obs;

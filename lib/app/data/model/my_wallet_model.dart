@@ -57,6 +57,7 @@ class WalletData {
   String? password;
   String? name;
   bool? premium;
+  List<TotalCashbackSubBusinessType>? totalCashbackSubBusinessType;
   String? logo;
   int? defaultCashback;
   int? defaultWelcomeOffer;
@@ -119,6 +120,13 @@ class WalletData {
     password = json['password'];
     name = json['name'];
     premium = json['premium'];
+     if (json['total_cashback_sub_business_type'] != null) {
+      totalCashbackSubBusinessType = <TotalCashbackSubBusinessType>[];
+      json['total_cashback_sub_business_type'].forEach((v) {
+        totalCashbackSubBusinessType!
+            .add(new TotalCashbackSubBusinessType.fromJson(v));
+      });
+    }
     logo = json['logo'];
     defaultCashback = json['default_cashback'];
     defaultWelcomeOffer = json['default_welcome_offer'];
@@ -155,6 +163,10 @@ class WalletData {
     data['password'] = this.password;
     data['name'] = this.name;
     data['premium'] = this.premium;
+    if (this.totalCashbackSubBusinessType != null) {
+      data['total_cashback_sub_business_type'] =
+          this.totalCashbackSubBusinessType!.map((v) => v.toJson()).toList();
+    }
     data['logo'] = this.logo;
     data['default_cashback'] = this.defaultCashback;
     data['default_welcome_offer'] = this.defaultWelcomeOffer;
@@ -194,6 +206,24 @@ class Businesstype {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
     data['_id'] = this.sId;
+    return data;
+  }
+}
+class TotalCashbackSubBusinessType {
+  String? sTypename;
+  String? subBusinessType;
+
+  TotalCashbackSubBusinessType({this.sTypename, this.subBusinessType});
+
+  TotalCashbackSubBusinessType.fromJson(Map<String, dynamic> json) {
+ 
+    subBusinessType = json['sub_business_type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    
+    data['sub_business_type'] = this.subBusinessType;
     return data;
   }
 }
