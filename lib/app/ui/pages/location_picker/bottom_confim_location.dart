@@ -447,8 +447,8 @@ class ConfirmLocationWideButton extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 1.h),
         height: 6.h,
         decoration: BoxDecoration(
-            color: AppConst.darkGreen,
-            border: Border.all(width: 1.5, color: AppConst.darkGreen),
+            color: AppConst.green,
+            // border: Border.all(width: 1.5, color: AppConst.green),
             borderRadius: BorderRadius.circular(10)),
         child: Center(
           child: Text(

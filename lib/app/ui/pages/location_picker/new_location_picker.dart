@@ -33,7 +33,10 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
   bool? issignup;
   bool? homeTrue;
   String page = "";
-
+void _setMapStyle(GoogleMapController controller) async {
+  String style = await DefaultAssetBundle.of(context).loadString('assets/map_style.json');
+  controller.setMapStyle(style);
+}
   @override
   Widget build(BuildContext context) {
     // print(_addLocationController.currentPosition.latitude);
@@ -80,7 +83,10 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
               onCameraIdle: _addLocationController.onCameraIdle,
               zoomControlsEnabled: false,
               onCameraMove: _addLocationController.onCameraMove,
-              onMapCreated: _addLocationController.onMapCreated,
+               onMapCreated: (GoogleMapController controller) {
+      _addLocationController.onMapCreated(controller);
+      _setMapStyle(controller);
+    },
             ),
           ),
 
