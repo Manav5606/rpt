@@ -55,7 +55,7 @@ class _TheBossCameraScreenState extends State<TheBossCameraScreen>
       if (!mounted) return;
       setState(() {});
     });
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -302,9 +302,16 @@ class _TheBossCameraScreenState extends State<TheBossCameraScreen>
                         onDone();
                       }
                     } catch (e) {
-                      Get.showSnackbar(GetBar(
-                          title: "Error",
-                          message: "Photo of this bill couldn't be taken"));
+                      Get.showSnackbar(GetSnackBar(
+                        backgroundColor: AppConst.black,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                        snackStyle: SnackStyle.FLOATING,
+                        borderRadius: 12,
+                        duration: Duration(seconds: 2),
+                        message: "Photo of this bill couldn't be taken.",
+                        // title: "Amount must be at least \u{20b9}1"
+                      ));
                     } finally {
                       camLoading.value = !camLoading.value;
                     }

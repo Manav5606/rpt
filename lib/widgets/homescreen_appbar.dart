@@ -26,59 +26,57 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 0.w, top: 1.h, bottom: 2.h, right: 2.w),
-      color: Color(0xff005b41),
+      padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 2.h, right: 2.w),
+      color: AppConst.green,
       child: GestureDetector(
         onTap: onTap,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Icon(
-            //   Icons.location_on_rounded,
-            //   color: AppConst.black,
-            //   size: SizeUtils.horizontalBlockSize * 7.5,
-            // ),
-            Container(
-              height: 4.h,
-              width: 10.w,
-              child: FittedBox(
-                child: Icon(
-                  Icons.keyboard_arrow_down_outlined,
-                  size: 3.h,
-                  color: AppConst.white,
-                ),
-              ),
+            Icon(
+              Icons.location_on_rounded,
+              color: AppConst.white,
+              size: 3.h,
             ),
+
             SizedBox(
               width: 1.w,
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: isHomeScreen ? 63.w : 40.w,
-                  child: Text(
-                    address,
-                    // maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: SizeUtils.horizontalBlockSize * 4,
-                        fontFamily: 'MuseoSans',
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                        color: AppConst.white,
-                        letterSpacing: 0.4),
-
-                    // AppStyles.ADDRESS_STYLE,
+                // Container(
+                //   width: isHomeScreen ? 63.w : 40.w, // test
+                //   child:
+                Text(
+                  address,
+                  // maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                        ? 8.5.sp
+                        : 9.8.sp,
+                    fontFamily: 'MuseoSans',
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                    color: AppConst.white,
                   ),
+
+                  // AppStyles.ADDRESS_STYLE,
+                  // ),
                 ),
                 // SizedBox(
                 //   width: 1.w,
                 // ),
-                // Icon(
-                //   Icons.keyboard_arrow_down_outlined,
-                //   size: 6.w,
-                // ),
+                Padding(
+                  padding: EdgeInsets.only(),
+                  child: Icon(
+                    Icons.keyboard_arrow_down_outlined,
+                    size: 2.h,
+                    color: AppConst.white,
+                  ),
+                ),
               ],
             ),
             Spacer(),
@@ -86,35 +84,59 @@ class HomeAppBar extends StatelessWidget {
             // ?
             GestureDetector(
               onTap: onTapWallet,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 0.7.h,
-                  horizontal: 1.w,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppConst.green,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.account_balance_wallet_rounded,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.account_balance_wallet_rounded,
+                    color: AppConst.white,
+                    size: 2.5.h,
+                  ),
+                  Text(
+                    //\u{20B9}
+                    " ${balance}", //?.toStringAsFixed(2)
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                          ? 9.sp
+                          : 11.sp,
+                      fontFamily: 'MuseoSans',
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
                       color: AppConst.white,
-                      size: 2.8.h,
                     ),
-                    Text(
-                      //\u{20B9}
-                      " ${balance}", //?.toStringAsFixed(2)
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                        color: AppConst.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+
+              // Container(
+              //   padding: EdgeInsets.symmetric(
+              //     vertical: 0.7.h,
+              //     horizontal: 1.w,
+              //   ),
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(20),
+              //     color: AppConst.green,
+              //   ),
+              //   child: Row(
+              //     children: [
+              //       Icon(
+              //         Icons.account_balance_wallet_rounded,
+              //         color: AppConst.white,
+              //         size: 2.8.h,
+              //       ),
+              //       Text(
+              //         //\u{20B9}
+              //         " ${balance}", //?.toStringAsFixed(2)
+              //         maxLines: 1,
+              //         style: TextStyle(
+              //           fontSize: SizeUtils.horizontalBlockSize * 3.8,
+              //           color: AppConst.white,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             )
             // : CartWidget(
             //     onTap: () async {

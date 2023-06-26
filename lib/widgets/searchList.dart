@@ -249,33 +249,64 @@ class ExploreSearchProducts extends StatelessWidget {
       }),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          (product.store?.name != null &&
+                  product.store?.name != "" &&
+                  (product.store?.name!.length ?? 0) > 17)
+              ? Padding(
+                  padding: EdgeInsets.only(left: 1.w),
+                  child: DisplayStoreNameOrHotProduct(
+                    name: product.store!.name ?? "",
+                    subStringLength: 40,
+                  ),
+                )
+              : SizedBox(),
+          SizedBox(
+            height: 1.h,
+          ),
           Row(
             children: [
-              Container(
-                height: 10.h,
-                width: 30.w,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                child: (product.logo == null || product.logo == "")
-                    ? Image.asset("assets/images/noproducts.png")
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          product.logo
-                              // chatOrderController.cartIndex.value?.rawItems?[index].logo
-                              ??
-                              '',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return SizedBox(
-                                height: 10.h,
-                                width: 30.w,
-                                child: Image.asset(
-                                    "assets/images/noproducts.png"));
-                          },
-                        ),
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  (product.store?.name != null &&
+                          product.store?.name != "" &&
+                          (product.store?.name!.length ?? 0) < 18)
+                      ? DisplayStoreNameOrHotProduct(
+                          name: product.store!.name ?? "",
+                          subStringLength: 18,
+                        )
+                      : SizedBox(),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Container(
+                    height: 10.h,
+                    width: 30.w,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                    child: (product.logo == null || product.logo == "")
+                        ? Image.asset("assets/images/noproducts.png")
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.network(
+                              product.logo
+                                  // chatOrderController.cartIndex.value?.rawItems?[index].logo
+                                  ??
+                                  '',
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return SizedBox(
+                                    height: 10.h,
+                                    width: 30.w,
+                                    child: Image.asset(
+                                        "assets/images/noproducts.png"));
+                              },
+                            ),
+                          ),
+                  ),
+                ],
               ),
               SizedBox(
                 width: 3.w,
@@ -284,9 +315,16 @@ class ExploreSearchProducts extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // (product.store?.name != null && product.store?.name != "")
+                  //     ? DisplayStoreNameOrHotProduct(
+                  //         name: product.store!.name ?? "")
+                  //     : SizedBox(),
+                  // SizedBox(
+                  //   height: 0.4.h,
+                  // ),
                   Container(
                     width: 60.w,
-                    height: 4.5.h,
+                    // height: 4.5.h,
                     // color: AppConst.yellow,
                     child: Text(
                         "${product.name ?? ''} - ${product.unit ?? "1 unit"}",
@@ -303,6 +341,9 @@ class ExploreSearchProducts extends StatelessWidget {
                           fontStyle: FontStyle.normal,
                         )),
                   ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
                   Container(
                     width: 60.w,
                     child: Row(
@@ -311,12 +352,12 @@ class ExploreSearchProducts extends StatelessWidget {
                             "\u{20b9}${product.selling_price?.toStringAsFixed(2) ?? 00}  ",
                             style: TextStyle(
                               fontFamily: 'MuseoSans',
-                              color: AppConst.black,
+                              color: Colors.black,
                               fontSize:
                                   (SizerUtil.deviceType == DeviceType.tablet)
                                       ? 10.sp
-                                      : 12.sp,
-                              fontWeight: FontWeight.w700,
+                                      : 11.5.sp,
+                              fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.normal,
                             )),
                         Text(
@@ -340,25 +381,39 @@ class ExploreSearchProducts extends StatelessWidget {
                                 (product.cashback ?? 0) > 0)
                             ? Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: BorderRadius.circular(6),
                                   color: Color(0xffe6faf1),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Text(
-                                      "\u{20b9}${product.cashback ?? 00} OFF ",
-                                      //  "\u{20b9}${product.cashback ?? 00} CASHBACK ",
-                                      style: TextStyle(
-                                        fontFamily: 'MuseoSans',
-                                        color: Colors.green.shade900,
-                                        fontSize: (SizerUtil.deviceType ==
-                                                DeviceType.tablet)
-                                            ? 8.sp
-                                            : 9.5.sp,
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ),
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: RichText(
+                                        text: TextSpan(children: [
+                                      TextSpan(
+                                          text:
+                                              "\u{20b9}${product.cashback ?? 00} ",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: Colors.green.shade600,
+                                            fontSize: (SizerUtil.deviceType ==
+                                                    DeviceType.tablet)
+                                                ? 8.sp
+                                                : 9.5.sp,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                      TextSpan(
+                                          text: "OFF",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: Colors.green.shade700,
+                                            fontSize: (SizerUtil.deviceType ==
+                                                    DeviceType.tablet)
+                                                ? 8.sp
+                                                : 9.5.sp,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle: FontStyle.normal,
+                                          ))
+                                    ]))),
                               )
                             : SizedBox(),
                       ],
@@ -378,7 +433,7 @@ class ExploreSearchProducts extends StatelessWidget {
                   //   height: 0.5.h,
                   // ),
                   SizedBox(
-                    height: 1.h,
+                    height: 1.5.h,
                   ),
                   Container(
                     width: 60.w,
@@ -407,25 +462,25 @@ class ExploreSearchProducts extends StatelessWidget {
                         //     SizedBox(
                         //       width: 1.w,
                         //     ),
-                        //     Container(
-                        //       width: 52.w,
-                        //       child: Text(product.store?.name ?? "",
-                        //           maxLines: 1,
-                        //           overflow: TextOverflow.ellipsis,
-                        //           style: TextStyle(
-                        //             fontFamily: 'MuseoSans',
-                        //             color: AppConst.black,
-                        //             fontSize:
-                        //                 SizeUtils.horizontalBlockSize * 3.5,
-                        //             fontWeight: FontWeight.w700,
-                        //             fontStyle: FontStyle.normal,
-                        //           )),
-                        //     ),
+                        // Container(
+                        //   width: 52.w,
+                        //   child: Text(product.store?.name ?? "",
+                        //       maxLines: 1,
+                        //       overflow: TextOverflow.ellipsis,
+                        //       style: TextStyle(
+                        //         fontFamily: 'MuseoSans',
+                        //         color: AppConst.black,
+                        //         fontSize:
+                        //             SizeUtils.horizontalBlockSize * 3.5,
+                        //         fontWeight: FontWeight.w700,
+                        //         fontStyle: FontStyle.normal,
+                        //       )),
+                        // ),
                         //   ],
                         // ),
-                        SizedBox(
-                          width: 1.w,
-                        ),
+                        // SizedBox(
+                        //   width: 1.w,
+                        // ),
                         InkWell(
                           onTap: (() async {
                             _moreStoreController.storeId.value =
@@ -593,6 +648,47 @@ class ExploreSearchProducts extends StatelessWidget {
   //     ),
   //   );
   // }
+}
+
+class DisplayStoreNameOrHotProduct extends StatelessWidget {
+  DisplayStoreNameOrHotProduct(
+      {Key? key, required this.name, this.subStringLength = 12})
+      : super(key: key);
+
+  final String name;
+  int subStringLength;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Color(
+              0xfffef0d3), // Color(0xffFED3D3), //AppConst.lightSkyBlue, //Color(0xfffce6e7),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8),
+              bottomLeft: Radius.circular(8),
+              bottomRight: Radius.circular(100),
+              topRight: Radius.circular(8))),
+      child: Padding(
+        padding: EdgeInsets.only(left: 1.w, top: 4, bottom: 4, right: 4.w),
+        child: Text(
+            ((name.length) > subStringLength)
+                ? (name.substring(0, subStringLength - 1) + ".")
+                : (name + "."),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: 'MuseoSans',
+              color: Color(
+                  0xff442e00), //   Color(0xff450000), //AppConst.darkBlue, //Color(0xffE96971),
+              fontSize:
+                  (SizerUtil.deviceType == DeviceType.tablet) ? 8.sp : 9.sp,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            )),
+      ),
+    );
+  }
 }
 
 class StoreListViewChild extends StatelessWidget {
