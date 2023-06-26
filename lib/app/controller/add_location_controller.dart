@@ -123,10 +123,10 @@ class AddLocationController extends GetxController {
           long.add(longg);
 
           String idd = address.id ?? '';
-          id.add(idd); 
+          id.add(idd);
 
           String apartment = address.apartment ?? '';
-          appartement.add(apartment); 
+          appartement.add(apartment);
         }
       }
     }
@@ -307,12 +307,13 @@ class AddLocationController extends GetxController {
       log('onMapCreated:----onCameraIdle>>> p$placemarks');
 
       Placemark? selectedPlace;
-      final RegExp regex = RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\s]+$');
-      // Regex pattern to match a string containing at least one letter and one number
+
+      final RegExp regex = RegExp(
+          r'^(?=.*[a-zA-Z])(?!.*Unnamed)(?!.*[^a-zA-Z0-9\s]).*[a-zA-Z0-9\s]+$'); // this was final experssion for address
 
       for (final Placemark place in placemarks) {
         if (place.name != null &&
-            !(place.name!.contains("Unnamed")) &&
+            (place.name?.trim().length ?? 0) > 8 &&
             regex.hasMatch(place.name!)) {
           selectedPlace = place;
           break;
@@ -321,11 +322,11 @@ class AddLocationController extends GetxController {
 
       if (selectedPlace != null) {
         currentAddress.value =
-            "${selectedPlace.name}, ${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
+            "${selectedPlace.street == selectedPlace.name ? "" : "${selectedPlace.name}, "}${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
       } else if (placemarks.isNotEmpty) {
         final Placemark fallbackPlace = placemarks.last;
         currentAddress.value =
-            "${fallbackPlace.name}, ${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
+            "${fallbackPlace.street == fallbackPlace.name ? "" : "${fallbackPlace.name}, "}${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
       }
       // final Placemark place = p[0];
       // // Address address = await GeoCode().reverseGeocoding(
@@ -431,11 +432,11 @@ class AddLocationController extends GetxController {
           }
 
           if (selectedPlace != null) {
-            currentAddress.value =
+            userAddress.value =
                 "${selectedPlace.name}, ${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
           } else if (placemarks.isNotEmpty) {
             final Placemark fallbackPlace = placemarks.last;
-            currentAddress.value =
+            userAddress.value =
                 "${fallbackPlace.name}, ${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
           }
           // log('p :$p');
@@ -653,47 +654,6 @@ class AddLocationController extends GetxController {
     });
   }
 
-  // Future getRecentAddress() async {
-  //   try {
-  //     final List<Placemark> p =
-  //         await placemarkFromCoordinates(latitude.value, longitude.value);
-  //     log(' getAddress : $p');
-  //     if (!(p[0].name!.contains("Unnamed")) &&
-  //         ((p[0].name?.length ?? 0) > 6) &&
-  //         !(p[0].name!.contains("+"))) {
-  //       final Placemark place = p[0];
-  //       currentAddress.value =
-  //           "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
-  //     } else if (!(p[1].name!.contains("Unnamed")) &&
-  //         ((p[1].name?.length ?? 0) > 6) &&
-  //         !(p[1].name!.contains("+"))) {
-  //       final Placemark place = p[1];
-  //       currentAddress.value =
-  //           "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
-  //     } else if (!(p[2].name!.contains("Unnamed")) &&
-  //         ((p[2].name?.length ?? 0) > 6) &&
-  //         !(p[2].name!.contains("+"))) {
-  //       final Placemark place = p[2];
-  //       currentAddress.value =
-  //           "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
-  //     } else if (!(p[3].name!.contains("Unnamed")) &&
-  //         ((p[3].name?.length ?? 0) > 6) &&
-  //         !(p[3].name!.contains("+"))) {
-  //       final Placemark place = p[3];
-  //       currentAddress.value =
-  //           "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
-  //     } else {
-  //       final Placemark place = p[4];
-  //       currentAddress.value =
-  //           "${place.name}, ${place.street},${place.subLocality}, ${place.locality},${place.administrativeArea}, ${place.country}, ${place.postalCode}";
-  //     }
-  //   } catch (e) {
-  //     ReportCrashes().reportRecorderror(e);
-  //     ReportCrashes().reportErrorCustomKey("getRecentAddress", "$e");
-  //     print(e);
-  //   }
-  // }
-
   Future<void> getRecentAddress() async {
     try {
       final List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -701,13 +661,12 @@ class AddLocationController extends GetxController {
       log(': $placemarks');
 
       Placemark? selectedPlace;
-      final RegExp regex = RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\s]+$');
+      final RegExp regex = RegExp(
+          r'^(?=.*[a-zA-Z])(?!.*Unnamed)(?!.*[\+\-]*\d+[\+\-]*$)(?!.*[^a-zA-Z0-9\s]).*$');
       // Regex pattern to match a string containing at least one letter and one number
 
       for (final Placemark place in placemarks) {
-        if (place.name != null &&
-            !(place.name!.contains("Unnamed")) &&
-            regex.hasMatch(place.name!)) {
+        if (place.name != null && regex.hasMatch(place.name!)) {
           selectedPlace = place;
           break;
         }
@@ -715,11 +674,11 @@ class AddLocationController extends GetxController {
 
       if (selectedPlace != null) {
         currentAddress.value =
-            "${selectedPlace.name}, ${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
+            "${selectedPlace.street == selectedPlace.name ? "" : "${selectedPlace.name}, "}${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
       } else if (placemarks.isNotEmpty) {
         final Placemark fallbackPlace = placemarks.last;
         currentAddress.value =
-            "${fallbackPlace.name}, ${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
+            "${fallbackPlace.street == fallbackPlace.name ? "" : "${fallbackPlace.name}, "}${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
       }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
@@ -735,7 +694,8 @@ class AddLocationController extends GetxController {
       log(' getAddress : $placemarks');
       final Placemark place;
       Placemark? selectedPlace;
-      final RegExp regex = RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\s]+$');
+      final RegExp regex = RegExp(
+          r'^(?=.*[a-zA-Z])(?!.*Unnamed)(?!.*[\+\-]*\d+[\+\-]*$)(?!.*[^a-zA-Z0-9\s]).*$');
       // Regex pattern to match a string containing at least one letter and one number
 
       for (final Placemark place in placemarks) {
@@ -749,11 +709,11 @@ class AddLocationController extends GetxController {
 
       if (selectedPlace != null) {
         currentAddress.value =
-            "${selectedPlace.name}, ${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
+            "${selectedPlace.street == selectedPlace.name ? "" : "${selectedPlace.name}, "}${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
       } else if (placemarks.isNotEmpty) {
         final Placemark fallbackPlace = placemarks.last;
         currentAddress.value =
-            "${fallbackPlace.name}, ${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
+            "${fallbackPlace.street == fallbackPlace.name ? "" : "${fallbackPlace.name}, "}${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
       }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
@@ -776,7 +736,8 @@ class AddLocationController extends GetxController {
         ),
       );
       Placemark? selectedPlace;
-      final RegExp regex = RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\s]+$');
+      final RegExp regex = RegExp(
+          r'^(?=.*[a-zA-Z])(?!.*Unnamed)(?!.*[\+\-]*\d+[\+\-]*$)(?!.*[^a-zA-Z0-9\s]).*$');
       // Regex pattern to match a string containing at least one letter and one number
 
       for (final Placemark place in placemarks) {
@@ -790,11 +751,11 @@ class AddLocationController extends GetxController {
 
       if (selectedPlace != null) {
         currentAddress.value =
-            "${selectedPlace.name}, ${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
+            "${selectedPlace.street == selectedPlace.name ? "" : "${selectedPlace.name}, "}${selectedPlace.street},${selectedPlace.subLocality}, ${selectedPlace.locality},${selectedPlace.administrativeArea}, ${selectedPlace.country}, ${selectedPlace.postalCode}";
       } else if (placemarks.isNotEmpty) {
         final Placemark fallbackPlace = placemarks.last;
         currentAddress.value =
-            "${fallbackPlace.name}, ${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
+            "${fallbackPlace.street == fallbackPlace.name ? "" : "${fallbackPlace.name}, "}${fallbackPlace.street},${fallbackPlace.subLocality}, ${fallbackPlace.locality},${fallbackPlace.administrativeArea}, ${fallbackPlace.country}, ${fallbackPlace.postalCode}";
       }
     } catch (e) {
       ReportCrashes().reportRecorderror(e);
@@ -975,4 +936,3 @@ class AddLocationController extends GetxController {
 //     return await Geolocator.getCurrentPosition();
 //   }
 // }
-
