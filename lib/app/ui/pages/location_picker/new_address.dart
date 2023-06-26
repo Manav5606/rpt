@@ -131,7 +131,22 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                             width: double.infinity,
                             color: AppConst.transparent,
                           ),
-                          (widget.storesCount != 0)
+                          
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 1.5.h),
+                        child: Container(
+                          // decoration: BoxDecoration(
+                          //   border: Border.all(color: AppConst.black, width: 0.3),
+                          //   borderRadius: BorderRadius.circular(12),
+                          // ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              (widget.storesCount != 0)
                               ? Positioned(
                                   top: 2.h,
                                   left: 0,
@@ -243,20 +258,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                   ),
                                 )
                               : SizedBox(),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 1.5.h),
-                        child: Container(
-                          // decoration: BoxDecoration(
-                          //   border: Border.all(color: AppConst.black, width: 0.3),
-                          //   borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                              SizedBox(height: 10,),
                               Row(
                                 children: [
                                   Icon(

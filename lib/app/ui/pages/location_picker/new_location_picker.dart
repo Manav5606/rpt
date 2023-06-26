@@ -117,7 +117,7 @@ void _setMapStyle(GoogleMapController controller) async {
                                 .middlePointOfScreenOnMap!.latitude,
                             _addLocationController
                                 .middlePointOfScreenOnMap!.longitude));
-
+          
                         await _myWalletController
                             .getAllWalletByCustomerByBusinessType();
                         int? value = await _myWalletController

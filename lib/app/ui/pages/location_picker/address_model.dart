@@ -86,6 +86,7 @@ class _AddressModelState extends State<AddressModel> {
       isHome = false;
     }
     print(isHome);
+    print("isHome");
   }
 
   void _startLoadingTimer() {
@@ -550,24 +551,144 @@ class _AddressModelState extends State<AddressModel> {
                                                                   '');
                                                       // widget.isHomeScreen
                                                       //     ?
+                                                      if (_addLocationController.predictions[index].id == "1" ||
+                                                          _addLocationController
+                                                                  .predictions[
+                                                                      index]
+                                                                  .id ==
+                                                              "2" ||
+                                                          _addLocationController
+                                                                  .predictions[
+                                                                      index]
+                                                                  .id ==
+                                                              "3" ||
+                                                          _addLocationController
+                                                                  .predictions[
+                                                                      index]
+                                                                  .id ==
+                                                              "4") {
+                                                        _addLocationController
+                                                            .currentSelectValue
+                                                            .value = index;
+                                                        _homeController
+                                                            .isLoading
+                                                            .value = true;
 
-                                                      Get.toNamed(
-                                                          AppRoutes
-                                                              .NewLocationScreen,
-                                                          arguments: {
-                                                            "isFalse": true,
-                                                            "page": widget.page,
-                                                            "issignup":
-                                                                widget.issignup,
-                                                            "homeTrue": isHome,
-                                                            // "isHome": widget.isHomeScreen
-                                                          })?.whenComplete(() =>
-                                                          Get.back(
-                                                              result: true));
+                                                        _addLocationController
+                                                                .currentAddress
+                                                                .value =
+                                                            _addLocationController
+                                                                    .addres[index];
+                                                        _addLocationController
+                                                                .userAddress
+                                                                .value =
+                                                            _addLocationController
+                                                                    .addres[index];
+                                                        _addLocationController
+                                                                .userAddressTitle
+                                                                .value =
+                                                            _addLocationController
+                                                                    .title[index];
+                                                        _addLocationController
+                                                                .userHouse
+                                                                .value =
+                                                            _addLocationController
+                                                                    .house[index];
+                                                        _addLocationController
+                                                                .userAppartment
+                                                                .value =
+                                                            _addLocationController
+                                                                    .appartement[index];
 
-                                                      _addLocationController
-                                                          .isFullAddressBottomSheet
-                                                          .value = false;
+                                                        _addLocationController
+                                                                .latitude
+                                                                .value =
+                                                            _addLocationController
+                                                                    .lat[index];
+
+                                                        _addLocationController
+                                                                .longitude
+                                                                .value =
+                                                            _addLocationController
+                                                                    .long[index];
+                                                        await UserViewModel.setLocation(
+                                                            LatLng(
+                                                                 _addLocationController
+                                                                    .lat[index],
+                                                                _addLocationController
+                                                                        .long[index]
+                                                                    ),
+                                                            _addLocationController
+                                                                .id[index]);
+                                                        _homeController
+                                                            .pageNumber = 1;
+                                                        _homeController
+                                                                .isPageAvailable =
+                                                            true;
+                                                        _homeController
+                                                            .isPageLoading
+                                                            .value = false;
+                                                        if (widget.page ==
+                                                            "claimmore") {
+                                                          await _myWalletController
+                                                              .getAllWalletByCustomerByBusinessType();
+                                                          int? value =
+                                                              await _myWalletController
+                                                                  .updateBusinesstypeWallets();
+                                                          _addLocationController
+                                                              .isRecentAddress
+                                                              .value = true;
+                                                        } else {
+                                                          _homeController
+                                                              .homePageFavoriteShopsList
+                                                              .clear();
+                                                          await _homeController
+                                                              .getHomePageFavoriteShops();
+                                                          await _homeController
+                                                              .getAllCartsData();
+                                                          _homeController
+                                                              .getHomePageFavoriteShopsModel
+                                                              .refresh();
+                                                        }
+
+                                                        widget.isHomeScreen
+                                                            ? Get.offAllNamed(
+                                                                AppRoutes
+                                                                    .BaseScreen) // update the intialize map lat and lng
+                                                            : (widget.page ==
+                                                                    "claimmore")
+                                                                ? Get.toNamed(
+                                                                    AppRoutes
+                                                                        .SelectBusinessType,
+                                                                    arguments: {
+                                                                        "signup":
+                                                                            widget.issignup
+                                                                      })
+                                                                : Get.back();
+                                                        _homeController
+                                                            .isLoading
+                                                            .value = false;
+                                                      } else {
+                                                        Get.toNamed(
+                                                            AppRoutes
+                                                                .NewLocationScreen,
+                                                            arguments: {
+                                                              "isFalse": true,
+                                                              "page":
+                                                                  widget.page,
+                                                              "issignup": widget
+                                                                  .issignup,
+                                                              "homeTrue":
+                                                                  isHome,
+                                                              // "isHome": widget.isHomeScreen
+                                                            })?.whenComplete(
+                                                            () => Get.back(
+                                                                result: true));
+
+                                                        _addLocationController
+                                                            .isFullAddressBottomSheet
+                                                            .value = false;
+                                                      }
                                                       // : Get.back();
                                                     },
                                                     child: Padding(
@@ -578,7 +699,25 @@ class _AddressModelState extends State<AddressModel> {
                                                       child: Row(
                                                         children: [
                                                           Icon(
-                                                            Icons.location_on,
+                                                            _addLocationController.predictions[index].id == "1" ||
+                                                                    _addLocationController
+                                                                            .predictions[
+                                                                                index]
+                                                                            .id ==
+                                                                        "2" ||
+                                                                    _addLocationController
+                                                                            .predictions[
+                                                                                index]
+                                                                            .id ==
+                                                                        "3" ||
+                                                                    _addLocationController
+                                                                            .predictions[
+                                                                                index]
+                                                                            .id ==
+                                                                        "4"
+                                                                ? Icons.home
+                                                                : Icons
+                                                                    .location_on,
                                                             color:
                                                                 AppConst.grey,
                                                             size: 3.h,
@@ -587,28 +726,63 @@ class _AddressModelState extends State<AddressModel> {
                                                             width: 2.w,
                                                           ),
                                                           Flexible(
-                                                            child: Text(
-                                                              _addLocationController
-                                                                      .predictions[
-                                                                          index]
-                                                                      .description ??
-                                                                  "",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      SizeUtils
-                                                                              .horizontalBlockSize *
-                                                                          3.8,
-                                                                  fontFamily:
-                                                                      'MuseoSans',
-                                                                  color:
-                                                                      AppConst
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  _addLocationController
+                                                                              .predictions[
+                                                                                  index]
+                                                                              .id ==
+                                                                          "1"
+                                                                      ? 'Home'
+                                                                      : _addLocationController.predictions[index].id ==
+                                                                              "2"
+                                                                          ? "Work"
+                                                                          : _addLocationController.predictions[index].id == "3"
+                                                                              ? "Hotel"
+                                                                              : _addLocationController.predictions[index].id == "4"
+                                                                                  ? _addLocationController.predictions[index].reference!
+                                                                                  : "",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          'MuseoSans',
+                                                                      color: AppConst
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                      fontSize:
+                                                                          SizeUtils.horizontalBlockSize *
+                                                                              4),
+                                                                ),
+                                                                Text(
+                                                                  _addLocationController
+                                                                          .predictions[
+                                                                              index]
+                                                                          .description ??
+                                                                      "",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          SizeUtils.horizontalBlockSize *
+                                                                              3.8,
+                                                                      fontFamily:
+                                                                          'MuseoSans',
+                                                                      color: AppConst
                                                                           .grey,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ],
@@ -702,20 +876,6 @@ class _AddressModelState extends State<AddressModel> {
                                                         //         : 3,
                                                         itemBuilder:
                                                             (context, index) {
-                                                          if (_addLocationController
-                                                                  .userModel!
-                                                                  .addresses![
-                                                                      index]
-                                                                  .title ==
-                                                              "Home") {
-                                                            // setState(() {
-
-                                                            isHomeSelected =
-                                                                true;
-                                                          } else {
-                                                            isHomeSelected =
-                                                                false;
-                                                          }
                                                           return
                                                               // Obx(
                                                               //   () =>
@@ -1018,8 +1178,9 @@ class _AddressModelState extends State<AddressModel> {
                                                                                     await Future.delayed(Duration(milliseconds: 200));
                                                                                     Get.toNamed(AppRoutes.EditAddressScreen, arguments: {
                                                                                       'addresses': _addLocationController.userModel?.addresses?[index],
-                                                                                      'isHomeSelected': isHomeSelected
-                                                                                    })?.whenComplete(() => setState(() {}));
+                                                                                      'isHomeSelected': isHome
+                                                                                    })!
+                                                                                        .whenComplete(() => setState(() {}));
                                                                                   },
                                                                                 ),
                                                                                 if ((_addLocationController.userModel?.addresses?.length ?? 0) > 1 && _addLocationController.userAddress.value != _addLocationController.userModel?.addresses?[index].address)
@@ -1193,7 +1354,8 @@ class _AddressModelState extends State<AddressModel> {
                                               widget.editOrDelete == true)
                                           ? SizedBox()
                                           : widget.isRecentAddress
-                                              ? Padding(
+                                              ? 
+                                              Padding(
                                                   padding: EdgeInsets.symmetric(
                                                       vertical: 1.h),
                                                   child: Text(
@@ -1219,7 +1381,8 @@ class _AddressModelState extends State<AddressModel> {
                                               widget.editOrDelete == true)
                                           ? SizedBox()
                                           : widget.isRecentAddress
-                                              ? Obx(
+                                              ? 
+                                              Obx(
                                                   () => ListView.separated(
                                                     padding: EdgeInsets.zero,
                                                     shrinkWrap: true,
