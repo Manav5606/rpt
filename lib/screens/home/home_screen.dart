@@ -9,6 +9,7 @@ import 'package:customer_app/app/ui/pages/signIn/signup_screen.dart';
 import 'package:customer_app/screens/addcart/Widgets/store_name_call_logo.dart';
 import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
+import 'package:customer_app/screens/more_stores/carousel_animation.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late ScrollController _scrollController;
   late ScrollController _categoryController;
+  late ScrollController _carouselContoller;
   late ScrollController _recentController;
   late ScrollController _recentCartController;
 
@@ -112,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen>
     percent = .50;
     _scrollController = ScrollController();
     _categoryController = ScrollController();
+    _carouselContoller = ScrollController();
     _recentController = ScrollController();
     _recentCartController = ScrollController();
     _hideFabAnimController = AnimationController(
@@ -154,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen>
     Get.find<HomeController>()..getAllCartsData();
 
     _categoryController.addListener(_scrollListener);
+    _carouselContoller.addListener(_CarsouselListener);
     _recentController.addListener(_recentScrollListener);
     _recentCartController.addListener(_recentCartScrollListener);
 
@@ -166,6 +170,20 @@ class _HomeScreenState extends State<HomeScreen>
   _scrollListener() {
     setState(() {
       if (_categoryController.position.pixels > 200) {
+        setState(() {
+          last = true;
+        });
+      } else {
+        setState(() {
+          last = false;
+        });
+      }
+    });
+  }
+
+  _CarsouselListener() {
+    setState(() {
+      if (_carouselContoller.position.pixels > 200) {
         setState(() {
           last = true;
         });
@@ -769,15 +787,16 @@ class _HomeScreenState extends State<HomeScreen>
                                                                           index) {
                                                                     //currentItems = index;
                                                                     return RecentActiveOrders1(
-                                                                      recentCount:
-                                                                          recentCount,
-                                                                      myAccountController:
-                                                                          _myAccountController,
-                                                                      itemIndex: (_myAccountController.activeOrdersModel.value?.data!.length ??
-                                                                              0) -
-                                                                          1 -
-                                                                          index,
-                                                                    );
+                                                                        recentCount:
+                                                                            recentCount,
+                                                                        myAccountController:
+                                                                            _myAccountController,
+                                                                        itemIndex:
+                                                                            index
+                                                                        //  ((_myAccountController.activeOrdersModel.value?.data!.length ?? 0) -
+                                                                        //         1 -
+                                                                        //         index),
+                                                                        );
                                                                     // : RecentActiveOrders(
                                                                     //     myAccountController:
                                                                     //         _myAccountController,
@@ -930,40 +949,60 @@ class _HomeScreenState extends State<HomeScreen>
                                 //   color: AppConst.veryLightGrey,
                                 // ),
                                 Seprator(),
+
                                 ((_homeController
                                             .homePageFavoriteShopsList.length) >
                                         0)
                                     ? AllOffers()
-
-                                    //  Row(
-                                    //     children: [
-                                    //       InkWell(
-                                    //           onTap: (() {
-                                    //             Get.offAllNamed(
-                                    //                 AppRoutes
-                                    //                     .SelectLocationAddress,
-                                    //                 arguments: {
-                                    //                   "locationListAvilable": true
-                                    //                 });
-                                    //           }),
-                                    //           child: AllOffers()),
-                                    //       Spacer(),
-                                    //       InkWell(
-                                    //           onTap: (() {
-                                    //             Get.offAllNamed(
-                                    //                 AppRoutes
-                                    //                     .SelectLocationAddress,
-                                    //                 arguments: {
-                                    //                   "locationListAvilable":
-                                    //                       false
-                                    //                 });
-                                    //           }),
-                                    //           child: AllOffers()),
-                                    //     ],
-                                    //   )
                                     : WalletCardList(
                                         navWithOutTransaction: true,
                                       ),
+                                ((_homeController.homePageFavoriteShopsList
+                                            .where((p) => p.premium == true)
+                                            .length) >
+                                        0)
+                                    ? Container(
+                                        height: 18.h,
+                                        width: double.infinity,
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              ListView.builder(
+                                                controller: _carouselContoller,
+                                                itemCount: _homeController
+                                                    .homePageFavoriteShopsList
+                                                    .where((p) =>
+                                                        p.premium == true)
+                                                    .length,
+                                                physics: PageScrollPhysics(),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                shrinkWrap: true,
+                                                itemExtent: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    84,
+                                                itemBuilder: (context, index) {
+                                                  return CarouselAnimation(
+                                                      index: index,
+                                                      inStoreModel: _homeController
+                                                          .homePageFavoriteShopsList
+                                                          .where((p) =>
+                                                              p.premium == true)
+                                                          .toList()[index],
+                                                      count: _homeController
+                                                          .homePageFavoriteShopsList
+                                                          .where((p) =>
+                                                              p.premium == true)
+                                                          .length);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(),
+
                                 AllOffersListView(
                                   controller: _scrollController,
                                 ),
@@ -2233,7 +2272,7 @@ class RecentActiveOrders1 extends StatelessWidget {
                         width: 8.w,
                         child: Image(
                           image: AssetImage(
-                            'assets/images/eCART.png',
+                            'assets/images/CART.png',
                           ),
                         ),
                       ),
@@ -2264,7 +2303,7 @@ class RecentActiveOrders1 extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.earnedCashback ?? "1.8 km"}",
+                            "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.mobile ?? "1.8 km"}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(

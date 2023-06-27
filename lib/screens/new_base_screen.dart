@@ -20,6 +20,7 @@ import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/screens/root/network_check.dart';
 import 'package:customer_app/screens/wallet/controller/paymentController.dart';
+import 'package:customer_app/widgets/all_offers_listview_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -249,10 +250,7 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
                       shrinkWrap: true,
                       itemCount: 10,
                       itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: ListOfAllWalletsShimmer(),
-                        );
+                        return ListViewChildShimmer();
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox();
@@ -411,19 +409,19 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Recent Orders",
+                                      Text(
+                                          "See your Recent Order", //"Recent Transactions",
                                           style: TextStyle(
-                                            fontFamily: 'MuseoSans',
-                                            color: AppConst.black,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    4.5,
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
-                                          )),
+                                              fontFamily: 'MuseoSans',
+                                              color: Colors.black87,
+                                              fontSize: (SizerUtil.deviceType ==
+                                                      DeviceType.tablet)
+                                                  ? 9.5.sp
+                                                  : 11.5.sp,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.normal,
+                                              letterSpacing: -0.5)),
                                     ],
                                   ),
                                   SizedBox(
@@ -455,19 +453,7 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
                                                   scrollDirection:
                                                       Axis.horizontal,
                                                   shrinkWrap: true,
-                                                  itemExtent: (recentCount
-                                                              .value ==
-                                                          1)
-                                                      ? SizeUtils
-                                                              .horizontalBlockSize *
-                                                          95
-                                                      : (recentCount.value == 2)
-                                                          ? SizeUtils
-                                                                  .horizontalBlockSize *
-                                                              80
-                                                          : SizeUtils
-                                                                  .horizontalBlockSize *
-                                                              30,
+                                                  itemExtent: 46.w,
                                                   itemBuilder:
                                                       (context, index) {
                                                     //currentItems = index;
@@ -507,19 +493,7 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
                                                   scrollDirection:
                                                       Axis.horizontal,
                                                   shrinkWrap: true,
-                                                  itemExtent: (recentCount
-                                                              .value ==
-                                                          1)
-                                                      ? SizeUtils
-                                                              .horizontalBlockSize *
-                                                          95
-                                                      : (recentCount.value == 2)
-                                                          ? SizeUtils
-                                                                  .horizontalBlockSize *
-                                                              80
-                                                          : SizeUtils
-                                                                  .horizontalBlockSize *
-                                                              30,
+                                                  itemExtent: 46.w,
                                                   itemBuilder:
                                                       (context, index) {
                                                     // currentItems = index;

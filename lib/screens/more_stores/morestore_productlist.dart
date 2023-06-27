@@ -267,14 +267,17 @@ class _MoreStoreProductViewState extends State<MoreStoreProductView> {
                                       //       color: AppConst.black,
                                       //     )),
                                       InkWell(
-                                        onTap: (){
-                                            Get.back();
+                                        onTap: () {
+                                          Get.back();
                                         },
                                         child: Container(
                                             height: 20,
                                             width: 5.w,
                                             // color: AppConst.black,
-                                            child: SvgPicture.asset('assets/icons/Back button.svg',color: AppConst.black,)),
+                                            child: SvgPicture.asset(
+                                              'assets/icons/Back button.svg',
+                                              color: AppConst.black,
+                                            )),
                                       ),
                                       SizedBox(
                                         width: 4.w,
@@ -1512,7 +1515,10 @@ class MoewStoreViewProductsList extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'MuseoSans',
                                 color: AppConst.black,
-                                fontSize: 13.sp,
+                                fontSize:
+                                    (SizerUtil.deviceType == DeviceType.tablet)
+                                        ? 10.sp
+                                        : 12.sp,
                                 fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.normal,
                               )),
