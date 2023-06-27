@@ -53,61 +53,59 @@ class ListViewChildShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+      padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 1.h),
       child: Row(
         children: [
-          ShimmerEffect(child: DispalyStoreLogo()),
+          ShimmerEffect(
+              child: Container(
+            width: 20.w,
+            height: 10.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: AppConst.black,
+            ),
+          )),
           SizedBox(
-            width: 4.w,
+            width: 3.w,
           ),
           Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ShimmerEffect(
-                  child: Container(
-                    width: 73.w,
-                    color: AppConst.black,
-                    child: Text(
-                      '',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 0.5.h,
-                ),
-                ShimmerEffect(
-                  child: Container(
-                    width: 55.w,
-                    color: AppConst.black,
-                    child: Text(
-                      '',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 0.5.h,
-                ),
-                Row(
-                  children: [ShimmerEffect(child: DisplayPreminumStore())],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
-                  child: ShimmerEffect(
                     child: Container(
-                        width: 68.w, height: 1, color: Color(0xffcacaca)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: AppConst.black,
                   ),
+                  width: 50.w,
+                  height: 1.5.h,
+                )),
+                SizedBox(
+                  height: 1.h,
                 ),
                 ShimmerEffect(
-                  child: Container(
-                    width: 73.w,
+                    child: Container(
+                  width: 40.w,
+                  height: 1.4.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
                     color: AppConst.black,
-                    child: Text(
-                      '',
-                    ),
                   ),
-                )
+                )),
+                SizedBox(
+                  height: 1.h,
+                ),
+                ShimmerEffect(
+                    child: Container(
+                  width: 30.w,
+                  height: 1.2.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: AppConst.black,
+                  ),
+                )),
               ],
             ),
           ),

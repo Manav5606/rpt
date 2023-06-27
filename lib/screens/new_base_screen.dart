@@ -645,172 +645,173 @@ class PayAtStore extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     //_myWalletController.myWalletModel.value?.data.first.businesstype.sId on basis of this id filter the list for each category
-                    Obx(()=> 
-                    (_myWalletController.intSelected.value == 1) ?
-                    GestureDetector(
-                        onTap: () {
-                          _myWalletController.intSelected.value = 1;
-                          _myWalletController.selectBusineesTypeId.value = '';
-                        },
-                        child: SelectedDisplayBusinessType(
-                          text: "All",
-                        ),
-                      ):
-                    GestureDetector(
-                        onTap: () {
-                          _myWalletController.intSelected.value = 1;
-                          _myWalletController.selectBusineesTypeId.value = '';
-                        },
-                        child: DisplayBusinessType(
-                          text: "All",
-                        ),
-                      ),
+                    Obx(
+                      () => (_myWalletController.intSelected.value == 1)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 1;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    '';
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "All",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 1;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    '';
+                              },
+                              child: DisplayBusinessType(
+                                text: "All",
+                              ),
+                            ),
                     ),
                     SizedBox(
                       width: 3.w,
                     ),
-                    Obx(()=> 
-                    (_myWalletController.intSelected.value == 2) ?
-                   GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 2;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "61f95fcd0a984e3d1c8f9ec9";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: SelectedDisplayBusinessType  (
-                        text: "Grocery",
-                      ),
-                    ):
-                   GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 2;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "61f95fcd0a984e3d1c8f9ec9";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: DisplayBusinessType(
-                        text: "Grocery",
-                      ),
+                    Obx(
+                      () => (_myWalletController.intSelected.value == 2)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 2;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "61f95fcd0a984e3d1c8f9ec9";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Grocery",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 2;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "61f95fcd0a984e3d1c8f9ec9";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Grocery",
+                              ),
+                            ),
                     ),
-                    ),
-                    
 
                     SizedBox(
                       width: 3.w,
                     ),
-                    Obx(()=> 
-                    (_myWalletController.intSelected.value == 3) ?
-                  GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 3;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "641ecc4ad9f0df5fa16d708d";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: SelectedDisplayBusinessType(
-                        text: "Dry Fruits",
-                      ),
-                    ):
-                   GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 3;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "641ecc4ad9f0df5fa16d708d";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: DisplayBusinessType(
-                        text: "Dry Fruits",
-                      ),
+                    Obx(
+                      () => (_myWalletController.intSelected.value == 3)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 3;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "641ecc4ad9f0df5fa16d708d";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Dry Fruits",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 3;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "641ecc4ad9f0df5fa16d708d";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Dry Fruits",
+                              ),
+                            ),
                     ),
-                    ),
-                    
+
                     SizedBox(
                       width: 3.w,
                     ),
-                    Obx(()=> 
-                    (_myWalletController.intSelected.value == 4) ?
-                  GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 4;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "63a68a03f5416c5c5b0ab0a5";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: SelectedDisplayBusinessType(
-                        text: "Pharmacy",
-                      ),
-                    ):
-                   GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 4;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "63a68a03f5416c5c5b0ab0a5";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: DisplayBusinessType(
-                        text: "Pharmacy",
-                      ),
-                    ),
+                    Obx(
+                      () => (_myWalletController.intSelected.value == 4)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 4;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "63a68a03f5416c5c5b0ab0a5";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Pharmacy",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 4;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "63a68a03f5416c5c5b0ab0a5";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Pharmacy",
+                              ),
+                            ),
                     ),
                     SizedBox(
                       width: 3.w,
                     ),
-                    Obx(()=> 
-                    (_myWalletController.intSelected.value == 5) ?
-                 GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 5;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "625cc6c0c30c356c00c6a9bb";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: SelectedDisplayBusinessType(
-                        text: "Meat",
-                      ),
-                    ):
-                   GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 5;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "625cc6c0c30c356c00c6a9bb";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: DisplayBusinessType(
-                        text: "Meat",
-                      ),
+                    Obx(
+                      () => (_myWalletController.intSelected.value == 5)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 5;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "625cc6c0c30c356c00c6a9bb";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Meat",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 5;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "625cc6c0c30c356c00c6a9bb";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Meat",
+                              ),
+                            ),
                     ),
-                    ),
-                    
+
                     SizedBox(
                       width: 3.w,
                     ),
-                    Obx(()=> 
-                    (_myWalletController.intSelected.value == 6) ?
-                 GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 6;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "63a689eff5416c5c5b0ab0a4";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: SelectedDisplayBusinessType(
-                        text: "Pet food",
-                      ),
-                    ):
-                   GestureDetector(
-                      onTap: () {
-                        _myWalletController.intSelected.value = 6;
-                        _myWalletController.selectBusineesTypeId.value =
-                            "63a689eff5416c5c5b0ab0a4";
-                        // print(_myWalletController.intSelected.value);
-                      },
-                      child: DisplayBusinessType(
-                        text: "Pet food",
-                      ),
+                    Obx(
+                      () => (_myWalletController.intSelected.value == 6)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 6;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "63a689eff5416c5c5b0ab0a4";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Pet food",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelected.value = 6;
+                                _myWalletController.selectBusineesTypeId.value =
+                                    "63a689eff5416c5c5b0ab0a4";
+                                // print(_myWalletController.intSelected.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Pet food",
+                              ),
+                            ),
                     ),
-                    ),
-                    
+
                     SizedBox(
                       width: 3.w,
                     ),
@@ -1013,47 +1014,25 @@ class ListViewStoreDetails extends StatelessWidget {
           DispalyStoreLogo(
             logo: logo ?? "",
             bottomPadding: 0,
+            height: 10,
           ),
           SizedBox(
-            width: 4.w,
+            width: 3.w,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 60.w,
-                    child: Text(StoreName ?? "Sreeja Kirana & General Stores",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: 'MuseoSans',
-                          color: AppConst.black,
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        )),
-                  ),
-                  DisplayDistance(
-                    distance: distance,
-                  ),
-                  // Text(
-                  //   "${(distance!.toInt() / 1000).toStringAsFixed(2)} km",
-                  //   style: TextStyle(
-                  //     color: Colors.grey,
-                  //     fontSize: 10,
-                  //     fontFamily: 'MuseoSans',
-                  //     fontWeight: FontWeight.w500,
-                  //   ),
-                  // ),
-                ],
+              DisplayStoreName(name: StoreName),
+              SizedBox(
+                height: 0.5.h,
+              ),
+              DisplayDistance(
+                distance: distance,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 1.h),
+                padding: EdgeInsets.symmetric(vertical: 0.5.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -1202,6 +1181,7 @@ class DisplayBusinessType extends StatelessWidget {
     );
   }
 }
+
 class SelectedDisplayBusinessType extends StatelessWidget {
   String? text;
   SelectedDisplayBusinessType({Key? key, this.text}) : super(key: key);

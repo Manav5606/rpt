@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen>
         .obs;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-          statusBarColor: AppConst.darkGreen,
+          statusBarColor: AppConst.green, //AppConst.darkGreen,
           statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         body: UpgradeAlert(
@@ -278,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     0
                                 ? true
                                 : false,
-                            address: UserSlecetedAddress,
+                            address: UserSlecetedAddress.substring(0, 14),
                             // "${_addLocationController.userAddressTitle.value}, ${_addLocationController.userHouse.value}, ${_addLocationController.userAppartment.value}, ${_addLocationController.userAddress.value}",
                             balance: _addLocationController.convertor(
                                 _myAccountController.user.balance ?? 0),
@@ -626,9 +626,10 @@ class _HomeScreenState extends State<HomeScreen>
                                 //           )
                                 //         : YourStores()
                                 //     : SizedBox(),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
+                                // SizedBox(
+                                //   height: 1.h,
+                                // ),
+                                // Seprator(),
                                 ((_myAccountController.activeOrdersModel.value
                                                     ?.data?.length ??
                                                 0) >
@@ -638,74 +639,89 @@ class _HomeScreenState extends State<HomeScreen>
                                                 0) >
                                             0
                                     ? Container(
-                                        height: 20.h,
+                                        height: 23.h,
                                         decoration: BoxDecoration(
-                                            color: Color(0xfff2f3f7)),
+                                            color: AppConst
+                                                .white //Color(0xfff2f3f7)
+                                            ),
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              left: 2.w, top: 1.h, right: 1.w),
+                                            left: 2.w,
+                                            top: 1.h,
+                                            right: 1.w,
+                                          ),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text("Recent Transactions",
-                                                      style: TextStyle(
-                                                        fontFamily: 'MuseoSans',
-                                                        color: AppConst.black,
-                                                        fontSize: SizeUtils
-                                                                .horizontalBlockSize *
-                                                            4.5,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                      )),
-                                                  // InkWell(
-                                                  //   onTap: (() {
-                                                  //     Get.toNamed(
-                                                  //         AppRoutes.ActiveOrders);
-                                                  //   }),
-                                                  //   child: Padding(
-                                                  //     padding: EdgeInsets.only(
-                                                  //         bottom: 0.5.h),
-                                                  //     child: Row(
-                                                  //       mainAxisAlignment:
-                                                  //           MainAxisAlignment.end,
-                                                  //       children: [
-                                                  //         Text(
-                                                  //           "View All",
-                                                  //           style: TextStyle(
-                                                  //             color:
-                                                  //                 AppConst.black,
-                                                  //             fontSize: SizeUtils
-                                                  //                     .horizontalBlockSize *
-                                                  //                 3.4,
-                                                  //             fontWeight:
-                                                  //                 FontWeight.bold,
-                                                  //           ),
-                                                  //         ),
-                                                  //         Icon(
-                                                  //           Icons
-                                                  //               .arrow_forward_ios_rounded,
-                                                  //           color: AppConst.black,
-                                                  //           size: 1.8.h,
-                                                  //         )
-                                                  //       ],
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 1.h,
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 2.w,
+                                                    top: 1.h,
+                                                    bottom: 1.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                        "See your Recent Order", //"Recent Transactions",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'MuseoSans',
+                                                            color:
+                                                                Colors.black87,
+                                                            fontSize: (SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .tablet)
+                                                                ? 9.5.sp
+                                                                : 11.5.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            letterSpacing:
+                                                                -0.5)),
+                                                    // InkWell(
+                                                    //   onTap: (() {
+                                                    //     Get.toNamed(
+                                                    //         AppRoutes.ActiveOrders);
+                                                    //   }),
+                                                    //   child: Padding(
+                                                    //     padding: EdgeInsets.only(
+                                                    //         bottom: 0.5.h),
+                                                    //     child: Row(
+                                                    //       mainAxisAlignment:
+                                                    //           MainAxisAlignment.end,
+                                                    //       children: [
+                                                    //         Text(
+                                                    //           "View All",
+                                                    //           style: TextStyle(
+                                                    //             color:
+                                                    //                 AppConst.black,
+                                                    //             fontSize: SizeUtils
+                                                    //                     .horizontalBlockSize *
+                                                    //                 3.4,
+                                                    //             fontWeight:
+                                                    //                 FontWeight.bold,
+                                                    //           ),
+                                                    //         ),
+                                                    //         Icon(
+                                                    //           Icons
+                                                    //               .arrow_forward_ios_rounded,
+                                                    //           color: AppConst.black,
+                                                    //           size: 1.8.h,
+                                                    //         )
+                                                    //       ],
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
+                                                  ],
+                                                ),
                                               ),
                                               Container(
-                                                height: 14.h,
+                                                height: 16.h,
                                                 // color: AppConst.yellow,
                                                 width: double.infinity,
                                                 child: SingleChildScrollView(
@@ -734,18 +750,20 @@ class _HomeScreenState extends State<HomeScreen>
                                                                       Axis.horizontal,
                                                                   shrinkWrap:
                                                                       true,
-                                                                  itemExtent: (recentCount
-                                                                              .value ==
-                                                                          1)
-                                                                      ? SizeUtils
-                                                                              .horizontalBlockSize *
-                                                                          95
-                                                                      : (recentCount.value ==
-                                                                              2)
-                                                                          ? SizeUtils.horizontalBlockSize *
-                                                                              80
-                                                                          : SizeUtils.horizontalBlockSize *
-                                                                              30,
+                                                                  itemExtent:
+                                                                      46.w,
+                                                                  // (recentCount
+                                                                  //             .value ==
+                                                                  //         1)
+                                                                  //     ? SizeUtils
+                                                                  //             .horizontalBlockSize *
+                                                                  //         95
+                                                                  //     : (recentCount.value ==
+                                                                  //             2)
+                                                                  //         ? SizeUtils.horizontalBlockSize *
+                                                                  //             80
+                                                                  //         : SizeUtils.horizontalBlockSize *
+                                                                  //             30,
                                                                   itemBuilder:
                                                                       (context,
                                                                           index) {
@@ -794,21 +812,23 @@ class _HomeScreenState extends State<HomeScreen>
                                                               scrollDirection:
                                                                   Axis.horizontal,
                                                               shrinkWrap: true,
-                                                              itemExtent: (recentCount
-                                                                          .value ==
-                                                                      1)
-                                                                  ? SizeUtils
-                                                                          .horizontalBlockSize *
-                                                                      95
-                                                                  : (recentCount
-                                                                              .value ==
-                                                                          2)
-                                                                      ? SizeUtils
-                                                                              .horizontalBlockSize *
-                                                                          80
-                                                                      : SizeUtils
-                                                                              .horizontalBlockSize *
-                                                                          30,
+                                                              itemExtent: 46.w,
+
+                                                              // (recentCount
+                                                              //             .value ==
+                                                              //         1)
+                                                              //     ? SizeUtils
+                                                              //             .horizontalBlockSize *
+                                                              //         95
+                                                              //     : (recentCount
+                                                              //                 .value ==
+                                                              //             2)
+                                                              //         ? SizeUtils
+                                                              //                 .horizontalBlockSize *
+                                                              //             80
+                                                              //         : SizeUtils
+                                                              //                 .horizontalBlockSize *
+                                                              //             30,
                                                               itemBuilder:
                                                                   (context,
                                                                       index) {
@@ -909,6 +929,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 //   thickness: 2.w,
                                 //   color: AppConst.veryLightGrey,
                                 // ),
+                                Seprator(),
                                 ((_homeController
                                             .homePageFavoriteShopsList.length) >
                                         0)
@@ -1328,6 +1349,17 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
+class Seprator extends StatelessWidget {
+  const Seprator({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(height: 1.5.h, color: Color(0xfff2f3f7));
+  }
+}
+
 class RecentCarts12 extends StatelessWidget {
   RecentCarts12(
       {Key? key,
@@ -1359,193 +1391,300 @@ class RecentCarts12 extends StatelessWidget {
                 '',
             navBackTo: navBackTo);
       },
-      child: (recentCount == 1 || recentCount == 2)
-          ? Padding(
-              padding: EdgeInsets.only(right: 1.w),
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
-                decoration: BoxDecoration(
-                  color: AppConst.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: AppConst.lightGrey, //New
-                        blurRadius: 2,
-                        spreadRadius: 2,
-                        offset: Offset(1, 1))
-                  ],
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            height: 5.5.h,
-                            child: Image(
-                              image: AssetImage(
-                                'assets/images/eCART.png',
-                              ),
+      child:
+
+          //  (recentCount == 1 || recentCount == 2)
+          //     ?
+
+          // Padding(
+          //     padding: EdgeInsets.only(right: 1.w),
+          //     child: Container(
+          //       margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+          //       decoration: BoxDecoration(
+          //         color: AppConst.white,
+          //         borderRadius: BorderRadius.all(Radius.circular(12)),
+          //         boxShadow: [
+          //           BoxShadow(
+          //               color: AppConst.lightGrey, //New
+          //               blurRadius: 2,
+          //               spreadRadius: 2,
+          //               offset: Offset(1, 1))
+          //         ],
+          //       ),
+          //       child: Padding(
+          //         padding: EdgeInsets.symmetric(horizontal: 2.w),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             Row(
+          //               children: [
+          //                 Container(
+          //                   height: 5.5.h,
+          //                   child: Image(
+          //                     image: AssetImage(
+          //                       'assets/images/eCART.png',
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 SizedBox(
+          //                   width: 3.w,
+          //                 ),
+          //                 Column(
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Container(
+          //                       width: (recentCount == 1)
+          //                           ? 55.w
+          //                           : (recentCount == 2)
+          //                               ? 38.w
+          //                               : 15.w,
+          //                       // color: AppConst.yellow,
+          //                       child: Text(
+          //                         "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? ""}",
+          //                         // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
+          //                         maxLines: 2,
+          //                         overflow: TextOverflow.ellipsis,
+          //                         style: TextStyle(
+          //                           fontFamily: 'MuseoSans',
+          //                           color: AppConst.black,
+          //                           fontSize:
+          //                               SizeUtils.horizontalBlockSize * 3.8,
+          //                           fontWeight: FontWeight.w500,
+          //                           fontStyle: FontStyle.normal,
+          //                         ),
+          //                       ),
+          //                     ),
+          //                     SizedBox(
+          //                       height: 0.5.h,
+          //                     ),
+          //                     Text(
+          //                         "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
+          //                         style: TextStyle(
+          //                           fontFamily: 'MuseoSans',
+          //                           color: Color(0xff0082ab),
+          //                           fontSize:
+          //                               SizeUtils.horizontalBlockSize * 3.5,
+          //                           fontWeight: FontWeight.w500,
+          //                           fontStyle: FontStyle.normal,
+          //                         )),
+          //                   ],
+          //                 ),
+          //               ],
+          //             ),
+          //             Container(
+          //               padding: EdgeInsets.symmetric(
+          //                   horizontal: 2.5.w, vertical: 1.2.h),
+          //               decoration: BoxDecoration(
+          //                 borderRadius: BorderRadius.circular(8),
+          //                 color: AppConst.green,
+          //               ),
+          //               child: Row(
+          //                 mainAxisSize: MainAxisSize.min,
+          //                 children: [
+          //                   Text("Cart ",
+          //                       style: TextStyle(
+          //                         fontFamily: 'MuseoSans',
+          //                         color: AppConst.white,
+          //                         fontSize: SizeUtils.horizontalBlockSize * 3.5,
+          //                         fontWeight: FontWeight.w700,
+          //                         fontStyle: FontStyle.normal,
+          //                       )),
+          //                   Icon(
+          //                     Icons.arrow_forward_ios,
+          //                     size: SizeUtils.horizontalBlockSize * 3.5,
+          //                     color: AppConst.white,
+          //                   )
+          //                 ],
+          //               ),
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   )
+          // :
+          Padding(
+        padding: EdgeInsets.only(right: 1.w, top: 0.h),
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 0.h, horizontal: 1.w),
+          decoration: BoxDecoration(
+            color: AppConst.white,
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            boxShadow: [
+              BoxShadow(
+                  color: AppConst.veryLightGrey, //New
+                  blurRadius: 2,
+                  spreadRadius: 1,
+                  offset: Offset(0, 2))
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 2.w, top: 2.h),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 2.8.h,
+                      width: 8.w,
+                      child: Image(
+                        image: AssetImage(
+                          'assets/images/eCART.png',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 1.5.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 30.w,
+                          // color: AppConst.yellow,
+                          child: Text(
+                            "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? ""}",
+                            maxLines: 1,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: Colors.black87,
+                              fontSize:
+                                  (SizerUtil.deviceType == DeviceType.tablet)
+                                      ? 8.5.sp
+                                      : 10.sp,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
                             ),
                           ),
-                          SizedBox(
-                            width: 3.w,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: (recentCount == 1)
-                                    ? 55.w
-                                    : (recentCount == 2)
-                                        ? 38.w
-                                        : 15.w,
-                                // color: AppConst.yellow,
-                                child: Text(
-                                  "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? ""}",
-                                  // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.black,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.8,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 0.5.h,
-                              ),
-                              Text(
-                                  "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: Color(0xff0082ab),
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.5,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 2.5.w, vertical: 1.2.h),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppConst.green,
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("Cart ",
-                                style: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: AppConst.white,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                )),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: SizeUtils.horizontalBlockSize * 3.5,
-                              color: AppConst.white,
-                            )
-                          ],
-                        ),
-                      )
-                    ],
+                        Text(
+                          "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.earnedCashback ?? "1.8 km"}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: Colors.black87,
+                            fontSize:
+                                (SizerUtil.deviceType == DeviceType.tablet)
+                                    ? 8.5.sp
+                                    : 10.sp,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 0.h),
+                child: Container(
+                  width: 36.w,
+                  // color: AppConst.yellow,
+                  child: Text(
+                    "New products added in the cart checkout our new and latest products ",
+                    // "${_homeController.getAllCartsModel.value?.carts?[itemIndex].products?.first ?? ""}",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: Colors.black,
+                      fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                          ? 8.5.sp
+                          : 10.sp,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
                   ),
                 ),
               ),
-            )
-          : Padding(
-              padding: EdgeInsets.only(right: 1.w),
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
-                decoration: BoxDecoration(
-                  color: AppConst.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: AppConst.lightGrey, //New
-                        blurRadius: 2,
-                        spreadRadius: 2,
-                        offset: Offset(1, 1))
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // Container(
+              //   padding: EdgeInsets.only(
+              //     left: 1.w,
+              //   ),
+              //   width: 26.w,
+              //   // height: 10.h,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(12),
+              //       color: AppConst.white),
+              //   child: Padding(
+              //     padding: EdgeInsets.only(
+              //         bottom: 0.5.h, top: 1.h, right: 1.w, left: 1.w),
+              //     child: Column(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         Container(
+              //           height: 4.h,
+              //           width: 8.w,
+              //           child: Image(
+              //             image: AssetImage(
+              //               'assets/images/eCART.png',
+              //             ),
+              //           ),
+              //         ),
+              //         // Spacer(),
+              //         SizedBox(
+              //           height: 0.5.h,
+              //         ),
+              //         Text(
+              //           "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? "Go to Order"}",
+              //           // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
+              //           maxLines: 2,
+              //           overflow: TextOverflow.ellipsis,
+              //           style: TextStyle(
+              //             fontFamily: 'MuseoSans',
+              //             color: AppConst.black,
+              //             fontSize: SizeUtils.horizontalBlockSize * 3.2,
+              //             fontWeight: FontWeight.w500,
+              //             fontStyle: FontStyle.normal,
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // Text(
+              //     "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
+              //     style: TextStyle(
+              //       fontFamily: 'MuseoSans',
+              //       color: Color(0xff0082ab),
+              //       fontSize: SizeUtils.horizontalBlockSize * 3.5,
+              //       fontWeight: FontWeight.w500,
+              //       fontStyle: FontStyle.normal,
+              //     )),
+
+              Padding(
+                padding: EdgeInsets.only(right: 3.w, bottom: 1.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: 1.w,
-                      ),
-                      width: 26.w,
-                      // height: 10.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: AppConst.white),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            bottom: 0.5.h, top: 1.h, right: 1.w, left: 1.w),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: 4.h,
-                              width: 8.w,
-                              child: Image(
-                                image: AssetImage(
-                                  'assets/images/eCART.png',
-                                ),
-                              ),
-                            ),
-                            // Spacer(),
-                            SizedBox(
-                              height: 0.5.h,
-                            ),
-                            Text(
-                              "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.name ?? "Go to Order"}",
-                              // "${_myAccountController.activeOrdersModel.value?.data![index].store?.name ?? "Go to Order"}",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'MuseoSans',
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 3.2,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.normal,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
                     Text(
-                        "${_homeController.getAllCartsModel.value?.carts?[itemIndex].totalItemsCount} items",
-                        style: TextStyle(
+                      "VIEW CART",
+                      style: TextStyle(
                           fontFamily: 'MuseoSans',
-                          color: Color(0xff0082ab),
-                          fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                          fontWeight: FontWeight.w500,
+                          color: Color(0xff02A367),
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 8.5.sp
+                              : 9.5.sp,
+                          fontWeight: FontWeight.w600,
                           fontStyle: FontStyle.normal,
-                        )),
-                    SizedBox(
-                      height: 0.5.h,
+                          letterSpacing: -0.2),
                     ),
                   ],
                 ),
-              ),
-            ),
+              )
+              // SizedBox(
+              //   height: 0.5.h,
+              // ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -1848,355 +1987,422 @@ class RecentActiveOrders1 extends StatelessWidget {
             ),
           );
         },
-        child: Obx(
-          () => (recentCount.value == 1 || recentCount.value == 2)
-              ? Padding(
-                  padding: EdgeInsets.only(right: 1.w),
-                  child: Container(
-                    margin:
-                        EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
-                    decoration: BoxDecoration(
-                      color: AppConst.white,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      boxShadow: [
-                        BoxShadow(
-                            color: AppConst.lightGrey, //New
-                            blurRadius: 2,
-                            spreadRadius: 2,
-                            offset: Offset(1, 1))
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(children: [
-                            Container(
-                              height: 5.5.h,
-                              child: Image(
-                                image: AssetImage(
-                                  'assets/images/CART.png',
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 3.w,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: (recentCount.value == 1)
-                                      ? 55.w
-                                      : (recentCount.value == 2)
-                                          ? 38.w
-                                          : 15.w,
-                                  child: Text(
-                                      "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? ""} ",
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontFamily: 'MuseoSans',
-                                        color: AppConst.black,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 3.8,
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 0.5.h,
-                                ),
-                                Container(
-                                  width: (recentCount.value == 1)
-                                      ? 55.w
-                                      : (recentCount.value == 2)
-                                          ? 38.w
-                                          : 15.w,
-                                  child: Text(
-                                      "\u{20b9} ${_myAccountController.activeOrdersModel.value?.data![itemIndex].final_payable_amount ?? ""}",
-                                      style: TextStyle(
-                                        fontFamily: 'MuseoSans',
-                                        color: AppConst.black,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 4,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 0.5.h,
-                                ),
-                                Text(
-                                    "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
-                                    style: TextStyle(
-                                      fontFamily: 'MuseoSans',
-                                      color: Color(0xff0082ab),
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3.5,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    )),
-                                // Row(
-                                //   children: [
-                                //     (_myAccountController.activeOrdersModel.value
-                                //                     ?.data![itemIndex].status ==
-                                //                 "pending" ||
-                                //             (_myAccountController.activeOrdersModel.value
-                                //                     ?.data![itemIndex].orderType ==
-                                //                 "receipt"))
-                                //         ? Text(
-                                //             "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
-                                //             style: TextStyle(
-                                //               fontFamily: 'MuseoSans',
-                                //               color: Color(0xff0082ab),
-                                //               fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                                //               fontWeight: FontWeight.w600,
-                                //               letterSpacing: 0.4,
-                                //               fontStyle: FontStyle.normal,
-                                //             ))
-                                //         : (((_myAccountController.activeOrdersModel.value
-                                //                             ?.data![itemIndex].status ==
-                                //                         "picked_up") ||
-                                //                     (_myAccountController
-                                //                             .activeOrdersModel
-                                //                             .value
-                                //                             ?.data![itemIndex]
-                                //                             .status ==
-                                //                         "accepted") ||
-                                //                     (_myAccountController
-                                //                             .activeOrdersModel
-                                //                             .value
-                                //                             ?.data![itemIndex]
-                                //                             .status ==
-                                //                         "ready")) &&
-                                //                 ((_myAccountController
-                                //                             .activeOrdersModel
-                                //                             .value
-                                //                             ?.data![itemIndex]
-                                //                             .final_payable_amount ??
-                                //                         0) >
-                                //                     0) &&
-                                //                 (_myAccountController
-                                //                         .activeOrdersModel
-                                //                         .value
-                                //                         ?.data![itemIndex]
-                                //                         .orderType !=
-                                //                     "receipt")
-                                // ? Container(
-                                //     width: 14.w,
-                                //     padding:
-                                //         EdgeInsets.symmetric(vertical: 0.5.h),
-                                //     decoration: BoxDecoration(
-                                //         borderRadius: BorderRadius.circular(4),
-                                //         color: AppConst.green),
-                                //     child: Center(
-                                //       child: Text("Pay",
-                                //           style: TextStyle(
-                                //             fontFamily: 'MuseoSans',
-                                //             color: AppConst.white,
-                                //             fontSize:
-                                //                 SizeUtils.horizontalBlockSize *
-                                //                     3.5,
-                                //             fontWeight: FontWeight.w500,
-                                //             fontStyle: FontStyle.normal,
-                                //           )),
-                                //     ),
-                                //   )
-                                //             : Container(
-                                //                 width: 14.w,
-                                //                 padding:
-                                //                     EdgeInsets.symmetric(vertical: 0.5.h),
-                                //                 decoration: BoxDecoration(
-                                //                     borderRadius: BorderRadius.circular(4),
-                                //                     color: AppConst.grey),
-                                //                 child: Center(
-                                //                   child: Text("Paid",
-                                //                       style: TextStyle(
-                                //                         fontFamily: 'MuseoSans',
-                                //                         color: AppConst.white,
-                                //                         fontSize:
-                                //                             SizeUtils.horizontalBlockSize *
-                                //                                 3.5,
-                                //                         fontWeight: FontWeight.w500,
-                                //                         fontStyle: FontStyle.normal,
-                                //                       )),
-                                //                 ),
-                                //               )),
-                                //   ],
-                                // ),
-                              ],
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 2.5.w, vertical: 1.2.h),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: AppConst.green,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text("Pay ",
-                                      style: TextStyle(
-                                        fontFamily: 'MuseoSans',
-                                        color: AppConst.white,
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 3.5,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: SizeUtils.horizontalBlockSize * 3.5,
-                                    color: AppConst.white,
-                                  )
-                                ],
-                              ),
-                            )
-                          ]),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : Container(
-                  margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
-                  decoration: BoxDecoration(
-                    color: AppConst.white,
-                    // border: Border.all(width: 0.5, color: AppConst.lightGrey),
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: AppConst.Lightgrey, //New
-                          blurRadius: 2,
-                          spreadRadius: 2,
-                          offset: Offset(1, 1)),
-                    ],
-                  ),
-                  child: Column(
+        child:
+
+            //  Obx(
+            //   () => (recentCount.value == 1 || recentCount.value == 2)
+            //       ?
+            //  Padding(
+            //     padding: EdgeInsets.only(right: 1.w),
+            //     child: Container(
+            //       margin:
+            //           EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+            //       decoration: BoxDecoration(
+            //         color: AppConst.white,
+            //         borderRadius: BorderRadius.all(Radius.circular(12)),
+            //         boxShadow: [
+            //           BoxShadow(
+            //               color: AppConst.lightGrey, //New
+            //               blurRadius: 2,
+            //               spreadRadius: 2,
+            //               offset: Offset(1, 1))
+            //         ],
+            //       ),
+            //       child: Padding(
+            //         padding: EdgeInsets.symmetric(horizontal: 3.w),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Row(children: [
+            //               Container(
+            //                 height: 2.5.h,
+            //                 child: Image(
+            //                   image: AssetImage(
+            //                     'assets/images/CART.png',
+            //                   ),
+            //                 ),
+            //               ),
+            //               SizedBox(
+            //                 width: 3.w,
+            //               ),
+            //               Column(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 crossAxisAlignment: CrossAxisAlignment.start,
+            //                 children: [
+            //                   Container(
+            //                     width: 30.w,
+            //                     // (recentCount.value == 1)
+            //                     //     ? 55.w
+            //                     //     : (recentCount.value == 2)
+            //                     //         ? 38.w
+            //                     //         : 15.w,
+            //                     child: Text(
+            //                         "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? ""} ",
+            //                         maxLines: 2,
+            //                         overflow: TextOverflow.ellipsis,
+            //                         style: TextStyle(
+            //                           fontFamily: 'MuseoSans',
+            //                           color: AppConst.black,
+            //                           fontSize:
+            //                               SizeUtils.horizontalBlockSize * 3.8,
+            //                           fontWeight: FontWeight.w500,
+            //                           fontStyle: FontStyle.normal,
+            //                         )),
+            //                   ),
+            //                   SizedBox(
+            //                     height: 0.5.h,
+            //                   ),
+            //                   Container(
+            //                     width: (recentCount.value == 1)
+            //                         ? 55.w
+            //                         : (recentCount.value == 2)
+            //                             ? 38.w
+            //                             : 15.w,
+            //                     child: Text(
+            //                         "\u{20b9} ${_myAccountController.activeOrdersModel.value?.data![itemIndex].final_payable_amount ?? ""}",
+            //                         style: TextStyle(
+            //                           fontFamily: 'MuseoSans',
+            //                           color: AppConst.black,
+            //                           fontSize:
+            //                               SizeUtils.horizontalBlockSize * 4,
+            //                           fontWeight: FontWeight.w700,
+            //                           fontStyle: FontStyle.normal,
+            //                         )),
+            //                   ),
+            //                   SizedBox(
+            //                     height: 0.5.h,
+            //                   ),
+            //                   Text(
+            //                       "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
+            //                       style: TextStyle(
+            //                         fontFamily: 'MuseoSans',
+            //                         color: Color(0xff0082ab),
+            //                         fontSize:
+            //                             SizeUtils.horizontalBlockSize * 3.5,
+            //                         fontWeight: FontWeight.w500,
+            //                         fontStyle: FontStyle.normal,
+            //                       )),
+            //                   // Row(
+            //                   //   children: [
+            //                   //     (_myAccountController.activeOrdersModel.value
+            //                   //                     ?.data![itemIndex].status ==
+            //                   //                 "pending" ||
+            //                   //             (_myAccountController.activeOrdersModel.value
+            //                   //                     ?.data![itemIndex].orderType ==
+            //                   //                 "receipt"))
+            //                   //         ? Text(
+            //                   //             "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status![0].toUpperCase() ?? ""}${_myAccountController.activeOrdersModel.value?.data![itemIndex].status?.substring(1) ?? ""}",
+            //                   //             style: TextStyle(
+            //                   //               fontFamily: 'MuseoSans',
+            //                   //               color: Color(0xff0082ab),
+            //                   //               fontSize: SizeUtils.horizontalBlockSize * 3.5,
+            //                   //               fontWeight: FontWeight.w600,
+            //                   //               letterSpacing: 0.4,
+            //                   //               fontStyle: FontStyle.normal,
+            //                   //             ))
+            //                   //         : (((_myAccountController.activeOrdersModel.value
+            //                   //                             ?.data![itemIndex].status ==
+            //                   //                         "picked_up") ||
+            //                   //                     (_myAccountController
+            //                   //                             .activeOrdersModel
+            //                   //                             .value
+            //                   //                             ?.data![itemIndex]
+            //                   //                             .status ==
+            //                   //                         "accepted") ||
+            //                   //                     (_myAccountController
+            //                   //                             .activeOrdersModel
+            //                   //                             .value
+            //                   //                             ?.data![itemIndex]
+            //                   //                             .status ==
+            //                   //                         "ready")) &&
+            //                   //                 ((_myAccountController
+            //                   //                             .activeOrdersModel
+            //                   //                             .value
+            //                   //                             ?.data![itemIndex]
+            //                   //                             .final_payable_amount ??
+            //                   //                         0) >
+            //                   //                     0) &&
+            //                   //                 (_myAccountController
+            //                   //                         .activeOrdersModel
+            //                   //                         .value
+            //                   //                         ?.data![itemIndex]
+            //                   //                         .orderType !=
+            //                   //                     "receipt")
+            //                   // ? Container(
+            //                   //     width: 14.w,
+            //                   //     padding:
+            //                   //         EdgeInsets.symmetric(vertical: 0.5.h),
+            //                   //     decoration: BoxDecoration(
+            //                   //         borderRadius: BorderRadius.circular(4),
+            //                   //         color: AppConst.green),
+            //                   //     child: Center(
+            //                   //       child: Text("Pay",
+            //                   //           style: TextStyle(
+            //                   //             fontFamily: 'MuseoSans',
+            //                   //             color: AppConst.white,
+            //                   //             fontSize:
+            //                   //                 SizeUtils.horizontalBlockSize *
+            //                   //                     3.5,
+            //                   //             fontWeight: FontWeight.w500,
+            //                   //             fontStyle: FontStyle.normal,
+            //                   //           )),
+            //                   //     ),
+            //                   //   )
+            //                   //             : Container(
+            //                   //                 width: 14.w,
+            //                   //                 padding:
+            //                   //                     EdgeInsets.symmetric(vertical: 0.5.h),
+            //                   //                 decoration: BoxDecoration(
+            //                   //                     borderRadius: BorderRadius.circular(4),
+            //                   //                     color: AppConst.grey),
+            //                   //                 child: Center(
+            //                   //                   child: Text("Paid",
+            //                   //                       style: TextStyle(
+            //                   //                         fontFamily: 'MuseoSans',
+            //                   //                         color: AppConst.white,
+            //                   //                         fontSize:
+            //                   //                             SizeUtils.horizontalBlockSize *
+            //                   //                                 3.5,
+            //                   //                         fontWeight: FontWeight.w500,
+            //                   //                         fontStyle: FontStyle.normal,
+            //                   //                       )),
+            //                   //                 ),
+            //                   //               )),
+            //                   //   ],
+            //                   // ),
+            //                 ],
+            //               ),
+            //               Container(
+            //                 padding: EdgeInsets.symmetric(
+            //                     horizontal: 2.5.w, vertical: 1.2.h),
+            //                 decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(8),
+            //                   color: AppConst.green,
+            //                 ),
+            //                 child: Row(
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   children: [
+            //                     Text("Pay ",
+            //                         style: TextStyle(
+            //                           fontFamily: 'MuseoSans',
+            //                           color: AppConst.white,
+            //                           fontSize:
+            //                               SizeUtils.horizontalBlockSize * 3.5,
+            //                           fontWeight: FontWeight.w700,
+            //                           fontStyle: FontStyle.normal,
+            //                         )),
+            //                     Icon(
+            //                       Icons.arrow_forward_ios,
+            //                       size: SizeUtils.horizontalBlockSize * 3.5,
+            //                       color: AppConst.white,
+            //                     )
+            //                   ],
+            //                 ),
+            //               )
+            //             ]),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   )
+            // :
+            Padding(
+          padding: EdgeInsets.only(right: 1.w, top: 0.h),
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 0.h, horizontal: 1.w),
+            decoration: BoxDecoration(
+              color: AppConst.white,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+              boxShadow: [
+                BoxShadow(
+                    color: AppConst.veryLightGrey, //New
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                    offset: Offset(0, 2))
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 2.w, top: 2.h),
+                  child: Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(
-                          left: 1.w,
-                        ),
-                        width: 26.w,
-                        // height: 10.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: AppConst.white),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              bottom: 0.h, top: 0.5.h, right: 1.w, left: 1.w),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                height: 4.h,
-                                width: 8.w,
-                                child: Image(
-                                  image: AssetImage(
-                                    'assets/images/CART.png',
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? "Go to Order"}",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: AppConst.black,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                              )
-                            ],
+                        height: 2.8.h,
+                        width: 8.w,
+                        child: Image(
+                          image: AssetImage(
+                            'assets/images/eCART.png',
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: 0.5.h,
+                        width: 1.5.w,
                       ),
-                      (_myAccountController.activeOrdersModel.value
-                                      ?.data![itemIndex].status ==
-                                  "pending" ||
-                              (_myAccountController.activeOrdersModel.value
-                                      ?.data![itemIndex].orderType ==
-                                  "receipt"))
-                          ? Text(
-                              "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status ?? "Pending"}",
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 30.w,
+                            // color: AppConst.yellow,
+                            child: Text(
+                              "${_myAccountController.activeOrdersModel.value?.data![itemIndex].store?.name ?? ""}",
+                              maxLines: 1,
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontFamily: 'MuseoSans',
-                                color: Color(0xff0082ab),
-                                fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                color: Colors.black87,
+                                fontSize:
+                                    (SizerUtil.deviceType == DeviceType.tablet)
+                                        ? 8.5.sp
+                                        : 10.sp,
                                 fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.normal,
-                              ))
-                          : (((_myAccountController.activeOrdersModel.value
-                                              ?.data![itemIndex].status ==
-                                          "picked_up") ||
-                                      (_myAccountController.activeOrdersModel
-                                              .value?.data![itemIndex].status ==
-                                          "accepted") ||
-                                      (_myAccountController.activeOrdersModel
-                                              .value?.data![itemIndex].status ==
-                                          "ready")) &&
-                                  ((_myAccountController
-                                              .activeOrdersModel
-                                              .value
-                                              ?.data![itemIndex]
-                                              .final_payable_amount ??
-                                          0) >
-                                      0) &&
-                                  (_myAccountController.activeOrdersModel.value
-                                          ?.data![itemIndex].orderType !=
-                                      "receipt")
-                              ? Container(
-                                  width: 12.w,
-                                  padding:
-                                      EdgeInsets.symmetric(vertical: 0.5.h),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color: AppConst.green),
-                                  child: Center(
-                                    child: Text("Pay",
-                                        style: TextStyle(
-                                          fontFamily: 'MuseoSans',
-                                          color: AppConst.white,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize * 3,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        )),
-                                  ),
-                                )
-                              : Container(
-                                  width: 12.w,
-                                  padding:
-                                      EdgeInsets.symmetric(vertical: 0.5.h),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color: AppConst.grey),
-                                  child: Center(
-                                    child: Text("Paid",
-                                        style: TextStyle(
-                                          fontFamily: 'MuseoSans',
-                                          color: AppConst.white,
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize *
-                                                  3.2,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        )),
-                                  ),
-                                )),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "${_homeController.getAllCartsModel.value?.carts?[itemIndex].store?.earnedCashback ?? "1.8 km"}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: Colors.black87,
+                              fontSize:
+                                  (SizerUtil.deviceType == DeviceType.tablet)
+                                      ? 8.5.sp
+                                      : 10.sp,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
+
+                Padding(
+                  padding: EdgeInsets.only(bottom: 0.h),
+                  child: Container(
+                    width: 36.w,
+                    // color: AppConst.yellow,
+                    child: Text(
+                      "New products added in the cart checkout our new and latest products ",
+                      // "${_homeController.getAllCartsModel.value?.carts?[itemIndex].products?.first ?? ""}",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: Colors.black,
+                        fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                            ? 8.5.sp
+                            : 10.sp,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 3.w, bottom: 1.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "TRACK ORDER",
+                        style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: Color(0xff02A367),
+                            fontSize:
+                                (SizerUtil.deviceType == DeviceType.tablet)
+                                    ? 8.5.sp
+                                    : 9.5.sp,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                            letterSpacing: -0.2),
+                      ),
+                    ],
+                  ),
+                )
+                // SizedBox(
+                //   height: 0.5.h,
+                // ),
+                // (_myAccountController.activeOrdersModel.value?.data![itemIndex]
+                //                 .status ==
+                //             "pending" ||
+                //         (_myAccountController.activeOrdersModel.value
+                //                 ?.data![itemIndex].orderType ==
+                //             "receipt"))
+                //     ? Text(
+                //         "${_myAccountController.activeOrdersModel.value?.data![itemIndex].status ?? "Pending"}",
+                //         style: TextStyle(
+                //           fontFamily: 'MuseoSans',
+                //           color: Color(0xff0082ab),
+                //           fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                //           fontWeight: FontWeight.w500,
+                //           fontStyle: FontStyle.normal,
+                //         ))
+                //     : (((_myAccountController.activeOrdersModel.value
+                //                         ?.data![itemIndex].status ==
+                //                     "picked_up") ||
+                //                 (_myAccountController.activeOrdersModel.value
+                //                         ?.data![itemIndex].status ==
+                //                     "accepted") ||
+                //                 (_myAccountController.activeOrdersModel.value
+                //                         ?.data![itemIndex].status ==
+                //                     "ready")) &&
+                //             ((_myAccountController
+                //                         .activeOrdersModel
+                //                         .value
+                //                         ?.data![itemIndex]
+                //                         .final_payable_amount ??
+                //                     0) >
+                //                 0) &&
+                //             (_myAccountController.activeOrdersModel.value
+                //                     ?.data![itemIndex].orderType !=
+                //                 "receipt")
+                //         ? Container(
+                //             width: 12.w,
+                //             padding: EdgeInsets.symmetric(vertical: 0.5.h),
+                //             decoration: BoxDecoration(
+                //                 borderRadius: BorderRadius.circular(4),
+                //                 color: AppConst.green),
+                //             child: Center(
+                //               child: Text("Pay",
+                //                   style: TextStyle(
+                //                     fontFamily: 'MuseoSans',
+                //                     color: AppConst.white,
+                //                     fontSize: SizeUtils.horizontalBlockSize * 3,
+                //                     fontWeight: FontWeight.w500,
+                //                     fontStyle: FontStyle.normal,
+                //                   )),
+                //             ),
+                //           )
+                // : Container(
+                //     width: 12.w,
+                //     padding: EdgeInsets.symmetric(vertical: 0.5.h),
+                //     decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(4),
+                //         color: AppConst.grey),
+                //     child: Center(
+                //       child: Text("Paid",
+                //           style: TextStyle(
+                //             fontFamily: 'MuseoSans',
+                //             color: AppConst.white,
+                //             fontSize:
+                //                 SizeUtils.horizontalBlockSize * 3.2,
+                //             fontWeight: FontWeight.w500,
+                //             fontStyle: FontStyle.normal,
+                //           )),
+                //     ),
+                //   )),
+              ],
+            ),
+            // ),
+          ),
         ));
   }
 }

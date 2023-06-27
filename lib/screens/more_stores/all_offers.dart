@@ -14,15 +14,16 @@ class AllOffers extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                // "More Stores in Bengaluru",
-                "Store near you ",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'MuseoSans-700.otf',
-                ),
-              )
+              Text("All stores near you", //"Recent Transactions",
+                  style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: Colors.black87,
+                      fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                          ? 9.5.sp
+                          : 11.5.sp,
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: -0.5)),
             ],
           ),
           // Row(

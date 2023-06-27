@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer_app/app/constants/app_constants.dart';
@@ -40,10 +41,7 @@ class AllOffersListView extends StatelessWidget {
       //data.length,
       itemBuilder: (context, index) {
         return Obx(() => _homeController.isPageLoading.value
-            ? ListViewChildShimmer(
-                // inStoreModel: _homeController.homePageFavoriteShopsList[index],
-                // color: colorList[index],
-                )
+            ? ListViewChildShimmer()
             : ListViewChild(
                 inStoreModel: _homeController.homePageFavoriteShopsList[index],
                 color: colorList[index],
@@ -83,12 +81,17 @@ class ListViewChild extends StatelessWidget {
             businessId: inStoreModel?.businesstype ?? '');
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+        padding: EdgeInsets.only(left: 2.w, top: 1.h),
         child: Row(
           children: [
-            DispalyStoreLogo(logo: inStoreModel?.logo),
+            DispalyStoreLogo(
+              logo: inStoreModel?.logo,
+              bottomPadding: 1.5,
+              height: 10.5,
+              BusinessType: inStoreModel?.businesstype,
+            ),
             SizedBox(
-              width: 4.w,
+              width: 3.w,
             ),
             Container(
               child: Column(
@@ -103,31 +106,7 @@ class ListViewChild extends StatelessWidget {
                   //             fontSize: SizeUtils.horizontalBlockSize * 4),
                   //       )
                   //     : SizedBox(),
-                  Row(
-                    children: [
-                      Container(
-                        width: 68.w,
-                        child: Text(inStoreModel?.name ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: 'MuseoSans',
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            )),
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: AppConst.grey,
-                        size: SizeUtils.horizontalBlockSize * 5,
-                      ),
-                    ],
-                  ),
+                  DisplayStoreName(name: inStoreModel?.name),
                   SizedBox(
                     height: 0.5.h,
                   ),
@@ -157,13 +136,14 @@ class ListViewChild extends StatelessWidget {
                           : SizedBox(),
                       Padding(
                         padding:
-                            EdgeInsets.only(left: 1.w, right: 2.w, top: 0.5.h),
+                            EdgeInsets.only(left: 1.w, right: 2.w, top: 0.h),
                         child: Icon(
                           Icons.circle,
-                          color: AppConst.grey,
-                          size: 0.8.h,
+                          color: AppConst.lightGrey,
+                          size: 0.7.h,
                         ),
                       ),
+
                       if (inStoreModel?.storeType?.isNotEmpty ?? false)
                         if ((inStoreModel?.storeType ?? '') == 'online')
                           DsplayPickupDelivery()
@@ -171,9 +151,12 @@ class ListViewChild extends StatelessWidget {
                           Text("Only Pickup",
                               style: TextStyle(
                                 fontFamily: 'MuseoSans',
-                                color: AppConst.grey,
-                                fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                                fontWeight: FontWeight.w500,
+                                color: AppConst.greySecondaryText,
+                                fontSize:
+                                    (SizerUtil.deviceType == DeviceType.tablet)
+                                        ? 8.sp
+                                        : 9.sp,
+                                fontWeight: FontWeight.w600,
                                 fontStyle: FontStyle.normal,
                               )),
                       // Container(
@@ -228,7 +211,7 @@ class ListViewChild extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.local_offer,
-                              color: Color(0xffa12aff),
+                              color: AppConst.voilet,
                               size: 1.8.h,
                             ),
                             SizedBox(
@@ -239,7 +222,10 @@ class ListViewChild extends StatelessWidget {
                                 style: TextStyle(
                                   fontFamily: 'MuseoSans',
                                   color: AppConst.black,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                                  fontSize: (SizerUtil.deviceType ==
+                                          DeviceType.tablet)
+                                      ? 8.sp
+                                      : 9.sp,
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FontStyle.normal,
                                 ))
@@ -252,6 +238,38 @@ class ListViewChild extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DisplayStoreName extends StatelessWidget {
+  DisplayStoreName({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  final String? name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 68.w,
+          // color: AppConst.yellow,
+          child: Text(name ?? '',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: Colors.black,
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 9.sp : 10.sp,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+              )),
+        ),
+      ],
     );
   }
 }
@@ -274,34 +292,137 @@ class DisplayDistance extends StatelessWidget {
           //  "${(inStoreModel!.calculateDistance!.toInt() / 1000).toStringAsFixed(2)} km",
           "${(distance!.toInt() / 1000).toStringAsFixed(2)} km",
           style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 3,
+              fontSize:
+                  (SizerUtil.deviceType == DeviceType.tablet) ? 8.sp : 9.sp,
               fontWeight: FontWeight.w500,
               fontFamily: 'Stag',
-              color: AppConst.darkGrey,
+              color: AppConst.greySecondaryText,
               letterSpacing: 0.5)),
     );
   }
 }
 
-
 class DispalyStoreLogo extends StatelessWidget {
   DispalyStoreLogo(
-      {Key? key, this.logo, this.height, this.bottomPadding, this.logoPadding})
+      {Key? key,
+      this.logo,
+      this.height,
+      this.bottomPadding,
+      this.logoPadding,
+      this.BusinessType})
       : super(key: key);
 
   String? logo;
   num? height;
   num? bottomPadding;
   double? logoPadding;
+  String? BusinessType;
   @override
   Widget build(BuildContext context) {
-    num width = (height ?? 7) * 2;
+    num width = (height ?? 20) * 2;
+    //
+    List businesstypelist = [
+      "61f95fcd0a984e3d1c8f9ec9", //grocery
+      "61f960000a984e3d1c8f9ecb", //fruits and veg
+      "624e503dbd7079a799ffc9e1", //GroceryNonveg
+      "625cc6c0c30c356c00c6a9bb", //Nonveg
+      "641ecc4ad9f0df5fa16d708d", //dryfruit
+      "63a689eff5416c5c5b0ab0a4", //petfood
+      "63a68a03f5416c5c5b0ab0a5" //medices
+    ];
+
+    List storeImages = [
+      // each category have at exact 7 images
+      [
+        //grocery
+        "assets/images/groceryImage.png",
+        "assets/images/Nonveg.png",
+        "assets/images/dryfruits.png",
+        "assets/images/petfood.png",
+        "assets/images/Medics.png",
+        "assets/images/storevisit.png",
+        'assets/images/Store.png',
+      ],
+      [
+        //fruits and veg
+        "assets/images/groceryImage.png",
+        "assets/images/Nonveg.png",
+        "assets/images/dryfruits.png",
+        "assets/images/petfood.png",
+        "assets/images/Medics.png",
+        "assets/images/storevisit.png",
+        'assets/images/Store.png',
+      ],
+      [
+        //grocery
+        "assets/images/groceryImage.png",
+        "assets/images/Nonveg.png",
+        "assets/images/dryfruits.png",
+        "assets/images/petfood.png",
+        "assets/images/Medics.png",
+        "assets/images/storevisit.png",
+        'assets/images/Store.png',
+      ],
+      [
+        //nonveg
+        "assets/images/groceryImage.png",
+        "assets/images/Nonveg.png",
+        "assets/images/dryfruits.png",
+        "assets/images/petfood.png",
+        "assets/images/Medics.png",
+        "assets/images/storevisit.png",
+        'assets/images/Store.png',
+      ],
+      [
+        //dry fruits
+        "assets/images/groceryImage.png",
+        "assets/images/Nonveg.png",
+        "assets/images/dryfruits.png",
+        "assets/images/petfood.png",
+        "assets/images/Medics.png",
+        "assets/images/storevisit.png",
+        'assets/images/Store.png',
+      ],
+      [
+        //petfood
+        "assets/images/groceryImage.png",
+        "assets/images/Nonveg.png",
+        "assets/images/dryfruits.png",
+        "assets/images/petfood.png",
+        "assets/images/Medics.png",
+        "assets/images/storevisit.png",
+        'assets/images/Store.png',
+      ],
+      [
+        //medices
+        "assets/images/groceryImage.png",
+        "assets/images/Nonveg.png",
+        "assets/images/dryfruits.png",
+        "assets/images/petfood.png",
+        "assets/images/Medics.png",
+        "assets/images/storevisit.png",
+        'assets/images/Store.png',
+      ],
+    ];
+    String? storeImage;
+
+    int index = businesstypelist.indexOf(BusinessType);
+    if (index == -1) {
+      print("$BusinessType");
+      index = 0;
+    }
+    String randomStoreImageGenerator() {
+      return storeImages[index][new math.Random().nextInt(7)];
+    }
+
+    storeImage = randomStoreImageGenerator();
+
     return Container(
       child: logo != null && logo != ""
           ? Padding(
               padding: EdgeInsets.only(bottom: (bottomPadding ?? 6).h),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(100.0),
+                borderRadius: BorderRadius.circular(8.0),
                 child: Image.network(logo!,
                     fit: BoxFit.fill,
                     height: (height ?? 7).h,
@@ -310,7 +431,8 @@ class DispalyStoreLogo extends StatelessWidget {
                     padding: EdgeInsets.all(logoPadding ?? 12.0),
                     height: (height ?? 7).h,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                        // shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(8),
                         color: AppConst.lightGrey,
                         border: Border.all(
                           width: 0.1,
@@ -318,8 +440,9 @@ class DispalyStoreLogo extends StatelessWidget {
                         )),
                     child: Image(
                       image: AssetImage(
-                        'assets/images/Store.png',
+                        storeImage ?? 'assets/images/Store.png',
                       ),
+                      fit: BoxFit.fill,
                     ),
                   );
                 }),
@@ -332,21 +455,25 @@ class DispalyStoreLogo extends StatelessWidget {
               // ),
               )
           : Padding(
-              padding: EdgeInsets.only(bottom: (bottomPadding ?? 5).h),
+              padding: EdgeInsets.only(bottom: (bottomPadding ?? 1).h),
               child: Container(
-                padding: EdgeInsets.all(logoPadding ?? 12.0),
-                height: (height ?? 7).h,
+                // padding: EdgeInsets.all(logoPadding ?? 12.0),
+                height: (height ?? 10).h,
+                width: (width).w,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppConst.lightGrey,
+                    // shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(8),
+                    // color: AppConst.lightGrey,
                     border: Border.all(
                       width: 0.1,
                       color: AppConst.lightGrey,
                     )),
                 child: Image(
                   image: AssetImage(
-                    'assets/images/Store.png',
+                    storeImage,
+                    // 'assets/images/Store.png',
                   ),
+                  fit: BoxFit.fill,
                 ),
               ),
             ),
@@ -400,12 +527,13 @@ class DisplayPreminumStore extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(FontAwesomeIcons.crown, size: 1.8.h, color: Color(0xffe7a408)),
+          Icon(FontAwesomeIcons.crown, size: 1.8.h, color: AppConst.darkyellow),
           Text("Premium",
               style: TextStyle(
                 fontFamily: 'MuseoSans',
                 color: Color(0xff462f03),
-                fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 8.sp : 9.sp,
                 fontWeight: FontWeight.w500,
                 fontStyle: FontStyle.normal,
               )),
@@ -428,25 +556,27 @@ class DsplayPickupDelivery extends StatelessWidget {
         Text("Pickup",
             style: TextStyle(
               fontFamily: 'MuseoSans',
-              color: AppConst.grey,
-              fontSize: SizeUtils.horizontalBlockSize * 3.7,
-              fontWeight: FontWeight.w500,
+              color: AppConst.greySecondaryText,
+              fontSize:
+                  (SizerUtil.deviceType == DeviceType.tablet) ? 8.sp : 9.sp,
+              fontWeight: FontWeight.w600,
               fontStyle: FontStyle.normal,
             )),
         Padding(
-          padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h),
+          padding: EdgeInsets.only(left: 1.w, right: 1.w, top: 0.5.h),
           child: Icon(
             Icons.circle,
-            color: AppConst.grey,
-            size: 0.8.h,
+            color: AppConst.lightGrey,
+            size: 0.7.h,
           ),
         ),
         Text("Delivery",
             style: TextStyle(
               fontFamily: 'MuseoSans',
-              color: AppConst.grey,
-              fontSize: SizeUtils.horizontalBlockSize * 3.7,
-              fontWeight: FontWeight.w500,
+              color: AppConst.greySecondaryText,
+              fontSize:
+                  (SizerUtil.deviceType == DeviceType.tablet) ? 8.sp : 9.sp,
+              fontWeight: FontWeight.w600,
               fontStyle: FontStyle.normal,
             )),
       ],
@@ -464,7 +594,7 @@ class DisplayCashback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 33.w,
+      // width: 33.w,
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Color(0xffebf7f3)),
@@ -472,11 +602,11 @@ class DisplayCashback extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            padding: EdgeInsets.all(2),
+            padding: EdgeInsets.symmetric(horizontal: 1.w),
             decoration:
                 BoxDecoration(shape: BoxShape.circle, color: Color(0xff00d18f)),
             child: Icon(Icons.currency_rupee_rounded,
-                size: 1.8.h, color: Color(0xffebf7f3)),
+                size: 1.8.h, color: AppConst.veryLightGrey),
           ),
           Text(
               (iscashbackPercentage ?? false)
@@ -485,7 +615,8 @@ class DisplayCashback extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'MuseoSans',
                 color: Color(0xff053e2a),
-                fontSize: SizeUtils.horizontalBlockSize * 3.2,
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 8.sp : 9.sp,
                 fontWeight: FontWeight.w500,
                 fontStyle: FontStyle.normal,
               )),
