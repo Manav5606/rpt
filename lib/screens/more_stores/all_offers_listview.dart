@@ -96,7 +96,7 @@ class ListViewChild extends StatelessWidget {
             Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // ((inStoreModel?.premium ?? false) == true)
                   //     ? Text(

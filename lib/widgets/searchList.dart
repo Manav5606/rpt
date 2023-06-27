@@ -54,7 +54,6 @@ class _SearchListState extends State<SearchList> {
             ? Center(
                 child: Text(
                 "",
-                style: AppStyles.STORES_SUBTITLE_STYLE,
               ))
             : Container(
                 height: 70.h,
@@ -721,13 +720,14 @@ class StoreListViewChild extends StatelessWidget {
         );
       }),
       child: Padding(
-        padding: EdgeInsets.only(bottom: 1.h),
+        padding: EdgeInsets.only(left: 2.w, top: 1.h),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DispalyStoreLogo(
               logo: Stores?.logo,
               bottomPadding: 0,
-              height: 5,
+              height: 10,
               logoPadding: 6,
             ),
             SizedBox(
@@ -736,72 +736,54 @@ class StoreListViewChild extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                DisplayStoreName(name: Stores?.name),
+                SizedBox(
+                  height: 0.5.h,
+                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 72.w,
-                          child: Text("${Stores?.name ?? ""}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'MuseoSans',
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              )),
-                        ),
-                        SizedBox(
-                          height: 0.5.h,
-                        ),
-                        Row(
-                          children: [
-                            (Stores?.calculatedDistance != null)
-                                ? DisplayDistance(
-                                    distance: Stores?.calculatedDistance,
-                                  )
-                                : SizedBox(),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 1.w, right: 2.w, top: 0.5.h),
-                              child: Icon(
-                                Icons.circle,
-                                color: AppConst.grey,
-                                size: 0.8.h,
-                              ),
-                            ),
-                            if (Stores?.storeType != null &&
-                                Stores!.storeType!.isNotEmpty)
-                              if ((Stores?.storeType) == 'online')
-                                DsplayPickupDelivery()
-                              else
-                                Text("Only Pickup",
-                                    style: TextStyle(
-                                      fontFamily: 'MuseoSans',
-                                      color: AppConst.grey,
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 3.7,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 0.5.h,
-                        ),
-                      ],
-                    ),
+                    (Stores?.calculatedDistance != null)
+                        ? DisplayDistance(
+                            distance: Stores?.calculatedDistance,
+                          )
+                        : SizedBox(),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 0.h),
+                      padding: EdgeInsets.only(left: 1.w, right: 2.w, top: 0.h),
                       child: Icon(
-                        Icons.arrow_forward,
-                        color: AppConst.black,
-                        size: SizeUtils.horizontalBlockSize * 6,
+                        Icons.circle,
+                        color: AppConst.lightGrey,
+                        size: 0.7.h,
                       ),
+                    ),
+                    if (Stores?.storeType != null &&
+                        Stores!.storeType!.isNotEmpty)
+                      if ((Stores?.storeType) == 'online')
+                        DsplayPickupDelivery()
+                      else
+                        Text("Only Pickup",
+                            style: TextStyle(
+                              fontFamily: 'MuseoSans',
+                              color: AppConst.greySecondaryText,
+                              fontSize:
+                                  (SizerUtil.deviceType == DeviceType.tablet)
+                                      ? 8.sp
+                                      : 9.sp,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                            )),
+                  ],
+                ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                Row(
+                  children: [
+                    ((Stores?.premium ?? false) == true)
+                        ? DisplayPreminumStore()
+                        : SizedBox(),
+                    DisplayCashback(
+                      cashback: Stores?.defaultCashback,
+                      iscashbackPercentage: true,
                     ),
                   ],
                 ),
