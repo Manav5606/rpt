@@ -655,8 +655,8 @@ class BottomWideButton extends StatelessWidget {
   BottomWideButton(
       {Key? key,
       this.text,
-      this.borderColor = AppConst.darkGreen,
-      this.color = AppConst.darkGreen,
+      this.borderColor = AppConst.green,
+      this.color = AppConst.green,
       this.Textcolor = AppConst.white})
       : super(key: key);
   String? text;
@@ -669,7 +669,7 @@ class BottomWideButton extends StatelessWidget {
       decoration: BoxDecoration(
           color: color,
           border: Border.all(width: 1.5, color: borderColor),
-          borderRadius: BorderRadius.circular(10)),
+          borderRadius: BorderRadius.circular(20)),
       child: Center(
         child: Text(
           text ?? "LOGIN",
@@ -677,7 +677,8 @@ class BottomWideButton extends StatelessWidget {
             fontFamily: 'MuseoSans',
             fontWeight: FontWeight.w600,
             fontStyle: FontStyle.normal,
-            fontSize: SizeUtils.horizontalBlockSize * 4,
+            fontSize:
+                (SizerUtil.deviceType == DeviceType.tablet) ? 9.sp : 10.sp,
             color: Textcolor,
           ),
         ),

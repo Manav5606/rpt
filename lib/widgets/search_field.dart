@@ -47,14 +47,20 @@ class SearchField extends StatelessWidget {
             textInputAction: TextInputAction.done,
             style: TextStyle(
               fontFamily: 'MuseoSans',
-              fontSize: SizeUtils.horizontalBlockSize * 4,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+              fontSize:
+                  (SizerUtil.deviceType == DeviceType.tablet) ? 9.sp : 10.sp,
               // color: Colors.grey[400],
             ),
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: TextStyle(
                 fontFamily: 'MuseoSans',
-                fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 9.sp : 10.sp,
                 color: AppConst.grey,
               ),
               prefixIcon: prefixIcon,
@@ -80,7 +86,6 @@ class SearchField extends StatelessWidget {
     );
   }
 }
-
 
 // class SearchField extends StatelessWidget {
 //   final TextEditingController controller;

@@ -21,47 +21,47 @@ import '../app/ui/pages/my_wallet/wallet_details_screen.dart';
 import '../screens/home/models/homePageRemoteConfigModel.dart';
 import '../screens/wallet/controller/paymentController.dart';
 
-class RecentSearchList extends StatelessWidget {
-  List<RecentProductsData>? foundedStores;
-  final ScrollController? controller;
-  bool isScanFunction;
+// class RecentSearchList extends StatelessWidget {
+//   List<RecentProductsData>? foundedStores;
+//   final ScrollController? controller;
+//   bool isScanFunction;
 
-  RecentSearchList(
-      {Key? key,
-      this.controller,
-      required this.foundedStores,
-      this.isScanFunction = false})
-      : super(key: key);
+//   RecentSearchList(
+//       {Key? key,
+//       this.controller,
+//       required this.foundedStores,
+//       this.isScanFunction = false})
+//       : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return (foundedStores!.isEmpty)
-        ? Center(
-            child: Text(
-            "No Recent Item!",
-            style: AppStyles.STORES_SUBTITLE_STYLE,
-          ))
-        : ListView.separated(
-            controller: this.controller,
-            shrinkWrap: true,
-            reverse: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: foundedStores!.length,
-            //data.length,
-            itemBuilder: (context, index) {
-              return ListViewChild(
-                popularSearchModel: foundedStores![index],
-                isScanFunction: isScanFunction,
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                height: SizeUtils.horizontalBlockSize * 2.55,
-              );
-            },
-          );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return (foundedStores!.isEmpty)
+//         ? Center(
+//             child: Text(
+//             "No Recent Item!",
+//             style: AppStyles.STORES_SUBTITLE_STYLE,
+//           ))
+//         : ListView.separated(
+//             controller: this.controller,
+//             shrinkWrap: true,
+//             reverse: true,
+//             physics: NeverScrollableScrollPhysics(),
+//             itemCount: foundedStores!.length,
+//             //data.length,
+//             itemBuilder: (context, index) {
+//               return ListViewChild(
+//                 popularSearchModel: foundedStores![index],
+//                 isScanFunction: isScanFunction,
+//               );
+//             },
+//             separatorBuilder: (context, index) {
+//               return SizedBox(
+//                 height: SizeUtils.horizontalBlockSize * 2.55,
+//               );
+//             },
+//           );
+//   }
+// }
 
 class ListViewChild extends StatelessWidget {
   final RecentProductsData popularSearchModel;
@@ -150,11 +150,11 @@ class HotProducts extends StatelessWidget {
         //     "Loading Hot products...",
         //     style: AppStyles.STORES_SUBTITLE_STYLE,
         //   ))
-       ? EmptyScreen(
-                  text1: "Loading Hot Products",
-                  text2: "",
-                  icon: Icons.receipt,
-                )
+        ? EmptyScreen(
+            text1: "Loading Hot Products",
+            text2: "",
+            icon: Icons.receipt,
+          )
         : Column(
             children: [
               Padding(
@@ -172,7 +172,9 @@ class HotProducts extends StatelessWidget {
                         style: TextStyle(
                           fontFamily: 'MuseoSans',
                           color: AppConst.black,
-                          fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 10.sp
+                              : 13.sp,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                         )),
@@ -249,19 +251,32 @@ class DisplayHotProducts extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 72.w,
-                              child: Text(storesWithProductsModel.name ?? '',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.black,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.8,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  )),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 72.w,
+                                  child: Text(
+                                      storesWithProductsModel.name ?? '',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.8,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                                ),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: AppConst.black,
+                                  size: 2.5.h,
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 0.5.h,
@@ -317,14 +332,6 @@ class DisplayHotProducts extends StatelessWidget {
                             // ),
                           ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 4.h),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            color: AppConst.black,
-                            size: SizeUtils.horizontalBlockSize * 6,
-                          ),
-                        ),
                       ],
                     ),
                   ],
@@ -349,11 +356,9 @@ class DisplayHotProducts extends StatelessWidget {
                 child: Container(
                   height: 30.h,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 1.h,
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -371,16 +376,29 @@ class DisplayHotProducts extends StatelessWidget {
                       Text(
                         "To view products",
                         style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                          fontWeight: FontWeight.w500,
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 10.sp
+                              : 13.sp,
+                          fontFamily: 'MuseoSans',
+                          color: AppConst.black,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
                         ),
                       ),
                       Text(
                         "Go to store and start shopping",
                         style: TextStyle(
-                          fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                          fontWeight: FontWeight.w200,
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 9.8.sp
+                              : 12.8.sp,
+                          fontFamily: 'MuseoSans',
+                          color: AppConst.greySecondaryText,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
                         ),
+                      ),
+                      SizedBox(
+                        height: 3.h,
                       ),
                     ],
                   ),
@@ -409,18 +427,37 @@ class DisplayHotProducts extends StatelessWidget {
                               scrollDirection: Axis.vertical,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 2.w,
-                                      mainAxisSpacing: 1.h),
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 2.w,
+                                mainAxisSpacing: 1.h,
+                                childAspectRatio: 0.7,
+                              ),
                               children: List.generate(
                                   storesWithProductsModel.products?.length ?? 0,
                                   (index) {
                                 Products product =
                                     storesWithProductsModel.products![index];
                                 return Container(
-                                  width: 45.w,
-                                  height: 25.h,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 2.w),
+                                  margin: EdgeInsets.only(
+                                      bottom: 1.h, left: 1.w, right: 2.w),
+                                  width: 42.w,
+                                  // height: 25.h,
+
                                   // color: AppConst.yellow,
+                                  decoration: BoxDecoration(
+                                    color: AppConst.white,
+                                    // border: Border.all(color: AppConst.grey, width: 0.5),
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade300,
+                                        blurRadius: 3,
+                                        offset: Offset(0, 1),
+                                      ),
+                                    ],
+                                  ),
                                   child: InkWell(
                                     onTap: (() async {
                                       _moreStoreController.storeId.value =
@@ -435,94 +472,125 @@ class DisplayHotProducts extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        SizedBox(
+                                          height: 1.h,
+                                        ),
                                         Center(
                                           child: DisplayProductInGridView(
                                               logo: product.logo),
                                         ),
-                                        SizedBox(
-                                          // height: 4.5.h,
-                                          child: Text(product.name.toString(),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontFamily: 'MuseoSans',
-                                                color: AppConst.black,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    3.7,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.normal,
-                                              )),
-                                        ),
-                                        SizedBox(
-                                          height: 0.5.h,
-                                        ),
-                                        Text(
-                                            "Cashback \u20b9${product.cashback ?? ""}",
-                                            style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              color: AppConst.black,
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  3.5,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                            )),
-                                        // SizedBox(
-                                        //   height: 0.5.h,
-                                        // ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                "\u20b9${product.selling_price ?? ""}",
-                                                style: TextStyle(
-                                                  fontFamily: 'MuseoSans',
-                                                  color: AppConst.black,
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      3.5,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                            SizedBox(
-                                              width: 14.w,
-                                              child: Text(
-                                                  "/ ${product.unit ?? ""}",
-                                                  maxLines: 1,
+                                        Flexible(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(product.name.toString(),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     fontFamily: 'MuseoSans',
                                                     color: AppConst.black,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.3,
-                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: (SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 8.5.sp
+                                                        : 9.5.sp,
+                                                    fontWeight: FontWeight.w700,
                                                     fontStyle: FontStyle.normal,
                                                   )),
-                                            ),
-                                            Spacer(),
-                                            InkWell(
-                                                onTap: (() async {
-                                                  _moreStoreController
-                                                          .storeId.value =
-                                                      storesWithProductsModel
-                                                              .sId ??
-                                                          '';
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text("${product.unit ?? ""}",
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color:
+                                                            AppConst.greenText,
+                                                        fontSize: (SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .tablet)
+                                                            ? 8.sp
+                                                            : 9.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
+                                                  SizedBox(
+                                                    width: 2.w,
+                                                  ),
+                                                  Text(
+                                                      "\u20b9${product.cashback.toString()} OFF",
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color:
+                                                            AppConst.greenText,
+                                                        fontSize: (SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .tablet)
+                                                            ? 8.5.sp
+                                                            : 9.5.sp,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      "\u{20b9}${product.selling_price ?? ""}",
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color: AppConst.black,
+                                                        fontSize: (SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .tablet)
+                                                            ? 9.sp
+                                                            : 10.5.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
+                                                  Spacer(),
 
-                                                  await _moreStoreController
-                                                      .getStoreData(
-                                                    id: storesWithProductsModel
-                                                            .sId ??
-                                                        '',
-                                                  );
-                                                }),
-                                                child: DisplayAddPlus()),
-                                            SizedBox(
-                                              width: 3.w,
-                                            )
-                                          ],
-                                        )
+                                                  InkWell(
+                                                      onTap: (() async {
+                                                        _moreStoreController
+                                                                .storeId.value =
+                                                            storesWithProductsModel
+                                                                    .sId ??
+                                                                '';
+
+                                                        await _moreStoreController
+                                                            .getStoreData(
+                                                          id: storesWithProductsModel
+                                                                  .sId ??
+                                                              '',
+                                                        );
+                                                      }),
+                                                      child: DisplayAddPlus()),
+                                                  // SizedBox(
+                                                  //   width: 3.w,
+                                                  // )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -536,9 +604,12 @@ class DisplayHotProducts extends StatelessWidget {
                 ],
               ),
         Padding(
-          padding: EdgeInsets.only(bottom: 1.h),
-          child: Container(height: 1.2.w, color: AppConst.veryLightGrey),
-        ),
+          padding: EdgeInsets.symmetric(vertical: 1.5.h),
+          child: Container(
+            height: 1.5.w,
+            color: AppConst.veryLightGrey,
+          ),
+        )
       ],
     );
   }

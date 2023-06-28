@@ -15,6 +15,7 @@ class AppConst {
   static const Color white = Color(0xffffffff);
   static const Color acentGreen = Color(0xff22ffb1);
   static const Color green = Color(0xff028353);
+  static const Color greenText = Color(0xff359C76);
   static const Color limegreen = Color(0xff0aad0a);
   static const Color radiumGreen = Color(0xFF22FFB1);
   static const Color Lightgrey = Color(0xFFF2F3F7);

@@ -10,11 +10,11 @@ class StoreSearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.7.h),
       decoration: BoxDecoration(
         color: AppConst.white,
         // border: Border.all(color: AppConst.grey, width: 0.5),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: AppConst.grey,
@@ -29,7 +29,7 @@ class StoreSearchField extends StatelessWidget {
           Icon(
             Icons.search,
             color: AppConst.grey,
-            size: SizeUtils.horizontalBlockSize * 6,
+            size: 2.5.h,
           ),
           SizedBox(
             width: 3.w,
@@ -40,7 +40,8 @@ class StoreSearchField extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'MuseoSans',
                 color: AppConst.black,
-                fontSize: 11.sp,
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 8.sp : 10.sp,
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
               )),

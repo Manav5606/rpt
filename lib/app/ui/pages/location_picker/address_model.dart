@@ -140,15 +140,15 @@ class _AddressModelState extends State<AddressModel> {
                   //   width: 4.w,
                   // ),
                   Text(
-                    (widget.editOrDelete == true)
-                        ? ""
-                        : "",
+                    (widget.editOrDelete == true) ? "" : "",
                     style: TextStyle(
                       color: AppConst.black,
                       fontFamily: 'MuseoSans',
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
-                      fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                      fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                          ? 9.sp
+                          : 10.sp,
                     ),
                   ),
                 ],
@@ -252,82 +252,109 @@ class _AddressModelState extends State<AddressModel> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left:6.0),
-                                child: Text("Search for your location",style: TextStyle(fontWeight: FontWeight.w500),),
+                                padding: EdgeInsets.only(left: 3.w),
+                                child: Text(
+                                  "Search for your location",
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: (SizerUtil.deviceType ==
+                                            DeviceType.tablet)
+                                        ? 9.sp
+                                        : 10.sp,
+                                    color: AppConst.black,
+                                  ),
+                                ),
                               ),
-                              SizedBox(height: 10,),
-                              SearchField(
-                                controller:
-                                    _addLocationController.searchController,
-                                focusNode: focusNode,
-                                suffixIcon: (_addLocationController
-                                                .searchText.value !=
-                                            null &&
-                                        _addLocationController.searchText.value !=
-                                            "")
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          _addLocationController.searchController
-                                              .clear();
-                                          _addLocationController.predictions
-                                              .clear();
-                                        },
-                                        child: Icon(
-                                          Icons.close,
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                                child: SearchField(
+                                  controller:
+                                      _addLocationController.searchController,
+                                  focusNode: focusNode,
+                                  suffixIcon: (_addLocationController
+                                                  .searchText.value !=
+                                              null &&
+                                          _addLocationController
+                                                  .searchText.value !=
+                                              "")
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            _addLocationController
+                                                .searchController
+                                                .clear();
+                                            _addLocationController.predictions
+                                                .clear();
+                                          },
+                                          child: Icon(
+                                            Icons.close,
 
-                                          color: AppConst.black, size: 2.5.h,
-                                          // _addLocationController.searchText.value.isNotEmpty
-                                          //     ? kPrimaryColor
-                                          //     : kIconColor,
-                                        ),
-                                      )
-                                    : null,
-                                prefixIcon: (_addLocationController
-                                                .searchText.value !=
-                                            null &&
-                                        _addLocationController.searchText.value !=
-                                            "")
-                                    ? null
-                                    : GestureDetector(
-                                        onTap: () {
-                                          _addLocationController.searchController
-                                              .clear();
-                                          _addLocationController.predictions
-                                              .clear();
-                                        },
-                                        child: Icon(
+                                            color: AppConst.black, size: 2.5.h,
+                                            // _addLocationController.searchText.value.isNotEmpty
+                                            //     ? kPrimaryColor
+                                            //     : kIconColor,
+                                          ),
+                                        )
+                                      : null,
+                                  prefixIcon: (_addLocationController
+                                                  .searchText.value !=
+                                              null &&
+                                          _addLocationController
+                                                  .searchText.value !=
+                                              "")
+                                      ? Icon(
                                           Icons.search,
-                                          color: AppConst.black,
+                                          color: AppConst.grey,
                                           size: 2.8.h,
+                                        )
+                                      : GestureDetector(
+                                          onTap: () {
+                                            _addLocationController
+                                                .searchController
+                                                .clear();
+                                            _addLocationController.predictions
+                                                .clear();
+                                          },
+                                          child: Icon(
+                                            Icons.search,
+                                            color: AppConst.black,
+                                            size: 2.8.h,
+                                          ),
                                         ),
-                                      ),
 
-                                // onEditingComplete: () {
-                                //   focusNode.unfocus();
-                                //   log('onEditingComplete :-->>>>>>>>>>000');
-                                //   if (_addLocationController.searchController.text.isNotEmpty) {
-                                //     log('onEditingComplete :-->>>>>>>>>>111');
-                                //     _addLocationController.autoCompleteSearch(
-                                //         _addLocationController.searchController.text);
-                                //   } else {
-                                //     log('onEditingComplete :-->>>>>>>>>>222');
-                                //     _addLocationController.predictions.clear();
-                                //   }
-                                // },
-                                onChange: (String value) {
-                                  _addLocationController.searchText.value = value;
-                                  if (_debounce?.isActive ?? false)
-                                    _debounce?.cancel();
-                                  _debounce = Timer(
-                                      const Duration(milliseconds: 500), () {
-                                    if (value.isEmpty) {
-                                      _addLocationController.predictions.clear();
-                                    } else {
-                                      _addLocationController
-                                          .autoCompleteSearch(value);
-                                    }
-                                  });
-                                },
+                                  // onEditingComplete: () {
+                                  //   focusNode.unfocus();
+                                  //   log('onEditingComplete :-->>>>>>>>>>000');
+                                  //   if (_addLocationController.searchController.text.isNotEmpty) {
+                                  //     log('onEditingComplete :-->>>>>>>>>>111');
+                                  //     _addLocationController.autoCompleteSearch(
+                                  //         _addLocationController.searchController.text);
+                                  //   } else {
+                                  //     log('onEditingComplete :-->>>>>>>>>>222');
+                                  //     _addLocationController.predictions.clear();
+                                  //   }
+                                  // },
+                                  onChange: (String value) {
+                                    _addLocationController.searchText.value =
+                                        value;
+                                    if (_debounce?.isActive ?? false)
+                                      _debounce?.cancel();
+                                    _debounce = Timer(
+                                        const Duration(milliseconds: 500), () {
+                                      if (value.isEmpty) {
+                                        _addLocationController.predictions
+                                            .clear();
+                                      } else {
+                                        _addLocationController
+                                            .autoCompleteSearch(value);
+                                      }
+                                    });
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -352,7 +379,10 @@ class _AddressModelState extends State<AddressModel> {
                                   fontFamily: 'MuseoSans',
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FontStyle.normal,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4,
+                                  fontSize: (SizerUtil.deviceType ==
+                                          DeviceType.tablet)
+                                      ? 9.sp
+                                      : 10.sp,
                                 ),
                               ),
                             ),
@@ -400,8 +430,7 @@ class _AddressModelState extends State<AddressModel> {
                                               "signup": widget.issignup
                                             });
                                       } else {
-                                        Get.toNamed(
-                                            AppRoutes.NewLocationScreen,
+                                        Get.toNamed(AppRoutes.NewLocationScreen,
                                             arguments: {
                                               "isFalse": false,
                                               "page": widget.page,
@@ -425,24 +454,24 @@ class _AddressModelState extends State<AddressModel> {
                                         child: Icon(
                                           Icons.gps_fixed_rounded,
                                           color: AppConst.green,
-                                          size:
-                                              SizeUtils.horizontalBlockSize *
-                                                  6,
+                                          size: 2.5.h,
                                         ),
                                       ),
                                       SizedBox(
                                         width: 2.w,
                                       ),
                                       Text(
-                                        "Use current location",
+                                        "Use Current Location",
                                         style: TextStyle(
                                             color: AppConst.green,
+                                            letterSpacing: -0.5,
                                             fontFamily: 'MuseoSans',
                                             fontStyle: FontStyle.normal,
-                                            fontSize: SizeUtils
-                                                    .horizontalBlockSize *
-                                                3.8,
-                                            fontWeight: FontWeight.w500),
+                                            fontSize: (SizerUtil.deviceType ==
+                                                    DeviceType.tablet)
+                                                ? 9.sp
+                                                : 10.sp,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                     ],
                                   ),
@@ -450,18 +479,17 @@ class _AddressModelState extends State<AddressModel> {
                               )
                             : InkWell(
                                 onTap: (() {
-                                  _addLocationController
-                                      .getCurrentLocation2();
+                                  _addLocationController.getCurrentLocation2();
                                 }),
                                 child: BottomWideButton(
                                   text: "Enable Location",
                                 ),
                               ))),
                       ),
-                      Container(
-                        height: 1.5.w,
-                        color: AppConst.veryLightGrey,
-                      ),
+                      // Container(
+                      //   height: 1.5.w,
+                      //   color: AppConst.veryLightGrey,
+                      // ),
                       Obx(
                         () => _addLocationController.predictions.length == 0
                             ? SizedBox()
@@ -484,11 +512,9 @@ class _AddressModelState extends State<AddressModel> {
                                   //     ),
                                   //   ),
                                   // ),
-                                  _addLocationController.predictions.length ==
-                                          0
+                                  _addLocationController.predictions.length == 0
                                       ? Text(
-                                          StringContants
-                                              .searchResultsNotFound,
+                                          StringContants.searchResultsNotFound,
                                         )
                                       : ListView.builder(
                                           itemCount: _addLocationController
@@ -504,14 +530,16 @@ class _AddressModelState extends State<AddressModel> {
                                                   highlightColor:
                                                       AppConst.highLightColor,
                                                   onTap: () async {
-                                                    int valueIndex = _addLocationController
-                                                        .recentAddressDetails
-                                                        .indexWhere((element) =>
-                                                            element.placeId ==
-                                                            _addLocationController
-                                                                .predictions[
-                                                                    index]
-                                                                .placeId);
+                                                    int valueIndex =
+                                                        _addLocationController
+                                                            .recentAddressDetails
+                                                            .indexWhere((element) =>
+                                                                element
+                                                                    .placeId ==
+                                                                _addLocationController
+                                                                    .predictions[
+                                                                        index]
+                                                                    .placeId);
                                                     if (valueIndex < 0) {
                                                       try {
                                                         _addLocationController
@@ -577,8 +605,7 @@ class _AddressModelState extends State<AddressModel> {
                                                       _addLocationController
                                                           .currentSelectValue
                                                           .value = index;
-                                                      _homeController
-                                                          .isLoading
+                                                      _homeController.isLoading
                                                           .value = true;
 
                                                       _addLocationController
@@ -597,8 +624,7 @@ class _AddressModelState extends State<AddressModel> {
                                                           _addLocationController
                                                               .title[index];
                                                       _addLocationController
-                                                              .userHouse
-                                                              .value =
+                                                              .userHouse.value =
                                                           _addLocationController
                                                               .house[index];
                                                       _addLocationController
@@ -609,14 +635,12 @@ class _AddressModelState extends State<AddressModel> {
                                                               index];
 
                                                       _addLocationController
-                                                              .latitude
-                                                              .value =
+                                                              .latitude.value =
                                                           _addLocationController
                                                               .lat[index];
 
                                                       _addLocationController
-                                                              .longitude
-                                                              .value =
+                                                              .longitude.value =
                                                           _addLocationController
                                                               .long[index];
                                                       await UserViewModel.setLocation(
@@ -624,8 +648,7 @@ class _AddressModelState extends State<AddressModel> {
                                                               _addLocationController
                                                                   .lat[index],
                                                               _addLocationController
-                                                                      .long[
-                                                                  index]),
+                                                                  .long[index]),
                                                           _addLocationController
                                                               .id[index]);
                                                       _homeController
@@ -670,11 +693,11 @@ class _AddressModelState extends State<AddressModel> {
                                                                       .SelectBusinessType,
                                                                   arguments: {
                                                                       "signup":
-                                                                          widget.issignup
+                                                                          widget
+                                                                              .issignup
                                                                     })
                                                               : Get.back();
-                                                      _homeController
-                                                          .isLoading
+                                                      _homeController.isLoading
                                                           .value = false;
                                                     } else {
                                                       Get.toNamed(
@@ -682,15 +705,13 @@ class _AddressModelState extends State<AddressModel> {
                                                               .NewLocationScreen,
                                                           arguments: {
                                                             "isFalse": true,
-                                                            "page":
-                                                                widget.page,
-                                                            "issignup": widget
-                                                                .issignup,
-                                                            "homeTrue":
-                                                                isHome,
+                                                            "page": widget.page,
+                                                            "issignup":
+                                                                widget.issignup,
+                                                            "homeTrue": isHome,
                                                             // "isHome": widget.isHomeScreen
-                                                          })?.whenComplete(
-                                                          () => Get.back(
+                                                          })?.whenComplete(() =>
+                                                          Get.back(
                                                               result: true));
 
                                                       _addLocationController
@@ -705,6 +726,9 @@ class _AddressModelState extends State<AddressModel> {
                                                             vertical: 1.h,
                                                             horizontal: 2.w),
                                                     child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Icon(
                                                           _addLocationController.predictions[index].id == "1" ||
@@ -726,9 +750,9 @@ class _AddressModelState extends State<AddressModel> {
                                                               ? Icons.home
                                                               : Icons
                                                                   .location_on,
-                                                          color:
-                                                              AppConst.grey,
-                                                          size: 3.h,
+                                                          color: Colors
+                                                              .grey.shade400,
+                                                          size: 3.3.h,
                                                         ),
                                                         SizedBox(
                                                           width: 2.w,
@@ -749,46 +773,60 @@ class _AddressModelState extends State<AddressModel> {
                                                                     : _addLocationController.predictions[index].id ==
                                                                             "2"
                                                                         ? "Work"
-                                                                        : _addLocationController.predictions[index].id == "3"
+                                                                        : _addLocationController.predictions[index].id ==
+                                                                                "3"
                                                                             ? "Hotel"
                                                                             : _addLocationController.predictions[index].id == "4"
                                                                                 ? _addLocationController.predictions[index].reference!
                                                                                 : _addLocationController.predictions[index].description!.split(' ').take(3).join(' '),
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        'MuseoSans',
-                                                                    color: AppConst
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .normal,
-                                                                    fontSize:
-                                                                        SizeUtils.horizontalBlockSize *
-                                                                            4),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      'MuseoSans',
+                                                                  color: AppConst
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                  fontSize: (SizerUtil
+                                                                              .deviceType ==
+                                                                          DeviceType
+                                                                              .tablet)
+                                                                      ? 9.sp
+                                                                      : 10.5.sp,
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 0.5.h,
                                                               ),
                                                               Text(
-                                                                
                                                                 _addLocationController
                                                                         .predictions[
                                                                             index]
                                                                         .description ??
                                                                     "",
-                                                                    overflow: TextOverflow.ellipsis,
-                                                                    maxLines: 2,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                maxLines: 2,
                                                                 style: TextStyle(
-                                                                    fontSize:
-                                                                        SizeUtils.horizontalBlockSize *
-                                                                            3.8,
+                                                                    fontSize: (SizerUtil
+                                                                                .deviceType ==
+                                                                            DeviceType
+                                                                                .tablet)
+                                                                        ? 8.5.sp
+                                                                        : 10.sp,
                                                                     fontFamily:
                                                                         'MuseoSans',
-                                                                    color: AppConst
-                                                                        .grey,
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade600,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .w600,
+                                                                            .w500,
                                                                     fontStyle:
                                                                         FontStyle
                                                                             .normal),
@@ -811,473 +849,504 @@ class _AddressModelState extends State<AddressModel> {
                         () => _addLocationController.predictions.length == 0
                             ? Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 3.w, vertical: 1.h),
+                                    horizontal: 0.w, vertical: 1.h),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     widget.isSavedAddress
                                         ? Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              // (_addLocationController
-                                              //             .userModel
-                                              //             ?.addresses
-                                              //             ?.isNotEmpty ??
-                                              //         false)
-                                              //     ? Padding(
-                                              //         padding: EdgeInsets
-                                              //             .symmetric(
-                                              //                 vertical: 1.h),
-                                              //         child: Text(
-                                              //           "Saved Addresses",
-                                              //           style: TextStyle(
-                                              //             fontSize: SizeUtils
-                                              //                     .horizontalBlockSize *
-                                              //                 4.2,
-                                              //             fontFamily:
-                                              //                 'MuseoSans',
-                                              //             color:
-                                              //                 AppConst.black,
-                                              //             fontWeight:
-                                              //                 FontWeight.w700,
-                                              //             fontStyle: FontStyle
-                                              //                 .normal,
-                                              //           ),
-                                              //         ),
-                                              //       )
-                                              //     : SizedBox(),
                                               (_addLocationController
                                                           .userModel
                                                           ?.addresses
                                                           ?.isNotEmpty ??
                                                       false)
-                                                  ? ListView.separated(
+                                                  ? Padding(
                                                       padding:
-                                                          EdgeInsets.zero,
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      itemCount:
-                                                          _addLocationController
-                                                                  .userModel
-                                                                  ?.addresses
-                                                                  ?.length ??
-                                                              0,
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 1.h),
+                                                      child: Container(
+                                                        height: 1.h,
+                                                        color: AppConst
+                                                            .veryLightGrey,
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
+                                              (_addLocationController
+                                                          .userModel
+                                                          ?.addresses
+                                                          ?.isNotEmpty ??
+                                                      false)
+                                                  ? Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 1.h,
+                                                              horizontal: 3.w),
+                                                      child: Text(
+                                                        "Saved Addresses",
+                                                        style: TextStyle(
+                                                          color: AppConst.black,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontSize: (SizerUtil
+                                                                      .deviceType ==
+                                                                  DeviceType
+                                                                      .tablet)
+                                                              ? 10.5.sp
+                                                              : 12.5.sp,
+                                                          fontFamily:
+                                                              'MuseoSans',
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
+                                              (_addLocationController
+                                                          .userModel
+                                                          ?.addresses
+                                                          ?.isNotEmpty ??
+                                                      false)
+                                                  ? Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 2.w),
+                                                      child: ListView.separated(
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            NeverScrollableScrollPhysics(),
+                                                        itemCount:
+                                                            _addLocationController
+                                                                    .userModel
+                                                                    ?.addresses
+                                                                    ?.length ??
+                                                                0,
 
-                                                      //  _addLocationController
-                                                      //         .isSeeMoreEnable.value
-                                                      //     ? _addLocationController
-                                                      //             .userModel
-                                                      //             ?.addresses
-                                                      //             ?.length ??
-                                                      //         0
-                                                      //     : (_addLocationController
-                                                      //                     .userModel
-                                                      //                     ?.addresses
-                                                      //                     ?.length ??
-                                                      //                 0) <
-                                                      //             3
-                                                      //         ? _addLocationController
-                                                      //                 .userModel
-                                                      //                 ?.addresses
-                                                      //                 ?.length ??
-                                                      //             0
-                                                      //         : 3,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return
-                                                            // Obx(
-                                                            //   () =>
-                                                            InkWell(
-                                                          highlightColor: AppConst
-                                                              .highLightColor,
-                                                          onTap: () async {
-                                                            _addLocationController
-                                                                .currentSelectValue
-                                                                .value = index;
-                                                            _homeController
-                                                                .isLoading
-                                                                .value = true;
-
-                                                            _addLocationController
-                                                                .currentAddress
-                                                                .value = _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .address ??
-                                                                '';
-                                                            _addLocationController
-                                                                .userAddress
-                                                                .value = _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .address ??
-                                                                '';
-                                                            _addLocationController
-                                                                .userAddressTitle
-                                                                .value = _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .title ??
-                                                                '';
-                                                            _addLocationController
-                                                                .userHouse
-                                                                .value = _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .house ??
-                                                                '';
-                                                            _addLocationController
-                                                                .userAppartment
-                                                                .value = _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .apartment ??
-                                                                '';
-
-                                                            _addLocationController
-                                                                .latitude
-                                                                .value = _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .location
-                                                                    ?.lat ??
-                                                                0.0;
-
-                                                            _addLocationController
-                                                                .longitude
-                                                                .value = _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .location
-                                                                    ?.lng ??
-                                                                0.0;
-                                                            await UserViewModel.setLocation(
-                                                                LatLng(
-                                                                    _addLocationController
-                                                                            .userModel
-                                                                            ?.addresses?[
-                                                                                index]
-                                                                            .location
-                                                                            ?.lat ??
-                                                                        0.0,
-                                                                    _addLocationController
-                                                                            .userModel
-                                                                            ?.addresses?[
-                                                                                index]
-                                                                            .location
-                                                                            ?.lng ??
-                                                                        0.0),
-                                                                _addLocationController
-                                                                    .userModel
-                                                                    ?.addresses?[
-                                                                        index]
-                                                                    .id);
-                                                            _homeController
-                                                                .pageNumber = 1;
-                                                            _homeController
-                                                                    .isPageAvailable =
-                                                                true;
-                                                            _homeController
-                                                                .isPageLoading
-                                                                .value = false;
-                                                            if (widget.page ==
-                                                                "claimmore") {
-                                                              await _myWalletController
-                                                                  .getAllWalletByCustomerByBusinessType();
-                                                              int? value =
-                                                                  await _myWalletController
-                                                                      .updateBusinesstypeWallets();
+                                                        //  _addLocationController
+                                                        //         .isSeeMoreEnable.value
+                                                        //     ? _addLocationController
+                                                        //             .userModel
+                                                        //             ?.addresses
+                                                        //             ?.length ??
+                                                        //         0
+                                                        //     : (_addLocationController
+                                                        //                     .userModel
+                                                        //                     ?.addresses
+                                                        //                     ?.length ??
+                                                        //                 0) <
+                                                        //             3
+                                                        //         ? _addLocationController
+                                                        //                 .userModel
+                                                        //                 ?.addresses
+                                                        //                 ?.length ??
+                                                        //             0
+                                                        //         : 3,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return
+                                                              // Obx(
+                                                              //   () =>
+                                                              InkWell(
+                                                            highlightColor: AppConst
+                                                                .highLightColor,
+                                                            onTap: () async {
                                                               _addLocationController
-                                                                  .isRecentAddress
+                                                                  .currentSelectValue
+                                                                  .value = index;
+                                                              _homeController
+                                                                  .isLoading
                                                                   .value = true;
-                                                            } else {
-                                                              _homeController
-                                                                  .homePageFavoriteShopsList
-                                                                  .clear();
-                                                              await _homeController
-                                                                  .getHomePageFavoriteShops();
-                                                              await _homeController
-                                                                  .getAllCartsData();
-                                                              _homeController
-                                                                  .getHomePageFavoriteShopsModel
-                                                                  .refresh();
-                                                            }
 
-                                                            widget
-                                                                    .isHomeScreen
-                                                                ? Get.offAllNamed(
-                                                                    AppRoutes
-                                                                        .BaseScreen) // update the intialize map lat and lng
-                                                                : (widget.page ==
-                                                                        "claimmore")
-                                                                    ? Get.toNamed(
-                                                                        AppRoutes
-                                                                            .SelectBusinessType,
-                                                                        arguments: {
-                                                                            "signup": widget.issignup
-                                                                          })
-                                                                    : Get
-                                                                        .back();
-                                                            _homeController
-                                                                    .isLoading
-                                                                    .value =
-                                                                false;
-                                                          },
-                                                          child: Column(
-                                                            children: [
-                                                              ListTile(
-                                                                  contentPadding:
-                                                                      EdgeInsets.symmetric(
-                                                                          vertical: 1
-                                                                              .h),
-                                                                  leading:
-                                                                      Padding(
-                                                                    padding: EdgeInsets.only(
-                                                                        bottom: 2
+                                                              _addLocationController
+                                                                  .currentAddress
+                                                                  .value = _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .address ??
+                                                                  '';
+                                                              _addLocationController
+                                                                  .userAddress
+                                                                  .value = _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .address ??
+                                                                  '';
+                                                              _addLocationController
+                                                                  .userAddressTitle
+                                                                  .value = _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .title ??
+                                                                  '';
+                                                              _addLocationController
+                                                                  .userHouse
+                                                                  .value = _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .house ??
+                                                                  '';
+                                                              _addLocationController
+                                                                  .userAppartment
+                                                                  .value = _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .apartment ??
+                                                                  '';
+
+                                                              _addLocationController
+                                                                  .latitude
+                                                                  .value = _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .location
+                                                                      ?.lat ??
+                                                                  0.0;
+
+                                                              _addLocationController
+                                                                  .longitude
+                                                                  .value = _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .location
+                                                                      ?.lng ??
+                                                                  0.0;
+                                                              await UserViewModel.setLocation(
+                                                                  LatLng(
+                                                                      _addLocationController
+                                                                              .userModel
+                                                                              ?.addresses?[
+                                                                                  index]
+                                                                              .location
+                                                                              ?.lat ??
+                                                                          0.0,
+                                                                      _addLocationController
+                                                                              .userModel
+                                                                              ?.addresses?[
+                                                                                  index]
+                                                                              .location
+                                                                              ?.lng ??
+                                                                          0.0),
+                                                                  _addLocationController
+                                                                      .userModel
+                                                                      ?.addresses?[
+                                                                          index]
+                                                                      .id);
+                                                              _homeController
+                                                                  .pageNumber = 1;
+                                                              _homeController
+                                                                      .isPageAvailable =
+                                                                  true;
+                                                              _homeController
+                                                                  .isPageLoading
+                                                                  .value = false;
+                                                              if (widget.page ==
+                                                                  "claimmore") {
+                                                                await _myWalletController
+                                                                    .getAllWalletByCustomerByBusinessType();
+                                                                int? value =
+                                                                    await _myWalletController
+                                                                        .updateBusinesstypeWallets();
+                                                                _addLocationController
+                                                                    .isRecentAddress
+                                                                    .value = true;
+                                                              } else {
+                                                                _homeController
+                                                                    .homePageFavoriteShopsList
+                                                                    .clear();
+                                                                await _homeController
+                                                                    .getHomePageFavoriteShops();
+                                                                await _homeController
+                                                                    .getAllCartsData();
+                                                                _homeController
+                                                                    .getHomePageFavoriteShopsModel
+                                                                    .refresh();
+                                                              }
+
+                                                              widget
+                                                                      .isHomeScreen
+                                                                  ? Get.offAllNamed(
+                                                                      AppRoutes
+                                                                          .BaseScreen) // update the intialize map lat and lng
+                                                                  : (widget.page ==
+                                                                          "claimmore")
+                                                                      ? Get.toNamed(
+                                                                          AppRoutes
+                                                                              .SelectBusinessType,
+                                                                          arguments: {
+                                                                              "signup": widget.issignup
+                                                                            })
+                                                                      : Get
+                                                                          .back();
+                                                              _homeController
+                                                                      .isLoading
+                                                                      .value =
+                                                                  false;
+                                                            },
+                                                            child: Column(
+                                                              children: [
+                                                                ListTile(
+                                                                    contentPadding:
+                                                                        EdgeInsets.symmetric(
+                                                                            vertical: 1
+                                                                                .h),
+                                                                    leading:
+                                                                        Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          left: 3
+                                                                              .w,
+                                                                          bottom:
+                                                                              2.h),
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .home,
+                                                                        size: 3.3
                                                                             .h,
-                                                                        left:
-                                                                            3.w),
-                                                                    child:
-                                                                        Icon(
-                                                                      Icons
-                                                                          .home,
-                                                                      size:
-                                                                          3.h,
-                                                                      color: AppConst
-                                                                          .grey,
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade400,
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                  //  Column(
-                                                                  //   mainAxisAlignment:
-                                                                  //       MainAxisAlignment
-                                                                  //           .center,
-                                                                  //   children: [
-                                                                  //     Icon(
-                                                                  //       Icons.home,
-                                                                  //       size: 3.h,
-                                                                  //       color:
-                                                                  //           AppConst
-                                                                  //               .grey,
-                                                                  //     )
-                                                                  //     // IgnorePointer(
-                                                                  //     //   child:
-                                                                  //     //       Radio(
-                                                                  //     //     value:
-                                                                  //     //         true,
-                                                                  //     //     groupValue: _addLocationController
-                                                                  //     //             .currentSelectValue
-                                                                  //     //             .value ==
-                                                                  //     //         index,
-                                                                  //     //     onChanged:
-                                                                  //     //         (value) {},
-                                                                  //     //   ),
-                                                                  //     // ),
-                                                                  //   ],
-                                                                  // ),
-                                                                  title:
-                                                                      Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                        _addLocationController.userModel?.addresses?[index].title ??
-                                                                            '',
-                                                                        style: TextStyle(
-                                                                            fontFamily: 'MuseoSans',
-                                                                            color: AppConst.black,
-                                                                            fontWeight: FontWeight.w500,
-                                                                            fontStyle: FontStyle.normal,
-                                                                            fontSize: SizeUtils.horizontalBlockSize * 4),
-                                                                      ),
-                                                                      Text(
-                                                                        "${_addLocationController.userModel?.addresses?[index].house ?? ''},${_addLocationController.userModel?.addresses?[index].apartment ?? ''} ${_addLocationController.userModel?.addresses?[index].address ?? ''}",
-                                                                        maxLines:
-                                                                            2,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                        style: TextStyle(
-                                                                            fontFamily: 'MuseoSans',
-                                                                            color: AppConst.grey,
-                                                                            fontWeight: FontWeight.w500,
-                                                                            fontStyle: FontStyle.normal,
-                                                                            fontSize: SizeUtils.horizontalBlockSize * 3.5),
-                                                                      ),
-                                                                      // widget.editOrDelete
-                                                                      //     ? Padding(
-                                                                      //         padding:
-                                                                      //             EdgeInsets.symmetric(vertical: 1.h),
-                                                                      //         child:
-                                                                      //             Row(
-                                                                      //           mainAxisAlignment:
-                                                                      //               MainAxisAlignment.start,
-                                                                      //           children: [
-                                                                      //             InkWell(
-                                                                      //               onTap: (() {
-                                                                      //                 _addLocationController.latitude.value = _addLocationController.userModel?.addresses?[index].location?.lat ?? 0.0;
-                                                                      //                 _addLocationController.longitude.value = _addLocationController.userModel?.addresses?[index].location?.lng ?? 0.0;
-
-                                                                      //                 Get.toNamed(AppRoutes.NewLocationScreen, arguments: {
-                                                                      //                   "isFalse": true,
-                                                                      //                   // "isEdit": true
-                                                                      //                 });
-
-                                                                      //                 // _addLocationController.isFullAddressBottomSheet.value = true;
-                                                                      //               }),
-                                                                      //               child: Text(
-                                                                      //                 'Edit',
-                                                                      //                 style: TextStyle(fontFamily: 'MuseoSans', color: AppConst.darkGreen, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: SizeUtils.horizontalBlockSize * 3.5),
-                                                                      //               ),
-                                                                      //             ),
-                                                                      //             SizedBox(
-                                                                      //               width: 20.w,
-                                                                      //             ),
-                                                                      //             if ((_addLocationController.userModel?.addresses?.length ?? 0) > 1 &&
-                                                                      //                 _addLocationController.userAddress.value != _addLocationController.userModel?.addresses?[index].address)
-                                                                      //               InkWell(
-                                                                      //                 onTap: (() async {
-                                                                      //                   await _addLocationController.deleteCustomerAddress(_addLocationController.userModel?.addresses?[index].id ?? '');
-
-                                                                      //                   _addLocationController.userModel?.addresses?.remove(_addLocationController.userModel?.addresses?[index]);
-                                                                      //                   UserViewModel.setUser(_addLocationController.userModel!);
-                                                                      //                   setState(() {});
-                                                                      //                 }),
-                                                                      //                 child: Text(
-                                                                      //                   'Delete',
-                                                                      //                   style: TextStyle(fontFamily: 'MuseoSans', color: AppConst.darkGreen, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: SizeUtils.horizontalBlockSize * 3.5),
-                                                                      //                 ),
-                                                                      //               ),
-                                                                      //           ],
-                                                                      //         ),
-                                                                      //       )
-                                                                      //     : SizedBox()
-                                                                    ],
-                                                                  ),
-                                                                  trailing: widget
-                                                                          .editOrDelete
-                                                                      ? PopupMenuButton(
-                                                                          shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius: BorderRadius.only(
-                                                                              bottomLeft: Radius.circular(8.0),
-                                                                              bottomRight: Radius.circular(8.0),
-                                                                              topLeft: Radius.circular(8.0),
-                                                                              topRight: Radius.circular(8.0),
-                                                                            ),
+                                                                    //  Column(
+                                                                    //   mainAxisAlignment:
+                                                                    //       MainAxisAlignment
+                                                                    //           .center,
+                                                                    //   children: [
+                                                                    //     Icon(
+                                                                    //       Icons.home,
+                                                                    //       size: 3.h,
+                                                                    //       color:
+                                                                    //           AppConst
+                                                                    //               .grey,
+                                                                    //     )
+                                                                    //     // IgnorePointer(
+                                                                    //     //   child:
+                                                                    //     //       Radio(
+                                                                    //     //     value:
+                                                                    //     //         true,
+                                                                    //     //     groupValue: _addLocationController
+                                                                    //     //             .currentSelectValue
+                                                                    //     //             .value ==
+                                                                    //     //         index,
+                                                                    //     //     onChanged:
+                                                                    //     //         (value) {},
+                                                                    //     //   ),
+                                                                    //     // ),
+                                                                    //   ],
+                                                                    // ),
+                                                                    title:
+                                                                        Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                          _addLocationController.userModel?.addresses?[index].title ??
+                                                                              '',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'MuseoSans',
+                                                                            color:
+                                                                                AppConst.black,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            fontStyle:
+                                                                                FontStyle.normal,
+                                                                            fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                                                                                ? 9.sp
+                                                                                : 10.5.sp,
                                                                           ),
-                                                                          itemBuilder:
-                                                                              (ctx) {
-                                                                            return [
-                                                                              _buildPopupMenuItem(
-                                                                                'Edit',
-                                                                                Icons.edit,
-                                                                                () async {
-                                                                                  _addLocationController.latitude.value = _addLocationController.userModel?.addresses?[index].location?.lat ?? 0.0;
-                                                                                  _addLocationController.longitude.value = _addLocationController.userModel?.addresses?[index].location?.lng ?? 0.0;
-                                                                                  _addLocationController.isRecentAddress.value = true;
+                                                                        ),
+                                                                        Text(
+                                                                            "${_addLocationController.userModel?.addresses?[index].house ?? ''},${_addLocationController.userModel?.addresses?[index].apartment ?? ''} ${_addLocationController.userModel?.addresses?[index].address ?? ''}",
+                                                                            maxLines:
+                                                                                2,
+                                                                            overflow: TextOverflow
+                                                                                .ellipsis,
+                                                                            style: TextStyle(
+                                                                                fontSize: (SizerUtil.deviceType == DeviceType.tablet) ? 8.5.sp : 10.sp,
+                                                                                fontFamily: 'MuseoSans',
+                                                                                color: Colors.grey.shade600,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                fontStyle: FontStyle.normal)),
+                                                                        // widget.editOrDelete
+                                                                        //     ? Padding(
+                                                                        //         padding:
+                                                                        //             EdgeInsets.symmetric(vertical: 1.h),
+                                                                        //         child:
+                                                                        //             Row(
+                                                                        //           mainAxisAlignment:
+                                                                        //               MainAxisAlignment.start,
+                                                                        //           children: [
+                                                                        //             InkWell(
+                                                                        //               onTap: (() {
+                                                                        //                 _addLocationController.latitude.value = _addLocationController.userModel?.addresses?[index].location?.lat ?? 0.0;
+                                                                        //                 _addLocationController.longitude.value = _addLocationController.userModel?.addresses?[index].location?.lng ?? 0.0;
 
-                                                                                  await Future.delayed(Duration(milliseconds: 200));
-                                                                                  Get.toNamed(AppRoutes.EditAddressScreen, arguments: {
-                                                                                    'addresses': _addLocationController.userModel?.addresses?[index],
-                                                                                    'isHomeSelected': isHome
-                                                                                  })!
-                                                                                      .whenComplete(() => setState(() {}));
-                                                                                },
+                                                                        //                 Get.toNamed(AppRoutes.NewLocationScreen, arguments: {
+                                                                        //                   "isFalse": true,
+                                                                        //                   // "isEdit": true
+                                                                        //                 });
+
+                                                                        //                 // _addLocationController.isFullAddressBottomSheet.value = true;
+                                                                        //               }),
+                                                                        //               child: Text(
+                                                                        //                 'Edit',
+                                                                        //                 style: TextStyle(fontFamily: 'MuseoSans', color: AppConst.darkGreen, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: SizeUtils.horizontalBlockSize * 3.5),
+                                                                        //               ),
+                                                                        //             ),
+                                                                        //             SizedBox(
+                                                                        //               width: 20.w,
+                                                                        //             ),
+                                                                        //             if ((_addLocationController.userModel?.addresses?.length ?? 0) > 1 &&
+                                                                        //                 _addLocationController.userAddress.value != _addLocationController.userModel?.addresses?[index].address)
+                                                                        //               InkWell(
+                                                                        //                 onTap: (() async {
+                                                                        //                   await _addLocationController.deleteCustomerAddress(_addLocationController.userModel?.addresses?[index].id ?? '');
+
+                                                                        //                   _addLocationController.userModel?.addresses?.remove(_addLocationController.userModel?.addresses?[index]);
+                                                                        //                   UserViewModel.setUser(_addLocationController.userModel!);
+                                                                        //                   setState(() {});
+                                                                        //                 }),
+                                                                        //                 child: Text(
+                                                                        //                   'Delete',
+                                                                        //                   style: TextStyle(fontFamily: 'MuseoSans', color: AppConst.darkGreen, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: SizeUtils.horizontalBlockSize * 3.5),
+                                                                        //                 ),
+                                                                        //               ),
+                                                                        //           ],
+                                                                        //         ),
+                                                                        //       )
+                                                                        //     : SizedBox()
+                                                                      ],
+                                                                    ),
+                                                                    trailing: widget
+                                                                            .editOrDelete
+                                                                        ? PopupMenuButton(
+                                                                            shape:
+                                                                                RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.only(
+                                                                                bottomLeft: Radius.circular(8.0),
+                                                                                bottomRight: Radius.circular(8.0),
+                                                                                topLeft: Radius.circular(8.0),
+                                                                                topRight: Radius.circular(8.0),
                                                                               ),
-                                                                              if ((_addLocationController.userModel?.addresses?.length ?? 0) > 1 && _addLocationController.userAddress.value != _addLocationController.userModel?.addresses?[index].address)
-                                                                                _buildPopupMenuItem('Delete', Icons.delete, () async {
-                                                                                  await _addLocationController.deleteCustomerAddress(_addLocationController.userModel?.addresses?[index].id ?? '');
+                                                                            ),
+                                                                            itemBuilder:
+                                                                                (ctx) {
+                                                                              return [
+                                                                                _buildPopupMenuItem(
+                                                                                  'Edit',
+                                                                                  Icons.edit,
+                                                                                  () async {
+                                                                                    _addLocationController.latitude.value = _addLocationController.userModel?.addresses?[index].location?.lat ?? 0.0;
+                                                                                    _addLocationController.longitude.value = _addLocationController.userModel?.addresses?[index].location?.lng ?? 0.0;
+                                                                                    _addLocationController.isRecentAddress.value = true;
 
-                                                                                  _addLocationController.userModel?.addresses?.remove(_addLocationController.userModel?.addresses?[index]);
-                                                                                  UserViewModel.setUser(_addLocationController.userModel!);
-                                                                                  setState(() {});
-                                                                                }),
-                                                                            ];
-                                                                          },
-                                                                        )
-                                                                      : null),
-                                                              // if (_addLocationController
-                                                              //         .currentSelectValue
-                                                              //         .value ==
-                                                              //     index)
-                                                              //   GestureDetector(
-                                                              //       onTap:
-                                                              //           () async {
-                                                              //         _homeController
-                                                              //             .isLoading
-                                                              //             .value = true;
-                                                              //         Get.back();
+                                                                                    await Future.delayed(Duration(milliseconds: 200));
+                                                                                    Get.toNamed(AppRoutes.EditAddressScreen, arguments: {
+                                                                                      'addresses': _addLocationController.userModel?.addresses?[index],
+                                                                                      'isHomeSelected': isHome
+                                                                                    })!
+                                                                                        .whenComplete(() => setState(() {}));
+                                                                                  },
+                                                                                ),
+                                                                                if ((_addLocationController.userModel?.addresses?.length ?? 0) > 1 && _addLocationController.userAddress.value != _addLocationController.userModel?.addresses?[index].address)
+                                                                                  _buildPopupMenuItem('Delete', Icons.delete, () async {
+                                                                                    await _addLocationController.deleteCustomerAddress(_addLocationController.userModel?.addresses?[index].id ?? '');
 
-                                                              //         _homeController
-                                                              //             .userAddress
-                                                              //             .value = _addLocationController
-                                                              //                 .userModel
-                                                              //                 ?.addresses?[index]
-                                                              //                 .address ??
-                                                              //             '';
-                                                              //         _homeController
-                                                              //             .userAddressTitle
-                                                              //             .value = _addLocationController
-                                                              //                 .userModel
-                                                              //                 ?.addresses?[index]
-                                                              //                 .title ??
-                                                              //             '';
-                                                              //         await UserViewModel.setLocation(
-                                                              //             LatLng(
-                                                              //                 _addLocationController.userModel?.addresses?[index].location?.lat ??
-                                                              //                     0.0,
-                                                              //                 _addLocationController.userModel?.addresses?[index].location?.lng ??
-                                                              //                     0.0),
-                                                              //             _addLocationController
-                                                              //                 .userModel
-                                                              //                 ?.addresses?[index]
-                                                              //                 .id);
-                                                              //         _homeController
-                                                              //             .pageNumber = 1;
-                                                              //         _homeController
-                                                              //                 .isPageAvailable =
-                                                              //             true;
-                                                              //         _homeController
-                                                              //             .isPageLoading
-                                                              //             .value = false;
-                                                              //         _homeController
-                                                              //             .homePageFavoriteShopsList
-                                                              //             .clear();
-                                                              //         await _homeController
-                                                              //             .getHomePageFavoriteShops();
-                                                              //         await _homeController
-                                                              //             .getAllCartsData();
-                                                              //         _homeController
-                                                              //             .getHomePageFavoriteShopsModel
-                                                              //             .refresh();
-                                                              //         _homeController
-                                                              //             .isLoading
-                                                              //             .value = false;
-                                                              //       },
-                                                              //       child:
-                                                              //           BottomWideButton())
-                                                              // else
-                                                              //   SizedBox(),
-                                                            ],
-                                                            // ),
-                                                          ),
-                                                        );
-                                                      },
-                                                      separatorBuilder:
-                                                          (context, index) {
-                                                        return Divider(
-                                                            height: 0);
-                                                      },
+                                                                                    _addLocationController.userModel?.addresses?.remove(_addLocationController.userModel?.addresses?[index]);
+                                                                                    UserViewModel.setUser(_addLocationController.userModel!);
+                                                                                    setState(() {});
+                                                                                  }),
+                                                                              ];
+                                                                            },
+                                                                          )
+                                                                        : null),
+                                                                // if (_addLocationController
+                                                                //         .currentSelectValue
+                                                                //         .value ==
+                                                                //     index)
+                                                                //   GestureDetector(
+                                                                //       onTap:
+                                                                //           () async {
+                                                                //         _homeController
+                                                                //             .isLoading
+                                                                //             .value = true;
+                                                                //         Get.back();
+
+                                                                //         _homeController
+                                                                //             .userAddress
+                                                                //             .value = _addLocationController
+                                                                //                 .userModel
+                                                                //                 ?.addresses?[index]
+                                                                //                 .address ??
+                                                                //             '';
+                                                                //         _homeController
+                                                                //             .userAddressTitle
+                                                                //             .value = _addLocationController
+                                                                //                 .userModel
+                                                                //                 ?.addresses?[index]
+                                                                //                 .title ??
+                                                                //             '';
+                                                                //         await UserViewModel.setLocation(
+                                                                //             LatLng(
+                                                                //                 _addLocationController.userModel?.addresses?[index].location?.lat ??
+                                                                //                     0.0,
+                                                                //                 _addLocationController.userModel?.addresses?[index].location?.lng ??
+                                                                //                     0.0),
+                                                                //             _addLocationController
+                                                                //                 .userModel
+                                                                //                 ?.addresses?[index]
+                                                                //                 .id);
+                                                                //         _homeController
+                                                                //             .pageNumber = 1;
+                                                                //         _homeController
+                                                                //                 .isPageAvailable =
+                                                                //             true;
+                                                                //         _homeController
+                                                                //             .isPageLoading
+                                                                //             .value = false;
+                                                                //         _homeController
+                                                                //             .homePageFavoriteShopsList
+                                                                //             .clear();
+                                                                //         await _homeController
+                                                                //             .getHomePageFavoriteShops();
+                                                                //         await _homeController
+                                                                //             .getAllCartsData();
+                                                                //         _homeController
+                                                                //             .getHomePageFavoriteShopsModel
+                                                                //             .refresh();
+                                                                //         _homeController
+                                                                //             .isLoading
+                                                                //             .value = false;
+                                                                //       },
+                                                                //       child:
+                                                                //           BottomWideButton())
+                                                                // else
+                                                                //   SizedBox(),
+                                                              ],
+                                                              // ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        separatorBuilder:
+                                                            (context, index) {
+                                                          return Divider(
+                                                              height: 0);
+                                                        },
+                                                      ),
                                                     )
                                                   : Center(
                                                       child: Text(
@@ -1368,18 +1437,35 @@ class _AddressModelState extends State<AddressModel> {
                                             ? Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 1.h),
+                                                child: Container(
+                                                  height: 1.h,
+                                                  color: AppConst.veryLightGrey,
+                                                ),
+                                              )
+                                            : SizedBox(),
+                                    (widget.page == "review" ||
+                                            widget.page == "explore" ||
+                                            widget.page == "scan" ||
+                                            widget.page == "redeem" ||
+                                            widget.editOrDelete == true)
+                                        ? SizedBox()
+                                        : widget.isRecentAddress
+                                            ? Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 1.h,
+                                                    horizontal: 3.w),
                                                 child: Text(
                                                   "Recent Searches",
                                                   style: TextStyle(
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        4.2,
-                                                    fontFamily: 'MuseoSans',
                                                     color: AppConst.black,
-                                                    fontWeight:
-                                                        FontWeight.w700,
-                                                    fontStyle:
-                                                        FontStyle.normal,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: (SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 10.5.sp
+                                                        : 12.5.sp,
+                                                    fontFamily: 'MuseoSans',
                                                   ),
                                                 ),
                                               )
@@ -1392,144 +1478,157 @@ class _AddressModelState extends State<AddressModel> {
                                         ? SizedBox()
                                         : widget.isRecentAddress
                                             ? Obx(
-                                                () => ListView.separated(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    // int idx = _addLocationController
-                                                    //     .recentAddressDetails[index]
-                                                    //     .description!
-                                                    //     .indexOf(" ");
-                                                    // List parts = [
-                                                    //   _addLocationController
-                                                    //       .recentAddressDetails[index]
-                                                    //       .description
-                                                    //       ?.substring(0, idx)
-                                                    //       .trim(),
-                                                    //   _addLocationController
-                                                    //       .recentAddressDetails[index]
-                                                    //       .description
-                                                    //       ?.substring(idx + 1)
-                                                    //       .trim()
-                                                    // ];
-                                                    return InkWell(
-                                                      highlightColor: AppConst
-                                                          .highLightColor,
-                                                      onTap: () async {
-                                                        // _addLocationController.getDetails(_addLocationController.recentAddressDetails[index].placeId ?? '');
-                                                        await _addLocationController
-                                                            .getLatLngFromRecentAddress(
-                                                                _addLocationController
-                                                                        .recentAddressDetails[
-                                                                            index]
-                                                                        .placeId ??
-                                                                    '');
-
-                                                        widget.isHomeScreen
-                                                            ? Get.toNamed(
-                                                                    AppRoutes
-                                                                        .NewLocationScreen)
-                                                                ?.whenComplete(
-                                                                    () => Get.back(
-                                                                        result:
-                                                                            true))
-                                                            : Get.back();
-
-                                                        _addLocationController
-                                                            .isFullAddressBottomSheet
-                                                            .value = false;
-                                                      },
-                                                      child: ListTile(
-                                                        contentPadding:
-                                                            EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        1.h),
-                                                        leading: Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  bottom: 1.h,
-                                                                  left: 3.w),
-                                                          child: Icon(
-                                                            Icons
-                                                                .access_time_rounded,
-                                                            size: 3.h,
-                                                            color:
-                                                                AppConst.grey,
-                                                          ),
-                                                        ),
-                                                        title: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              // parts[0],
-                                                              _addLocationController.SortByCharactor(
+                                                () => Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 2.w),
+                                                  child: ListView.separated(
+                                                    padding: EdgeInsets.zero,
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      // int idx = _addLocationController
+                                                      //     .recentAddressDetails[index]
+                                                      //     .description!
+                                                      //     .indexOf(" ");
+                                                      // List parts = [
+                                                      //   _addLocationController
+                                                      //       .recentAddressDetails[index]
+                                                      //       .description
+                                                      //       ?.substring(0, idx)
+                                                      //       .trim(),
+                                                      //   _addLocationController
+                                                      //       .recentAddressDetails[index]
+                                                      //       .description
+                                                      //       ?.substring(idx + 1)
+                                                      //       .trim()
+                                                      // ];
+                                                      return InkWell(
+                                                        highlightColor: AppConst
+                                                            .highLightColor,
+                                                        onTap: () async {
+                                                          // _addLocationController.getDetails(_addLocationController.recentAddressDetails[index].placeId ?? '');
+                                                          await _addLocationController
+                                                              .getLatLngFromRecentAddress(
                                                                   _addLocationController
-                                                                          .recentAddressDetails[index]
-                                                                          .description ??
-                                                                      "",
-                                                                  " "),
-                                                              maxLines: 1,
+                                                                          .recentAddressDetails[
+                                                                              index]
+                                                                          .placeId ??
+                                                                      '');
 
-                                                              style: TextStyle(
+                                                          widget.isHomeScreen
+                                                              ? Get.toNamed(
+                                                                      AppRoutes
+                                                                          .NewLocationScreen)
+                                                                  ?.whenComplete(
+                                                                      () => Get.back(
+                                                                          result:
+                                                                              true))
+                                                              : Get.back();
+
+                                                          _addLocationController
+                                                              .isFullAddressBottomSheet
+                                                              .value = false;
+                                                        },
+                                                        child: ListTile(
+                                                          contentPadding:
+                                                              EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          1.h),
+                                                          leading: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 3.w,
+                                                                    bottom:
+                                                                        2.h),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .access_time_filled_outlined,
+                                                              size: 3.3.h,
+                                                              color: Colors.grey
+                                                                  .shade400,
+                                                            ),
+                                                          ),
+                                                          title: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                // parts[0],
+                                                                _addLocationController.SortByCharactor(
+                                                                    _addLocationController
+                                                                            .recentAddressDetails[index]
+                                                                            .description ??
+                                                                        "",
+                                                                    " "),
+                                                                maxLines: 1,
+
+                                                                style:
+                                                                    TextStyle(
                                                                   fontFamily:
                                                                       'MuseoSans',
                                                                   color: AppConst
                                                                       .black,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w500,
+                                                                          .w600,
                                                                   fontStyle:
                                                                       FontStyle
                                                                           .normal,
-                                                                  fontSize:
-                                                                      SizeUtils.horizontalBlockSize *
-                                                                          4),
-                                                            ),
-                                                            Text(
-                                                              _addLocationController
-                                                                      .recentAddressDetails[
-                                                                          index]
-                                                                      .description ??
-                                                                  "",
-                                                              maxLines: 2,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'MuseoSans',
-                                                                  color:
-                                                                      AppConst
-                                                                          .grey,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                  fontSize:
-                                                                      SizeUtils.horizontalBlockSize *
-                                                                          3.5),
-                                                            ),
-                                                          ],
+                                                                  fontSize: (SizerUtil
+                                                                              .deviceType ==
+                                                                          DeviceType
+                                                                              .tablet)
+                                                                      ? 9.sp
+                                                                      : 10.5.sp,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                _addLocationController
+                                                                        .recentAddressDetails[
+                                                                            index]
+                                                                        .description ??
+                                                                    "",
+                                                                maxLines: 2,
+                                                                style: TextStyle(
+                                                                    fontSize: (SizerUtil
+                                                                                .deviceType ==
+                                                                            DeviceType
+                                                                                .tablet)
+                                                                        ? 8.5.sp
+                                                                        : 10.sp,
+                                                                    fontFamily:
+                                                                        'MuseoSans',
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade600,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  separatorBuilder:
-                                                      (context, index) {
-                                                    return SizedBox();
-                                                  },
-                                                  itemCount:
-                                                      _addLocationController
-                                                          .recentAddressDetails
-                                                          .length,
+                                                      );
+                                                    },
+                                                    separatorBuilder:
+                                                        (context, index) {
+                                                      return SizedBox();
+                                                    },
+                                                    itemCount:
+                                                        _addLocationController
+                                                            .recentAddressDetails
+                                                            .length,
+                                                  ),
                                                 ),
                                               )
                                             : SizedBox(),

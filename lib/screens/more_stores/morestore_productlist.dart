@@ -1554,7 +1554,7 @@ class MoewStoreViewProductsList extends StatelessWidget {
                             crossAxisCount: 2,
                             crossAxisSpacing: 2.w,
                             mainAxisSpacing: 2.h,
-                            childAspectRatio: 2 / 3,
+                            childAspectRatio: 0.7,
                           ),
                           children: List.generate(
                               storesWithProductsModel.products?.length ?? 0,
@@ -1562,15 +1562,34 @@ class MoewStoreViewProductsList extends StatelessWidget {
                             StoreModelProducts product =
                                 storesWithProductsModel.products![index];
                             return Container(
-                              width: 45.w,
-                              // height: 40.h,
+                              padding: EdgeInsets.symmetric(horizontal: 2.w),
+                              margin: EdgeInsets.only(
+                                  bottom: 1.h, left: 1.w, right: 2.w),
+                              width: 42.w,
+                              // height: 25.h,
+
                               // color: AppConst.yellow,
+                              decoration: BoxDecoration(
+                                color: AppConst.white,
+                                // border: Border.all(color: AppConst.grey, width: 0.5),
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade300,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 1),
+                                  ),
+                                ],
+                              ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -1578,39 +1597,39 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                           child: DisplayProductInGridView(
                                         logo: product.logo,
                                       )),
-                                      SizedBox(
-                                        width: 2.w,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: AppConst.white,
-                                          // border: Border.all(color: AppConst.grey, width: 0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppConst.grey,
-                                              blurRadius: 1,
-                                              // offset: Offset(1, 1),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 2.w, vertical: 0.5.h),
-                                          child: Center(
-                                            child: Text(
-                                                "\u20b9${product.cashback.toString()} OFF",
-                                                style: TextStyle(
-                                                  fontFamily: 'MuseoSans',
-                                                  color: AppConst.green,
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                          ),
-                                        ),
-                                      ),
+                                      // SizedBox(
+                                      //   width: 2.w,
+                                      // ),
+                                      // Container(
+                                      //   decoration: BoxDecoration(
+                                      //     color: AppConst.white,
+                                      //     // border: Border.all(color: AppConst.grey, width: 0.5),
+                                      //     borderRadius:
+                                      //         BorderRadius.circular(16),
+                                      //     boxShadow: [
+                                      //       BoxShadow(
+                                      //         color: AppConst.grey,
+                                      //         blurRadius: 1,
+                                      //         // offset: Offset(1, 1),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      //   child: Padding(
+                                      //     padding: EdgeInsets.symmetric(
+                                      //         horizontal: 2.w, vertical: 0.5.h),
+                                      //     child: Center(
+                                      // child: Text(
+                                      //     "\u20b9${product.cashback.toString()} OFF",
+                                      //     style: TextStyle(
+                                      //       fontFamily: 'MuseoSans',
+                                      //       color: AppConst.green,
+                                      //       fontSize: 10.sp,
+                                      //       fontWeight: FontWeight.w400,
+                                      //       fontStyle: FontStyle.normal,
+                                      //     )),
+                                      //     ),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                   SizedBox(
@@ -1629,24 +1648,47 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                               style: TextStyle(
                                                 fontFamily: 'MuseoSans',
                                                 color: AppConst.black,
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w500,
+                                                fontSize:
+                                                    (SizerUtil.deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 8.5.sp
+                                                        : 9.5.sp,
+                                                fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
                                               )),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.start,
                                             children: [
                                               Text("${product.unit ?? ""}",
                                                   textAlign: TextAlign.start,
                                                   style: TextStyle(
                                                     fontFamily: 'MuseoSans',
-                                                    color: AppConst.darkGrey,
-                                                    fontSize: 10.sp,
-                                                    fontWeight: FontWeight.w400,
+                                                    color: AppConst.greenText,
+                                                    fontSize: (SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 8.sp
+                                                        : 9.sp,
+                                                    fontWeight: FontWeight.w500,
                                                     fontStyle: FontStyle.normal,
                                                   )),
-                                              SizedBox(),
+                                              SizedBox(
+                                                width: 2.w,
+                                              ),
+                                              Text(
+                                                  "\u20b9${product.cashback.toString()} OFF",
+                                                  style: TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.greenText,
+                                                    fontSize: (SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 8.5.sp
+                                                        : 9.5.sp,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                  )),
                                             ],
                                           ),
                                           Row(
@@ -1658,10 +1700,12 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                                   style: TextStyle(
                                                     fontFamily: 'MuseoSans',
                                                     color: AppConst.black,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.5,
-                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: (SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 9.sp
+                                                        : 10.5.sp,
+                                                    fontWeight: FontWeight.w600,
                                                     fontStyle: FontStyle.normal,
                                                   )),
                                               // SizedBox(
@@ -1808,16 +1852,16 @@ class MoewStoreViewProductsList extends StatelessWidget {
                                                             : DisplayAddPlus(),
                                                       ),
                                               ),
-                                              SizedBox(
-                                                width: 3.w,
-                                              )
+                                              // SizedBox(
+                                              //   width: 3.w,
+                                              // )
                                             ],
                                           )
                                         ]),
                                   ),
-                                  SizedBox(
-                                    height: 1.h,
-                                  ),
+                                  // SizedBox(
+                                  //   height: 1.h,
+                                  // ),
                                   // Container(
                                   //   // color: AppConst.red,
                                   //   // height: 4.5.h,
@@ -2504,9 +2548,10 @@ class DisplayAddPlus extends StatelessWidget {
           " Add +",
           style: TextStyle(
             fontFamily: 'MuseoSans',
-            color: AppConst.green,
-            fontSize: SizeUtils.horizontalBlockSize * 3.8,
-            fontWeight: FontWeight.w500,
+            color: AppConst.greenText,
+            fontSize:
+                (SizerUtil.deviceType == DeviceType.tablet) ? 9.5.sp : 10.5.sp,
+            fontWeight: FontWeight.w600,
             fontStyle: FontStyle.normal,
           ),
         ),

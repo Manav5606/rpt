@@ -1,4 +1,8 @@
+import 'package:customer_app/constants/string_constants.dart';
 import 'package:customer_app/data/models/category_model.dart';
+import 'package:customer_app/widgets/instorelist.dart';
+import 'package:customer_app/widgets/search_text_field/search_field_button.dart';
+import 'package:customer_app/widgets/storesearchfield.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_app/app/constants/responsive.dart';
@@ -8,6 +12,7 @@ import 'package:customer_app/routes/app_list.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
 import 'package:customer_app/widgets/cartWidget.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -24,13 +29,61 @@ class StoreListScreen extends StatefulWidget {
 
 class _StoreListScreenState extends State<StoreListScreen>
     with TickerProviderStateMixin {
+  late ScrollController _scrollController;
+  late ScrollController _productScrollController;
+  late AnimationController _hideFabAnimationController;
   final HomeController _homeController = Get.find();
   final AddCartController _addCartController = Get.find();
+  bool last = false;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _productScrollController = ScrollController();
+    _scrollController.addListener(() {
+      switch (_scrollController.position.userScrollDirection) {
+        case ScrollDirection.forward:
+          _hideFabAnimationController.forward();
+          break;
+        case ScrollDirection.reverse:
+          _hideFabAnimationController.reverse();
+          break;
+        case ScrollDirection.idle:
+          break;
+      }
+    });
+
+    _productScrollController.addListener(_scrollListener);
+  }
+
+  _scrollListener() {
+    setState(() {
+      if (_productScrollController.position.pixels > 200) {
+        setState(() {
+          last = true;
+        });
+      } else {
+        setState(() {
+          last = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    // _hideFabAnimationController.dispose();
+    _productScrollController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     var category = widget.category;
     return Scaffold(
+      backgroundColor: AppConst.white,
       body: NestedScrollView(
         physics: BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -38,43 +91,63 @@ class _StoreListScreenState extends State<StoreListScreen>
           //     _homeController.getHomePageFavoriteShopsModel.value!.keywords!;
           return <Widget>[
             SliverAppBar(
-              expandedHeight: 12.h,
+              expandedHeight: 11.h,
               systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: Color(0xffaeebff),
+                  statusBarColor: AppConst.white,
                   statusBarIconBrightness: Brightness.dark),
               centerTitle: true,
               pinned: true,
               stretch: true,
               floating: true,
+              elevation: 0.5,
+              scrolledUnderElevation: 0.5,
               // automaticallyImplyLeading: false,
-              backgroundColor: Color(0xffaeebff),
+              backgroundColor: AppConst.white, //Color(0xffaeebff),
               title: (innerBoxIsScrolled)
                   ? Row(
                       children: [
                         Container(
-                          width: 75.w,
+                          width: 65.w,
                           child: Text(
                             "${category?.title.toString() ?? ""}",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TextStyle(
-                              color: AppConst.black,
-                              fontFamily: 'MuseoSans',
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                            ),
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'MuseoSans',
+                                fontStyle: FontStyle.normal,
+                                fontSize:
+                                    (SizerUtil.deviceType == DeviceType.tablet)
+                                        ? 11.sp
+                                        : 12.5.sp,
+                                color: AppConst.black),
                           ),
                         ),
+                        Icon(
+                          Icons.search,
+                          size: 3.h,
+                          color: AppConst.grey,
+                        )
                       ],
                     )
                   : Row(
                       children: [
-                        Text(
-                          "",
-                          style: TextStyle(
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 4),
+                        Container(
+                          width: 70.w,
+                          child: Text(
+                            "${category?.title.toString() ?? ""}",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'MuseoSans',
+                                fontStyle: FontStyle.normal,
+                                fontSize:
+                                    (SizerUtil.deviceType == DeviceType.tablet)
+                                        ? 11.sp
+                                        : 12.5.sp,
+                                color: AppConst.black),
+                          ),
                         ),
                       ],
                     ),
@@ -83,27 +156,36 @@ class _StoreListScreenState extends State<StoreListScreen>
                 centerTitle: true,
                 collapseMode: CollapseMode.parallax,
                 background: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 4.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.h, left: 5.w),
-                      child: Text(
-                        // "Fresh Store near you",
+                    // SizedBox(
+                    //   height: 2.h,
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 5.w),
+                    //   child: Text(
+                    //     // "Fresh Store near you",
 
-                        "${category?.title.toString() ?? ""}",
-                        // "Pickup",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'MuseoSans',
-                            fontStyle: FontStyle.normal,
-                            fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                            color: AppConst.black),
-                      ),
-                    ),
+                    //     "${category?.title.toString() ?? ""}",
+                    //     overflow: TextOverflow.ellipsis,
+                    //     maxLines: 1,
+                    //     style: TextStyle(
+                    //         fontWeight: FontWeight.w700,
+                    //         fontFamily: 'MuseoSans',
+                    //         fontStyle: FontStyle.normal,
+                    //         fontSize:
+                    //             (SizerUtil.deviceType == DeviceType.tablet)
+                    //                 ? 11.sp
+                    //                 : 12.5.sp,
+                    //         color: AppConst.black),
+                    //   ),
+                    // ),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 10.w, right: 10.w, bottom: 1.h),
+                      child: StoreSearchField(),
+                    )
                   ],
                 ),
               ),
@@ -111,12 +193,54 @@ class _StoreListScreenState extends State<StoreListScreen>
           ];
         },
         body: SingleChildScrollView(
-          // controller: _homeController.remoteConfigScrollController,
+          // controller: _scrollController,
+
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              StoreWithProductsList(),
-               SizedBox(height: 40.h,),
+              Obx(
+                () => (_homeController.isRemoteConfigPageLoading1.value)
+                    ? Column(
+                        children: [
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          InstoreListViewChildShimmer(),
+                          ProductShimmerEffect(),
+                          InstoreListViewChildShimmer(),
+                          ProductShimmerEffect(),
+                          InstoreListViewChildShimmer(),
+                          ProductShimmerEffect(),
+                        ],
+                      )
+                    : (_homeController.storeDataList.isEmpty)
+                        ? Center(
+                            child: Text(StringContants.noData),
+                          )
+                        : Container(
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              controller: _scrollController,
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: _homeController.storeDataList.length,
+                              //data.length,
+                              itemBuilder: (context, index) {
+                                return ListViewStoreWithProduct(
+                                  controller: _productScrollController,
+                                  storesWithProductsModel:
+                                      _homeController.storeDataList[index],
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox();
+                              },
+                            ),
+                          ),
+              ),
+              SizedBox(
+                height: 60.h,
+              ),
             ],
           ),
         ),

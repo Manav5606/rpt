@@ -23,52 +23,53 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../screens/more_stores/morestore_controller.dart';
 
-class StoreWithProductsList extends StatelessWidget {
-  final ScrollController? controller;
+// class StoreWithProductsList extends StatelessWidget {
+//   final ScrollController? controller;
 
-  StoreWithProductsList({Key? key, this.controller}) : super(key: key);
-  final HomeController _homeController = Get.find();
+//   StoreWithProductsList({Key? key, this.controller}) : super(key: key);
+//   final HomeController _homeController = Get.find();
 
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => (_homeController.isRemoteConfigPageLoading1.value)
-          ? Column(
-              children: [
-                SizedBox(
-                  height: 2.h,
-                ),
-                InstoreListViewChildShimmer(),
-                ProductShimmerEffect(),
-                InstoreListViewChildShimmer(),
-                ProductShimmerEffect(),
-                InstoreListViewChildShimmer(),
-                ProductShimmerEffect(),
-              ],
-            )
-          : (_homeController.storeDataList.isEmpty)
-              ? Center(
-                  child: Text(StringContants.noData),
-                )
-              : ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: _homeController.storeDataList.length,
-                  //data.length,
-                  itemBuilder: (context, index) {
-                    return ListViewChild(
-                      storesWithProductsModel:
-                          _homeController.storeDataList[index],
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox();
-                  },
-                ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Obx(
+//       () => (_homeController.isRemoteConfigPageLoading1.value)
+//           ? Column(
+//               children: [
+//                 SizedBox(
+//                   height: 2.h,
+//                 ),
+//                 InstoreListViewChildShimmer(),
+//                 ProductShimmerEffect(),
+//                 InstoreListViewChildShimmer(),
+//                 ProductShimmerEffect(),
+//                 InstoreListViewChildShimmer(),
+//                 ProductShimmerEffect(),
+//               ],
+//             )
+//           : (_homeController.storeDataList.isEmpty)
+//               ? Center(
+//                   child: Text(StringContants.noData),
+//                 )
+//               : ListView.separated(
+//                   shrinkWrap: true,
+//                   controller: controller,
+//                   physics: NeverScrollableScrollPhysics(),
+//                   scrollDirection: Axis.vertical,
+//                   itemCount: _homeController.storeDataList.length,
+//                   //data.length,
+//                   itemBuilder: (context, index) {
+//                     return ListViewStoreWithProduct(
+//                       storesWithProductsModel:
+//                           _homeController.storeDataList[index],
+//                     );
+//                   },
+//                   separatorBuilder: (context, index) {
+//                     return SizedBox();
+//                   },
+//                 ),
+//     );
+//   }
+// }
 
 class ProductShimmerEffect extends StatelessWidget {
   const ProductShimmerEffect({
@@ -171,10 +172,13 @@ class ProductShimmerEffect extends StatelessWidget {
   }
 }
 
-class ListViewChild extends StatelessWidget {
+class ListViewStoreWithProduct extends StatelessWidget {
   final Data storesWithProductsModel;
-
-  ListViewChild({Key? key, required this.storesWithProductsModel})
+  ScrollController controller;
+  ListViewStoreWithProduct(
+      {Key? key,
+      required this.controller,
+      required this.storesWithProductsModel})
       : super(key: key);
   final MoreStoreController _moreStoreController = Get.find();
   final ExploreController _exploreController = Get.find();
@@ -184,7 +188,6 @@ class ListViewChild extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        
         InkWell(
           highlightColor: AppConst.highLightColor,
           onTap: () async {
@@ -202,103 +205,110 @@ class ListViewChild extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 DispalyStoreLogo(
-                  logo: storesWithProductsModel.logo,
-                ),
+                    logo: storesWithProductsModel.logo,
+                    bottomPadding: 1.5,
+                    height: 6.5,
+                    BusinessType: storesWithProductsModel.businesstype),
                 SizedBox(
                   width: 2.w,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 72.w,
-                          child: Text(storesWithProductsModel.name ?? '',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'MuseoSans',
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 3.8,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              )),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: AppConst.black,
-                          size: SizeUtils.horizontalBlockSize * 3.5,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 0.5.h,
-                    ),
-                    Row(
-                      children: [
-                        (storesWithProductsModel.calculatedDistance != null)
-                            ? DisplayDistance(
-                                distance:
-                                    storesWithProductsModel.calculatedDistance,
-                              )
-                            : SizedBox(),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 1.w, right: 2.w, top: 0.5.h),
-                          child: Icon(
-                            Icons.circle,
-                            color: AppConst.grey,
-                            size: 0.8.h,
-                          ),
-                        ),
-                        if (storesWithProductsModel.storeType?.isNotEmpty ??
-                            false)
-                          if ((storesWithProductsModel.storeType ?? '') ==
-                              'online')
-                            DsplayPickupDelivery()
-                          else
-                            Text("Only Pickup",
+                Padding(
+                  padding: EdgeInsets.only(bottom: 1.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 72.w,
+                            child: Text(storesWithProductsModel.name ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: 'MuseoSans',
-                                  color: AppConst.grey,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                                  fontWeight: FontWeight.w500,
+                                  color: AppConst.black,
+                                  fontSize: SizeUtils.horizontalBlockSize * 3.8,
+                                  fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
                                 )),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 0.5.h,
-                    ),
-                    Row(
-                      children: [
-                        ((storesWithProductsModel.premium ?? false) == true)
-                            ? DisplayPreminumStore()
-                            : (storesWithProductsModel.businesstype ==
-                                    Constants.fresh)
-                                ? DisplayFreshStore()
-                                : SizedBox(),
-                        (storesWithProductsModel.businesstype ==
-                                Constants.fresh)
-                            ? SizedBox(
-                                width: 3.w,
-                              )
-                            : SizedBox(),
-                        DisplayCashback(
-                          cashback: int.parse(
-                              "${storesWithProductsModel.defaultCashback}"),
-                          iscashbackPercentage: true,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    )
-                  ],
+                          ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: AppConst.black,
+                            size: 2.5.h,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 0.5.h,
+                      ),
+                      Row(
+                        children: [
+                          (storesWithProductsModel.calculatedDistance != null)
+                              ? DisplayDistance(
+                                  distance: storesWithProductsModel
+                                      .calculatedDistance,
+                                )
+                              : SizedBox(),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 1.w, right: 2.w, top: 0.5.h),
+                            child: Icon(
+                              Icons.circle,
+                              color: AppConst.grey,
+                              size: 0.8.h,
+                            ),
+                          ),
+                          if (storesWithProductsModel.storeType?.isNotEmpty ??
+                              false)
+                            if ((storesWithProductsModel.storeType ?? '') ==
+                                'online')
+                              DsplayPickupDelivery()
+                            else
+                              Text("Only Pickup",
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.grey,
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.7,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 0.5.h,
+                      ),
+                      // Row(
+                      //   children: [
+                      //     ((storesWithProductsModel.premium ?? false) == true)
+                      //         ? DisplayPreminumStore()
+                      //         : (storesWithProductsModel.businesstype ==
+                      //                 Constants.fresh)
+                      //             ? DisplayFreshStore()
+                      //             : SizedBox(),
+                      //     (storesWithProductsModel.businesstype ==
+                      //             Constants.fresh)
+                      //         ? SizedBox(
+                      //             width: 3.w,
+                      //           )
+                      //         : SizedBox(),
+                      //     DisplayCashback(
+                      //       cashback: int.parse(
+                      //           "${storesWithProductsModel.defaultCashback}"),
+                      //       iscashbackPercentage: true,
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: 2.h,
+                      // )
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -365,167 +375,175 @@ class ListViewChild extends StatelessWidget {
             //       style: AppStyles.STORE_NAME_STYLE,
             //     ),
             //   )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 1.h, left: 3.w, right: 3.w),
-                      child: Container(
-                          // height: 30.h,
-                          width: double.infinity,
-                          child: GridView(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              // controller: gridViewScroll,
-                              scrollDirection: Axis.vertical,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 2.w,
-                                      mainAxisSpacing: 1.h),
-                              children: List.generate(
-                                  storesWithProductsModel.products?.length ?? 0,
-                                  (index) {
-                                Products product =
-                                    storesWithProductsModel.products![index];
-                                return Container(
-                                  width: 45.w,
-                                  height: 25.h,
+            : Padding(
+                padding: EdgeInsets.only(top: 1.h, left: 3.w, right: 3.w),
+                child: Container(
+                  height: 30.h,
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ListView.builder(
+                          controller: controller,
+                          itemCount:
+                              storesWithProductsModel.products?.length ?? 0,
+                          physics: PageScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemExtent: SizeUtils.horizontalBlockSize * 42,
+                          itemBuilder: (context, index) {
+                            Products product =
+                                storesWithProductsModel.products![index];
 
-                                  // color: AppConst.yellow,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                            return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 2.w),
+                              margin: EdgeInsets.only(
+                                  bottom: 1.h, left: 1.w, right: 2.w),
+                              width: 42.w,
+                              // height: 25.h,
+
+                              // color: AppConst.yellow,
+                              decoration: BoxDecoration(
+                                color: AppConst.white,
+                                // border: Border.all(color: AppConst.grey, width: 0.5),
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade300,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 1),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      DisplayProductInGridView(
-                                          logo: product.logo),
-                                      SizedBox(
-                                        height: 4.5.h,
-                                        child: Text(product.name.toString(),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              color: AppConst.black,
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  3.7,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle: FontStyle.normal,
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        height: 0.5.h,
-                                      ),
-                                      Text(
-                                          "Cashback \u20b9${product.cashback.toString()}",
+                                      Center(
+                                          child: DisplayProductInGridView(
+                                        logo: product.logo,
+                                      )),
+                                      // SizedBox(
+                                      //   width: 2.w,
+                                      // ),
+                                      // Container(
+                                      // decoration: BoxDecoration(
+                                      //   color: AppConst.white,
+                                      //   // border: Border.all(color: AppConst.grey, width: 0.5),
+                                      //   borderRadius:
+                                      //       BorderRadius.circular(16),
+                                      //   boxShadow: [
+                                      //     BoxShadow(
+                                      //       color: AppConst.grey,
+                                      //       blurRadius: 1,
+                                      //       // offset: Offset(1, 1),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                      //   child: Padding(
+                                      //     padding: EdgeInsets.symmetric(
+                                      //         horizontal: 2.w,
+                                      //         vertical: 0.5.h),
+                                      //     child: Center(
+                                      // child: Text(
+                                      //     "\u20b9${product.cashback.toString()} OFF",
+                                      //     style: TextStyle(
+                                      //       fontFamily: 'MuseoSans',
+                                      //       color: AppConst.green,
+                                      //       fontSize: 10.sp,
+                                      //       fontWeight: FontWeight.w400,
+                                      //       fontStyle: FontStyle.normal,
+                                      //     )),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Flexible(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(product.name.toString(),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontFamily: 'MuseoSans',
                                             color: AppConst.black,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize *
-                                                    3.5,
+                                            fontSize: (SizerUtil.deviceType ==
+                                                    DeviceType.tablet)
+                                                ? 8.5.sp
+                                                : 9.5.sp,
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
                                           )),
-                                      // SizedBox(
-                                      //   height: 0.5.h,
-                                      // ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text("${product.unit ?? ""}",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                fontFamily: 'MuseoSans',
+                                                color: AppConst.greenText,
+                                                fontSize:
+                                                    (SizerUtil.deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 8.sp
+                                                        : 9.sp,
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle: FontStyle.normal,
+                                              )),
+                                          SizedBox(
+                                            width: 2.w,
+                                          ),
+                                          Text(
+                                              "\u20b9${product.cashback.toString()} OFF",
+                                              style: TextStyle(
+                                                fontFamily: 'MuseoSans',
+                                                color: AppConst.greenText,
+                                                fontSize:
+                                                    (SizerUtil.deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 8.5.sp
+                                                        : 9.5.sp,
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                              )),
+                                        ],
+                                      ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                              "\u20b9${product.selling_price ?? ""}",
+                                              "\u{20b9}${product.selling_price ?? ""}",
                                               style: TextStyle(
                                                 fontFamily: 'MuseoSans',
                                                 color: AppConst.black,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    3.5,
-                                                fontWeight: FontWeight.w500,
+                                                fontSize:
+                                                    (SizerUtil.deviceType ==
+                                                            DeviceType.tablet)
+                                                        ? 9.sp
+                                                        : 10.5.sp,
+                                                fontWeight: FontWeight.w600,
                                                 fontStyle: FontStyle.normal,
                                               )),
-                                          SizedBox(
-                                            width: 14.w,
-                                            child: Text(
-                                                "/ ${product.unit ?? ""}",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontFamily: 'MuseoSans',
-                                                  color: AppConst.black,
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      3.3,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                          ),
-                                          // RichText(
-                                          //     text: TextSpan(children: [
-                                          //   // TextSpan(
-                                          //   //     text:
-                                          //   //         "\u20b9${_addCartController.reviewCart.value?.data?.inventories?[
-                                          //   //             index].mrp ?? ""}",
-                                          //   //     style: TextStyle(
-                                          //   //         fontFamily:
-                                          //   //             'MuseoSans',
-                                          //   //         color: AppConst
-                                          //   //             .grey,
-                                          //   //         fontSize:
-                                          //   //             SizeUtils.horizontalBlockSize *
-                                          //   //                 3.3,
-                                          //   //         fontWeight:
-                                          //   //             FontWeight
-                                          //   //                 .w500,
-                                          //   //         fontStyle:
-                                          //   //             FontStyle
-                                          //   //                 .normal,
-                                          //   //         decoration:
-                                          //   //             TextDecoration
-                                          //   //                 .lineThrough)),
-                                          //   TextSpan(
-                                          //       text:
-                                          //           " \u20b9${product.mrp ?? ""}",
-                                          //       style: TextStyle(
-                                          //         fontFamily: 'MuseoSans',
-                                          //         color: AppConst.black,
-                                          //         fontSize: SizeUtils
-                                          //                 .horizontalBlockSize *
-                                          //             3.5,
-                                          //         fontWeight: FontWeight.w500,
-                                          //         fontStyle: FontStyle.normal,
-                                          //       )),
-                                          //   TextSpan(
-                                          //       text: "/ ${product.unit ?? ""}",
-                                          //       style: TextStyle(
-                                          //         fontFamily: 'MuseoSans',
-                                          //         overflow:
-                                          //             TextOverflow.ellipsis,
-                                          //         color: AppConst.black,
-                                          //         fontSize: SizeUtils
-                                          //                 .horizontalBlockSize *
-                                          //             3.3,
-                                          //         fontWeight: FontWeight.w500,
-                                          //         fontStyle: FontStyle.normal,
-                                          //       ))
-                                          // ])),
-                                          // Text("₹ 125 / 3Kg",
-                                          //     style: TextStyle(
-                                          //       fontFamily: 'MuseoSans',
-                                          //       color: AppConst.black,
-                                          //       fontSize: SizeUtils
-                                          //               .horizontalBlockSize *
-                                          //           3.3,
-                                          //       fontWeight: FontWeight.w500,
-                                          //       fontStyle: FontStyle.normal,
-                                          //     )),
                                           Spacer(),
-                                          // SizedBox(
-                                          //   width: 3.w,
-                                          // ),
                                           Obx(
                                             () => product.quntity!.value > 0 &&
                                                     product.isQunitityAdd
@@ -604,28 +622,247 @@ class ListViewChild extends StatelessWidget {
                                                         //     :
                                                         DisplayAddPlus()),
                                           ),
-
-                                          SizedBox(
-                                            width: 3.w,
-                                          )
                                         ],
                                       )
                                     ],
-                                  ),
-                                );
-                              }))),
+                                  )),
+                                  // SizedBox(
+                                  //   height: 1.h,
+                                  // )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 3.w,
-                  // ),
-                ],
+
+                  // GridView(
+                  //     physics: NeverScrollableScrollPhysics(),
+                  //     shrinkWrap: true,
+                  //     // controller: gridViewScroll,
+                  //     scrollDirection: Axis.vertical,
+                  //     gridDelegate:
+                  //         SliverGridDelegateWithFixedCrossAxisCount(
+                  //       crossAxisCount: 2,
+                  //       crossAxisSpacing: 2.w,
+                  //       mainAxisSpacing: 1.h,
+                  //       childAspectRatio: 2 / 3,
+                  //     ),
+                  //     children: List.generate(
+                  //         storesWithProductsModel.products?.length ?? 0,
+                  //         (index) {
+                  // Products product =
+                  //     storesWithProductsModel.products![index];
+                  //       return Container(
+                  //         width: 45.w,
+                  //         // height: 25.h,
+
+                  //         // color: AppConst.yellow,
+                  //         child: Column(
+                  //           mainAxisSize: MainAxisSize.min,
+                  //           crossAxisAlignment:
+                  //               CrossAxisAlignment.start,
+                  //           children: [
+                  //             Row(
+                  //               mainAxisAlignment:
+                  //                   MainAxisAlignment.end,
+                  //               crossAxisAlignment:
+                  //                   CrossAxisAlignment.start,
+                  //               children: [
+                  //                 Center(
+                  //                     child: DisplayProductInGridView(
+                  //                   logo: product.logo,
+                  //                 )),
+                  //                 SizedBox(
+                  //                   width: 2.w,
+                  //                 ),
+                  //                 Container(
+                  //                   decoration: BoxDecoration(
+                  //                     color: AppConst.white,
+                  //                     // border: Border.all(color: AppConst.grey, width: 0.5),
+                  //                     borderRadius:
+                  //                         BorderRadius.circular(16),
+                  //                     boxShadow: [
+                  //                       BoxShadow(
+                  //                         color: AppConst.grey,
+                  //                         blurRadius: 1,
+                  //                         // offset: Offset(1, 1),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                   child: Padding(
+                  //                     padding: EdgeInsets.symmetric(
+                  //                         horizontal: 2.w,
+                  //                         vertical: 0.5.h),
+                  //                     child: Center(
+                  //                       child: Text(
+                  //                           "\u20b9${product.cashback.toString()} OFF",
+                  //                           style: TextStyle(
+                  //                             fontFamily: 'MuseoSans',
+                  //                             color: AppConst.green,
+                  //                             fontSize: 10.sp,
+                  //                             fontWeight:
+                  //                                 FontWeight.w400,
+                  //                             fontStyle:
+                  //                                 FontStyle.normal,
+                  //                           )),
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             SizedBox(
+                  //               height: 1.h,
+                  //             ),
+                  //             Flexible(
+                  //                 child: Column(
+                  //               crossAxisAlignment:
+                  //                   CrossAxisAlignment.start,
+                  //               mainAxisAlignment:
+                  //                   MainAxisAlignment.spaceEvenly,
+                  //               children: [
+                  //                 Text(product.name.toString(),
+                  //                     maxLines: 2,
+                  //                     overflow: TextOverflow.ellipsis,
+                  //                     style: TextStyle(
+                  //                       fontFamily: 'MuseoSans',
+                  //                       color: AppConst.black,
+                  //                       fontSize: 12.sp,
+                  //                       fontWeight: FontWeight.w500,
+                  //                       fontStyle: FontStyle.normal,
+                  //                     )),
+                  //                 Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceBetween,
+                  //                   children: [
+                  //                     Text("${product.unit ?? ""}",
+                  //                         textAlign: TextAlign.start,
+                  //                         style: TextStyle(
+                  //                           fontFamily: 'MuseoSans',
+                  //                           color: AppConst.darkGrey,
+                  //                           fontSize: 10.sp,
+                  //                           fontWeight: FontWeight.w400,
+                  //                           fontStyle: FontStyle.normal,
+                  //                         )),
+                  //                     SizedBox(),
+                  //                   ],
+                  //                 ),
+                  //                 Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.start,
+                  //                   children: [
+                  //                     Text(
+                  //                         "\u{20b9}${product.selling_price ?? ""}",
+                  //                         style: TextStyle(
+                  //                           fontFamily: 'MuseoSans',
+                  //                           color: AppConst.black,
+                  //                           fontSize: SizeUtils
+                  //                                   .horizontalBlockSize *
+                  //                               3.5,
+                  //                           fontWeight: FontWeight.w500,
+                  //                           fontStyle: FontStyle.normal,
+                  //                         )),
+                  //                     Spacer(),
+                  //                     Obx(
+                  //                       () => product.quntity!.value >
+                  //                                   0 &&
+                  //                               product.isQunitityAdd
+                  //                                       ?.value ==
+                  //                                   false
+                  //                           ? _shoppingItem(product)
+                  //                           : GestureDetector(
+                  //                               onTap: () async {
+                  //                                 if (product.quntity!
+                  //                                         .value ==
+                  //                                     0) {
+                  //                                   product.quntity!
+                  //                                       .value++;
+
+                  //                                   log("storesWithProductsModel?.products?[index] : ${product}");
+
+                  //                                   // _moreStoreController.addToCart(
+                  //                                   //     store_id:
+                  //                                   //         _moreStoreController
+                  //                                   //             .storeId
+                  //                                   //             .value,
+                  //                                   //     index: 0,
+                  //                                   //     increment: true,
+                  //                                   //     cart_id:
+                  //                                   //         _moreStoreController
+                  //                                   //                 .getCartIDModel
+                  //                                   //                 .value
+                  //                                   //                 ?.sId ??
+                  //                                   //             '',
+                  //                                   //     product: product);
+
+                  //                                   _moreStoreController
+                  //                                           .storeId
+                  //                                           .value =
+                  //                                       storesWithProductsModel
+                  //                                               .sId ??
+                  //                                           '';
+
+                  //                                   await _moreStoreController
+                  //                                       .getStoreData(
+                  //                                     id: storesWithProductsModel
+                  //                                             .sId ??
+                  //                                         '',
+                  //                                   );
+                  //                                 }
+                  //                                 if (product.quntity!
+                  //                                             .value !=
+                  //                                         0 &&
+                  //                                     product.isQunitityAdd
+                  //                                             ?.value ==
+                  //                                         false) {
+                  //                                   product
+                  //                                       .isQunitityAdd
+                  //                                       ?.value = false;
+                  //                                   await Future.delayed(
+                  //                                           Duration(
+                  //                                               milliseconds:
+                  //                                                   500))
+                  //                                       .whenComplete(
+                  //                                           () => product
+                  //                                               .isQunitityAdd
+                  //                                               ?.value = true);
+                  //                                 }
+                  //                                 // addItem(product);
+                  //                               },
+                  //                               child:
+                  //                                   //  product.isQunitityAdd
+                  //                                   //                 ?.value ==
+                  //                                   //             true &&
+                  //                                   //         product.quntity!
+                  //                                   //                 .value !=
+                  //                                   //             0
+                  //                                   //     ? _dropDown(
+                  //                                   //         product,
+                  //                                   //         storesWithProductsModel
+                  //                                   //                 .sId ??
+                  //                                   //             '')
+                  //                                   //     :
+                  //                                   DisplayAddPlus()),
+                  //                     ),
+                  //                   ],
+                  //                 )
+                  //               ],
+                  //             )),
+                  //             SizedBox(
+                  //               height: 1.h,
+                  //             )
+                  //           ],
+                  //         ),
+                  //       );
+                  //     })),
+                ),
               ),
         Padding(
-          padding: EdgeInsets.only(bottom: 1.h),
-          child: Container(height: 1.2.w, color: AppConst.veryLightGrey),
+          padding: EdgeInsets.only(bottom: 2.h, top: 1.5.h),
+          child: Container(height: 1.h, color: AppConst.veryLightGrey),
         ),
-       
       ],
     );
   }
@@ -691,12 +928,12 @@ class DisplayProductInGridView extends StatelessWidget {
           ? Image.network(
               logo!,
               fit: BoxFit.cover,
-              height: 11.h,
-              width: 24.w,
+              height: 12.h,
+              width: 26.w,
               errorBuilder: (context, error, stackTrace) {
                 return SizedBox(
-                  height: 11.h,
-                  width: 24.w,
+                  height: 12.h,
+                  width: 26.w,
                   child: Image.asset("assets/images/noproducts.png"),
                 );
               },
@@ -706,8 +943,8 @@ class DisplayProductInGridView extends StatelessWidget {
                 color: AppConst.veryLightGrey,
                 borderRadius: BorderRadius.circular(8),
               ),
-              height: 11.h,
-              width: 24.w,
+              height: 12.h,
+              width: 26.w,
               child: Center(child: Image.asset("assets/images/noproducts.png")),
             ),
     );
