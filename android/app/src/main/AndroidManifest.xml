@@ -43,7 +43,6 @@
               />
 
             <intent-filter>
-                android:exported="true"
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
@@ -52,7 +51,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="https"
-                 android:host="recipto.in"/>
+                 android:host="applinks-7itu.vercel.app"/>
             </intent-filter>
             
             

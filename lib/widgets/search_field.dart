@@ -63,12 +63,12 @@ class SearchField extends StatelessWidget {
               filled: true,
               isDense: true,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide.none
                   // borderSide: const BorderSide(color: AppConst.black, width: 1.5),
                   ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide.none),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),

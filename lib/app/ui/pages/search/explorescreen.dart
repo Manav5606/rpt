@@ -42,30 +42,14 @@ class _ExploreScreen extends State<ExploreScreen> {
   final ExploreController _controller = Get.find()..homePageRemoteConfigData1();
 
   final AddLocationController _addLocationController = Get.find();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   setState(() {
-  //     foundStores = storeSearch;
-  //   });
-  // }
-  //
-  // onSearch(String name) {
-  //   setState(() {
-  //     foundStores = storeSearch
-  //         .where((store) => store.storeName!.toLowerCase().contains(name))
-  //         .toList();
-  //   });
-  // }
-
+  
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: handleBackPressed,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-            statusBarColor: AppConst.darkGreen,
+            statusBarColor: AppConst.green,
             statusBarIconBrightness: Brightness.light),
         child: Scaffold(
             body: SafeArea(
@@ -78,65 +62,108 @@ class _ExploreScreen extends State<ExploreScreen> {
                   () => Container(
                     padding: EdgeInsets.only(
                         left: 2.w, top: 1.h, bottom: 2.h, right: 2.w),
-                    color: Color(0xff005b41),
-                    child: GestureDetector(
-                      onTap: () async {
-                        dynamic value = await Get.to(AddressModel(
-                          // isSavedAddress: false,
-                          isHomeScreen: false,
-                          page: "explore",
-                        ));
-                        _exploreController.searchController.clear();
-                        _exploreController.searchText.value = '';
-                        _exploreController
-                            .getNearMePageDataModel.value?.data?.products
-                            ?.clear();
-                        _exploreController
-                            .getNearMePageDataModel.value?.data?.stores
-                            ?.clear();
-                        _exploreController.getNearMePageDataModel.refresh();
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 4.h,
-                            width: 10.w,
-                            child: FittedBox(
-                              child: Icon(
-                                Icons.keyboard_arrow_down_outlined,
-                                size: 3.h,
-                                color: AppConst.white,
-                              ),
+                    color: AppConst.green,
+                    child: 
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                    child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h),
+                        decoration: BoxDecoration(
+                          color: AppConst.white,
+                          // border: Border.all(color: AppConst.grey, width: 0.5),
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppConst.grey,
+                              blurRadius: 1,
+                              // offset: Offset(1, 1),
                             ),
-                          ),
-                          SizedBox(
-                            width: 1.w,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 85.w,
-                                child: Text(
-                                  "${_addLocationController.userAddressTitle.value} ${_addLocationController.userAddress.value}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeUtils.horizontalBlockSize * 4,
-                                      fontFamily: 'MuseoSans',
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      color: AppConst.white,
-                                      letterSpacing: 0.4),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
+                        child: TextField(
+                            textAlign: TextAlign.left,
+                            // textDirection: TextDirection.rtl,
+                            controller: _exploreController.searchController,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 3.w),
+                                isDense: true,
+                                prefixIcon: (_exploreController
+                                        .searchText.value.isEmpty)
+                                    ? Icon(
+                                        Icons.search,
+                                        size: SizeUtils.horizontalBlockSize * 6,
+                                        color: AppConst.grey,
+                                      )
+                                    : null,
+                                suffixIcon: (_exploreController
+                                        .searchText.value.isEmpty)
+                                    ? null
+                                    : IconButton(
+                                        onPressed: () {
+                                          _exploreController.searchController
+                                              .clear();
+                                          _exploreController.searchText.value =
+                                              '';
+                                          _exploreController
+                                              .getNearMePageDataModel
+                                              .value
+                                              ?.data
+                                              ?.products
+                                              ?.clear();
+                                          _exploreController
+                                              .getNearMePageDataModel
+                                              .value
+                                              ?.data
+                                              ?.stores
+                                              ?.clear();
+                                          _exploreController
+                                              .getNearMePageDataModel
+                                              .refresh();
+                                        },
+                                        icon: Icon(
+                                          Icons.cancel,
+                                          color: AppConst.grey,
+                                          size: SizeUtils.horizontalBlockSize * 6,
+                                        )),
+                                counterText: "",
+                                border: InputBorder.none,
+                                // OutlineInputBorder(
+                                //   borderRadius: BorderRadius.circular(12),
+                                //   borderSide:
+                                //       BorderSide(width: 1, color: AppConst.transparent),
+                                // ),
+                                focusedBorder: InputBorder.none,
+                                // OutlineInputBorder(
+                                //   borderRadius: BorderRadius.circular(12),
+                                //   borderSide: BorderSide(color: AppConst.black),
+                                // ),
+                                hintTextDirection: TextDirection.rtl,
+                                hintText: " Search products,stores & recipes",
+                                hintStyle: TextStyle(
+                                    color: AppConst.grey,
+                                    fontSize: SizeUtils.horizontalBlockSize * 4)),
+                            showCursor: true,
+                            cursorColor: AppConst.black,
+                            cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                            maxLength: 30,
+                            style: TextStyle(
+                              color: AppConst.black,
+                              fontSize: SizeUtils.horizontalBlockSize * 4,
+                            ),
+                            onChanged: (value) {
+                              _exploreController.searchText.value = value;
+                              _exploreController.searchText.value.isNotEmpty
+                                  ? _exploreController.getNearMePageData(
+                                      searchText: value)
+                                  : _exploreController.getNearMePageData(
+                                      searchText: " ");
+                              // onSearch(value);
+                            }),
                       ),
-                    ),
+                  ),
+                  
                   ),
                 ),
               ),
@@ -164,86 +191,86 @@ class _ExploreScreen extends State<ExploreScreen> {
                           ),
                         ],
                       ),
-                      child: TextField(
-                          textAlign: TextAlign.left,
-                          // textDirection: TextDirection.rtl,
-                          controller: _exploreController.searchController,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(left: 3.w),
-                              isDense: true,
-                              prefixIcon: (_exploreController
-                                      .searchText.value.isEmpty)
-                                  ? Icon(
-                                      Icons.search,
-                                      size: SizeUtils.horizontalBlockSize * 6,
-                                      color: AppConst.grey,
-                                    )
-                                  : null,
-                              suffixIcon: (_exploreController
-                                      .searchText.value.isEmpty)
-                                  ? null
-                                  : IconButton(
-                                      onPressed: () {
-                                        _exploreController.searchController
-                                            .clear();
-                                        _exploreController.searchText.value =
-                                            '';
-                                        _exploreController
-                                            .getNearMePageDataModel
-                                            .value
-                                            ?.data
-                                            ?.products
-                                            ?.clear();
-                                        _exploreController
-                                            .getNearMePageDataModel
-                                            .value
-                                            ?.data
-                                            ?.stores
-                                            ?.clear();
-                                        _exploreController
-                                            .getNearMePageDataModel
-                                            .refresh();
-                                      },
-                                      icon: Icon(
-                                        Icons.cancel,
-                                        color: AppConst.grey,
-                                        size: SizeUtils.horizontalBlockSize * 6,
-                                      )),
-                              counterText: "",
-                              border: InputBorder.none,
-                              // OutlineInputBorder(
-                              //   borderRadius: BorderRadius.circular(12),
-                              //   borderSide:
-                              //       BorderSide(width: 1, color: AppConst.transparent),
-                              // ),
-                              focusedBorder: InputBorder.none,
-                              // OutlineInputBorder(
-                              //   borderRadius: BorderRadius.circular(12),
-                              //   borderSide: BorderSide(color: AppConst.black),
-                              // ),
-                              hintTextDirection: TextDirection.rtl,
-                              hintText: " Search products,stores & recipes",
-                              hintStyle: TextStyle(
-                                  color: AppConst.grey,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4)),
-                          showCursor: true,
-                          cursorColor: AppConst.black,
-                          cursorHeight: SizeUtils.horizontalBlockSize * 5,
-                          maxLength: 30,
-                          style: TextStyle(
-                            color: AppConst.black,
-                            fontSize: SizeUtils.horizontalBlockSize * 4,
-                          ),
-                          onChanged: (value) {
-                            _exploreController.searchText.value = value;
-                            _exploreController.searchText.value.isNotEmpty
-                                ? _exploreController.getNearMePageData(
-                                    searchText: value)
-                                : _exploreController.getNearMePageData(
-                                    searchText: " ");
-                            // onSearch(value);
-                          }),
+                      // child: TextField(
+                      //     textAlign: TextAlign.left,
+                      //     // textDirection: TextDirection.rtl,
+                      //     controller: _exploreController.searchController,
+                      //     textAlignVertical: TextAlignVertical.center,
+                      //     decoration: InputDecoration(
+                      //         contentPadding: EdgeInsets.only(left: 3.w),
+                      //         isDense: true,
+                      //         prefixIcon: (_exploreController
+                      //                 .searchText.value.isEmpty)
+                      //             ? Icon(
+                      //                 Icons.search,
+                      //                 size: SizeUtils.horizontalBlockSize * 6,
+                      //                 color: AppConst.grey,
+                      //               )
+                      //             : null,
+                      //         suffixIcon: (_exploreController
+                      //                 .searchText.value.isEmpty)
+                      //             ? null
+                      //             : IconButton(
+                      //                 onPressed: () {
+                      //                   _exploreController.searchController
+                      //                       .clear();
+                      //                   _exploreController.searchText.value =
+                      //                       '';
+                      //                   _exploreController
+                      //                       .getNearMePageDataModel
+                      //                       .value
+                      //                       ?.data
+                      //                       ?.products
+                      //                       ?.clear();
+                      //                   _exploreController
+                      //                       .getNearMePageDataModel
+                      //                       .value
+                      //                       ?.data
+                      //                       ?.stores
+                      //                       ?.clear();
+                      //                   _exploreController
+                      //                       .getNearMePageDataModel
+                      //                       .refresh();
+                      //                 },
+                      //                 icon: Icon(
+                      //                   Icons.cancel,
+                      //                   color: AppConst.grey,
+                      //                   size: SizeUtils.horizontalBlockSize * 6,
+                      //                 )),
+                      //         counterText: "",
+                      //         border: InputBorder.none,
+                      //         // OutlineInputBorder(
+                      //         //   borderRadius: BorderRadius.circular(12),
+                      //         //   borderSide:
+                      //         //       BorderSide(width: 1, color: AppConst.transparent),
+                      //         // ),
+                      //         focusedBorder: InputBorder.none,
+                      //         // OutlineInputBorder(
+                      //         //   borderRadius: BorderRadius.circular(12),
+                      //         //   borderSide: BorderSide(color: AppConst.black),
+                      //         // ),
+                      //         hintTextDirection: TextDirection.rtl,
+                      //         hintText: " Search products,stores & recipes",
+                      //         hintStyle: TextStyle(
+                      //             color: AppConst.grey,
+                      //             fontSize: SizeUtils.horizontalBlockSize * 4)),
+                      //     showCursor: true,
+                      //     cursorColor: AppConst.black,
+                      //     cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                      //     maxLength: 30,
+                      //     style: TextStyle(
+                      //       color: AppConst.black,
+                      //       fontSize: SizeUtils.horizontalBlockSize * 4,
+                      //     ),
+                      //     onChanged: (value) {
+                      //       _exploreController.searchText.value = value;
+                      //       _exploreController.searchText.value.isNotEmpty
+                      //           ? _exploreController.getNearMePageData(
+                      //               searchText: value)
+                      //           : _exploreController.getNearMePageData(
+                      //               searchText: " ");
+                      //       // onSearch(value);
+                      //     }),
                     ),
                   );
                 },
