@@ -169,8 +169,8 @@ class HotProducts extends StatelessWidget {
                             color: AppConst.green,
                             fontSize:
                                 (SizerUtil.deviceType == DeviceType.tablet)
-                                    ? 10.sp
-                                    : 13.sp,
+                                    ? 9.sp
+                                    : 11.sp,
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
                           )),
@@ -178,9 +178,9 @@ class HotProducts extends StatelessWidget {
                     Align(
                       alignment: Alignment.topLeft,
                       child: SizedBox(
-                        width: 27.w,
+                        width: 23.w,
                         child: Divider(
-                          thickness: 4,
+                          thickness: 2,
                           color: AppConst.green,
                         ),
                       ),
@@ -430,23 +430,13 @@ class DisplayHotProducts extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.only(top: 1.h, left: 3.w, right: 3.w),
                       child: Container(
-                          // height: 30.h,
-                          width: double.infinity,
-                          child: GridView(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              // controller: gridViewScroll,
-                              scrollDirection: Axis.vertical,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 2.w,
-                                mainAxisSpacing: 1.h,
-                                childAspectRatio: 0.7,
-                              ),
-                              children: List.generate(
-                                  storesWithProductsModel.products?.length ?? 0,
-                                  (index) {
+                          height: 30.h,
+                          width: 200,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  storesWithProductsModel.products!.length,
+                              itemBuilder: (context, index) {
                                 Products product =
                                     storesWithProductsModel.products![index];
                                 return Container(
@@ -607,7 +597,7 @@ class DisplayHotProducts extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              }))),
+                              })),
                     ),
                   ),
                   // SizedBox(

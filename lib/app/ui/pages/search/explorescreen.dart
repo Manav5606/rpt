@@ -518,9 +518,7 @@ class _ExploreScreen extends State<ExploreScreen> {
                                       foundedStores: _exploreController
                                           .storeDataList.value,
                                     )
-                                  : SearchList(
-                                      foundedStores: foundStores,
-                                    ),
+                                  : SizedBox(),
                             ),
                             SizedBox(
                               height: 500,

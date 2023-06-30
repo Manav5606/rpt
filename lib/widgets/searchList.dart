@@ -35,7 +35,8 @@ class SearchList extends StatefulWidget {
   State<SearchList> createState() => _SearchListState();
 }
 
-class _SearchListState extends State<SearchList> with SingleTickerProviderStateMixin {
+class _SearchListState extends State<SearchList>
+    with SingleTickerProviderStateMixin {
   final ExploreController _exploreController = Get.find();
 
   final MoreStoreController _moreStoreController = Get.find();
@@ -83,7 +84,7 @@ class _SearchListState extends State<SearchList> with SingleTickerProviderStateM
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: 170,
+                        width: 20.w,
                         height: 50,
                         child: Theme(
                           data: Theme.of(context).copyWith(
@@ -95,16 +96,16 @@ class _SearchListState extends State<SearchList> with SingleTickerProviderStateM
                             ),
                           ),
                           child: TabBar(
-                             controller: _tabController,
+                            controller: _tabController,
                             labelPadding: EdgeInsets.symmetric(horizontal: 0.0),
                             indicatorSize: TabBarIndicatorSize.label,
-                        
                             tabs: [
-                              
                               Text('Stores ${data?.stores?.length ?? 0}',
                                   style: TextStyle(
                                     fontFamily: 'MuseoSans',
-                                    color: _selectedTabIndex == 0 ? AppConst.green : AppConst.black,
+                                    color: _selectedTabIndex == 0
+                                        ? AppConst.green
+                                        : AppConst.black,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
@@ -112,12 +113,13 @@ class _SearchListState extends State<SearchList> with SingleTickerProviderStateM
                               Text('Products  ${totalProducts}',
                                   style: TextStyle(
                                     fontFamily: 'MuseoSans',
-                                    color: _selectedTabIndex == 1 ? AppConst.green : AppConst.black,
+                                    color: _selectedTabIndex == 1
+                                        ? AppConst.green
+                                        : AppConst.black,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
                                   )),
-                             
                             ],
                           ),
                         ),
@@ -275,14 +277,15 @@ class _SearchListState extends State<SearchList> with SingleTickerProviderStateM
                             labelPadding: EdgeInsets.symmetric(horizontal: 0.0),
                             indicatorSize: TabBarIndicatorSize.label,
                             tabs: [
-                              
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child:
                                     Text('Stores ${data?.stores?.length ?? 0}',
                                         style: TextStyle(
                                           fontFamily: 'MuseoSans',
-                                          color: _selectedTabIndex==0 ? AppConst.green : AppConst.black,
+                                          color: _selectedTabIndex == 0
+                                              ? AppConst.green
+                                              : AppConst.black,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w700,
                                           fontStyle: FontStyle.normal,
@@ -293,13 +296,15 @@ class _SearchListState extends State<SearchList> with SingleTickerProviderStateM
                                 child: Text('Products ${totalProducts}',
                                     style: TextStyle(
                                       fontFamily: 'MuseoSans',
-                                      color: _selectedTabIndex==1 ? AppConst.green : AppConst.black,
+                                      color: _selectedTabIndex == 1
+                                          ? AppConst.green
+                                          : AppConst.black,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
                                     )),
                               ),
-                             
+
                               // Tab(
                               //   text: 'Stores',
                               // ),
