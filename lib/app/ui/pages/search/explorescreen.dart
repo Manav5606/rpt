@@ -1,4 +1,5 @@
 import 'package:customer_app/app/constants/app_constants.dart';
+import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/data/model/user_model.dart';
 import 'package:customer_app/app/ui/pages/search/models/recentProductsData.dart';
@@ -42,7 +43,7 @@ class _ExploreScreen extends State<ExploreScreen> {
   final ExploreController _controller = Get.find()..homePageRemoteConfigData1();
 
   final AddLocationController _addLocationController = Get.find();
-  
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -52,422 +53,487 @@ class _ExploreScreen extends State<ExploreScreen> {
             statusBarColor: AppConst.green,
             statusBarIconBrightness: Brightness.light),
         child: Scaffold(
+            backgroundColor: AppConst.green,
             body: SafeArea(
-          // minimum: EdgeInsets.only(top: 2.h, left: 3.w, right: 3.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                child: Obx(
-                  () => Container(
-                    padding: EdgeInsets.only(
-                        left: 2.w, top: 1.h, bottom: 2.h, right: 2.w),
-                    color: AppConst.green,
-                    child: 
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                    child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h),
-                        decoration: BoxDecoration(
-                          color: AppConst.white,
-                          // border: Border.all(color: AppConst.grey, width: 0.5),
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppConst.grey,
-                              blurRadius: 1,
-                              // offset: Offset(1, 1),
+              // minimum: EdgeInsets.only(top: 2.h, left: 3.w, right: 3.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    child: Obx(
+                      () => Container(
+                        padding: EdgeInsets.only(
+                            left: 2.w, top: 1.h, bottom: 2.h, right: 2.w),
+                        color: AppConst.green,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 1.h),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2.w, vertical: 0.h),
+                            decoration: BoxDecoration(
+                              color: AppConst.white,
+                              // border: Border.all(color: AppConst.grey, width: 0.5),
+                              borderRadius: BorderRadius.circular(40),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppConst.grey,
+                                  blurRadius: 1,
+                                  // offset: Offset(1, 1),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: TextField(
-                            textAlign: TextAlign.left,
-                            // textDirection: TextDirection.rtl,
-                            controller: _exploreController.searchController,
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(left: 3.w),
-                                isDense: true,
-                                prefixIcon: (_exploreController
-                                        .searchText.value.isEmpty)
-                                    ? Icon(
-                                        Icons.search,
-                                        size: SizeUtils.horizontalBlockSize * 6,
-                                        color: AppConst.grey,
-                                      )
-                                    : null,
-                                suffixIcon: (_exploreController
-                                        .searchText.value.isEmpty)
-                                    ? null
-                                    : IconButton(
-                                        onPressed: () {
-                                          _exploreController.searchController
-                                              .clear();
-                                          _exploreController.searchText.value =
-                                              '';
-                                          _exploreController
-                                              .getNearMePageDataModel
-                                              .value
-                                              ?.data
-                                              ?.products
-                                              ?.clear();
-                                          _exploreController
-                                              .getNearMePageDataModel
-                                              .value
-                                              ?.data
-                                              ?.stores
-                                              ?.clear();
-                                          _exploreController
-                                              .getNearMePageDataModel
-                                              .refresh();
-                                        },
-                                        icon: Icon(
-                                          Icons.cancel,
-                                          color: AppConst.grey,
-                                          size: SizeUtils.horizontalBlockSize * 6,
-                                        )),
-                                counterText: "",
-                                border: InputBorder.none,
-                                // OutlineInputBorder(
-                                //   borderRadius: BorderRadius.circular(12),
-                                //   borderSide:
-                                //       BorderSide(width: 1, color: AppConst.transparent),
-                                // ),
-                                focusedBorder: InputBorder.none,
-                                // OutlineInputBorder(
-                                //   borderRadius: BorderRadius.circular(12),
-                                //   borderSide: BorderSide(color: AppConst.black),
-                                // ),
-                                hintTextDirection: TextDirection.rtl,
-                                hintText: " Search products,stores & recipes",
-                                hintStyle: TextStyle(
-                                    color: AppConst.grey,
-                                    fontSize: SizeUtils.horizontalBlockSize * 4)),
-                            showCursor: true,
-                            cursorColor: AppConst.black,
-                            cursorHeight: SizeUtils.horizontalBlockSize * 5,
-                            maxLength: 30,
-                            style: TextStyle(
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                            ),
-                            onChanged: (value) {
-                              _exploreController.searchText.value = value;
-                              _exploreController.searchText.value.isNotEmpty
-                                  ? _exploreController.getNearMePageData(
-                                      searchText: value)
-                                  : _exploreController.getNearMePageData(
-                                      searchText: " ");
-                              // onSearch(value);
-                            }),
-                      ),
-                  ),
-                  
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Obx(
-                () {
-                  print(_exploreController.isLoading.value);
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h),
-                      decoration: BoxDecoration(
-                        color: AppConst.white,
-                        // border: Border.all(color: AppConst.grey, width: 0.5),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppConst.grey,
-                            blurRadius: 1,
-                            // offset: Offset(1, 1),
-                          ),
-                        ],
-                      ),
-                      // child: TextField(
-                      //     textAlign: TextAlign.left,
-                      //     // textDirection: TextDirection.rtl,
-                      //     controller: _exploreController.searchController,
-                      //     textAlignVertical: TextAlignVertical.center,
-                      //     decoration: InputDecoration(
-                      //         contentPadding: EdgeInsets.only(left: 3.w),
-                      //         isDense: true,
-                      //         prefixIcon: (_exploreController
-                      //                 .searchText.value.isEmpty)
-                      //             ? Icon(
-                      //                 Icons.search,
-                      //                 size: SizeUtils.horizontalBlockSize * 6,
-                      //                 color: AppConst.grey,
-                      //               )
-                      //             : null,
-                      //         suffixIcon: (_exploreController
-                      //                 .searchText.value.isEmpty)
-                      //             ? null
-                      //             : IconButton(
-                      //                 onPressed: () {
-                      //                   _exploreController.searchController
-                      //                       .clear();
-                      //                   _exploreController.searchText.value =
-                      //                       '';
-                      //                   _exploreController
-                      //                       .getNearMePageDataModel
-                      //                       .value
-                      //                       ?.data
-                      //                       ?.products
-                      //                       ?.clear();
-                      //                   _exploreController
-                      //                       .getNearMePageDataModel
-                      //                       .value
-                      //                       ?.data
-                      //                       ?.stores
-                      //                       ?.clear();
-                      //                   _exploreController
-                      //                       .getNearMePageDataModel
-                      //                       .refresh();
-                      //                 },
-                      //                 icon: Icon(
-                      //                   Icons.cancel,
-                      //                   color: AppConst.grey,
-                      //                   size: SizeUtils.horizontalBlockSize * 6,
-                      //                 )),
-                      //         counterText: "",
-                      //         border: InputBorder.none,
-                      //         // OutlineInputBorder(
-                      //         //   borderRadius: BorderRadius.circular(12),
-                      //         //   borderSide:
-                      //         //       BorderSide(width: 1, color: AppConst.transparent),
-                      //         // ),
-                      //         focusedBorder: InputBorder.none,
-                      //         // OutlineInputBorder(
-                      //         //   borderRadius: BorderRadius.circular(12),
-                      //         //   borderSide: BorderSide(color: AppConst.black),
-                      //         // ),
-                      //         hintTextDirection: TextDirection.rtl,
-                      //         hintText: " Search products,stores & recipes",
-                      //         hintStyle: TextStyle(
-                      //             color: AppConst.grey,
-                      //             fontSize: SizeUtils.horizontalBlockSize * 4)),
-                      //     showCursor: true,
-                      //     cursorColor: AppConst.black,
-                      //     cursorHeight: SizeUtils.horizontalBlockSize * 5,
-                      //     maxLength: 30,
-                      //     style: TextStyle(
-                      //       color: AppConst.black,
-                      //       fontSize: SizeUtils.horizontalBlockSize * 4,
-                      //     ),
-                      //     onChanged: (value) {
-                      //       _exploreController.searchText.value = value;
-                      //       _exploreController.searchText.value.isNotEmpty
-                      //           ? _exploreController.getNearMePageData(
-                      //               searchText: value)
-                      //           : _exploreController.getNearMePageData(
-                      //               searchText: " ");
-                      //       // onSearch(value);
-                      //     }),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: Obx(
-                          () => (((_exploreController.getNearMePageDataModel
-                                          .value?.data?.products?.isEmpty ??
-                                      true) &&
-                                  (_exploreController.getNearMePageDataModel
-                                          .value?.data?.stores?.isEmpty ??
-                                      true)))
-                              ? _exploreController.searchText.value.isNotEmpty
-                                  ? Center(
-                                      child: EmptyHistoryPage(
-                                          icon: Icons.shopping_cart,
-                                          text1: "No Product/Store found !",
-                                          text2: "",
-                                          text3: "")
-
-                                      // Text('No Results found !',
-                                      //     style: TextStyle(
-                                      //       fontFamily: 'MuseoSans',
-                                      //       color: AppConst.black,
-                                      //       fontSize:
-                                      //           SizeUtils.horizontalBlockSize *
-                                      //               3.5,
-                                      //       fontWeight: FontWeight.w500,
-                                      //       fontStyle: FontStyle.normal,
-                                      //     )),
-                                      )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Recently Searches',
-                                            style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              color: AppConst.black,
-                                              fontSize: SizeUtils
+                            child: TextField(
+                                textAlign: TextAlign.left,
+                                // textDirection: TextDirection.rtl,
+                                controller: _exploreController.searchController,
+                                textAlignVertical: TextAlignVertical.center,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(left: 3.w),
+                                    isDense: true,
+                                    prefixIcon: (_exploreController
+                                            .searchText.value.isEmpty)
+                                        ? Icon(
+                                            Icons.search,
+                                            size:
+                                                SizeUtils.horizontalBlockSize *
+                                                    6,
+                                            color: AppConst.grey,
+                                          )
+                                        : null,
+                                    suffixIcon: (_exploreController
+                                            .searchText.value.isEmpty)
+                                        ? null
+                                        : IconButton(
+                                            onPressed: () {
+                                              _exploreController
+                                                  .searchController
+                                                  .clear();
+                                              _exploreController
+                                                  .searchText.value = '';
+                                              _exploreController
+                                                  .getNearMePageDataModel
+                                                  .value
+                                                  ?.data
+                                                  ?.products
+                                                  ?.clear();
+                                              _exploreController
+                                                  .getNearMePageDataModel
+                                                  .value
+                                                  ?.data
+                                                  ?.stores
+                                                  ?.clear();
+                                              _exploreController
+                                                  .getNearMePageDataModel
+                                                  .refresh();
+                                            },
+                                            icon: Icon(
+                                              Icons.cancel,
+                                              color: AppConst.grey,
+                                              size: SizeUtils
                                                       .horizontalBlockSize *
-                                                  3.5,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
+                                                  6,
                                             )),
-                                        InkWell(
-                                          onTap: () {
-                                            _exploreController
-                                                .DeleteNearDataProduct();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text('Clear all   ',
-                                                style: TextStyle(
-                                                  fontFamily: 'MuseoSans',
-                                                  color: AppConst.green,
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      3.5,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                              : Text('Results',
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.black,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.5,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                  )),
+                                    counterText: "",
+                                    border: InputBorder.none,
+                                    // OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(12),
+                                    //   borderSide:
+                                    //       BorderSide(width: 1, color: AppConst.transparent),
+                                    // ),
+                                    focusedBorder: InputBorder.none,
+                                    // OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(12),
+                                    //   borderSide: BorderSide(color: AppConst.black),
+                                    // ),
+                                    hintTextDirection: TextDirection.rtl,
+                                    hintText:
+                                        " Search products,stores & recipes",
+                                    hintStyle: TextStyle(
+                                        color: AppConst.grey,
+                                        fontSize:
+                                            (SizerUtil.deviceType == DeviceType.tablet)
+                          ? 9.sp
+                          : 10.sp)),
+                                showCursor: true,
+                                cursorColor: AppConst.black,
+                                cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                                maxLength: 30,
+                                style: TextStyle(
+                                  color: AppConst.black,
+                                  fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                          ? 9.sp
+                          : 10.sp,
+                                ),
+                                onChanged: (value) {
+                                  _exploreController.searchText.value = value;
+                                  _exploreController.searchText.value.isNotEmpty
+                                      ? _exploreController.getNearMePageData(
+                                          searchText: value)
+                                      : _exploreController.getNearMePageData(
+                                          searchText: " ");
+                                  // onSearch(value);
+                                }),
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Obx(
-                        () => (((_exploreController.getNearMePageDataModel.value
-                                        ?.data?.products?.isEmpty ??
-                                    true) &&
-                                (_exploreController.getNearMePageDataModel.value
-                                        ?.data?.stores?.isEmpty ??
-                                    true)))
-                            //  (((_exploreController.getNearMePageDataModel.value
-                            //                 ?.data?.products?.isEmpty ??
-                            //             true) &&
-                            //         (_exploreController.getNearMePageDataModel.value
-                            //                 ?.data?.stores?.isEmpty ??
-                            //             true) &&
-                            //         (_exploreController.getNearMePageDataModel.value
-                            //                 ?.data?.inventories?.isEmpty ??
-                            //             true)))
-                            ? _exploreController.searchText.value.isNotEmpty
-                                ? SizedBox()
-                                : Wrap(
-                                    children: _exploreController
-                                        .recentProductList.value
-                                        .map((e) => InkWell(
-                                              onTap: () => {
-                                                _exploreController
-                                                    .searchText.value = e.name!,
-                                                _exploreController
-                                                        .searchController.text =
-                                                    _exploreController
-                                                        .searchText.value,
-                                                _exploreController
-                                                    .getNearMePageData(
-                                                        searchText:
-                                                            _exploreController
-                                                                .searchText
-                                                                .value),
-                                              },
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 1.w,
-                                                    vertical: 0.5.h),
-                                                child: Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 2.w,
-                                                      vertical: 0.5.h),
-                                                  decoration: BoxDecoration(
-                                                      color: AppConst.lightGrey,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8)),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons
-                                                            .access_time_rounded,
-                                                        color: AppConst.grey,
-                                                        size: 2.h,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 1.w,
-                                                      ),
-                                                      Text(
-                                                        e.name ?? "",
-                                                        style: TextStyle(
-                                                          fontSize: SizeUtils
-                                                                  .horizontalBlockSize *
-                                                              3,
-                                                          fontFamily:
-                                                              'MuseoSans',
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          color: AppConst.black,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                    ),
+                  ),
+                  Obx(
+                    () {
+                      print(_exploreController.isLoading.value);
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 3.w, vertical: 0.h),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 0.h),
+                          decoration: BoxDecoration(
+                            color: AppConst.white,
+                            // border: Border.all(color: AppConst.grey, width: 0.5),
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppConst.grey,
+                                blurRadius: 1,
+                                // offset: Offset(1, 1),
+                              ),
+                            ],
+                          ),
+                          // child: TextField(
+                          //     textAlign: TextAlign.left,
+                          //     // textDirection: TextDirection.rtl,
+                          //     controller: _exploreController.searchController,
+                          //     textAlignVertical: TextAlignVertical.center,
+                          //     decoration: InputDecoration(
+                          //         contentPadding: EdgeInsets.only(left: 3.w),
+                          //         isDense: true,
+                          //         prefixIcon: (_exploreController
+                          //                 .searchText.value.isEmpty)
+                          //             ? Icon(
+                          //                 Icons.search,
+                          //                 size: SizeUtils.horizontalBlockSize * 6,
+                          //                 color: AppConst.grey,
+                          //               )
+                          //             : null,
+                          //         suffixIcon: (_exploreController
+                          //                 .searchText.value.isEmpty)
+                          //             ? null
+                          //             : IconButton(
+                          //                 onPressed: () {
+                          //                   _exploreController.searchController
+                          //                       .clear();
+                          //                   _exploreController.searchText.value =
+                          //                       '';
+                          //                   _exploreController
+                          //                       .getNearMePageDataModel
+                          //                       .value
+                          //                       ?.data
+                          //                       ?.products
+                          //                       ?.clear();
+                          //                   _exploreController
+                          //                       .getNearMePageDataModel
+                          //                       .value
+                          //                       ?.data
+                          //                       ?.stores
+                          //                       ?.clear();
+                          //                   _exploreController
+                          //                       .getNearMePageDataModel
+                          //                       .refresh();
+                          //                 },
+                          //                 icon: Icon(
+                          //                   Icons.cancel,
+                          //                   color: AppConst.grey,
+                          //                   size: SizeUtils.horizontalBlockSize * 6,
+                          //                 )),
+                          //         counterText: "",
+                          //         border: InputBorder.none,
+                          //         // OutlineInputBorder(
+                          //         //   borderRadius: BorderRadius.circular(12),
+                          //         //   borderSide:
+                          //         //       BorderSide(width: 1, color: AppConst.transparent),
+                          //         // ),
+                          //         focusedBorder: InputBorder.none,
+                          //         // OutlineInputBorder(
+                          //         //   borderRadius: BorderRadius.circular(12),
+                          //         //   borderSide: BorderSide(color: AppConst.black),
+                          //         // ),
+                          //         hintTextDirection: TextDirection.rtl,
+                          //         hintText: " Search products,stores & recipes",
+                          //         hintStyle: TextStyle(
+                          //             color: AppConst.grey,
+                          //             fontSize: SizeUtils.horizontalBlockSize * 4)),
+                          //     showCursor: true,
+                          //     cursorColor: AppConst.black,
+                          //     cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                          //     maxLength: 30,
+                          //     style: TextStyle(
+                          //       color: AppConst.black,
+                          //       fontSize: SizeUtils.horizontalBlockSize * 4,
+                          //     ),
+                          //     onChanged: (value) {
+                          //       _exploreController.searchText.value = value;
+                          //       _exploreController.searchText.value.isNotEmpty
+                          //           ? _exploreController.getNearMePageData(
+                          //               searchText: value)
+                          //           : _exploreController.getNearMePageData(
+                          //               searchText: " ");
+                          //       // onSearch(value);
+                          //     }),
+                        ),
+                      );
+                    },
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppConst.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10))),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(
+                              () => (((_exploreController.getNearMePageDataModel
+                                              .value?.data?.products?.isEmpty ??
+                                          true) &&
+                                      (_exploreController.getNearMePageDataModel
+                                              .value?.data?.stores?.isEmpty ??
+                                          true)))
+                                  ? _exploreController
+                                          .searchText.value.isNotEmpty
+                                      ? Center(
+                                          child: EmptyHistoryPage(
+                                              icon: Icons.shopping_cart,
+                                              text1: "No Product/Store found !",
+                                              text2: "",
+                                              text3: "")
+
+                                          // Text('No Results found !',
+                                          //     style: TextStyle(
+                                          //       fontFamily: 'MuseoSans',
+                                          //       color: AppConst.black,
+                                          //       fontSize:
+                                          //           SizeUtils.horizontalBlockSize *
+                                          //               3.5,
+                                          //       fontWeight: FontWeight.w500,
+                                          //       fontStyle: FontStyle.normal,
+                                          //     )),
+                                          )
+                                      : Visibility(
+                                          visible: _exploreController
+                                              .recentProductList
+                                              .value
+                                              .isNotEmpty,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('',
+                                                  style: TextStyle(
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.black,
+                                                    fontSize: SizeUtils
+                                                            .horizontalBlockSize *
+                                                        3.5,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                  )),
+                                              InkWell(
+                                                onTap: () {
+                                                  _exploreController
+                                                      .DeleteNearDataProduct();
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text('Clear all   ',
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color: AppConst.green,
+                                                        fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                          ? 9.sp
+                          : 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
                                                 ),
                                               ),
-                                            ))
-                                        .toSet()
-                                        .toList(),
-                                  )
-                            : SearchList(
-                                foundedStores: foundStores,
+                                            ],
+                                          ),
+                                        )
+                                  : Text('',
+                                      style: TextStyle(
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 3.5,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                            ),
+                            Visibility(
+                              visible: _exploreController
+                                  .recentProductList.value.isNotEmpty,
+                              child: SizedBox(
+                                height: 2.h,
                               ),
+                            ),
+                            Obx(
+                              () => (((_exploreController.getNearMePageDataModel
+                                              .value?.data?.products?.isEmpty ??
+                                          true) &&
+                                      (_exploreController.getNearMePageDataModel
+                                              .value?.data?.stores?.isEmpty ??
+                                          true)))
+                                  //  (((_exploreController.getNearMePageDataModel.value
+                                  //                 ?.data?.products?.isEmpty ??
+                                  //             true) &&
+                                  //         (_exploreController.getNearMePageDataModel.value
+                                  //                 ?.data?.stores?.isEmpty ??
+                                  //             true) &&
+                                  //         (_exploreController.getNearMePageDataModel.value
+                                  //                 ?.data?.inventories?.isEmpty ??
+                                  //             true)))
+                                  ? _exploreController
+                                          .searchText.value.isNotEmpty
+                                      ? SizedBox()
+                                      : Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Wrap(
+                                              children:
+                                                  _exploreController
+                                                      .recentProductList.value
+                                                      .take(30)
+                                                      .map((e) => InkWell(
+                                                            onTap: () => {
+                                                              _exploreController
+                                                                      .searchText
+                                                                      .value =
+                                                                  e.name!,
+                                                              _exploreController
+                                                                      .searchController
+                                                                      .text =
+                                                                  _exploreController
+                                                                      .searchText
+                                                                      .value,
+                                                              _exploreController
+                                                                  .getNearMePageData(
+                                                                      searchText: _exploreController
+                                                                          .searchText
+                                                                          .value),
+                                                            },
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          1.w,
+                                                                      vertical:
+                                                                          0.5.h),
+                                                              child: Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            2.w,
+                                                                        vertical:
+                                                                            0.5.h),
+                                                                decoration: BoxDecoration(
+                                                                    color: ColorConstants
+                                                                        .searchBg2,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            8)),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .access_time_rounded,
+                                                                      color: AppConst
+                                                                          .grey,
+                                                                      size: 2.h,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width:
+                                                                          1.w,
+                                                                    ),
+                                                                    Flexible(
+                                                                      child:
+                                                                          Text(
+                                                                        e.name?.split(' ').take(3).join(' ') ??
+                                                                            "",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                                                                              ? 6.sp
+                                                                              : 8.sp,
+                                                                          fontFamily:
+                                                                              'MuseoSans',
+                                                                          fontWeight:
+                                                                              FontWeight.w700,
+                                                                          fontStyle:
+                                                                              FontStyle.normal,
+                                                                          color:
+                                                                              AppConst.black,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ))
+                                                      .toSet()
+                                                      .toList(),
+                                            ),
+                                            Visibility(
+                                              visible: _exploreController
+                                                  .recentProductList
+                                                  .value
+                                                  .isNotEmpty,
+                                              child: Divider(
+                                                thickness: 8,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                  : SearchList(
+                                      foundedStores: foundStores,
+                                    ),
+                            ),
+                            Obx(
+                              () => _exploreController.searchText.value.isEmpty
+                                  ? HotProducts(
+                                      foundedStores: _exploreController
+                                          .storeDataList.value,
+                                    )
+                                  : SearchList(
+                                      foundedStores: foundStores,
+                                    ),
+                            ),
+                            SizedBox(
+                              height: 500,
+                              width: MediaQuery.of(context).size.width,
+                            )
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Obx(() => _exploreController.searchText.value.isNotEmpty
-                          ? SizedBox()
-                          : HotProducts(
-                              foundedStores:
-                                  _exploreController.storeDataList.value,
-                            ))
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        )),
+            )),
       ),
     );
   }

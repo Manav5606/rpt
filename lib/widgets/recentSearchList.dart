@@ -159,38 +159,50 @@ class HotProducts extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                child: Row(
+                child: Column(
                   children: [
-                    Icon(
-                      Icons.trending_up_sharp,
-                      color: AppConst.black,
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Hot Products",
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.green,
+                            fontSize:
+                                (SizerUtil.deviceType == DeviceType.tablet)
+                                    ? 10.sp
+                                    : 13.sp,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
                     ),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    Text("Hot Products",
-                        style: TextStyle(
-                          fontFamily: 'MuseoSans',
-                          color: AppConst.black,
-                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
-                              ? 10.sp
-                              : 13.sp,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                        )),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: SizedBox(
+                        width: 27.w,
+                        child: Divider(
+                          thickness: 4,
+                          color: AppConst.green,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
               ListView.separated(
                 controller: this.controller,
                 shrinkWrap: true,
-                reverse: true,
+                reverse: false,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: foundedStores!.length,
                 //data.length,
+
                 itemBuilder: (context, index) {
+                  final mainProducts = foundedStores!;
+                  mainProducts.sort((a, b) => (b.products?.length ?? 0)
+                      .compareTo(a.products?.length ?? 0));
+                  final storesWithProductsModel = mainProducts[index];
                   return DisplayHotProducts(
-                    storesWithProductsModel: foundedStores![index],
+                    storesWithProductsModel: storesWithProductsModel,
                   );
                 },
                 separatorBuilder: (context, index) {

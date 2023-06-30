@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/ui/common/shimmer_widget.dart';
 import 'package:customer_app/screens/history/history_order_tracking_screen.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
@@ -22,6 +23,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../app/ui/pages/location_picker/address_model.dart';
 
 class HistoryScreen extends StatefulWidget {
   HistoryScreen({Key? key}) : super(key: key);
@@ -1260,53 +1263,205 @@ class EmptyHistoryPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            height: 150,
+            width: MediaQuery.of(context).size.width,
+            color: ColorConstants.searchBg2,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 80,
+                    color: ColorConstants.searchBg,
+                    child: Center(
+                      child: Row(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Can't find what you're looking for ?",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text("Make a list and we'll get it DUN!")
+                            ],
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 38.0),
+                        child: GestureDetector(
+                          onTap: () async {
+                            dynamic value = Get.to(AddressModel(
+                              // isSavedAddress: false,
+                              isHomeScreen: true,
+                              page: "home",
+                            ));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Click here to change the location",
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 3.5,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.normal,
+                                    color: AppConst.green,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.location_on_sharp,
+                                  color: AppConst.darkGreen,
+                                  size: 2.h,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Align(
+                  //   alignment: Alignment.bottomCenter,
+                  //   child: Row(
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Container(
+                  //           height: 40,
+                  //           width: MediaQuery.of(context).size.width/1.2,
+                  //             padding:
+                  //                 EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h),
+                  //             decoration: BoxDecoration(
+                  //               color: AppConst.white,
+                  //               // border: Border.all(color: AppConst.grey, width: 0.5),
+                  //               borderRadius: BorderRadius.circular(10),
+                  //               boxShadow: [
+                  //                 BoxShadow(
+                  //                   color: AppConst.grey,
+                  //                   blurRadius: 1,
+                  //                   // offset: Offset(1, 1),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //         child: TextField(
+                  //                   textAlign: TextAlign.left,
+                  //                   // textDirection: TextDirection.rtl,
+
+                  //                   textAlignVertical: TextAlignVertical.center,
+                  //                   decoration: InputDecoration(
+
+                  //                       isDense: true,
+                  //                       prefixIcon:Icon(
+                  //                               Icons.circle_outlined,
+                  //                               size:15,
+
+                  //                               color: AppConst.green,
+                  //                             ),
+
+                  //                       counterText: "",
+                  //                       border: InputBorder.none,
+                  //                       // OutlineInputBorder(
+                  //                       //   borderRadius: BorderRadius.circular(12),
+                  //                       //   borderSide:
+                  //                       //       BorderSide(width: 1, color: AppConst.transparent),
+                  //                       // ),
+                  //                       focusedBorder: InputBorder.none,
+                  //                       // OutlineInputBorder(
+                  //                       //   borderRadius: BorderRadius.circular(12),
+                  //                       //   borderSide: BorderSide(color: AppConst.black),
+                  //                       // ),
+
+                  //                       hintText: " Type items one by one",
+                  //                       hintStyle: TextStyle(
+                  //                           color: AppConst.grey,
+                  //                           fontSize: SizeUtils.horizontalBlockSize * 4)),
+                  //                   showCursor: true,
+                  //                   cursorColor: AppConst.black,
+                  //                   cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                  //                   maxLength: 30,
+                  //                   style: TextStyle(
+                  //                     color: AppConst.black,
+                  //                     fontSize: SizeUtils.horizontalBlockSize * 4,
+                  //                   ),
+                  //                   onChanged: (value) {
+
+                  //                     // onSearch(value);
+                  //                   }),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // )
+                ]),
+          ),
           SizedBox(
             height: 10.h,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Container(
-              //   height: 15.h,
-              //   width: 45.w,
-              //   child: Lottie.asset(
-              //       'assets/lottie/receipt.json'),
-              // ),
-              Icon(
-                icon,
-                // Icons.receipt,
-                size: 20.h,
-                color: AppConst.lightYellow,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 2.h,
-          ),
-          Text(
-            text1!,
-            // "No saved orders yet ",
-            style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 5.4,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Text(
-            text2!,
-            // "Orders that you save will appear here.   ",
-            style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 4.5,
-              fontWeight: FontWeight.w200,
-            ),
-          ),
-          Text(
-            text3!,
-            // " Placed your first order!",
-            style: TextStyle(
-              fontSize: SizeUtils.horizontalBlockSize * 4.5,
-              fontWeight: FontWeight.w200,
-            ),
-          )
+
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     // Container(
+          //     //   height: 15.h,
+          //     //   width: 45.w,
+          //     //   child: Lottie.asset(
+          //     //       'assets/lottie/receipt.json'),
+          //     // ),
+          //     Icon(
+          //       icon,
+          //       // Icons.receipt,
+          //       size: 20.h,
+          //       color: AppConst.lightYellow,
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(
+          //   height: 2.h,
+          // ),
+          // Text(
+          //   text1!,
+          //   // "No saved orders yet ",
+          //   style: TextStyle(
+          //     fontSize: SizeUtils.horizontalBlockSize * 5.4,
+          //     fontWeight: FontWeight.w400,
+          //   ),
+          // ),
+          // Text(
+          //   text2!,
+          //   // "Orders that you save will appear here.   ",
+          //   style: TextStyle(
+          //     fontSize: SizeUtils.horizontalBlockSize * 4.5,
+          //     fontWeight: FontWeight.w200,
+          //   ),
+          // ),
+          // Text(
+          //   text3!,
+          //   // " Placed your first order!",
+          //   style: TextStyle(
+          //     fontSize: SizeUtils.horizontalBlockSize * 4.5,
+          //     fontWeight: FontWeight.w200,
+          //   ),
+          // )
         ],
       ),
     );

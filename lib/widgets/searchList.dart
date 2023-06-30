@@ -35,10 +35,33 @@ class SearchList extends StatefulWidget {
   State<SearchList> createState() => _SearchListState();
 }
 
-class _SearchListState extends State<SearchList> {
+class _SearchListState extends State<SearchList> with SingleTickerProviderStateMixin {
   final ExploreController _exploreController = Get.find();
 
   final MoreStoreController _moreStoreController = Get.find();
+
+  late TabController _tabController;
+  int _selectedTabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  @override
+  void dispose() {
+    _tabController.removeListener(_handleTabSelection);
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleTabSelection() {
+    setState(() {
+      _selectedTabIndex = _tabController.index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +74,7 @@ class _SearchListState extends State<SearchList> {
             (data?.products?.length ?? 0) + (data?.inventories?.length ?? 0);
         return (((data?.products?.isEmpty ?? true) &&
                 (data?.stores?.isEmpty ?? true)))
-            ? Center(
-                child: Text(
-                "",
-              ))
-            : Container(
+            ? Container(
                 height: 70.h,
                 // color: AppConst.yellow,
                 child: DefaultTabController(
@@ -63,35 +82,45 @@ class _SearchListState extends State<SearchList> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TabBar(
-                        tabs: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Stores (${data?.stores?.length ?? 0})',
-                                style: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: AppConst.black,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                )),
+                      SizedBox(
+                        width: 170,
+                        height: 50,
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            tabBarTheme: TabBarTheme(
+                              indicator: UnderlineTabIndicator(
+                                borderSide:
+                                    BorderSide(color: Colors.green, width: 2.0),
+                              ),
+                            ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Products  (${totalProducts})',
-                                style: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: AppConst.black,
-                                  fontSize: SizeUtils.horizontalBlockSize * 4,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                )),
+                          child: TabBar(
+                             controller: _tabController,
+                            labelPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                            indicatorSize: TabBarIndicatorSize.label,
+                        
+                            tabs: [
+                              
+                              Text('Stores ${data?.stores?.length ?? 0}',
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: _selectedTabIndex == 0 ? AppConst.green : AppConst.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                              Text('Products  ${totalProducts}',
+                                  style: TextStyle(
+                                    fontFamily: 'MuseoSans',
+                                    color: _selectedTabIndex == 1 ? AppConst.green : AppConst.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                             
+                            ],
                           ),
-                          // Tab(
-                          //   text: 'Stores',
-                          // ),
-                          // Tab(text: 'Products'),
-                        ],
+                        ),
                       ),
                       Expanded(
                         child: TabBarView(
@@ -139,15 +168,20 @@ class _SearchListState extends State<SearchList> {
                                               );
                                             },
                                           )),
+                                    SizedBox(
+                                      height: 500,
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
                             SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
                               child: Padding(
                                 padding: EdgeInsets.only(left: 2.w, top: 1.h),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  // controller: this.widget.controller,
+                                  // scrollDirection: Axis.vertical,
                                   children: [
                                     _exploreController.isLoadingStoreData.value
                                         ? SizedBox()
@@ -181,11 +215,11 @@ class _SearchListState extends State<SearchList> {
                                               //   ),
                                               // ),
                                               ListView.separated(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
                                                 controller:
                                                     this.widget.controller,
                                                 shrinkWrap: true,
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
                                                 itemCount:
                                                     data?.inventories?.length ??
                                                         0,
@@ -202,6 +236,195 @@ class _SearchListState extends State<SearchList> {
                                               ),
                                             ],
                                           ),
+                                    SizedBox(
+                                      height: 300,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : Container(
+                height: 70.h,
+                // color: AppConst.yellow,
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 170,
+                        height: 50,
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            tabBarTheme: TabBarTheme(
+                              indicator: UnderlineTabIndicator(
+                                borderSide:
+                                    BorderSide(color: Colors.green, width: 2.0),
+                              ),
+                            ),
+                          ),
+                          child: TabBar(
+                            controller: _tabController,
+                            labelPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                            indicatorSize: TabBarIndicatorSize.label,
+                            tabs: [
+                              
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child:
+                                    Text('Stores ${data?.stores?.length ?? 0}',
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: _selectedTabIndex==0 ? AppConst.green : AppConst.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Products ${totalProducts}',
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: _selectedTabIndex==1 ? AppConst.green : AppConst.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                             
+                              // Tab(
+                              //   text: 'Stores',
+                              // ),
+                              // Tab(text: 'Products'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            SingleChildScrollView(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.w, vertical: 1.h),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    (_exploreController.isLoadingStoreData.value
+                                        ? ListView.separated(
+                                            shrinkWrap: true,
+                                            primary: false,
+                                            itemCount:
+                                                1, //storeSearchData.length,
+                                            itemBuilder: (context, index) {
+                                              return LoadingWidget();
+                                            },
+                                            separatorBuilder: (context, index) {
+                                              return SizedBox(
+                                                height: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    2.55,
+                                              );
+                                            },
+                                          )
+                                        : ListView.separated(
+                                            controller: this.widget.controller,
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemCount:
+                                                data?.stores?.length ?? 0,
+                                            itemBuilder: (context, index) {
+                                              return StoreListViewChild(
+                                                  Stores: data!.stores![index]);
+                                            },
+                                            separatorBuilder: (context, index) {
+                                              return SizedBox(
+                                                height: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    2.55,
+                                              );
+                                            },
+                                          )),
+                                    SizedBox(
+                                      height: 500,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 2.w, top: 1.h),
+                                child: Column(
+                                  // controller: this.widget.controller,
+                                  // scrollDirection: Axis.vertical,
+                                  children: [
+                                    _exploreController.isLoadingStoreData.value
+                                        ? SizedBox()
+                                        : ListView.separated(
+                                            controller: this.widget.controller,
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemCount:
+                                                data?.products?.length ?? 0,
+                                            itemBuilder: (context, index) {
+                                              return ExploreSearchProducts(
+                                                product: data!.products![index],
+                                              );
+                                            },
+                                            separatorBuilder: (context, index) {
+                                              return SizedBox(height: 2.h);
+                                            },
+                                          ),
+                                    _exploreController.isLoadingStoreData.value
+                                        ? SizedBox()
+                                        : Column(
+                                            children: [
+                                              // Padding(
+                                              //   padding: EdgeInsets.all(SizeUtils
+                                              //           .horizontalBlockSize *
+                                              //       2),
+                                              //   child: Text(
+                                              //     "Inventories",
+                                              //     style: AppStyles.BOLD_STYLE,
+                                              //   ),
+                                              // ),
+                                              ListView.separated(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                controller:
+                                                    this.widget.controller,
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    data?.inventories?.length ??
+                                                        0,
+                                                itemBuilder: (context, index) {
+                                                  return ExploreSearchProducts(
+                                                    product: data!
+                                                        .inventories![index],
+                                                  );
+                                                },
+                                                separatorBuilder:
+                                                    (context, index) {
+                                                  return SizedBox(height: 2.h);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                    SizedBox(
+                                      height: 300,
+                                    ),
                                   ],
                                 ),
                               ),

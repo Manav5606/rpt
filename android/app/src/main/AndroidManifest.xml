@@ -51,7 +51,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="https"
-                 android:host="applinks-7itu.vercel.app"/>
+                 android:host="recipto.in"/>
             </intent-filter>
             
             
