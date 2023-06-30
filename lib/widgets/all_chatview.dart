@@ -32,10 +32,11 @@ class _AllChatsState extends State<AllChats> {
   final MyAccountController _MyController = Get.find();
   final freshChatController _freshChat = Get.find();
 
-   Future<bool> handleBackPressed() async {
+  Future<bool> handleBackPressed() async {
     Get.offAllNamed(AppRoutes.BaseScreen);
     return false;
   }
+
   @override
   Widget build(BuildContext context) {
     dynamic arg = Get.arguments;
@@ -50,13 +51,14 @@ class _AllChatsState extends State<AllChats> {
           centerTitle: true,
           automaticallyImplyLeading: false,
           systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: AppConst.darkGreen,
+              statusBarColor: AppConst.green,
               statusBarIconBrightness: Brightness.light),
-          backgroundColor: AppConst.darkGreen,
+          backgroundColor: AppConst.green,
           title: Text(
             "Chats   ",
             style: TextStyle(
-                fontSize: SizeUtils.horizontalBlockSize * 5,
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 11.sp : 13.sp,
                 fontFamily: 'MuseoSans',
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
@@ -91,7 +93,7 @@ class _AllChatsState extends State<AllChats> {
                       child: Icon(
                     Icons.help_outline_outlined,
                     color: AppConst.white,
-                    size: 3.5.h,
+                    size: 2.8.h,
                   )
                       // Text(
                       //   "HELP",
@@ -107,7 +109,7 @@ class _AllChatsState extends State<AllChats> {
           ],
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 4.w),
+          padding: EdgeInsets.only(bottom: 1.h, left: 4.w, right: 4.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +139,7 @@ class _AllChatsState extends State<AllChats> {
               SizedBox(
                 height: 1.h,
               ),
-    
+
               /// Dont remove  comment code utils this line is here
               // Expanded(
               //   child: Container(
@@ -192,7 +194,7 @@ class _AllChatsState extends State<AllChats> {
                         "${_MyController.user.id}",
                       ]), //60d1a57f0d9c919a19251eb5
                     ]),
-    
+
                     /// making sure the chats only the user is in is shown
                     // filter: {
                     //   'members': {
@@ -204,16 +206,17 @@ class _AllChatsState extends State<AllChats> {
                         child: EmptyHistoryPage(
                             icon: Icons.chat,
                             text1: "You have no chats,",
-                            text2: " place a order to start the chat with store",
+                            text2:
+                                " place a order to start the chat with store",
                             text3: "")
                         // Text('You have no chats, start a chat with a customer'),
                         ),
-    
+
                     /// custom channel preview
                     channelPreviewBuilder: (_, channel) => Padding(
                       /// last message of the chat
                       padding: EdgeInsets.only(bottom: 5),
-    
+
                       /// or typing status
                       child: StreamBuilder(
                         /// chat message status builder
@@ -237,7 +240,7 @@ class _AllChatsState extends State<AllChats> {
                                 if (lastMessage == null) {
                                   return SizedBox();
                                 }
-    
+
                                 var text = lastMessage.text;
                                 final utcTime =
                                     DateTime.fromMicrosecondsSinceEpoch(
@@ -263,10 +266,10 @@ class _AllChatsState extends State<AllChats> {
                                       .join(' ');
                                   // log('channel.state!.messages :${channel.state!.messages}');
                                   log('lastMessage.text :${lastMessage.toJson()}');
-    
+
                                   text = '$prefix ${lastMessage.text ?? ''}';
                                 }
-    
+
                                 return GestureDetector(
                                   onTap: () {
                                     Get.to(ChattingScreen(
@@ -274,7 +277,8 @@ class _AllChatsState extends State<AllChats> {
                                     ));
                                   },
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 1.h),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 1.h),
                                     child: Container(
                                       // color: Colors.yellow,
                                       child: Row(
@@ -331,7 +335,8 @@ class _AllChatsState extends State<AllChats> {
                                             bottomPadding: 0,
                                             height: 6.5,
                                             logoPadding: 10,
-                                            logo: channel.extraData["store_logo"]
+                                            logo: channel
+                                                .extraData["store_logo"]
                                                 ?.toString(),
                                           ),
                                           SizedBox(
@@ -351,27 +356,33 @@ class _AllChatsState extends State<AllChats> {
                                                         MainAxisAlignment.start,
                                                     children: [
                                                       Container(
-                                                        width: 55.w,
+                                                        width: 60.w,
                                                         child: Text(
-                                                            channel.extraData[
+                                                            channel
+                                                                    .extraData[
                                                                         "store_name"]
                                                                     ?.toString() ??
                                                                 "",
                                                             //  user.extraData["email"]?.stringValue ?? ""
                                                             // "Store Name",
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             style: TextStyle(
                                                                 fontFamily:
                                                                     'MuseoSans',
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700,
-                                                                fontStyle: FontStyle
-                                                                    .normal,
-                                                                fontSize: SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    3.8,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                                fontSize: (SizerUtil
+                                                                            .deviceType ==
+                                                                        DeviceType
+                                                                            .tablet)
+                                                                    ? 9.sp
+                                                                    : 10.sp,
                                                                 color: AppConst
                                                                     .black)),
                                                       ),
@@ -393,14 +404,18 @@ class _AllChatsState extends State<AllChats> {
                                                           style: TextStyle(
                                                             fontFamily:
                                                                 'MuseoSans',
-                                                            color: AppConst.grey,
-                                                            fontSize: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                3.5,
+                                                            color:
+                                                                AppConst.grey,
+                                                            fontSize: (SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .tablet)
+                                                                ? 8.5.sp
+                                                                : 9.5.sp,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                           )),
                                                     ],
                                                   ),
@@ -426,16 +441,19 @@ class _AllChatsState extends State<AllChats> {
                                                   Row(
                                                     children: [
                                                       Container(
-                                                        width: 66.w,
+                                                        width: 70.w,
                                                         // height: 3.h,
                                                         child: Text(text!,
                                                             maxLines: 2,
                                                             overflow: TextOverflow
                                                                 .ellipsis,
                                                             style: TextStyle(
-                                                                fontSize: SizeUtils
-                                                                        .horizontalBlockSize *
-                                                                    3.5,
+                                                                fontSize: (SizerUtil
+                                                                            .deviceType ==
+                                                                        DeviceType
+                                                                            .tablet)
+                                                                    ? 9.sp
+                                                                    : 10.sp,
                                                                 fontFamily:
                                                                     'MuseoSans',
                                                                 fontWeight:
@@ -452,8 +470,8 @@ class _AllChatsState extends State<AllChats> {
                                                               0)
                                                           ? Container(
                                                               padding:
-                                                                  EdgeInsets.all(
-                                                                      6),
+                                                                  EdgeInsets
+                                                                      .all(6),
                                                               decoration: BoxDecoration(
                                                                   color: AppConst
                                                                       .green,
@@ -467,10 +485,12 @@ class _AllChatsState extends State<AllChats> {
                                                                         'MuseoSans',
                                                                     color: AppConst
                                                                         .white,
-                                                                    fontSize:
-                                                                        SizeUtils
-                                                                                .horizontalBlockSize *
-                                                                            3.5,
+                                                                    fontSize: (SizerUtil.deviceType ==
+                                                                            DeviceType
+                                                                                .tablet)
+                                                                        ? 8.5.sp
+                                                                        : 9.5
+                                                                            .sp,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
@@ -534,126 +554,126 @@ class _AllChatsState extends State<AllChats> {
     );
   }
 
-  GestureDetector chat_box_field(String CircleLetter, String name,
-      String message, GestureTapCallback? onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              child: Text(CircleLetter),
-              radius: 2.h,
-            ),
-            SizedBox(
-              width: 3.w,
-            ),
-            RichText(
-              text: TextSpan(
-                text: name,
-                style: TextStyle(
-                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                    color: AppConst.black),
-                children: <TextSpan>[
-                  TextSpan(text: '\n'),
-                  TextSpan(
-                      text: DateFormat('hh:mm a').format(DateTime.now()),
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: ' \n${message}'),
-                ],
-              ),
-            ),
-            ChannelsBloc(
-              child: ChannelListView(
-                pagination: PaginationParams(limit: 20),
+  // GestureDetector chat_box_field(String CircleLetter, String name,
+  //     String message, GestureTapCallback? onTap) {
+  //   return GestureDetector(
+  //     onTap: onTap,
+  //     child: Padding(
+  //       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         children: [
+  //           CircleAvatar(
+  //             child: Text(CircleLetter),
+  //             radius: 2.h,
+  //           ),
+  //           SizedBox(
+  //             width: 3.w,
+  //           ),
+  //           RichText(
+  //             text: TextSpan(
+  //               text: name,
+  //               style: TextStyle(
+  //                   fontSize: SizeUtils.horizontalBlockSize * 4.5,
+  //                   color: AppConst.black),
+  //               children: <TextSpan>[
+  //                 TextSpan(text: '\n'),
+  //                 TextSpan(
+  //                     text: DateFormat('hh:mm a').format(DateTime.now()),
+  //                     style: TextStyle(fontWeight: FontWeight.bold)),
+  //                 TextSpan(text: ' \n${message}'),
+  //               ],
+  //             ),
+  //           ),
+  //           ChannelsBloc(
+  //             child: ChannelListView(
+  //               pagination: PaginationParams(limit: 20),
 
-                /// making sure the chats only the user is in is shown
-                // filter: {
-                //   'members': {
-                //     '\$in': [StoreViewModel.store.value.id]
-                //   }
-                // },
-                /// when there is no chat builds this
-                emptyBuilder: (_) => Center(
-                  child:
-                      Text('You have no chats, start a chat with a customer'),
-                ),
+  //               /// making sure the chats only the user is in is shown
+  //               // filter: {
+  //               //   'members': {
+  //               //     '\$in': [StoreViewModel.store.value.id]
+  //               //   }
+  //               // },
+  //               /// when there is no chat builds this
+  //               emptyBuilder: (_) => Center(
+  //                 child:
+  //                     Text('You have no chats, start a chat with a customer'),
+  //               ),
 
-                /// custom channel preview
-                channelPreviewBuilder: (_, channel) => Padding(
-                  /// last message of the chat
-                  padding: EdgeInsets.only(bottom: 5),
+  //               /// custom channel preview
+  //               channelPreviewBuilder: (_, channel) => Padding(
+  //                 /// last message of the chat
+  //                 padding: EdgeInsets.only(bottom: 5),
 
-                  /// or typing status
-                  child: StreamBuilder(
-                    /// chat message status builder
-                    initialData: channel.state!.unreadCount,
-                    stream: channel.state!.unreadCountStream,
-                    builder: (context, snapshot) {
-                      return TypingIndicator(
-                        channel: channel,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            color: AppConst.grey),
-                        alternativeWidget: StreamBuilder<List<Message>>(
-                          stream: channel.state!.messagesStream,
-                          initialData: channel.state!.messages,
-                          builder: (context, snapshot) {
-                            final lastMessage = snapshot.data?.lastWhere(
-                              (m) => m.shadowed != true,
-                              orElse: () => null!,
-                            );
-                            if (lastMessage == null) {
-                              return SizedBox();
-                            }
+  //                 /// or typing status
+  //                 child: StreamBuilder(
+  //                   /// chat message status builder
+  //                   initialData: channel.state!.unreadCount,
+  //                   stream: channel.state!.unreadCountStream,
+  //                   builder: (context, snapshot) {
+  //                     return TypingIndicator(
+  //                       channel: channel,
+  //                       style: TextStyle(
+  //                           fontWeight: FontWeight.normal,
+  //                           color: AppConst.grey),
+  //                       alternativeWidget: StreamBuilder<List<Message>>(
+  //                         stream: channel.state!.messagesStream,
+  //                         initialData: channel.state!.messages,
+  //                         builder: (context, snapshot) {
+  //                           final lastMessage = snapshot.data?.lastWhere(
+  //                             (m) => m.shadowed != true,
+  //                             orElse: () => null!,
+  //                           );
+  //                           if (lastMessage == null) {
+  //                             return SizedBox();
+  //                           }
 
-                            var text = lastMessage.text;
-                            if (lastMessage.isDeleted) {
-                              text = 'This message was deleted.';
-                            } else if (lastMessage.attachments != null) {
-                              final prefix = lastMessage.attachments
-                                  .map((e) {
-                                    if (e.type == 'image') {
-                                      return '📷';
-                                    } else if (e.type == 'video') {
-                                      return '🎬';
-                                    } else if (e.type == 'giphy') {
-                                      return 'GIF';
-                                    }
-                                    return null;
-                                  })
-                                  .where((e) => e != null)
-                                  .join(' ');
+  //                           var text = lastMessage.text;
+  //                           if (lastMessage.isDeleted) {
+  //                             text = 'This message was deleted.';
+  //                           } else if (lastMessage.attachments != null) {
+  //                             final prefix = lastMessage.attachments
+  //                                 .map((e) {
+  //                                   if (e.type == 'image') {
+  //                                     return '📷';
+  //                                   } else if (e.type == 'video') {
+  //                                     return '🎬';
+  //                                   } else if (e.type == 'giphy') {
+  //                                     return 'GIF';
+  //                                   }
+  //                                   return null;
+  //                                 })
+  //                                 .where((e) => e != null)
+  //                                 .join(' ');
 
-                              text = '$prefix ${lastMessage.text ?? ''}';
-                            }
+  //                             text = '$prefix ${lastMessage.text ?? ''}';
+  //                           }
 
-                            return Text(text!,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: AppConst.grey));
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                sort: [SortOption('last_message_at')],
-              ),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppConst.grey,
-              size: 3.h,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //                           return Text(text!,
+  //                               maxLines: 3,
+  //                               overflow: TextOverflow.ellipsis,
+  //                               style: TextStyle(
+  //                                   fontWeight: FontWeight.normal,
+  //                                   color: AppConst.grey));
+  //                         },
+  //                       ),
+  //                     );
+  //                   },
+  //                 ),
+  //               ),
+  //               sort: [SortOption('last_message_at')],
+  //             ),
+  //           ),
+  //           Spacer(),
+  //           Icon(
+  //             Icons.arrow_forward_ios_rounded,
+  //             color: AppConst.grey,
+  //             size: 3.h,
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
