@@ -51,6 +51,7 @@ class AppConst {
 
   static const Color darkGrey = Color(0xff707070);
   static const Color lightGrey = Color(0xffE7E7F1);
+  static const Color shimmerbgColor = Color(0xffF3F3F5);
   static const Color veryLightGrey = Color(0xffF4F4F4);
 
   static final Duration duration = Duration(milliseconds: 300);

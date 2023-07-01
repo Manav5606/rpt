@@ -22,7 +22,7 @@ class SearchField extends StatelessWidget {
       //   color: kPrimaryColor,
       // ),
       this.suffixIcon,
-      this.placeholder = "Add a new address",
+      this.placeholder = "Address search e.g. Kukatpally",
       this.focusNode,
       required this.controller})
       : super(key: key);
@@ -30,11 +30,11 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      // borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(50),
       // elevation: 2,
       child: Container(
         // margin: EdgeInsets.only(top: 1.h),
-        height: 4.8.h,
+        height: 4.6.h,
         child: Center(
           child: TextFormField(
             onChanged: onChange,
@@ -56,25 +56,26 @@ class SearchField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: TextStyle(
-                fontFamily: 'MuseoSans',
-                fontWeight: FontWeight.w600,
-                fontStyle: FontStyle.normal,
-                fontSize:
-                    (SizerUtil.deviceType == DeviceType.tablet) ? 9.sp : 10.sp,
-                color: AppConst.grey,
-              ),
+                  fontFamily: 'MuseoSans',
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                  fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                      ? 9.sp
+                      : 10.sp,
+                  color: Color(0xff878C9B) //AppConst.grey,
+                  ),
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
-              fillColor: AppConst.veryLightGrey,
+              fillColor: AppConst.shimmerbgColor,
               filled: true,
               isDense: true,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(28),
+                  borderRadius: BorderRadius.circular(50),
                   borderSide: BorderSide.none
                   // borderSide: const BorderSide(color: AppConst.black, width: 1.5),
                   ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(28),
+                  borderRadius: BorderRadius.circular(50),
                   borderSide: BorderSide.none),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),

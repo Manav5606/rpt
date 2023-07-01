@@ -33,10 +33,12 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
   bool? issignup;
   bool? homeTrue;
   String page = "";
-void _setMapStyle(GoogleMapController controller) async {
-  String style = await DefaultAssetBundle.of(context).loadString('assets/map_style.json');
-  controller.setMapStyle(style);
-}
+  void _setMapStyle(GoogleMapController controller) async {
+    String style = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_style.json');
+    controller.setMapStyle(style);
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(_addLocationController.currentPosition.latitude);
@@ -61,10 +63,11 @@ void _setMapStyle(GoogleMapController controller) async {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'MuseoSans',
-            fontWeight: FontWeight.w700,
-            fontStyle: FontStyle.normal,
-            fontSize: SizeUtils.horizontalBlockSize * 4.5,
             color: AppConst.black,
+            fontSize:
+                (SizerUtil.deviceType == DeviceType.tablet) ? 9.sp : 11.sp,
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.normal,
           ),
         ),
       ),
@@ -83,10 +86,10 @@ void _setMapStyle(GoogleMapController controller) async {
               onCameraIdle: _addLocationController.onCameraIdle,
               zoomControlsEnabled: false,
               onCameraMove: _addLocationController.onCameraMove,
-               onMapCreated: (GoogleMapController controller) {
-      _addLocationController.onMapCreated(controller);
-      _setMapStyle(controller);
-    },
+              onMapCreated: (GoogleMapController controller) {
+                _addLocationController.onMapCreated(controller);
+                _setMapStyle(controller);
+              },
             ),
           ),
 
@@ -117,7 +120,7 @@ void _setMapStyle(GoogleMapController controller) async {
                                 .middlePointOfScreenOnMap!.latitude,
                             _addLocationController
                                 .middlePointOfScreenOnMap!.longitude));
-          
+
                         await _myWalletController
                             .getAllWalletByCustomerByBusinessType();
                         int? value = await _myWalletController
