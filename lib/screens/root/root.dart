@@ -114,7 +114,8 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
                       arguments: {"signup": true});
                 }
               } else {
-                await Get.offNamed(AppRoutes.NewBaseScreen);
+                await Get.offNamed(AppRoutes.BaseScreen,
+                    arguments: {"index": 0});
               }
               // Get.offAllNamed(AppRoutes.BaseScreen);
             });

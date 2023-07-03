@@ -1,5 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:customer_app/screens/new_base_screen.dart';
 import 'package:customer_app/screens/root/network_check.dart';
+
 import 'package:customer_app/widgets/all_chatview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +13,8 @@ import 'package:customer_app/widgets/bottom_navigation.dart';
 import 'package:get/get.dart';
 
 class BaseScreen extends StatefulWidget {
-    final int? index;
+  final int? index;
 
-
-  
   const BaseScreen({Key? key, this.index}) : super(key: key);
 
   @override
@@ -28,14 +28,13 @@ class _BaseScreenState extends State<BaseScreen> {
   void initState() {
     super.initState();
     Map arg = Get.arguments ?? {};
-     int? index = arg['index'] ?? 0;
+    int? index = arg['index'] ?? 0;
     BottomNavigation.pageIndex.value = index ?? 0;
     // _controller = PersistentTabController(initialIndex: 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    
     Connectivity connectivity = Connectivity();
     return Scaffold(
         body: StreamBuilder<ConnectivityResult>(
@@ -67,12 +66,13 @@ class _BaseScreenState extends State<BaseScreen> {
       case 1:
         return AllChats();
       case 2:
-        return ExploreScreen();
+        return HomeScreen();
       case 3:
+        return NewBaseScreen();
+      case 4:
         return MyAccountPage();
       default:
         return HomeScreen();
     }
   }
-
 }

@@ -181,11 +181,12 @@ class _ActiveOrderTrackingScreenState extends State<ActiveOrderTrackingScreen> {
                     children: [
                       InkWell(
                           onTap: (() {
-                            if (widget.navBackTo == "newbasescreen") {
-                              Get.toNamed(AppRoutes.NewBaseScreen);
-                            } else {
-                              Get.toNamed(AppRoutes.BaseScreen);
-                            }
+                            // if (widget.navBackTo == "newbasescreen") {
+                            //   Get.toNamed(AppRoutes.NewBaseScreen);
+                            // } else {
+                            Get.toNamed(AppRoutes.BaseScreen,
+                                arguments: {"index": 0});
+                            // }
                           }),
                           child: Container(
                             width: 36,

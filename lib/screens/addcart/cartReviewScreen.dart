@@ -82,12 +82,12 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
           Get.back();
           //exit this screen
 
-          if (navBackTo == "newbasescreen") {
-            Get.offAllNamed(AppRoutes.NewBaseScreen);
-          } else {
-            Get.offAllNamed(AppRoutes.BaseScreen);
-            // Get.back();
-          }
+          // if (navBackTo == "newbasescreen") {
+          //   Get.offAllNamed(AppRoutes.NewBaseScreen);
+          // } else {
+          Get.offAllNamed(AppRoutes.BaseScreen, arguments: {"index": 0});
+          // Get.back();
+          // }
         }).show(context);
     return false;
   }
@@ -769,14 +769,14 @@ class _CartReviewScreenState extends State<CartReviewScreen> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          if (navBackTo == "newbasescreen") {
-                                            Get.offAllNamed(
-                                                AppRoutes.NewBaseScreen);
-                                          } else {
-                                            Get.offAllNamed(
-                                                AppRoutes.BaseScreen);
-                                            // Get.back();
-                                          }
+                                          // if (navBackTo == "newbasescreen") {
+                                          //   Get.offAllNamed(
+                                          //       AppRoutes.NewBaseScreen);
+                                          // } else {
+                                          Get.offAllNamed(AppRoutes.BaseScreen,
+                                              arguments: {"index": 0});
+                                          // Get.back();
+                                          // }
                                         },
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(

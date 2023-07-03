@@ -3,7 +3,7 @@ class StringContants {
   static const Home = "HOME";
   static const chats = "CHATS";
   static const explore = "EXPLORE";
-  static const history = "History";
+  static const wallet = "WALLETS";
   static const myAccount = "ACCOUNT";
 
   //Orders Screen

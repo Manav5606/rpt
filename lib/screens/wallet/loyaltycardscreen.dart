@@ -34,6 +34,7 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
   final PaymentController _paymentController = Get.find();
   final MyAccountController _myaccount = Get.find();
   final AddLocationController _addLocationController = Get.find();
+  bool? isAddressChange;
 
   @override
   void initState() {
@@ -45,16 +46,24 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
           UserViewModel.currentLocation.value.longitude);
       await _paymentController.getRedeemCashInStorePage();
     });
+    Map arg = Get.arguments ?? {};
+    isAddressChange = arg['isAddressChange'] ?? false;
   }
-   Future<bool> handleBackPressed() async {
-    Get.offAllNamed(AppRoutes.BaseScreen);
+
+  Future<bool> handleBackPressed() async {
+    if (isAddressChange = true) {
+      Get.toNamed(AppRoutes.BaseScreen, arguments: {"index": 0});
+    } else {
+      Get.back();
+    }
+
     return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop:handleBackPressed,
+      onWillPop: handleBackPressed,
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -67,7 +76,11 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoutes.BaseScreen);
+                  if (isAddressChange = true) {
+                    Get.toNamed(AppRoutes.BaseScreen, arguments: {"index": 0});
+                  } else {
+                    Get.back();
+                  }
                 },
                 child: Icon(
                   Icons.arrow_back,
@@ -105,7 +118,8 @@ class _LoyaltyCardScreenState extends State<LoyaltyCardScreen> {
                     _paymentController.latLng = LatLng(
                         UserViewModel.currentLocation.value.latitude,
                         UserViewModel.currentLocation.value.longitude);
-                    await _paymentController.getScanReceiptPageNearMeStoresData();
+                    await _paymentController
+                        .getScanReceiptPageNearMeStoresData();
                     // if (Constants.isAbleToCallApi)
                     //   await _homeController.getAllCartsData();
                   },

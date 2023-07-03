@@ -259,14 +259,16 @@ class LocationRepository {
 
   void BackToExplore() {
     // Get.offNamed(AppRoutes.ExploreScreen);
-    Get.toNamed(AppRoutes.BaseScreen, arguments: {"index": 2});
+    Get.toNamed(AppRoutes.BaseScreen, arguments: {"index": 3});
   }
 
   void BackToScan() {
-    Get.offAllNamed(AppRoutes.ScanRecipetSearch);
+    Get.offAllNamed(AppRoutes.ScanRecipetSearch,
+        arguments: {"isAddressChange": true});
   }
 
   void BackToRedeem() {
-    Get.offAllNamed(AppRoutes.LoyaltyCardScreen);
+    Get.offAllNamed(AppRoutes.LoyaltyCardScreen,
+        arguments: {"isAddressChange": true});
   }
 }

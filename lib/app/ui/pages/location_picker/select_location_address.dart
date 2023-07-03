@@ -227,7 +227,8 @@ class _SelectLocationAddressState extends State<SelectLocationAddress> {
                                                 _homeController
                                                     .isLoading.value = true;
                                                 Get.offAllNamed(
-                                                    AppRoutes.NewBaseScreen);
+                                                    AppRoutes.BaseScreen,
+                                                    arguments: {"index": 3});
 
                                                 _addLocationController
                                                         .userAddress.value =

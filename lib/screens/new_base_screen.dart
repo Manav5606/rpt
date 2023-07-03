@@ -94,21 +94,21 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
           ? shimmer()
           : AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle(
-                  statusBarColor: AppConst.darkGreen,
+                  statusBarColor: AppConst.green,
                   statusBarIconBrightness: Brightness.light),
               child: Scaffold(
-                backgroundColor: AppConst.darkGreen,
+                backgroundColor: AppConst.green,
                 body: SafeArea(
                   child: DefaultTabController(
                     length: 3,
                     child: Column(
                       children: [
-                        Obx(
-                          () => DisplayAmountAndSkipButton(
-                            walletAmount: _myWalletController
-                                .walletbalanceOfBusinessType.value,
-                          ),
-                        ),
+                        // Obx(
+                        //   () => DisplayAmountAndSkipButton(
+                        //     walletAmount: _myWalletController
+                        //         .walletbalanceOfBusinessType.value,
+                        //   ),
+                        // ),
                         TabBar(
                             isScrollable: true,
                             indicator: BoxDecoration(
@@ -825,7 +825,7 @@ class PayAtStore extends StatelessWidget {
                                       .length ??
                                   0,
                           itemBuilder: (context, index) {
-                            print(_myWalletController.selectBusineesTypeId);
+                            // print(_myWalletController.selectBusineesTypeId);
                             return InkWell(
                               onTap: () {
                                 RedeemCashInStorePageData payviewData =

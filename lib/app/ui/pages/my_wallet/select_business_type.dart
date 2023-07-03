@@ -51,7 +51,7 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
           if (_myWalletcontroller.issignup.value == true) {
             Get.bottomSheet(SignupBs());
           } else {
-            Get.offAllNamed(AppRoutes.NewBaseScreen);
+            Get.offAllNamed(AppRoutes.BaseScreen, arguments: {"index": 3});
           }
 
           // Get.back();
@@ -104,7 +104,8 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                       await _myWalletcontroller.getAllWalletByCustomer();
                       _myWalletcontroller.walletbalanceOfBusinessType.value =
                           _myWalletcontroller.StoreTotalWelcomeAmount();
-                      Get.offNamed(AppRoutes.NewBaseScreen);
+                      Get.offNamed(AppRoutes.BaseScreen,
+                          arguments: {"index": 3});
                     }
                   },
                   child: Container(

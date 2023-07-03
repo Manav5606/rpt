@@ -113,6 +113,6 @@ class PaymentController extends GetxController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    getScanNearDataProduct();
+    // getScanNearDataProduct();
   }
 }

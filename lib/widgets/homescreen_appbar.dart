@@ -26,7 +26,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 2.h, right: 2.w),
+      padding: EdgeInsets.only(left: 2.w, top: 1.h, bottom: 1.h, right: 2.w),
       color: AppConst.green,
       child: GestureDetector(
         onTap: onTap,

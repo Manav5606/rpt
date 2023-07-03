@@ -11,6 +11,7 @@ import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/screens/more_stores/carousel_animation.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
+import 'package:customer_app/widgets/storesearchfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen>
   bool last = false;
   final HomeController _homeController = Get.put(HomeController());
 
-  final PaymentController _paymentController = Get.put(PaymentController());
+  final PaymentController _paymentController = Get.find();
   final AddCartController _addCartController = Get.put(AddCartController());
   final MyAccountController _myAccountController =
       Get.put(MyAccountController(MyAccountRepository(), HiveRepository()));
@@ -306,6 +307,16 @@ class _HomeScreenState extends State<HomeScreen>
                             },
                             isHomeScreen: true,
                           ),
+                        ),
+                        Container(
+                          color: AppConst.green,
+                          padding: EdgeInsets.only(
+                              left: 3.w, right: 3.w, bottom: 1.h),
+                          child: GestureDetector(
+                              onTap: () {
+                                Get.toNamed(AppRoutes.ExploreScreen);
+                              },
+                              child: StoreSearchField()),
                         ),
                         SizedBox(
                           height: 1.h,
@@ -1174,209 +1185,200 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       ],
                     ),
-                  Positioned(
-                    right: 2.w,
-                    bottom: 2.h,
-                    child: FloatingActionButton(
-                      heroTag: '2',
-                      elevation: 1,
-                      backgroundColor: Color(0xffffa300),
-                      // AppConst.kPrimaryColor,
-                      onPressed: () {
-                        Get.defaultDialog(
-                            titlePadding: EdgeInsets.symmetric(
-                                vertical: 1.h, horizontal: 2.w),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 1.h, horizontal: 2.w),
-                            title: "Choose any one",
-                            titleStyle: TextStyle(
-                              fontFamily: 'MuseoSans',
-                              color: AppConst.black,
-                              fontSize: SizeUtils.horizontalBlockSize * 4,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            content: Container(
-                              width: 90.w,
-                              height: 18.h,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    children: [
-                                      InkWell(
-                                          onTap: () async {
-                                            // await _homeController.checkLocationPermission();
-                                            // if (_homeController.checkPermission.value) {
-                                            //   Position position = await Geolocator.getCurrentPosition();
-                                            //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
-                                            //   await _paymentController.getScanReceiptPageNearMeStoresData();
-                                            //   Get.back();
-                                            //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
-                                            //       ? null
-                                            //       : Get.toNamed(AppRoutes.ScanRecipetSearch);
-                                            // } else {
-                                            _paymentController.latLng = LatLng(
-                                                UserViewModel.currentLocation
-                                                    .value.latitude,
-                                                UserViewModel.currentLocation
-                                                    .value.longitude);
-                                            await _paymentController
-                                                .getScanReceiptPageNearMeStoresData();
-                                            Get.back();
-                                            (_paymentController
-                                                        .getRedeemCashInStorePageData
-                                                        .value
-                                                        ?.error ??
-                                                    false)
-                                                ? null
-                                                : Get.toNamed(AppRoutes
-                                                    .ScanRecipetSearch);
-                                            // }
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 1.h, horizontal: 2.w),
-                                            width: 30.w,
-                                            height: 18.h,
-                                            decoration: new BoxDecoration(
-                                                color: AppConst.veryLightGrey,
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                SizedBox(
-                                                  height: 1.h,
-                                                ),
-                                                SizedBox(
-                                                  height: 8.h,
-                                                  child: Image(
-                                                    image: AssetImage(
-                                                      'assets/images/Scan.png',
-                                                    ),
-                                                  ),
-                                                ),
-                                                Text("Scan Receipt",
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                      fontFamily: 'MuseoSans',
-                                                      color: AppConst.black,
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          3.8,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                    ))
-                                              ],
-                                            ),
-                                          )
+                  // FloatingActionButton(
+                  //   heroTag: '2',
+                  //   elevation: 1,
+                  //   backgroundColor: Color(0xffffa300),
+                  //   // AppConst.kPrimaryColor,
+                  //   onPressed: () {
+                  //     Get.defaultDialog(
+                  //         titlePadding: EdgeInsets.symmetric(
+                  //             vertical: 1.h, horizontal: 2.w),
+                  //         contentPadding: EdgeInsets.symmetric(
+                  //             vertical: 1.h, horizontal: 2.w),
+                  //         title: "Choose any one",
+                  //         titleStyle: TextStyle(
+                  //           fontFamily: 'MuseoSans',
+                  //           color: AppConst.black,
+                  //           fontSize: SizeUtils.horizontalBlockSize * 4,
+                  //           fontWeight: FontWeight.w700,
+                  //           fontStyle: FontStyle.normal,
+                  //         ),
+                  //         content: Container(
+                  //           width: 90.w,
+                  //           height: 18.h,
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //             children: [
+                  //               Column(
+                  //                 children: [
+                  //                   InkWell(
+                  //                       onTap: () async {
+                  //                         // await _homeController.checkLocationPermission();
+                  //                         // if (_homeController.checkPermission.value) {
+                  //                         //   Position position = await Geolocator.getCurrentPosition();
+                  //                         //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
+                  //                         //   await _paymentController.getScanReceiptPageNearMeStoresData();
+                  //                         //   Get.back();
+                  //                         //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
+                  //                         //       ? null
+                  //                         //       : Get.toNamed(AppRoutes.ScanRecipetSearch);
+                  //                         // } else {
+                  //                         _paymentController.latLng = LatLng(
+                  //                             UserViewModel.currentLocation
+                  //                                 .value.latitude,
+                  //                             UserViewModel.currentLocation
+                  //                                 .value.longitude);
+                  //                         await _paymentController
+                  //                             .getScanReceiptPageNearMeStoresData();
+                  //                         Get.back();
+                  //                         (_paymentController
+                  //                                     .getRedeemCashInStorePageData
+                  //                                     .value
+                  //                                     ?.error ??
+                  //                                 false)
+                  //                             ? null
+                  //                             : Get.toNamed(
+                  //                                 AppRoutes.ScanRecipetSearch);
+                  //                         // }
+                  //                       },
+                  //                       child: Container(
+                  //                         padding: EdgeInsets.symmetric(
+                  //                             vertical: 1.h, horizontal: 2.w),
+                  //                         width: 30.w,
+                  //                         height: 18.h,
+                  //                         decoration: new BoxDecoration(
+                  //                             color: AppConst.veryLightGrey,
+                  //                             borderRadius:
+                  //                                 BorderRadius.circular(10)),
+                  //                         child: Column(
+                  //                           mainAxisAlignment:
+                  //                               MainAxisAlignment.spaceEvenly,
+                  //                           children: [
+                  //                             SizedBox(
+                  //                               height: 1.h,
+                  //                             ),
+                  //                             SizedBox(
+                  //                               height: 8.h,
+                  //                               child: Image(
+                  //                                 image: AssetImage(
+                  //                                   'assets/images/Scan.png',
+                  //                                 ),
+                  //                               ),
+                  //                             ),
+                  //                             Text("Scan Receipt",
+                  //                                 maxLines: 1,
+                  //                                 style: TextStyle(
+                  //                                   fontFamily: 'MuseoSans',
+                  //                                   color: AppConst.black,
+                  //                                   fontSize: SizeUtils
+                  //                                           .horizontalBlockSize *
+                  //                                       3.8,
+                  //                                   fontWeight: FontWeight.w500,
+                  //                                   fontStyle: FontStyle.normal,
+                  //                                 ))
+                  //                           ],
+                  //                         ),
+                  //                       )
 
-                                          // CircleAvatar(
-                                          //   radius: 10.w,
-                                          //   foregroundImage: NetworkImage(
-                                          //       "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
-                                          // ),
-                                          ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      InkWell(
-                                          onTap: () async {
-                                            _paymentController.isLoading.value =
-                                                true;
-                                            // await _homeController.checkLocationPermission();
-                                            // if (_homeController.checkPermission.value) {
-                                            //   Position position = await Geolocator.getCurrentPosition();
-                                            //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
-                                            //   await _paymentController.getRedeemCashInStorePage();
-                                            //   Get.back();
-                                            //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
-                                            //       ? null
-                                            //       : Get.toNamed(AppRoutes.LoyaltyCardScreen);
-                                            // } else {
-                                            _paymentController.latLng = LatLng(
-                                                UserViewModel.currentLocation
-                                                    .value.latitude,
-                                                UserViewModel.currentLocation
-                                                    .value.longitude);
-                                            await _paymentController
-                                                .getRedeemCashInStorePage();
-                                            Get.back();
-                                            (_paymentController
-                                                        .getRedeemCashInStorePageData
-                                                        .value
-                                                        ?.error ??
-                                                    false)
-                                                ? null
-                                                : Get.toNamed(AppRoutes
-                                                    .LoyaltyCardScreen);
-                                            // }
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 1.h, horizontal: 2.w),
-                                            width: 30.w,
-                                            height: 18.h,
-                                            decoration: new BoxDecoration(
-                                                color: AppConst.veryLightGrey,
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                SizedBox(
-                                                  height: 1.h,
-                                                ),
-                                                SizedBox(
-                                                  height: 8.h,
-                                                  child: Image(
-                                                    image: AssetImage(
-                                                      'assets/images/Redeem.png',
-                                                    ),
-                                                  ),
-                                                ),
-                                                Text("Pay To Store",
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                      fontFamily: 'MuseoSans',
-                                                      color: AppConst.black,
-                                                      fontSize: SizeUtils
-                                                              .horizontalBlockSize *
-                                                          3.8,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                    ))
-                                              ],
-                                            ),
-                                          )
-                                          // CircleAvatar(
-                                          //   radius: 10.w,
-                                          //   backgroundColor: Colors.white,
-                                          //   foregroundImage: NetworkImage(
-                                          //       "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
-                                          // ),
-                                          ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ));
-                      },
-                      child: Icon(
-                        CupertinoIcons.camera,
-                        size: 3.8.h,
-                      ),
-                    ),
-                  ),
+                  //                       // CircleAvatar(
+                  //                       //   radius: 10.w,
+                  //                       //   foregroundImage: NetworkImage(
+                  //                       //       "https://img.freepik.com/free-vector/tiny-people-using-qr-code-online-payment-isolated-flat-illustration_74855-11136.jpg?t=st=1649328483~exp=1649329083~hmac=5171d5a26cfeb0c063c6afc1f8af8cb4460c207134f830b2ff0d833279d8bf7e&w=1380"),
+                  //                       // ),
+                  //                       ),
+                  //                 ],
+                  //               ),
+                  //               Column(
+                  //                 children: [
+                  //                   InkWell(
+                  //                       onTap: () async {
+                  //                         _paymentController.isLoading.value =
+                  //                             true;
+                  //                         // await _homeController.checkLocationPermission();
+                  //                         // if (_homeController.checkPermission.value) {
+                  //                         //   Position position = await Geolocator.getCurrentPosition();
+                  //                         //   _paymentController.latLng = LatLng(position.latitude, position.longitude);
+                  //                         //   await _paymentController.getRedeemCashInStorePage();
+                  //                         //   Get.back();
+                  //                         //   (_paymentController.getRedeemCashInStorePageData.value?.error ?? false)
+                  //                         //       ? null
+                  //                         //       : Get.toNamed(AppRoutes.LoyaltyCardScreen);
+                  //                         // } else {
+                  //                         _paymentController.latLng = LatLng(
+                  //                             UserViewModel.currentLocation
+                  //                                 .value.latitude,
+                  //                             UserViewModel.currentLocation
+                  //                                 .value.longitude);
+                  //                         await _paymentController
+                  //                             .getRedeemCashInStorePage();
+                  //                         Get.back();
+                  //                         (_paymentController
+                  //                                     .getRedeemCashInStorePageData
+                  //                                     .value
+                  //                                     ?.error ??
+                  //                                 false)
+                  //                             ? null
+                  //                             : Get.toNamed(
+                  //                                 AppRoutes.LoyaltyCardScreen);
+                  //                         // }
+                  //                       },
+                  //                       child: Container(
+                  //                         padding: EdgeInsets.symmetric(
+                  //                             vertical: 1.h, horizontal: 2.w),
+                  //                         width: 30.w,
+                  //                         height: 18.h,
+                  //                         decoration: new BoxDecoration(
+                  //                             color: AppConst.veryLightGrey,
+                  //                             borderRadius:
+                  //                                 BorderRadius.circular(10)),
+                  //                         child: Column(
+                  //                           mainAxisAlignment:
+                  //                               MainAxisAlignment.spaceEvenly,
+                  //                           children: [
+                  //                             SizedBox(
+                  //                               height: 1.h,
+                  //                             ),
+                  //                             SizedBox(
+                  //                               height: 8.h,
+                  //                               child: Image(
+                  //                                 image: AssetImage(
+                  //                                   'assets/images/Redeem.png',
+                  //                                 ),
+                  //                               ),
+                  //                             ),
+                  //                             Text("Pay To Store",
+                  //                                 maxLines: 1,
+                  //                                 style: TextStyle(
+                  //                                   fontFamily: 'MuseoSans',
+                  //                                   color: AppConst.black,
+                  //                                   fontSize: SizeUtils
+                  //                                           .horizontalBlockSize *
+                  //                                       3.8,
+                  //                                   fontWeight: FontWeight.w500,
+                  //                                   fontStyle: FontStyle.normal,
+                  //                                 ))
+                  //                           ],
+                  //                         ),
+                  //                       )
+                  //                       // CircleAvatar(
+                  //                       //   radius: 10.w,
+                  //                       //   backgroundColor: Colors.white,
+                  //                       //   foregroundImage: NetworkImage(
+                  //                       //       "https://img.freepik.com/free-vector/successful-financial-operation-business-accounting-invoice-report-happy-people-with-tax-receipt-duty-paying-money-savings-cash-income-vector-isolated-concept-metaphor-illustration_335657-2188.jpg?t=st=1649328544~exp=1649329144~hmac=635d4a3527c71f715e710f64fa046e8faf59de565b6be17f34a03ef3d5d8fa4d&w=826"),
+                  //                       // ),
+                  //                       ),
+                  //                 ],
+                  //               )
+                  //             ],
+                  //           ),
+                  //         ));
+                  //   },
+                  //   child: Icon(
+                  //     CupertinoIcons.camera,
+                  //     size: 3.h,
+                  //   ),
+                  // ),
                 ],
               ),
             ),

@@ -101,7 +101,8 @@ class StoreViewProductsList extends StatelessWidget {
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
                                           crossAxisSpacing: 2.w,
-                                          mainAxisSpacing: 1.h),
+                                          mainAxisSpacing: 1.h,
+                                          childAspectRatio: 0.7),
                                   children: List.generate(
                                       storesWithProductsModel
                                               .products?.length ??

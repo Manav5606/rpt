@@ -292,7 +292,7 @@ class SignInScreenController extends GetxController {
       await _myWalletController.getAllWalletByCustomer();
       _myWalletController.walletbalanceOfBusinessType.value =
           _myWalletController.StoreTotalWelcomeAmount();
-      Get.offNamed(AppRoutes.NewBaseScreen);
+      Get.offNamed(AppRoutes.BaseScreen, arguments: {"index": 0});
     }
   }
 
@@ -366,7 +366,8 @@ class SignInScreenController extends GetxController {
                     arguments: {"signup": true});
               }
             } else {
-              await Get.offAllNamed(AppRoutes.NewBaseScreen);
+              await Get.offAllNamed(AppRoutes.BaseScreen,
+                  arguments: {"index": 3});
               isLoading.value = false;
             }
           });
@@ -383,7 +384,7 @@ class SignInScreenController extends GetxController {
             WidgetsBinding.instance.addPostFrameCallback((_) async {
               if (SignUp && (userModel?.firstName != null)) {
                 _myWalletController.issignup.value = true;
-              
+
                 FireBaseNotification().firebaseCloudMessagingLSetup();
                 await Get.offAllNamed(AppRoutes.SelectLocationAddress,
                     arguments: {

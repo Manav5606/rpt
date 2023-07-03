@@ -193,12 +193,13 @@ class _HistoryOrderTrackingScreenState
                                     child: GestureDetector(
                                       // color: Colors.white,
                                       onTap: (() {
-                                        if (widget.navBackTo ==
-                                            "newbasescreen") {
-                                          Get.toNamed(AppRoutes.NewBaseScreen);
-                                        } else {
-                                          Get.toNamed(AppRoutes.BaseScreen);
-                                        }
+                                        // if (widget.navBackTo ==
+                                        //     "newbasescreen") {
+                                        //   Get.toNamed(AppRoutes.NewBaseScreen);
+                                        // } else {
+                                        Get.toNamed(AppRoutes.BaseScreen,
+                                            arguments: {"index": 0});
+                                        // }
                                       }),
                                       child: Icon(
                                         Icons.close,

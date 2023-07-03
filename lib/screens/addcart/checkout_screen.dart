@@ -121,7 +121,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
               builder: (BuildContext context) => OrderSucessScreen(
                     order: _addCartController.orderModel.value!,
                     type: "order",
-                    navBackTo: navBackTo,
+                    // navBackTo: navBackTo,
                   )),
           (Route<dynamic> route) => route.isFirst);
       _addCartController.refresh();
@@ -135,13 +135,12 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           ),
           transition: Transition.fadeIn);
       Timer(Duration(seconds: 2), () {
-
-         if (navBackTo ==
-                                            "newbasescreen") {
-                                          Get.toNamed(AppRoutes.NewBaseScreen);
-                                        } else {
-                                          Get.toNamed(AppRoutes.BaseScreen);
-                                        }
+        //  if (navBackTo ==
+        //                                     "newbasescreen") {
+        //                                   Get.toNamed(AppRoutes.NewBaseScreen);
+        //                                 } else {
+        Get.toNamed(AppRoutes.BaseScreen, arguments: {"index": 0});
+        // }
         // Get.offAllNamed(AppRoutes.BaseScreen);
       });
       // Snack.bottom('Error', 'Failed to send receipt');
@@ -193,7 +192,7 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
               builder: (BuildContext context) => OrderSucessScreen(
                     order: _addCartController.orderModel.value!,
                     type: "order",
-                    navBackTo: navBackTo,
+                    // navBackTo: navBackTo,
                   )),
           (Route<dynamic> route) => route.isFirst);
       _addCartController.refresh();
@@ -204,16 +203,14 @@ class _OrderCheckOutScreenState extends State<OrderCheckOutScreen> {
           OrderFailScreen(
             order: _addCartController.orderModel.value!,
             type: "order",
-            
           ),
           transition: Transition.fadeIn);
       Timer(Duration(seconds: 2), () {
-         if (navBackTo ==
-                                            "newbasescreen") {
-                                          Get.toNamed(AppRoutes.NewBaseScreen);
-                                        } else {
-                                          Get.toNamed(AppRoutes.BaseScreen);
-                                        }
+        // if (navBackTo == "newbasescreen") {
+        //   Get.toNamed(AppRoutes.NewBaseScreen);
+        // } else {
+        Get.toNamed(AppRoutes.BaseScreen, arguments: {"index": 0});
+        // }
         // Get.offAllNamed(AppRoutes.BaseScreen);
       });
       // Snack.bottom('Error', 'Failed to send receipt');
