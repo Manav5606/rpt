@@ -1,10 +1,10 @@
 class StringContants {
   //Bottom Navigation Bar Items
-  static const orders = "Orders";
-  static const chats = "Chats";
-  static const explore = "Explore";
+  static const Home = "HOME";
+  static const chats = "CHATS";
+  static const explore = "EXPLORE";
   static const history = "History";
-  static const myAccount = "My Account";
+  static const myAccount = "ACCOUNT";
 
   //Orders Screen
   static const orderScreenAddress = "Home - Pernamitta, Ongole";

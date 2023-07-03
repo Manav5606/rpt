@@ -39,23 +39,48 @@ class BottomNavigation extends StatelessWidget {
               showSelectedLabels: true,
               showUnselectedLabels: true,
               onTap: _onItemTapped,
-              unselectedItemColor: AppConst.grey,
-              iconSize: 22,
-              selectedItemColor: Color(0xff005b41),
+              unselectedItemColor: AppConst.darkGrey,
+              // iconSize: 24,
+              selectedItemColor: Color(0xff09a56b), //AppConst.green,
+              selectedLabelStyle: TextStyle(
+                // height: 1,
+                wordSpacing: -0.5,
+                fontFamily: 'MuseoSans',
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 7.sp : 7.8.sp,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.5,
+                fontStyle: FontStyle.normal,
+              ),
+              unselectedLabelStyle: TextStyle(
+                fontFamily: 'MuseoSans',
+                fontSize:
+                    (SizerUtil.deviceType == DeviceType.tablet) ? 7.sp : 7.8.sp,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.5,
+                // height: 1,
+                wordSpacing: -0.5,
+                fontStyle: FontStyle.normal,
+              ),
               elevation: 0,
               items: [
                 BottomNavigationBarItem(
-                  label: "Home",
-                  // StringContants.orders,
+                  label: StringContants.Home,
                   icon: (value == 0)
-                      ? Icon(
-                          Icons.home_outlined,
-                          // Icons.home,
-                          size: 3.5.h,
+                      ? Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Icon(
+                            Icons.home_outlined,
+                            // Icons.home,
+                            size: 3.h,
+                          ),
                         )
-                      : Icon(
-                          Icons.home_outlined,
-                          size: 3.5.h,
+                      : Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Icon(
+                            Icons.home_outlined,
+                            size: 3.h,
+                          ),
                         ),
                 ),
                 BottomNavigationBarItem(
@@ -81,26 +106,28 @@ class BottomNavigation extends StatelessWidget {
                       //       )
                       //     :
 
-
                       badge.Badge(
-                   
-                      
-                      badgeColor: AppConst.red,
-                    
-                    position: badge.BadgePosition.topEnd(top: -10, end: -8),
+                    badgeColor: Color(0xffff2e56),
 
+                    position: badge.BadgePosition.topEnd(top: -14, end: -8),
 
                     //  Color(0xff5764da),
                     badgeContent: Text(""),
                     child: (value == 1)
-                        ? Icon(
-                            CupertinoIcons.chat_bubble,
-                            // CupertinoIcons.chat_bubble_fill,
-                            size: 3.5.h,
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Icon(
+                              CupertinoIcons.chat_bubble,
+                              // CupertinoIcons.chat_bubble_fill,
+                              size: 2.5.h,
+                            ),
                           )
-                        : Icon(
-                            CupertinoIcons.chat_bubble,
-                            size: 3.5.h,
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Icon(
+                              CupertinoIcons.chat_bubble,
+                              size: 2.5.h,
+                            ),
                           ),
                     // )
                   ),
@@ -108,25 +135,37 @@ class BottomNavigation extends StatelessWidget {
                 BottomNavigationBarItem(
                     label: StringContants.explore,
                     icon: (value == 2)
-                        ? Icon(
-                            Icons.search,
-                            size: 3.5.h,
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Icon(
+                              Icons.search,
+                              size: 3.h,
+                            ),
                           )
-                        : Icon(
-                            Icons.search,
-                            size: 3.5.h,
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Icon(
+                              Icons.search,
+                              size: 3.h,
+                            ),
                           )),
                 BottomNavigationBarItem(
                     label: StringContants.myAccount,
                     icon: (value == 3)
-                        ? Icon(
-                            CupertinoIcons.person,
-                            // CupertinoIcons.person_fill,
-                            size: 3.5.h,
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Icon(
+                              CupertinoIcons.person,
+                              // CupertinoIcons.person_fill,
+                              size: 2.8.h,
+                            ),
                           )
-                        : Icon(
-                            CupertinoIcons.person,
-                            size: 3.5.h,
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Icon(
+                              CupertinoIcons.person,
+                              size: 2.8.h,
+                            ),
                           )),
               ],
             ),

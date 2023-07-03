@@ -9,8 +9,8 @@ class ShimmerEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: AppConst.lightGrey,
-      highlightColor: AppConst.veryLightGrey,
+      baseColor: AppConst.shimmerbgColor,
+      highlightColor: AppConst.white,
       period: const Duration(milliseconds: 1000),
       child: IgnorePointer(ignoring: true, child: child),
     );

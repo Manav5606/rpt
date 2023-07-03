@@ -1,4 +1,5 @@
 import 'package:customer_app/app/constants/responsive.dart';
+import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class ChattingScreen extends StatelessWidget {
               channel: channel!,
               child: Scaffold(
                 appBar: ChannelHeader(
-                  backgroundColor: AppConst.darkGreen,
+                  backgroundColor: AppConst.green,
                   showTypingIndicator: true,
                   title: StreamBuilder<Map<String, dynamic>>(
                     stream: channel!.extraDataStream,
@@ -58,7 +59,9 @@ class ChattingScreen extends StatelessWidget {
                         style: TextStyle(
                           color: AppConst.white,
                           fontFamily: 'MuseoSans',
-                          fontSize: SizeUtils.horizontalBlockSize * 4,
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 11.sp
+                              : 13.sp,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                         ),
@@ -88,7 +91,7 @@ class ChattingScreen extends StatelessWidget {
                               child: Icon(
                             Icons.help_outline_outlined,
                             color: AppConst.white,
-                            size: 3.5.h,
+                            size: 2.8.h,
                           )
                               // Text(
                               //   "HELP",
@@ -276,64 +279,64 @@ class ChattingScreen extends StatelessWidget {
                         return defaultImpl.copyWith(
                           padding: EdgeInsets.only(left: 2.w, right: 2.w),
                           borderSide: BorderSide(
-                            width: 0.5,
+                            width: 0.4,
                             color: (defaultImpl
                                         .message.user?.extraData['userType'] ==
                                     "customer")
-                                ? Color(0xffcbc7ed)
+                                ? AppConst.veryLightGrey //Color(0xffeceaff)
                                 : AppConst.grey,
                           ),
                           borderRadiusGeometry: BorderRadius.circular(12),
 
-                          userAvatarBuilder: (BuildContext, user) {
-                            return (defaultImpl.message.user?.role == "admin")
-                                ? Padding(
-                                    padding: EdgeInsets.only(bottom: 5.h),
-                                    child: Icon(
-                                      Icons.notifications_none,
-                                      color: AppConst.grey,
-                                      size: 3.h,
-                                    ),
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.only(bottom: 1.h),
-                                    child: Container(
-                                        height: 4.h,
-                                        width: 8.w,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: (defaultImpl.message.user
-                                                      ?.extraData['userType'] ==
-                                                  "customer")
-                                              ? AppConst.green
-                                              : Colors.amber,
-                                        ),
-                                        child: (defaultImpl.message.user
-                                                    ?.extraData['userType'] ==
-                                                "customer")
-                                            ? Center(
-                                                child: Icon(
-                                                  Icons.person,
-                                                  color: AppConst.white,
-                                                ),
-                                              )
-                                            : Center(
-                                                child: Text(
-                                                  defaultImpl.message.user?.name
-                                                          .substring(0, 1) ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        4.5,
-                                                    fontFamily: 'MuseoSans',
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              )),
-                                  );
-                          },
+                          // userAvatarBuilder: (BuildContext, user) {
+                          //   return (defaultImpl.message.user?.role == "admin")
+                          //       ? Padding(
+                          //           padding: EdgeInsets.only(bottom: 5.h),
+                          //           child: Icon(
+                          //             Icons.notifications_none,
+                          //             color: AppConst.grey,
+                          //             size: 3.h,
+                          //           ),
+                          //         )
+                          //       : Padding(
+                          //           padding: EdgeInsets.only(bottom: 1.h),
+                          //           child: Container(
+                          //               height: 4.h,
+                          //               width: 8.w,
+                          //               decoration: BoxDecoration(
+                          //                 shape: BoxShape.circle,
+                          //                 color: (defaultImpl.message.user
+                          //                             ?.extraData['userType'] ==
+                          //                         "customer")
+                          //                     ? AppConst.green
+                          //                     : Colors.amber,
+                          //               ),
+                          //               child: (defaultImpl.message.user
+                          //                           ?.extraData['userType'] ==
+                          //                       "customer")
+                          //                   ? Center(
+                          //                       child: Icon(
+                          //                         Icons.person,
+                          //                         color: AppConst.white,
+                          //                       ),
+                          //                     )
+                          //                   : Center(
+                          //                       child: Text(
+                          //                         defaultImpl.message.user?.name
+                          //                                 .substring(0, 1) ??
+                          //                             '',
+                          //                         style: TextStyle(
+                          //                           color: Colors.white,
+                          //                           fontSize: SizeUtils
+                          //                                   .horizontalBlockSize *
+                          //                               4.5,
+                          //                           fontFamily: 'MuseoSans',
+                          //                           fontWeight: FontWeight.w500,
+                          //                         ),
+                          //                       ),
+                          //                     )),
+                          //         );
+                          // },
 
                           showUserAvatar:
                               (defaultImpl.message.user?.role == "admin")
@@ -391,6 +394,7 @@ class ChattingScreen extends StatelessWidget {
                                 (Message.user?.role == "admin")
                                     ? DispalyStoreLogo(
                                         bottomPadding: 1,
+                                        height: 2.h,
                                         logo: channel?.extraData['store_logo']
                                             .toString(),
                                       )
@@ -408,9 +412,11 @@ class ChattingScreen extends StatelessWidget {
                                                 style: TextStyle(
                                                   fontFamily: 'MuseoSans',
                                                   color: AppConst.black,
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      3.8,
+                                                  fontSize:
+                                                      (SizerUtil.deviceType ==
+                                                              DeviceType.tablet)
+                                                          ? 9.sp
+                                                          : 10.sp,
                                                   fontWeight: FontWeight.w700,
                                                   fontStyle: FontStyle.normal,
                                                 )),
@@ -419,38 +425,91 @@ class ChattingScreen extends StatelessWidget {
                                       )
                                     : SizedBox(),
                                 Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisSize: (Message.user?.role == "admin")
+                                      ? MainAxisSize.max
+                                      : MainAxisSize.min,
                                   mainAxisAlignment:
                                       (Message.user?.role == "admin")
                                           ? MainAxisAlignment.start
                                           : MainAxisAlignment.start,
                                   children: [
-                                    Flexible(
-                                        child: Text(Message.text ?? "",
-                                            textAlign:
-                                                (Message.user?.role == "admin")
-                                                    ? TextAlign.center
-                                                    : TextAlign.start,
-                                            style: (Message.user?.role ==
-                                                    "admin")
-                                                ? TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: AppConst.grey,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.2,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                  )
-                                                : TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: AppConst.black,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.5,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                  ))),
+                                    (Message.user?.role == "admin")
+                                        ? Flexible(
+                                            child: RichText(
+                                                textAlign: TextAlign.start,
+                                                text: TextSpan(children: [
+                                                  TextSpan(
+                                                      text:
+                                                          "List of products in Order\n",
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color: AppConst.black,
+                                                        fontSize: (SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .tablet)
+                                                            ? 8.5.sp
+                                                            : 9.5.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      )),
+                                                  TextSpan(
+                                                      text: DisplaybulletedList(
+                                                              Message.text ??
+                                                                  "")
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        fontFamily: 'MuseoSans',
+                                                        color:
+                                                            AppConst.darkGrey,
+                                                        fontSize: (SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .tablet)
+                                                            ? 8.sp
+                                                            : 9.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      ))
+                                                ])),
+                                          )
+                                        : Flexible(
+                                            child: Text(Message.text ?? "",
+                                                textAlign:
+                                                    // (Message.user?.role == "admin")
+                                                    //     ? TextAlign.center
+                                                    //     :
+                                                    TextAlign.start,
+                                                style:
+                                                    //  (Message.user?.role ==
+                                                    //         "admin")
+                                                    //     ? TextStyle(
+                                                    //         fontFamily: 'MuseoSans',
+                                                    //         color: AppConst.grey,
+                                                    //         fontSize: (SizerUtil
+                                                    //                     .deviceType ==
+                                                    //                 DeviceType.tablet)
+                                                    //             ? 8.sp
+                                                    //             : 9.sp,
+                                                    //         fontWeight: FontWeight.w500,
+                                                    //         fontStyle: FontStyle.normal,
+                                                    //       )
+                                                    // :
+                                                    TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.black,
+                                                  fontSize:
+                                                      (SizerUtil.deviceType ==
+                                                              DeviceType.tablet)
+                                                          ? 8.5.sp
+                                                          : 9.5.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle: FontStyle.normal,
+                                                ))),
                                   ],
                                 ),
                               ],
@@ -459,30 +518,41 @@ class ChattingScreen extends StatelessWidget {
                           messageTheme: (defaultImpl.message.user?.role ==
                                   "admin")
                               ? MessageThemeData(
+                                  messageBackgroundColor:
+                                      Color(0xfff3f3f5) //Color(0xffeceaff)
+                                  ,
                                   messageTextStyle: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: AppConst.grey,
-                                  fontSize: SizeUtils.horizontalBlockSize * 3,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FontStyle.normal,
-                                ))
+                                    fontFamily: 'MuseoSans',
+                                    color: AppConst.grey,
+                                    fontSize: (SizerUtil.deviceType ==
+                                            DeviceType.tablet)
+                                        ? 8.sp
+                                        : 9.sp,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  ))
                               : MessageThemeData(
                                   messageBackgroundColor: (defaultImpl.message
                                               .user?.extraData['userType'] ==
                                           "customer")
-                                      ? Color(0xffeceaff)
+                                      ? Color(0xffEEEFF9) //Color(0xffeceaff)
                                       : AppConst.white,
                                   messageTextStyle: TextStyle(
                                     fontFamily: 'MuseoSans',
                                     color: AppConst.black,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 3.5,
+                                    fontSize: (SizerUtil.deviceType ==
+                                            DeviceType.tablet)
+                                        ? 8.5.sp
+                                        : 9.5.sp,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                   ),
                                   createdAtStyle: TextStyle(
                                     color: AppConst.grey,
-                                    fontSize: SizeUtils.horizontalBlockSize * 3,
+                                    fontSize: (SizerUtil.deviceType ==
+                                            DeviceType.tablet)
+                                        ? 8.sp
+                                        : 9.sp,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     fontFamily: 'MuseoSans',
@@ -492,16 +562,17 @@ class ChattingScreen extends StatelessWidget {
                       },
                     )),
                     MessageInput(
-                      attachmentButtonBuilder: (context, defaultActionButton) {
-                        return defaultActionButton.copyWith(
-                          constraints: BoxConstraints(minWidth: 8.w),
-                          color: AppConst.darkGreen, // attachment color
-                          icon: Icon(
-                            Icons.camera_alt,
-                          ), // attachment icon
-                          iconSize: 4.h,
-                        );
-                      },
+                      // attachmentButtonBuilder: (context, defaultActionButton) {
+                      //   return defaultActionButton.copyWith(
+                      //     constraints: BoxConstraints(minWidth: 8.w),
+                      //     color: AppConst.green, // attachment color
+                      //     icon: Icon(
+                      //       Icons.attachment_outlined,
+                      //     ), // attachment icon
+                      //     iconSize: 3.2.h,
+                      //   );
+                      // },
+
                       showCommandsButton: false,
 
                       commandButtonBuilder: (context, IconButton) {
@@ -517,15 +588,15 @@ class ChattingScreen extends StatelessWidget {
                         child: Icon(
                           Icons.send,
                           color: AppConst.green,
-                          size: 3.5.h,
+                          size: 3.2.h,
                         ),
                       ),
                       idleSendButton: Padding(
                         padding: EdgeInsets.only(left: 2.w, right: 2.w),
                         child: Icon(
                           Icons.send,
-                          color: AppConst.green,
-                          size: 3.5.h,
+                          color: AppConst.grey,
+                          size: 3.2.h,
                         ),
                       ),
                     )
@@ -533,5 +604,15 @@ class ChattingScreen extends StatelessWidget {
                 ),
               )),
         ));
+  }
+
+  DisplaybulletedList(String message) {
+    var items = message.split(",");
+
+    var itemlists = [];
+    for (int i = 0; i < (items.length); i++) {
+      itemlists.add("\u2022 ${items[i]}.\n");
+    }
+    return itemlists.join();
   }
 }
