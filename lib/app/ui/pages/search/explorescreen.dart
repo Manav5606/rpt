@@ -151,19 +151,20 @@ class _ExploreScreen extends State<ExploreScreen> {
                                         " Search products,stores & recipes",
                                     hintStyle: TextStyle(
                                         color: AppConst.grey,
-                                        fontSize:
-                                            (SizerUtil.deviceType == DeviceType.tablet)
-                          ? 9.sp
-                          : 10.sp)),
+                                        fontSize: (SizerUtil.deviceType ==
+                                                DeviceType.tablet)
+                                            ? 9.sp
+                                            : 10.sp)),
                                 showCursor: true,
                                 cursorColor: AppConst.black,
                                 cursorHeight: SizeUtils.horizontalBlockSize * 5,
                                 maxLength: 30,
                                 style: TextStyle(
                                   color: AppConst.black,
-                                  fontSize: (SizerUtil.deviceType == DeviceType.tablet)
-                          ? 9.sp
-                          : 10.sp,
+                                  fontSize: (SizerUtil.deviceType ==
+                                          DeviceType.tablet)
+                                      ? 9.sp
+                                      : 10.sp,
                                 ),
                                 onChanged: (value) {
                                   _exploreController.searchText.value = value;
@@ -305,11 +306,7 @@ class _ExploreScreen extends State<ExploreScreen> {
                                   ? _exploreController
                                           .searchText.value.isNotEmpty
                                       ? Center(
-                                          child: EmptyHistoryPage(
-                                              icon: Icons.shopping_cart,
-                                              text1: "No Product/Store found !",
-                                              text2: "",
-                                              text3: "")
+                                          child: EmptyExploreSearchResults()
 
                                           // Text('No Results found !',
                                           //     style: TextStyle(
@@ -331,16 +328,22 @@ class _ExploreScreen extends State<ExploreScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text('',
-                                                  style: TextStyle(
-                                                    fontFamily: 'MuseoSans',
-                                                    color: AppConst.black,
-                                                    fontSize: SizeUtils
-                                                            .horizontalBlockSize *
-                                                        3.5,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontStyle: FontStyle.normal,
-                                                  )),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text('Recent Searches',
+                                                    style: TextStyle(
+                                                      fontFamily: 'MuseoSans',
+                                                      color: AppConst.black,
+                                                      fontSize: SizeUtils
+                                                              .horizontalBlockSize *
+                                                          3.5,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    )),
+                                              ),
                                               InkWell(
                                                 onTap: () {
                                                   _exploreController
@@ -348,14 +351,18 @@ class _ExploreScreen extends State<ExploreScreen> {
                                                 },
                                                 child: Padding(
                                                   padding:
-                                                      const EdgeInsets.all(8.0),
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
                                                   child: Text('Clear all   ',
                                                       style: TextStyle(
                                                         fontFamily: 'MuseoSans',
                                                         color: AppConst.green,
-                                                        fontSize: (SizerUtil.deviceType == DeviceType.tablet)
-                          ? 9.sp
-                          : 10.sp,
+                                                        fontSize: (SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .tablet)
+                                                            ? 9.sp
+                                                            : 10.sp,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         fontStyle:
