@@ -704,6 +704,7 @@
 //     );
 //   }
 // }
+import 'package:customer_app/app/constants/colors.dart';
 import 'package:customer_app/app/controller/add_location_controller.dart';
 import 'package:customer_app/app/ui/pages/chat/freshchat_controller.dart';
 import 'package:customer_app/app/ui/pages/location_picker/address_model.dart';
@@ -727,10 +728,11 @@ import '../../../data/provider/hive/hive_constants.dart';
 class MyAccountPage extends GetView<MyAccountController> {
   final freshChatController _freshChat = Get.find();
   final AddLocationController _addLocationController = Get.find();
-   Future<bool> handleBackPressed() async {
+  Future<bool> handleBackPressed() async {
     Get.offAllNamed(AppRoutes.BaseScreen);
     return false;
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -742,6 +744,7 @@ class MyAccountPage extends GetView<MyAccountController> {
           statusBarBrightness: Brightness.dark,
         ),
         child: Scaffold(
+          backgroundColor: AppConst.green,
           key: RIKeys.riKey2,
           body: SafeArea(
             child: GetX<MyAccountController>(
@@ -749,6 +752,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                 Get.find<MyAccountController>().getUserData();
               },
               builder: (_) {
+                _.getGenerateReferCode();
                 return _.user.id == null
                     ? LoadingWidget() // throw an 404 error msg
                     : SingleChildScrollView(
@@ -757,88 +761,116 @@ class MyAccountPage extends GetView<MyAccountController> {
                           children: [
                             Column(
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 1.h, left: 5.w, right: 3.w),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Hi, ${_.user.firstName ?? ""}",
-                                          style: TextStyle(
-                                            color: AppConst.black,
-                                            fontSize:
-                                                SizeUtils.horizontalBlockSize * 5,
-                                            fontFamily: 'MuseoSans',
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
-                                          ),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: "\n${_.user.mobile ?? ""}",
-                                              style: TextStyle(
-                                                fontFamily: 'MuseoSans',
-                                                color: AppConst.black,
-                                                fontWeight: FontWeight.w300,
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Get.toNamed(AppRoutes.EditProfile),
-                                        child: Text(
-                                          'Edit',
-                                          style: TextStyle(
+                                Container(
+                                  height: 80,
+                                  color: AppConst.green,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 0.h, left: 5.w, right: 3.w),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            text:
+                                                "Hi, ${_.user.firstName ?? ""}",
+                                            style: TextStyle(
+                                              color: AppConst.white,
+                                              fontSize: SizeUtils
+                                                      .horizontalBlockSize *
+                                                  5,
                                               fontFamily: 'MuseoSans',
                                               fontWeight: FontWeight.w700,
                                               fontStyle: FontStyle.normal,
-                                              fontSize:
-                                                  SizeUtils.horizontalBlockSize *
-                                                      4.2,
-                                              color: AppConst.green
-                                              // Color(0xff079b2e),
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    "\n${_.user.mobile ?? ""}",
+                                                style: TextStyle(
+                                                  fontFamily: 'MuseoSans',
+                                                  color: AppConst.white,
+                                                  fontWeight: FontWeight.w300,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: SizeUtils
+                                                          .horizontalBlockSize *
+                                                      4,
+                                                ),
                                               ),
+                                            ],
+                                          ),
                                         ),
-                                      )
-                                    ],
+                                        TextButton(
+                                          onPressed: () => Get.toNamed(
+                                              AppRoutes.EditProfile),
+                                          child: Text(
+                                            'Edit',
+                                            style: TextStyle(
+                                                fontFamily: 'MuseoSans',
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: SizeUtils
+                                                        .horizontalBlockSize *
+                                                    4.2,
+                                                color: AppConst.white
+                                                // Color(0xff079b2e),
+                                                ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Divider(
-                                  color: AppConst.highLightColor,
-                                  thickness: 1.h,
-                                  height: 3.h,
-                                ),
+                                Container(
+                                  height: 30,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                      color: AppConst.lightGrey,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 18.0, top: 5),
+                                    child: Text(
+                                      'Settings',
+                                      style: TextStyle(
+                                        fontSize:
+                                            SizeUtils.horizontalBlockSize * 4.2,
+                                        fontFamily: 'MuseoSans',
+                                        color: AppConst.black,
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                             Container(
                               height: 78.h,
+                              color: AppConst.white,
                               child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 4.w, vertical: 1.h),
-                                      child: Text(
-                                        'Settings',
-                                        style: TextStyle(
-                                          fontSize:
-                                              SizeUtils.horizontalBlockSize * 4.5,
-                                          fontFamily: 'MuseoSans',
-                                          color: AppConst.black,
-                                          fontWeight: FontWeight.w400,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                    ),
+                                    // Padding(
+                                    //   padding: EdgeInsets.symmetric(
+                                    //       horizontal: 4.w, vertical: 1.h),
+                                    //   child: Text(
+                                    //     'Settings',
+                                    //     style: TextStyle(
+                                    //       fontSize:
+                                    //           SizeUtils.horizontalBlockSize *
+                                    //               4.5,
+                                    //       fontFamily: 'MuseoSans',
+                                    //       color: AppConst.black,
+                                    //       fontWeight: FontWeight.w400,
+                                    //       fontStyle: FontStyle.normal,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     ListView.builder(
                                       itemCount: profileScreenDataNew.length,
                                       shrinkWrap: true,
@@ -849,11 +881,274 @@ class MyAccountPage extends GetView<MyAccountController> {
                                             onTap: () =>
                                                 Get.to(ReferAndEarnScreen()),
                                             child: Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 2.h),
-                                              child: Image.asset(
-                                                'assets/icons/instant2.png',
-                                                fit: BoxFit.fitWidth,
+                                              color: AppConst.referBg,
+                                              height: 250,
+                                              width: 100,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 16.0,
+                                                            top: 10),
+                                                    child: Text(
+                                                      "Invite friends and family",
+                                                      style: TextStyle(
+                                                        fontSize: SizeUtils
+                                                                .horizontalBlockSize *
+                                                            5.2,
+                                                        fontFamily: 'MuseoSans',
+                                                        color: AppConst.black,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 16.0,
+                                                                top: 0),
+                                                        child: Text(
+                                                          "Referral Code",
+                                                          style: TextStyle(
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                4.2,
+                                                            fontFamily:
+                                                                'MuseoSans',
+                                                            color:
+                                                                AppConst.black,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 12.0,
+                                                                top: 0),
+                                                        child: Text(
+                                                          _.referCode
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            color:
+                                                                AppConst.green,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: SizeUtils
+                                                                    .horizontalBlockSize *
+                                                                4.2,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 18,
+                                                              ),
+                                                              Column(
+                                                                children: [
+                                                                  Container(
+                                                                    height: 6.h,
+                                                                    width: 12.w,
+                                                                    decoration: BoxDecoration(
+                                                                        color: ColorConstants
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40)),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .list_alt_outlined,
+                                                                      color: AppConst
+                                                                          .green,
+                                                                      size: 4.h,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Text(
+                                                                    "Make a list",
+                                                                    style: TextStyle(
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                                                            ? 9
+                                                                                .sp
+                                                                            : 8
+                                                                                .sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                width: 18,
+                                                              ),
+                                                              Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height: 13,
+                                                                  ),
+                                                                  Container(
+                                                                    height: 6.h,
+                                                                    width: 12.w,
+                                                                    decoration: BoxDecoration(
+                                                                        color: ColorConstants
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40)),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .storefront_sharp,
+                                                                      color: AppConst
+                                                                          .green,
+                                                                      size: 4.h,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Text(
+                                                                    "Name a store\n     or don't",
+                                                                    style: TextStyle(
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                                                            ? 9
+                                                                                .sp
+                                                                            : 8
+                                                                                .sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                width: 18,
+                                                              ),
+                                                              Column(
+                                                                children: [
+                                                                  Container(
+                                                                    height: 6.h,
+                                                                    width: 12.w,
+                                                                    decoration: BoxDecoration(
+                                                                        color: ColorConstants
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40)),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .directions_bike,
+                                                                      color: AppConst
+                                                                          .green,
+                                                                      size: 4.h,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Text(
+                                                                    "Get it DUN",
+                                                                    style: TextStyle(
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                                                            ? 9
+                                                                                .sp
+                                                                            : 8
+                                                                                .sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              _.shareToSystem();
+                                                            },
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left:
+                                                                          12.0),
+                                                              child: Container(
+                                                                height: 40,
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    2,
+                                                                decoration: BoxDecoration(
+                                                                    color: AppConst
+                                                                        .green,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            25)),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    "Share the app",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          SizeUtils.horizontalBlockSize *
+                                                                              5.2,
+                                                                      fontFamily:
+                                                                          'MuseoSans',
+                                                                      color: AppConst
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 0,
+                                                                vertical: 10),
+                                                        child: Image.asset(
+                                                          'assets/images/refer_and_earn.png',
+                                                          height: 18.h,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
                                               ),
                                             ),
                                           );
@@ -874,8 +1169,13 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 color: AppConst.veryLightGrey,
                                                 shape: BoxShape.circle),
                                             child: Center(
-                                                child: profileScreenDataNew[index]
-                                                    .icon),
+                                                child:
+                                                    profileScreenDataNew[index]
+                                                        .icon),
+                                          ),
+                                          trailing: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 3.h,
                                           ),
                                           horizontalTitleGap: 3.w,
                                           title: Row(
@@ -883,7 +1183,8 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                profileScreenDataNew[index].name,
+                                                profileScreenDataNew[index]
+                                                    .name,
                                                 style: TextStyle(
                                                   fontSize: SizeUtils
                                                           .horizontalBlockSize *
@@ -925,7 +1226,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 editOrDelete: true,
                                                 page: "home",
                                               ));
-    
+
                                               // Get.toNamed(AppRoutes.MyAddresses);
                                             } else if (index == 4) {
                                               Get.to(ReferAndEarnScreen());

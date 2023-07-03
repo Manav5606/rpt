@@ -292,19 +292,13 @@ class ReferAndEarnScreen extends StatefulWidget {
 class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
   bool isLoading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _startLoadingTimer();
-  }
-
-  void _startLoadingTimer() {
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
+  // void _startLoadingTimer() {
+  //   Future.delayed(Duration(seconds: 2), () {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -313,168 +307,164 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
         statusBarColor: AppConst.kSecondaryColor,
         statusBarIconBrightness: Brightness.light,
       ),
-      child: isLoading
-          ? Center(child: ReferAndEarnShimmer())
-          : GetX<MyAccountController>(
-              builder: (_) {
-                _.getGenerateReferCode();
-                return Scaffold(
-                  appBar: AppBar(
-                    elevation: 0,
-                    centerTitle: true,
-                    title: Text(
-                      'Invite Friends & Family',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  body: SafeArea(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Column(
-                            children: [
-                              Padding(
+      child: GetX<MyAccountController>(
+        builder: (_) {
+          _.getGenerateReferCode();
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              title: Text(
+                'Invite Friends & Family',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          child: Image.asset(
+                            'assets/images/refer_and_earn.png',
+                            height: 30.h,
+                          ),
+                        ),
+                        Text('Here\'s your Referral Code'),
+                        GestureDetector(
+                          onTap: () {
+                            Clipboard.setData(
+                                    ClipboardData(text: "${_.referCode.value}"))
+                                .then((value) {
+                              Snack.bottom("${_.referCode.value}",
+                                  "Referral Code Copied");
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            child: DottedBorder(
+                              dashPattern: [6, 3],
+                              strokeCap: StrokeCap.round,
+                              color: AppConst.kSecondaryColor,
+                              strokeWidth: 1,
+                              child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                child: Image.asset(
-                                  'assets/images/refer_and_earn.png',
-                                  height: 30.h,
-                                ),
-                              ),
-                              Text('Here\'s your Referral Code'),
-                              GestureDetector(
-                                onTap: () {
-                                  Clipboard.setData(ClipboardData(
-                                          text: "${_.referCode.value}"))
-                                      .then((value) {
-                                    Snack.bottom("${_.referCode.value}",
-                                        "Referral Code Copied");
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                  child: DottedBorder(
-                                    dashPattern: [6, 3],
-                                    strokeCap: StrokeCap.round,
+                                    vertical: 10, horizontal: 20),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                child: Text(
+                                  _.referCode.value,
+                                  style: TextStyle(
                                     color: AppConst.kSecondaryColor,
-                                    strokeWidth: 1,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 20),
-                                      alignment: Alignment.center,
-                                      width: double.infinity,
-                                      child: Text(
-                                        _.referCode.value,
-                                        style: TextStyle(
-                                          color: AppConst.kSecondaryColor,
-                                        ),
-                                      ),
-                                    ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(top: 5),
-                                padding: const EdgeInsets.all(20),
-                                width: double.infinity,
-                                color: Colors.grey.shade200,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    OfferColumn(
-                                      count: '1',
-                                      subtitle: 'Invite friends &\nfamily',
-                                    ),
-                                    OfferColumn(
-                                      count: '2',
-                                      subtitle: 'Get Rs 20 after\nthey join',
-                                    ),
-                                    OfferColumn(
-                                      count: '3',
-                                      subtitle:
-                                          'Get Rs 20 on first\ntransaction',
-                                    ),
-                                  ],
-                                ),
-                              )
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          padding: const EdgeInsets.all(20),
+                          width: double.infinity,
+                          color: Colors.grey.shade200,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              OfferColumn(
+                                count: '1',
+                                subtitle: 'Invite friends &\nfamily',
+                              ),
+                              OfferColumn(
+                                count: '2',
+                                subtitle: 'Get Rs 20 after\nthey join',
+                              ),
+                              OfferColumn(
+                                count: '3',
+                                subtitle: 'Get Rs 20 on first\ntransaction',
+                              ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              children: [
-                                // OutlinedButton.icon(
-                                //   icon: Icon(
-                                //     FontAwesomeIcons.whatsapp,
-                                //     color: Colors.green,
-                                //   ),
-                                //   style: ButtonStyle(
-                                //     minimumSize: MaterialStateProperty.all(
-                                //       Size(double.infinity, 45),
-                                //     ),
-                                //     shape: MaterialStateProperty.all(
-                                //         RoundedRectangleBorder(
-                                //       borderRadius: BorderRadius.circular(10.0),
-                                //     )),
-                                //     side: MaterialStateProperty.all(
-                                //       BorderSide(
-                                //         color: AppConst.kSecondaryColor,
-                                //         width: 2,
-                                //       ),
-                                //     ),
-                                //   ),
-                                //   onPressed: () {
-                                //     print("share to whatsapp");
-                                //     _.shareToWhatsApp();
-                                //   },
-                                //   label: Text(
-                                //     "Share on Whatsapp",
-                                //     style: TextStyle(
-                                //       fontSize: 13.sp,
-                                //       fontWeight: FontWeight.bold,
-                                //       color: Colors.black,
-                                //     ),
-                                //   ),
-                                // ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    primary: AppConst.darkGreen,
-                                    minimumSize: Size(double.infinity, 45),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    print("share to system");
-                                    _.shareToSystem();
-                                  },
-                                  child: Text(
-                                    "Share",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                        )
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          // OutlinedButton.icon(
+                          //   icon: Icon(
+                          //     FontAwesomeIcons.whatsapp,
+                          //     color: Colors.green,
+                          //   ),
+                          //   style: ButtonStyle(
+                          //     minimumSize: MaterialStateProperty.all(
+                          //       Size(double.infinity, 45),
+                          //     ),
+                          //     shape: MaterialStateProperty.all(
+                          //         RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(10.0),
+                          //     )),
+                          //     side: MaterialStateProperty.all(
+                          //       BorderSide(
+                          //         color: AppConst.kSecondaryColor,
+                          //         width: 2,
+                          //       ),
+                          //     ),
+                          //   ),
+                          //   onPressed: () {
+                          //     print("share to whatsapp");
+                          //     _.shareToWhatsApp();
+                          //   },
+                          //   label: Text(
+                          //     "Share on Whatsapp",
+                          //     style: TextStyle(
+                          //       fontSize: 13.sp,
+                          //       fontWeight: FontWeight.bold,
+                          //       color: Colors.black,
+                          //     ),
+                          //   ),
+                          // ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              primary: AppConst.darkGreen,
+                              minimumSize: Size(double.infinity, 45),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                             ),
-                          )
+                            onPressed: () {
+                              print("share to system");
+                              _.shareToSystem();
+                            },
+                            child: Text(
+                              "Share",
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ),
-                );
-              },
+                    )
+                  ],
+                ),
+              ),
             ),
+          );
+        },
+      ),
     );
   }
 }
