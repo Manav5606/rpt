@@ -82,7 +82,7 @@ List<ProfileScreen> profileScreenDataNew = [
       color: AppConst.grey,
       size: 2.7.h,
     ),
-    name: "Wallet Balance",
+    name: "Manage Wallet",
   ),
   ProfileScreen(
     icon: Icon(
@@ -108,14 +108,14 @@ List<ProfileScreen> profileScreenDataNew = [
     ),
     name: "Get instant",
   ),
-  ProfileScreen(
-    icon: Icon(
-      Icons.person_add_alt_outlined,
-      color: AppConst.grey,
-      size: 2.7.h,
-    ),
-    name: "Invite Friends & Family, Get ₹10",
-  ),
+  // ProfileScreen(
+  //   icon: Icon(
+  //     Icons.person_add_alt_outlined,
+  //     color: AppConst.grey,
+  //     size: 2.7.h,
+  //   ),
+  //   name: "Invite Friends & Family, Get ₹10",
+  // ),
   ProfileScreen(
     icon: Icon(
       CupertinoIcons.chat_bubble,

@@ -69,6 +69,7 @@ class _ExploreScreen extends State<ExploreScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 3.w, vertical: 1.h),
                           child: Container(
+                            height: 5.h,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 2.w, vertical: 0.h),
                             decoration: BoxDecoration(

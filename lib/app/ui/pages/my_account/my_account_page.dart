@@ -239,7 +239,7 @@
 //                                         fontWeight: FontWeight.bold),
 //                                     children: <TextSpan>[
 //                                       TextSpan(
-//                                           text: "\n${_.user.mobile ?? ""}",
+//                                           text: "\n${_.user.tablet ?? ""}",
 //                                           style: TextStyle(
 //                                               fontWeight: FontWeight.normal,
 //                                               fontSize: SizeUtils
@@ -257,7 +257,7 @@
 //                                 ),
 //                                 // Expanded(
 //                                 //   child: Text(
-//                                 //     "Hi, ${_.user.firstName?.substring(0, 20) ?? _.user.mobile}",
+//                                 //     "Hi, ${_.user.firstName?.substring(0, 20) ?? _.user.tablet}",
 //                                 //     style: TextStyle(
 //                                 //       color: AppConst.black,
 //                                 //       fontSize: 20.sp,
@@ -351,7 +351,7 @@
 //                                     _freshChat.initState();
 //                                     await _freshChat.showChatConversation(
 //                                         "opening chat support \n");
-//                                     // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.mobile ?? ''}
+//                                     // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.tablet ?? ''}
 //                                   }
 //                                   // else if (index == 4) {
 //                                   //   Get.toNamed(AppRoutes.ActiveOrders);
@@ -777,9 +777,10 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 "Hi, ${_.user.firstName ?? ""}",
                                             style: TextStyle(
                                               color: AppConst.white,
-                                              fontSize: SizeUtils
-                                                      .horizontalBlockSize *
-                                                  5,
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.tablet
+                                                  ? 9.sp
+                                                  : 13.sp,
                                               fontFamily: 'MuseoSans',
                                               fontWeight: FontWeight.w700,
                                               fontStyle: FontStyle.normal,
@@ -789,14 +790,15 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 text:
                                                     "\n${_.user.mobile ?? ""}",
                                                 style: TextStyle(
-                                                  fontFamily: 'MuseoSans',
-                                                  color: AppConst.white,
-                                                  fontWeight: FontWeight.w300,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      4,
-                                                ),
+                                                    fontFamily: 'MuseoSans',
+                                                    color: AppConst.white,
+                                                    fontWeight: FontWeight.w300,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.tablet
+                                                        ? 8.sp
+                                                        : 11.sp),
                                               ),
                                             ],
                                           ),
@@ -810,9 +812,11 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 fontFamily: 'MuseoSans',
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
-                                                fontSize: SizeUtils
-                                                        .horizontalBlockSize *
-                                                    4.2,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.tablet
+                                                        ? 9.sp
+                                                        : 12.sp,
                                                 color: AppConst.white
                                                 // Color(0xff079b2e),
                                                 ),
@@ -836,8 +840,10 @@ class MyAccountPage extends GetView<MyAccountController> {
                                     child: Text(
                                       'Settings',
                                       style: TextStyle(
-                                        fontSize:
-                                            SizeUtils.horizontalBlockSize * 4.2,
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.tablet
+                                            ? 9.sp
+                                            : 12.sp,
                                         fontFamily: 'MuseoSans',
                                         color: AppConst.black,
                                         fontWeight: FontWeight.w400,
@@ -882,8 +888,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 Get.to(ReferAndEarnScreen()),
                                             child: Container(
                                               color: AppConst.referBg,
-                                              height: 250,
-                                              width: 100,
+                                              height: 28.h,
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -896,9 +901,12 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                     child: Text(
                                                       "Invite friends and family",
                                                       style: TextStyle(
-                                                        fontSize: SizeUtils
-                                                                .horizontalBlockSize *
-                                                            5.2,
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .tablet
+                                                            ? 11.sp
+                                                            : 14.sp,
                                                         fontFamily: 'MuseoSans',
                                                         color: AppConst.black,
                                                         fontWeight:
@@ -919,9 +927,12 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                         child: Text(
                                                           "Referral Code",
                                                           style: TextStyle(
-                                                            fontSize: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                4.2,
+                                                            fontSize: SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .tablet
+                                                                ? 8.sp
+                                                                : 11.sp,
                                                             fontFamily:
                                                                 'MuseoSans',
                                                             color:
@@ -938,7 +949,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                             const EdgeInsets
                                                                     .only(
                                                                 left: 12.0,
-                                                                top: 0),
+                                                                top: 5),
                                                         child: Text(
                                                           _.referCode
                                                               .toString(),
@@ -947,9 +958,12 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                 AppConst.green,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: SizeUtils
-                                                                    .horizontalBlockSize *
-                                                                4.2,
+                                                            fontSize: SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .tablet
+                                                                ? 8.sp
+                                                                : 11.sp,
                                                           ),
                                                         ),
                                                       ),
@@ -968,7 +982,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                     .spaceEvenly,
                                                             children: [
                                                               SizedBox(
-                                                                width: 18,
+                                                                width: 5.w,
                                                               ),
                                                               Column(
                                                                 children: [
@@ -989,15 +1003,15 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                     ),
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 10,
+                                                                    height: 2.h,
                                                                   ),
                                                                   Text(
                                                                     "Make a list",
                                                                     style: TextStyle(
-                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                                                            ? 9
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.tablet
+                                                                            ? 8
                                                                                 .sp
-                                                                            : 8
+                                                                            : 9
                                                                                 .sp,
                                                                         fontWeight:
                                                                             FontWeight.w700),
@@ -1005,12 +1019,12 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                 ],
                                                               ),
                                                               SizedBox(
-                                                                width: 18,
+                                                                width: 3.w,
                                                               ),
                                                               Column(
                                                                 children: [
                                                                   SizedBox(
-                                                                    height: 13,
+                                                                    height: 2.h,
                                                                   ),
                                                                   Container(
                                                                     height: 6.h,
@@ -1029,15 +1043,15 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                     ),
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 10,
+                                                                    height: 2.h,
                                                                   ),
                                                                   Text(
                                                                     "Name a store\n     or don't",
                                                                     style: TextStyle(
-                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                                                            ? 9
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.tablet
+                                                                            ? 8
                                                                                 .sp
-                                                                            : 8
+                                                                            : 9
                                                                                 .sp,
                                                                         fontWeight:
                                                                             FontWeight.w700),
@@ -1045,7 +1059,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                 ],
                                                               ),
                                                               SizedBox(
-                                                                width: 18,
+                                                                width: 3.w,
                                                               ),
                                                               Column(
                                                                 children: [
@@ -1066,15 +1080,15 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                     ),
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 10,
+                                                                    height: 2.h,
                                                                   ),
                                                                   Text(
                                                                     "Get it DUN",
                                                                     style: TextStyle(
-                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                                                            ? 9
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.tablet
+                                                                            ? 8
                                                                                 .sp
-                                                                            : 8
+                                                                            : 9
                                                                                 .sp,
                                                                         fontWeight:
                                                                             FontWeight.w700),
@@ -1084,7 +1098,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                             ],
                                                           ),
                                                           SizedBox(
-                                                            height: 20,
+                                                            height: 1.h,
                                                           ),
                                                           GestureDetector(
                                                             onTap: () {
@@ -1097,12 +1111,12 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                       left:
                                                                           12.0),
                                                               child: Container(
-                                                                height: 40,
+                                                                height: 5.h,
                                                                 width: MediaQuery.of(
                                                                             context)
                                                                         .size
                                                                         .width /
-                                                                    2,
+                                                                    3,
                                                                 decoration: BoxDecoration(
                                                                     color: AppConst
                                                                         .green,
@@ -1114,9 +1128,10 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                                     "Share the app",
                                                                     style:
                                                                         TextStyle(
-                                                                      fontSize:
-                                                                          SizeUtils.horizontalBlockSize *
-                                                                              5.2,
+                                                                      fontSize: SizerUtil.deviceType ==
+                                                                              DeviceType.tablet
+                                                                          ? 8.sp
+                                                                          : 11.sp,
                                                                       fontFamily:
                                                                           'MuseoSans',
                                                                       color: AppConst
@@ -1173,10 +1188,10 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                     profileScreenDataNew[index]
                                                         .icon),
                                           ),
-                                          trailing: Icon(
-                                            Icons.arrow_forward_ios,
-                                            size: 3.h,
-                                          ),
+                                          // trailing: Icon(
+                                          //   Icons.arrow_forward_ios,
+                                          //   size: 3.h,
+                                          // ),
                                           horizontalTitleGap: 3.w,
                                           title: Row(
                                             mainAxisAlignment:
@@ -1186,9 +1201,11 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                 profileScreenDataNew[index]
                                                     .name,
                                                 style: TextStyle(
-                                                  fontSize: SizeUtils
-                                                          .horizontalBlockSize *
-                                                      4,
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.tablet
+                                                          ? 8.sp
+                                                          : 11.sp,
                                                   fontFamily: 'MuseoSans',
                                                   color: AppConst.black,
                                                   fontWeight: FontWeight.w400,
@@ -1235,7 +1252,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                               await _freshChat
                                                   .showChatConversation(
                                                       "opening chat support \n");
-                                              // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.mobile ?? ''}
+                                              // \n${_.user.firstName ?? ''} ${_.user.lastName ?? ""}\n ${_.user.tablet ?? ''}
                                             } else if (index == 6) {
                                               Get.toNamed(AppRoutes.About);
                                             } else if (index == 7) {
