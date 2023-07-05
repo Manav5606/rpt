@@ -16,7 +16,9 @@ class AppConst {
   static const Color acentGreen = Color(0xff22ffb1);
   static const Color green = Color(0xff028353);
   static const Color greenText = Color(0xff359C76);
-  static const Color referBg = Color(0xffebf7f3);
+  static const Color referBg = Color(0xfff0f7f6);
+  static const Color referContainerbg = Color(0xfff8f7ff);
+  static const Color walletDetailsBg = Color(0xfff1f3ff);
   static const Color limegreen = Color(0xff0aad0a);
   static const Color radiumGreen = Color(0xFF22FFB1);
   static const Color Lightgrey = Color(0xFFF2F3F7);
@@ -26,6 +28,8 @@ class AppConst {
   static const Color ContainerColor = Color(0xff1D3E4A);
   static const Color lightSkyBlue = Color(0xffE6FAF1);
   static const Color lightPichYellow = Color(0xfffef0d3);
+  static const Color walletText = Color(0xff422e79);
+  static const Color cardIDText = Color(0xff686382);
 
   static const Color kPrimaryColor = Color(0xffDD2863);
   static const Color kSecondaryColor = Color(0xff0A7986); //button color

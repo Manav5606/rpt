@@ -23,9 +23,12 @@ class MyWalletController extends GetxController {
   Rx<GetAllWalletTransactionByCustomer?> myWalletTransactionModel =
       GetAllWalletTransactionByCustomer().obs;
   Rx<Transaction> transactionData = Transaction().obs;
+  TextEditingController searchText = TextEditingController();
+  RxString searchValue = "".obs;
   RxDouble walletbalanceOfBusinessType = 0.0.obs;
   RxInt walletbalanceOfSignup = 0.obs;
   RxInt intSelected = 1.obs;
+  RxInt intSelectedForWallet = 1.obs;
   RxInt GroceryWalletAmount = 0.obs;
   RxInt DryFruitWalletAmount = 0.obs;
   RxInt NonvegWalletAmount = 0.obs;
@@ -43,6 +46,7 @@ class MyWalletController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RxString storeId = ''.obs;
   RxString selectBusineesTypeId = ''.obs;
+  RxString selectBusineesTypeIdForWallet = ''.obs;
   // LatLng latLng = LatLng(0.0, 0.0);
   RxBool isLoading = false.obs;
   RxBool isCustomerLoading = false.obs;

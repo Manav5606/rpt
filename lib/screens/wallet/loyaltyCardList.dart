@@ -129,121 +129,201 @@ class CardlistView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: 12.h,
-          width: 35.w,
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: color,
-              // circleColors[new Random().nextInt(7)],
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppConst.grey)),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            child: Column(
+    return Container(
+      height: 19.h,
+      // width: 100.w,
+      decoration: BoxDecoration(
+        color: ColorConstants.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 3,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Container(
+            //   height: 12.h,
+            //   width: 35.w,
+            //   decoration: BoxDecoration(
+            //       shape: BoxShape.rectangle,
+            //       color: color,
+            //       // circleColors[new Random().nextInt(7)],
+            //       borderRadius: BorderRadius.circular(12),
+            //       border: Border.all(color: AppConst.grey)),
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Container(
+            //           width: 12.w,
+            //           height: 5.h,
+            //           decoration: BoxDecoration(
+            //             shape: BoxShape.circle,
+            //             color: AppConst.white.withOpacity(0.1),
+            //           ),
+            //           child: Center(
+            //             child: Text((StoreName ?? "S").substring(0, 1),
+            //                 style: TextStyle(
+            //                     fontFamily: 'Poppins',
+            //                     color: AppConst.white,
+            //                     fontWeight: FontWeight.w600,
+            //                     fontStyle: FontStyle.normal,
+            //                     fontSize: SizeUtils.horizontalBlockSize * 6)),
+            //           ),
+            //         ),
+            //         Spacer(),
+            //         Text(
+            //             ((StoreID != Null && StoreID!.length > 6)
+            //                 ? "Card ID: ${StoreID?.substring(StoreID!.length - 6)}"
+            //                 : "Card ID: 123456"),
+            //             style: TextStyle(
+            //               fontFamily: 'MuseoSans',
+            //               color: AppConst.white,
+            //               fontSize: SizeUtils.horizontalBlockSize * 3.5,
+            //               fontWeight: FontWeight.w500,
+            //               fontStyle: FontStyle.normal,
+            //             ))
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            SizedBox(
+              width: 4.w,
+            ),
+
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  width: 12.w,
-                  height: 5.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppConst.white.withOpacity(0.1),
-                  ),
-                  child: Center(
-                    child: Text((StoreName ?? "S").substring(0, 1),
-                        style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: AppConst.white,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.normal,
-                            fontSize: SizeUtils.horizontalBlockSize * 6)),
-                  ),
+                SizedBox(
+                  height: 2.h,
                 ),
-                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          height: 4.h,
+                          width: 8.w,
+                          color: AppConst.referBg,
+                          child: Image.asset('assets/icons/grocerry.png'),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Container(
+                          width: 50.w,
+                          // height: 4.5.h,
+                          child: Text(StoreName ?? '',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'MuseoSans',
+                                color: AppConst.black,
+                                fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              )),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 6.w,
+                    ),
+                    Text("MANAGE",
+                        style: TextStyle(
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 8.sp
+                              : 9.5.sp,
+                          color: AppConst.green,
+                          fontFamily: 'MuseoSans',
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                        )),
+                  ],
+                ),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                Text(
+                    "You have \u{20B9}${Balance?.toStringAsFixed(2).substring(0, Balance!.toStringAsFixed(2).length - 3)} to withdraw",
+                    style: TextStyle(
+                      fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                      color: AppConst.walletText,
+                      fontFamily: 'MuseoSans',
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+                    )),
+                Text(
+                    isDisplayDistance
+                        ? "${(distanceOrOffer!.toInt() / 1000).toStringAsFixed(2)} km"
+                        : "Welcome Offer is \u{20B9} ${distanceOrOffer ?? 0}",
+                    style: TextStyle(
+                      fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                      color: AppConst.black,
+                      fontFamily: 'MuseoSans',
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    )),
+                SizedBox(
+                  height: 2.h,
+                ),
+                // SizedBox(
+                //   width: 50.w,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text("Withdrawal Limit",
+                //           style: TextStyle(
+                //             fontFamily: 'MuseoSans',
+                //             fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                //             color: AppConst.grey,
+                //             fontWeight: FontWeight.w500,
+                //             fontStyle: FontStyle.normal,
+                //           )),
+                //       Text(
+                //           // "\u{20B9}${storeSearchModel.earnedCashback?.toStringAsFixed(2) ?? 0}",
+                //           "\u{20B9}${Balance?.toStringAsFixed(2) ?? 0}",
+                //           style: TextStyle(
+                //             fontFamily: 'MuseoSans',
+                //             fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                //             color: AppConst.black,
+                //             fontWeight: FontWeight.w700,
+                //             fontStyle: FontStyle.normal,
+                //           )),
+                //     ],
+                //   ),
+                // ),
                 Text(
                     ((StoreID != Null && StoreID!.length > 6)
                         ? "Card ID: ${StoreID?.substring(StoreID!.length - 6)}"
                         : "Card ID: 123456"),
                     style: TextStyle(
                       fontFamily: 'MuseoSans',
-                      color: AppConst.white,
+                      color: AppConst.cardIDText,
                       fontSize: SizeUtils.horizontalBlockSize * 3.5,
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.normal,
-                    ))
+                    )),
+                SizedBox(
+                  height: 2.h,
+                ),
               ],
             ),
-          ),
-        ),
-        SizedBox(
-          width: 4.w,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 50.w,
-              // height: 4.5.h,
-              child: Text(StoreName ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'MuseoSans',
-                    color: AppConst.black,
-                    fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                  )),
-            ),
-            SizedBox(
-              height: 0.5.h,
-            ),
-            Text(
-                isDisplayDistance
-                    ? "${(distanceOrOffer!.toInt() / 1000).toStringAsFixed(2)} km"
-                    : "Welcome Offer \u{20B9} ${distanceOrOffer ?? 0}",
-                style: TextStyle(
-                  fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                  color: AppConst.grey,
-                  fontFamily: 'MuseoSans',
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
-                )),
-            SizedBox(
-              height: 2.h,
-            ),
-            SizedBox(
-              width: 50.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Withdrawal Limit",
-                      style: TextStyle(
-                        fontFamily: 'MuseoSans',
-                        fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                        color: AppConst.grey,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                      )),
-                  Text(
-                      // "\u{20B9}${storeSearchModel.earnedCashback?.toStringAsFixed(2) ?? 0}",
-                      "\u{20B9}${Balance?.toStringAsFixed(2) ?? 0}",
-                      style: TextStyle(
-                        fontFamily: 'MuseoSans',
-                        fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                        color: AppConst.black,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ],
-              ),
-            )
           ],
         ),
-      ],
+      ),
     );
   }
 }

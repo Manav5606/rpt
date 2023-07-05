@@ -25,28 +25,28 @@ List<ProfileScreen> profileScreenData = [
       icon: Icon(
         Icons.settings_outlined,
         color: AppConst.kIconColor,
-        size: 2.7.h,
+        size: 1.7.h,
       ),
       name: "Your account settings"),
   ProfileScreen(
       icon: Icon(
         Icons.star_outline,
         color: AppConst.kIconColor,
-        size: 2.7.h,
+        size: 1.7.h,
       ),
       name: "Order History"),
   ProfileScreen(
       icon: Icon(
         Icons.location_city_rounded,
         color: AppConst.kIconColor,
-        size: 2.7.h,
+        size: 1.7.h,
       ),
       name: "My Addresses"),
   ProfileScreen(
       icon: Icon(
         Icons.help,
         color: AppConst.kIconColor,
-        size: 2.7.h,
+        size: 1.7.h,
       ),
       name: "Chat Support"),
   // ProfileScreen(
@@ -80,7 +80,7 @@ List<ProfileScreen> profileScreenDataNew = [
     icon: Icon(
       Icons.account_balance_wallet_outlined,
       color: AppConst.grey,
-      size: 2.7.h,
+      size: 1.7.h,
     ),
     name: "Manage Wallet",
   ),
@@ -88,7 +88,7 @@ List<ProfileScreen> profileScreenDataNew = [
     icon: Icon(
       Icons.shopping_cart_outlined,
       color: AppConst.grey,
-      size: 2.7.h,
+      size: 1.7.h,
     ),
     name: "Orders & Receipts & Redeems ",
   ),
@@ -96,7 +96,7 @@ List<ProfileScreen> profileScreenDataNew = [
     icon: Icon(
       Icons.location_on_outlined,
       color: AppConst.grey,
-      size: 2.7.h,
+      size: 1.7.h,
     ),
     name: "My Addresses",
   ),
@@ -104,7 +104,7 @@ List<ProfileScreen> profileScreenDataNew = [
     icon: Icon(
       Icons.receipt_outlined,
       color: AppConst.grey,
-      size: 2.7.h,
+      size: 1.7.h,
     ),
     name: "Get instant",
   ),
@@ -120,7 +120,7 @@ List<ProfileScreen> profileScreenDataNew = [
     icon: Icon(
       CupertinoIcons.chat_bubble,
       color: AppConst.grey,
-      size: 2.7.h,
+      size: 1.7.h,
     ),
     name: "Customer Service",
   ),
@@ -128,7 +128,7 @@ List<ProfileScreen> profileScreenDataNew = [
     icon: Icon(
       CupertinoIcons.info,
       color: AppConst.grey,
-      size: 2.7.h,
+      size: 1.7.h,
     ),
     name: "About Us",
   ),
@@ -136,7 +136,7 @@ List<ProfileScreen> profileScreenDataNew = [
     icon: Icon(
       Icons.power_settings_new_rounded,
       color: AppConst.grey,
-      size: 2.7.h,
+      size: 1.7.h,
     ),
     name: "Logout",
   ),

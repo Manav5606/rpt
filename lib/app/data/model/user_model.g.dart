@@ -70,7 +70,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
 
   @override
   int get hashCode => typeId.hashCode;
-
+  
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

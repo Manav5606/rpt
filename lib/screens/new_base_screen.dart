@@ -301,12 +301,13 @@ class ScanReceiptStores extends StatelessWidget {
                         onTap: () async {
                           _paymentController.isLoading.value = true;
                           await _exploreController.getStoreData(
-                              id: _myWalletController
-                                      .myWalletModel.value!.data![index].sId ??
-                                  "",
-                              isScanFunction: true,
-                              navBackTo: "newbasescreen");
-
+                            id: _myWalletController
+                                    .myWalletModel.value!.data![index].sId ??
+                                "",
+                            isScanFunction: true,
+                          );
+                          // navBackTo: "newbasescreen");
+                          
                           RedeemCashInStorePageData ScanReceiptData =
                               RedeemCashInStorePageData(
                                   name: _myWalletController

@@ -835,15 +835,15 @@ class MyAccountPage extends GetView<MyAccountController> {
                                           topLeft: Radius.circular(10),
                                           topRight: Radius.circular(10))),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18.0, top: 5),
+                                    padding:
+                                        EdgeInsets.only(left: 18.0, top: 1.h),
                                     child: Text(
                                       'Settings',
                                       style: TextStyle(
                                         fontSize: SizerUtil.deviceType ==
                                                 DeviceType.tablet
-                                            ? 9.sp
-                                            : 12.sp,
+                                            ? 8.sp
+                                            : 11.sp,
                                         fontFamily: 'MuseoSans',
                                         color: AppConst.black,
                                         fontWeight: FontWeight.w400,
@@ -883,294 +883,306 @@ class MyAccountPage extends GetView<MyAccountController> {
                                       physics: NeverScrollableScrollPhysics(),
                                       itemBuilder: (context, index) {
                                         if (index == 3) {
-                                          return GestureDetector(
-                                            onTap: () =>
-                                                Get.to(ReferAndEarnScreen()),
-                                            child: Container(
-                                              color: AppConst.referBg,
-                                              height: 28.h,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0,
-                                                            top: 10),
-                                                    child: Text(
-                                                      "Invite friends and family",
-                                                      style: TextStyle(
-                                                        fontSize: SizerUtil
-                                                                    .deviceType ==
-                                                                DeviceType
-                                                                    .tablet
-                                                            ? 11.sp
-                                                            : 14.sp,
-                                                        fontFamily: 'MuseoSans',
-                                                        color: AppConst.black,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontStyle:
-                                                            FontStyle.normal,
+                                          return Container(
+                                            height: 28.h,
+                                            color: AppConst.referContainerbg,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: Container(
+                                                color: AppConst.referBg,
+                                                height: 28.h,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 16.0,
+                                                              top: 10),
+                                                      child: Text(
+                                                        "Invite friends and family",
+                                                        style: TextStyle(
+                                                          fontSize: SizerUtil
+                                                                      .deviceType ==
+                                                                  DeviceType
+                                                                      .tablet
+                                                              ? 10.sp
+                                                              : 13.sp,
+                                                          fontFamily:
+                                                              'MuseoSans',
+                                                          color: AppConst.black,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 16.0,
-                                                                top: 0),
-                                                        child: Text(
-                                                          "Referral Code",
-                                                          style: TextStyle(
-                                                            fontSize: SizerUtil
-                                                                        .deviceType ==
-                                                                    DeviceType
-                                                                        .tablet
-                                                                ? 8.sp
-                                                                : 11.sp,
-                                                            fontFamily:
-                                                                'MuseoSans',
-                                                            color:
-                                                                AppConst.black,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontStyle: FontStyle
-                                                                .normal,
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 16.0,
+                                                                  top: 0),
+                                                          child: Text(
+                                                            "Referral Code",
+                                                            style: TextStyle(
+                                                              fontSize: SizerUtil
+                                                                          .deviceType ==
+                                                                      DeviceType
+                                                                          .tablet
+                                                                  ? 7.sp
+                                                                  : 10.sp,
+                                                              fontFamily:
+                                                                  'MuseoSans',
+                                                              color: AppConst
+                                                                  .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w200,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 12.0,
-                                                                top: 5),
-                                                        child: Text(
-                                                          _.referCode
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                            color:
-                                                                AppConst.green,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: SizerUtil
-                                                                        .deviceType ==
-                                                                    DeviceType
-                                                                        .tablet
-                                                                ? 8.sp
-                                                                : 11.sp,
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 12.0,
+                                                                  top: 1),
+                                                          child: Text(
+                                                            _.referCode
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              color: AppConst
+                                                                  .green,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: SizerUtil
+                                                                          .deviceType ==
+                                                                      DeviceType
+                                                                          .tablet
+                                                                  ? 7.sp
+                                                                  : 10.sp,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 5.w,
-                                                              ),
-                                                              Column(
-                                                                children: [
-                                                                  Container(
-                                                                    height: 6.h,
-                                                                    width: 12.w,
-                                                                    decoration: BoxDecoration(
-                                                                        color: ColorConstants
-                                                                            .white,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(40)),
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .list_alt_outlined,
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 5.w,
+                                                                ),
+                                                                Column(
+                                                                  children: [
+                                                                    Container(
+                                                                      height:
+                                                                          5.h,
+                                                                      width:
+                                                                          10.w,
+                                                                      decoration: BoxDecoration(
+                                                                          color: ColorConstants
+                                                                              .white,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(40)),
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .list_alt_outlined,
+                                                                        color: AppConst
+                                                                            .green,
+                                                                        size:
+                                                                            3.h,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          2.h,
+                                                                    ),
+                                                                    Text(
+                                                                      "Make a list",
+                                                                      style: TextStyle(
+                                                                          fontSize: SizerUtil.deviceType == DeviceType.tablet
+                                                                              ? 6.sp
+                                                                              : 8.sp,
+                                                                          fontWeight: FontWeight.w700),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 3.w,
+                                                                ),
+                                                                Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          1.6.h,
+                                                                    ),
+                                                                    Container(
+                                                                      height:
+                                                                          5.h,
+                                                                      width:
+                                                                          10.w,
+                                                                      decoration: BoxDecoration(
+                                                                          color: ColorConstants
+                                                                              .white,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(40)),
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .storefront_sharp,
+                                                                        color: AppConst
+                                                                            .green,
+                                                                        size:
+                                                                            3.h,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          2.h,
+                                                                    ),
+                                                                    Text(
+                                                                      "Name a store\n     or don't",
+                                                                      style: TextStyle(
+                                                                          fontSize: SizerUtil.deviceType == DeviceType.tablet
+                                                                              ? 6.sp
+                                                                              : 8.sp,
+                                                                          fontWeight: FontWeight.w700),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 3.w,
+                                                                ),
+                                                                Column(
+                                                                  children: [
+                                                                    Container(
+                                                                      height:
+                                                                          5.h,
+                                                                      width:
+                                                                          10.w,
+                                                                      decoration: BoxDecoration(
+                                                                          color: ColorConstants
+                                                                              .white,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(40)),
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .directions_bike,
+                                                                        color: AppConst
+                                                                            .green,
+                                                                        size:
+                                                                            3.h,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          2.h,
+                                                                    ),
+                                                                    Text(
+                                                                      "Get it DUN",
+                                                                      style: TextStyle(
+                                                                          fontSize: SizerUtil.deviceType == DeviceType.tablet
+                                                                              ? 6.sp
+                                                                              : 8.sp,
+                                                                          fontWeight: FontWeight.w700),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 1.h,
+                                                            ),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                _.shareToSystem();
+                                                              },
+                                                              child: Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: 12
+                                                                            .w),
+                                                                child:
+                                                                    Container(
+                                                                  height: 4.h,
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width /
+                                                                      3,
+                                                                  decoration: BoxDecoration(
                                                                       color: AppConst
                                                                           .green,
-                                                                      size: 4.h,
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 2.h,
-                                                                  ),
-                                                                  Text(
-                                                                    "Make a list",
-                                                                    style: TextStyle(
-                                                                        fontSize: SizerUtil.deviceType == DeviceType.tablet
-                                                                            ? 8
-                                                                                .sp
-                                                                            : 9
-                                                                                .sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                width: 3.w,
-                                                              ),
-                                                              Column(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    height: 2.h,
-                                                                  ),
-                                                                  Container(
-                                                                    height: 6.h,
-                                                                    width: 12.w,
-                                                                    decoration: BoxDecoration(
-                                                                        color: ColorConstants
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              25)),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      "Share the app",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize: SizerUtil.deviceType ==
+                                                                                DeviceType.tablet
+                                                                            ? 7.sp
+                                                                            : 10.sp,
+                                                                        fontFamily:
+                                                                            'MuseoSans',
+                                                                        color: AppConst
                                                                             .white,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(40)),
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .storefront_sharp,
-                                                                      color: AppConst
-                                                                          .green,
-                                                                      size: 4.h,
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 2.h,
-                                                                  ),
-                                                                  Text(
-                                                                    "Name a store\n     or don't",
-                                                                    style: TextStyle(
-                                                                        fontSize: SizerUtil.deviceType == DeviceType.tablet
-                                                                            ? 8
-                                                                                .sp
-                                                                            : 9
-                                                                                .sp,
                                                                         fontWeight:
-                                                                            FontWeight.w700),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                width: 3.w,
-                                                              ),
-                                                              Column(
-                                                                children: [
-                                                                  Container(
-                                                                    height: 6.h,
-                                                                    width: 12.w,
-                                                                    decoration: BoxDecoration(
-                                                                        color: ColorConstants
-                                                                            .white,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(40)),
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .directions_bike,
-                                                                      color: AppConst
-                                                                          .green,
-                                                                      size: 4.h,
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 2.h,
-                                                                  ),
-                                                                  Text(
-                                                                    "Get it DUN",
-                                                                    style: TextStyle(
-                                                                        fontSize: SizerUtil.deviceType == DeviceType.tablet
-                                                                            ? 8
-                                                                                .sp
-                                                                            : 9
-                                                                                .sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 1.h,
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              _.shareToSystem();
-                                                            },
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left:
-                                                                          12.0),
-                                                              child: Container(
-                                                                height: 5.h,
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width /
-                                                                    3,
-                                                                decoration: BoxDecoration(
-                                                                    color: AppConst
-                                                                        .green,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            25)),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    "Share the app",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize: SizerUtil.deviceType ==
-                                                                              DeviceType.tablet
-                                                                          ? 8.sp
-                                                                          : 11.sp,
-                                                                      fontFamily:
-                                                                          'MuseoSans',
-                                                                      color: AppConst
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontStyle:
-                                                                          FontStyle
-                                                                              .normal,
+                                                                            FontWeight.w400,
+                                                                        fontStyle:
+                                                                            FontStyle.normal,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal: 0,
-                                                                vertical: 10),
-                                                        child: Image.asset(
-                                                          'assets/images/refer_and_earn.png',
-                                                          height: 18.h,
+                                                            )
+                                                          ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  right: 5.w,
+                                                                  bottom: 2.h),
+                                                          child: Image.asset(
+                                                            'assets/images/refer_and_earn.png',
+                                                            height: 14.h,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           );
                                         }
                                         return ListTile(
                                           contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 4.w, vertical: .4.h),
+                                              horizontal: 2.w, vertical: .4.h),
                                           dense: true,
                                           // trailing: Icon(
                                           //   Icons.arrow_forward_ios_rounded,
@@ -1178,8 +1190,8 @@ class MyAccountPage extends GetView<MyAccountController> {
                                           //   size: 2.7.h,
                                           // ),
                                           leading: Container(
-                                            width: 10.w,
-                                            height: 5.h,
+                                            width: 8.w,
+                                            height: 4.h,
                                             decoration: BoxDecoration(
                                                 color: AppConst.veryLightGrey,
                                                 shape: BoxShape.circle),
@@ -1192,7 +1204,7 @@ class MyAccountPage extends GetView<MyAccountController> {
                                           //   Icons.arrow_forward_ios,
                                           //   size: 3.h,
                                           // ),
-                                          horizontalTitleGap: 3.w,
+                                          horizontalTitleGap: 2.w,
                                           title: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -1205,17 +1217,17 @@ class MyAccountPage extends GetView<MyAccountController> {
                                                       SizerUtil.deviceType ==
                                                               DeviceType.tablet
                                                           ? 8.sp
-                                                          : 11.sp,
+                                                          : 10.sp,
                                                   fontFamily: 'MuseoSans',
                                                   color: AppConst.black,
-                                                  fontWeight: FontWeight.w400,
+                                                  fontWeight: FontWeight.w200,
                                                   fontStyle: FontStyle.normal,
                                                   letterSpacing: -0.48,
                                                 ),
                                               ),
                                               if (index == 0)
                                                 Text(
-                                                  "Rs ${_addLocationController.convertor(_.user.balance ?? 0)}",
+                                                  "₹ ${_addLocationController.convertor(_.user.balance ?? 0)}",
                                                   // 'Rs ${_.user.balance}',
                                                   style: TextStyle(
                                                     fontSize: SizeUtils
@@ -1245,8 +1257,6 @@ class MyAccountPage extends GetView<MyAccountController> {
                                               ));
 
                                               // Get.toNamed(AppRoutes.MyAddresses);
-                                            } else if (index == 4) {
-                                              Get.to(ReferAndEarnScreen());
                                             } else if (index == 5) {
                                               _freshChat.initState();
                                               await _freshChat

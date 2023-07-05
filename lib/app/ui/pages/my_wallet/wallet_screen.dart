@@ -17,10 +17,13 @@ import 'package:customer_app/screens/wallet/controller/paymentController.dart';
 import 'package:customer_app/theme/styles.dart';
 import 'package:customer_app/widgets/backButton.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../../../screens/new_base_screen.dart';
 
 class WalletScreen extends GetView<MyWalletController> {
   final MyWalletController _myWalletController = Get.find()
@@ -36,45 +39,334 @@ class WalletScreen extends GetView<MyWalletController> {
           statusBarColor: AppConst.white,
           statusBarIconBrightness: Brightness.dark),
       child: Scaffold(
+        backgroundColor: AppConst.referContainerbg,
         appBar: AppBar(
           elevation: 1,
           systemOverlayStyle: SystemUiOverlayStyle(
               statusBarColor: AppConst.white,
               statusBarIconBrightness: Brightness.dark),
           // backgroundColor: Color(0xff005b41),
-          title: Row(
+          title: Text("My Wallets",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: AppConst.black,
+                fontSize: SizeUtils.horizontalBlockSize * 4.5,
+                fontWeight: FontWeight.w700,
+                fontStyle: FontStyle.normal,
+              )),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
             children: [
-              SizedBox(
-                width: 15.w,
-              ),
-              SizedBox(
-                height: 3.5.h,
-                child: Image(
-                  image: AssetImage(
-                    'assets/images/Redeem.png',
+              Padding(
+                padding: const EdgeInsets.all(12.0).copyWith(top: 2.h),
+                child: Container(
+                  height: 5.h,
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h),
+                  decoration: BoxDecoration(
+                    color: ColorConstants.white,
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                    // border: Border.all(color: AppConst.grey, width: 0.5),
+                    // borderRadius: BorderRadius.circular(10),
                   ),
+                  child: TextField(
+                      textAlign: TextAlign.left,
+                      // textDirection: TextDirection.rtl,
+                      controller: _myWalletController.searchText,
+                      textAlignVertical: TextAlignVertical.center,
+                      decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.only(left: 3.w, top: 0.5.h),
+                          isDense: true,
+                          counterText: "",
+                          border: InputBorder.none,
+                          // OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(12),
+                          //   borderSide:
+                          //       BorderSide(width: 1, color: AppConst.transparent),
+                          // ),
+                          focusedBorder: InputBorder.none,
+                          // OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(12),
+                          //   borderSide: BorderSide(color: AppConst.black),
+                          // ),
+                          hintTextDirection: TextDirection.rtl,
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.only(top: 6.0),
+                            child: Icon(
+                              Icons.search,
+                              color: AppConst.darkGrey,
+                              size: 25,
+                            ),
+                          ),
+                          hintText: " Search your store here",
+                          hintStyle: TextStyle(
+                              color: AppConst.darkGrey,
+                              fontSize:
+                                  (SizerUtil.deviceType == DeviceType.tablet)
+                                      ? 9.sp
+                                      : 10.sp)),
+                      showCursor: true,
+                      cursorColor: AppConst.black,
+                      cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                      maxLength: 30,
+                      style: TextStyle(
+                        color: AppConst.black,
+                        fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                            ? 9.sp
+                            : 10.sp,
+                      ),
+                      onChanged: (value) {
+                        _myWalletController.searchValue.value = value;
+                      }),
                 ),
               ),
               SizedBox(
-                width: 4.w,
+                height: 0.5.h,
               ),
-              Text("My Wallets",
-                  style: TextStyle(
-                    fontFamily: 'MuseoSans',
-                    color: AppConst.black,
-                    fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                  )),
+              Container(
+                height: 8.h,
+                color: AppConst.Lightgrey,
+                child: ListView(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    //_myWalletController.myWalletModel.value?.data.first.businesstype.sId on basis of this id filter the list for each category
+                    Obx(
+                      () => (_myWalletController.intSelectedForWallet.value ==
+                              1)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    1;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet.value = '';
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "All",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    1;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet.value = '';
+                              },
+                              child: DisplayBusinessType(
+                                text: "All",
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Obx(
+                      () => (_myWalletController.intSelectedForWallet.value ==
+                              2)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    2;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "61f95fcd0a984e3d1c8f9ec9";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Grocery",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    2;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "61f95fcd0a984e3d1c8f9ec9";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Grocery",
+                              ),
+                            ),
+                    ),
+
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Obx(
+                      () => (_myWalletController.intSelectedForWallet.value ==
+                              3)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    3;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "641ecc4ad9f0df5fa16d708d";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Dry Fruits",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    3;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "641ecc4ad9f0df5fa16d708d";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Dry Fruits",
+                              ),
+                            ),
+                    ),
+
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Obx(
+                      () => (_myWalletController.intSelectedForWallet.value ==
+                              4)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    4;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "63a68a03f5416c5c5b0ab0a5";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Pharmacy",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    4;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "63a68a03f5416c5c5b0ab0a5";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Pharmacy",
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Obx(
+                      () => (_myWalletController.intSelectedForWallet.value ==
+                              5)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    5;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "625cc6c0c30c356c00c6a9bb";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Meat",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    5;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "625cc6c0c30c356c00c6a9bb";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Meat",
+                              ),
+                            ),
+                    ),
+
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Obx(
+                      () => (_myWalletController.intSelectedForWallet.value ==
+                              6)
+                          ? GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    6;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "63a689eff5416c5c5b0ab0a4";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: SelectedDisplayBusinessType(
+                                text: "Pet food",
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                _myWalletController.intSelectedForWallet.value =
+                                    6;
+                                _myWalletController
+                                    .selectBusineesTypeIdForWallet
+                                    .value = "63a689eff5416c5c5b0ab0a4";
+                                // print(_myWalletController.intSelectedForWallet.value);
+                              },
+                              child: DisplayBusinessType(
+                                text: "Pet food",
+                              ),
+                            ),
+                    ),
+
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 3.w, top: 3.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Available Wallets",
+                        style: TextStyle(
+                          fontFamily: 'MuseoSans',
+                          color: AppConst.black,
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 9.sp
+                              : 11.5.sp,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        )),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h),
+                child: WalletCardList(
+                  navWithOutTransaction: navWithOutTransaction ?? false,
+                ),
+              ),
             ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            child: WalletCardList(
-              navWithOutTransaction: navWithOutTransaction ?? false,
-            ),
           ),
         ),
 
@@ -429,25 +721,63 @@ class WalletCardList extends StatelessWidget {
                   text2: "orders yett!",
                   icon: Icons.receipt,
                 )
-              : ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount:
-                      _myWalletController.myWalletModel.value?.data?.length ??
-                          0,
-                  itemBuilder: (context, index) {
-                    return WalletListView(
-                      navWithOutTransaction: navWithOutTransaction,
-                      walletData:
-                          _myWalletController.myWalletModel.value!.data![index],
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 1.h),
-                      child: Container(height: 1, color: AppConst.grey),
-                    );
-                  },
+              : Obx(
+                  () => ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: _myWalletController.searchValue.value.isEmpty
+                        ? (_myWalletController.selectBusineesTypeIdForWallet.value == ''
+                            ? (_myWalletController.myWalletModel.value?.data
+                                    ?.where((c) => c.deactivated == false)
+                                    .toList()
+                                    .length ??
+                                0)
+                            : (_myWalletController.myWalletModel.value?.data
+                                    ?.where((c) =>
+                                        c.deactivated == false &&
+                                        c.totalCashbackSubBusinessType!.first
+                                                .subBusinessType ==
+                                            _myWalletController
+                                                .selectBusineesTypeIdForWallet
+                                                .value)
+                                    .toList()
+                                    .length ??
+                                0))
+                        : (_myWalletController.myWalletModel.value?.data
+                                ?.where((c) => c.name!
+                                    .toLowerCase()
+                                    .contains(_myWalletController.searchValue.value.toLowerCase()))
+                                .toList()
+                                .length ??
+                            0),
+                    itemBuilder: (context, index) {
+                      return WalletListView(
+                        walletData: _myWalletController.searchValue.value.isEmpty
+                            ? (_myWalletController.selectBusineesTypeIdForWallet.value == ''
+                                ? (_myWalletController.myWalletModel.value!.data!
+                                    .where((c) => c.deactivated == false)
+                                    .toList()[index])
+                                : (_myWalletController.myWalletModel.value!.data!
+                                    .where((c) =>
+                                        c.deactivated == false &&
+                                        c.totalCashbackSubBusinessType!.first.subBusinessType ==
+                                            _myWalletController
+                                                .selectBusineesTypeIdForWallet
+                                                .value)
+                                    .toList()[index]))
+                            : (_myWalletController.myWalletModel.value!.data!
+                                .where((c) =>
+                                    c.deactivated == false &&
+                                    c.name!
+                                        .toLowerCase()
+                                        .contains(_myWalletController.searchValue.value.toLowerCase()))
+                                .toList()[index]),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox();
+                    },
+                  ),
                 ),
     );
   }
@@ -504,6 +834,65 @@ class WalletListView extends StatelessWidget {
                     (walletData.welcomeOfferAmount ?? 0)),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SelectedDisplayBusinessType extends StatelessWidget {
+  String? text;
+  SelectedDisplayBusinessType({Key? key, this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 9.h,
+      // width: 20.w,
+      // padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+          color: AppConst.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppConst.green)),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18),
+          child: Text(text ?? "",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: ColorConstants.black,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              )),
+        ),
+      ),
+    );
+  }
+}
+
+class DisplayBusinessType extends StatelessWidget {
+  String? text;
+  DisplayBusinessType({Key? key, this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 9.h,
+      // width: 20.w,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20), color: AppConst.white),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18),
+          child: Text(text ?? "",
+              style: TextStyle(
+                fontFamily: 'MuseoSans',
+                color: Color(0xff462f03),
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              )),
+        ),
       ),
     );
   }

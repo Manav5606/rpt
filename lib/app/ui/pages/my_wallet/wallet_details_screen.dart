@@ -22,6 +22,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import '../../../../utils/ui_spacing_helper.dart';
 import '../location_picker/address_model.dart';
 
 class WalletDetailsScreen extends StatelessWidget {
@@ -58,7 +59,7 @@ class WalletTransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     dynamic argumentData = Get.arguments;
     // Color color = argumentData['color'];
-    Color color = Color(0xff003d29);
+    Color color = AppConst.white;
     String name = argumentData['name'] ?? "";
     String StoreId = argumentData['storeId'] ?? "";
     String logo = argumentData['logo'] ?? "";
@@ -73,12 +74,12 @@ class WalletTransactionCard extends StatelessWidget {
           title: Text(name,
               style: TextStyle(
                 fontFamily: 'MuseoSans',
-                color: AppConst.white,
+                color: AppConst.black,
                 fontSize: SizeUtils.horizontalBlockSize * 4,
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
               )),
-          iconTheme: IconThemeData(color: AppConst.white),
+          iconTheme: IconThemeData(color: AppConst.black),
           systemOverlayStyle: SystemUiOverlayStyle(
               statusBarColor: color, statusBarIconBrightness: Brightness.light),
         ),
@@ -88,74 +89,46 @@ class WalletTransactionCard extends StatelessWidget {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Padding(
-                    //   padding:
-                    //       EdgeInsets.symmetric(horizontal: 0.w, vertical: 1.h),
-                    //   child: Row(
-                    //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       BackButtonWidget(),
-                    //       SizedBox(
-                    //         width: 2.w,
-                    //       ),
-                    //       (logo).isEmpty
-                    //           ? CircleAvatar(
-                    //               child: Text(name.substring(0, 1),
-                    //                   style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       color: AppConst.white,
-                    //                       fontWeight: FontWeight.w600,
-                    //                       fontStyle: FontStyle.normal,
-                    //                       fontSize:
-                    //                           SizeUtils.horizontalBlockSize *
-                    //                               6)),
-                    //               backgroundColor: color,
-                    //               radius: SizeUtils.horizontalBlockSize * 6.5,
-                    //             )
-                    //           : CircleAvatar(
-                    //               backgroundImage: NetworkImage(logo),
-                    //               backgroundColor: AppConst.white,
-                    //               radius: SizeUtils.horizontalBlockSize * 6.5,
-                    //             ),
-                    //       SizedBox(
-                    //         width: 2.w,
-                    //       ),
-                    //       Expanded(
-                    //         child: Text(
-                    //           "${name}",
-                    //           style: TextStyle(
-                    //               color: AppConst.black,
-                    //               fontSize: SizeUtils.horizontalBlockSize * 5),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-
-                    WalletDetailCard(color),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Container(
-                              child: Text(
-                                " My Transactions", //Transactions
-                                style: TextStyle(
-                                    color: AppConst.black,
-                                    fontFamily: 'MuseoSans',
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                    letterSpacing: -0.36,
-                                    fontSize:
-                                        SizeUtils.horizontalBlockSize * 4.5),
-                              ),
-                              // color: Colors.red,
+                    Container(
+                        height: 28.h,
+                        width: MediaQuery.of(context).size.width,
+                        color: AppConst.walletDetailsBg,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
-                        ],
+                            WalletDetailCard(color, context),
+                          ],
+                        )),
+                    Container(
+                      height: 8.h,
+                      width: MediaQuery.of(context).size.width,
+                      color: AppConst.walletDetailsBg,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 2.h, horizontal: 3.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Container(
+                                child: Text(
+                                  "My Transactions", //Transactions
+                                  style: TextStyle(
+                                      color: AppConst.black,
+                                      fontFamily: 'MuseoSans',
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing: -0.36,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.5),
+                                ),
+                                // color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Flexible(
@@ -169,52 +142,60 @@ class WalletTransactionCard extends StatelessWidget {
                             )
                           :
                           // EmptyOrderScreen(),
-                          TransactionList(),
+                          Container(
+                              color: AppConst.walletDetailsBg,
+                              child: TransactionList()),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        SeeyaConfirmDialog(
-                            title: "Are you sure!",
-                            subTitle: (walletData?.deactivated == false)
-                                ? "You Want to Deactivate the Wallet?"
-                                : "You Want to Activate the Wallet?",
-                            onCancel: () => Get.back(),
-                            onConfirm: () async {
-                              //exit the dialog;
-                              Get.back();
-                              //exit this screen
+                    Container(
+                      height: 10.h,
+                      width: MediaQuery.of(context).size.width,
+                      color: AppConst.walletDetailsBg,
+                      child: GestureDetector(
+                        onTap: () {
+                          SeeyaBottomConfirmDialog(
+                              title: "Are you sure!",
+                              subTitle: (walletData?.deactivated == false)
+                                  ? "You Want to Deactivate the Wallet?"
+                                  : "You Want to Activate the Wallet?",
+                              onCancel: () => Get.back(),
+                              onConfirm: () async {
+                                //exit the dialog;
+                                Get.back();
+                                //exit this screen
 
-                              if (walletData?.deactivated == false) {
-                                _myWalletController
-                                    .updateWalletStatusByCustomer(
-                                        storeId: walletData?.sId, status: true);
-                                walletData?.deactivated = true;
-                              } else {
-                                _myWalletController
-                                    .updateWalletStatusByCustomer(
-                                        storeId: walletData?.sId,
-                                        status: false);
-                                walletData?.deactivated = false;
-                              }
-                            }).show(context);
-                      },
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 2.h, horizontal: 3.w),
-                          child: BottomWideButton(
-                            text: (walletData?.deactivated == false)
-                                ? "Deactivate Wallet"
-                                : "Activate Wallet",
-                            color: (walletData?.deactivated == false)
-                                ? AppConst.white
-                                : AppConst.darkGreen,
-                            Textcolor: (walletData?.deactivated == false)
-                                ? AppConst.red
-                                : AppConst.white,
-                            borderColor: (walletData?.deactivated == false)
-                                ? AppConst.red
-                                : AppConst.darkGreen,
-                          )),
+                                if (walletData?.deactivated == false) {
+                                  _myWalletController
+                                      .updateWalletStatusByCustomer(
+                                          storeId: walletData?.sId,
+                                          status: true);
+                                  walletData?.deactivated = true;
+                                } else {
+                                  _myWalletController
+                                      .updateWalletStatusByCustomer(
+                                          storeId: walletData?.sId,
+                                          status: false);
+                                  walletData?.deactivated = false;
+                                }
+                              }).show(context);
+                        },
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 2.h, horizontal: 3.w),
+                            child: BottomWideButton(
+                              text: (walletData?.deactivated == false)
+                                  ? "Deactivate Wallet"
+                                  : "Activate Wallet",
+                              color: (walletData?.deactivated == false)
+                                  ? AppConst.white
+                                  : AppConst.darkGreen,
+                              Textcolor: (walletData?.deactivated == false)
+                                  ? AppConst.red
+                                  : AppConst.white,
+                              borderColor: (walletData?.deactivated == false)
+                                  ? AppConst.red
+                                  : AppConst.darkGreen,
+                            )),
+                      ),
                     ),
                   ],
                 ),
@@ -223,14 +204,52 @@ class WalletTransactionCard extends StatelessWidget {
     );
   }
 
-  Padding WalletDetailCard(Color color) {
+  Widget button(String text, {Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: SizeUtils.horizontalBlockSize * 3,
+            vertical: SizeUtils.verticalBlockSize * 1),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.0),
+          color: AppConst.white,
+          border: Border.all(color: AppConst.themeBlue, width: 0.5),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0.0, 3.0),
+              color: AppConst.black.withOpacity(0.15),
+              blurRadius: 6.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: AppConst.smallBoxTextSan,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding WalletDetailCard(Color color, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
+      padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 3.w),
       child: Container(
         height: 25.h,
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: color,
+          color: ColorConstants.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              spreadRadius: 2,
+              blurRadius: 2,
+              offset: Offset(0, 2),
+            ),
+          ],
           // border: Border.all(),
           // borderRadius: BorderRadius.only(
           //     bottomLeft: Radius.circular(32),
@@ -244,8 +263,8 @@ class WalletTransactionCard extends StatelessWidget {
                 Text(
                   "\u{20B9} ${(walletData?.earnedCashback ?? 0) + (walletData?.welcomeOfferAmount ?? 0)} ",
                   style: TextStyle(
-                    color: AppConst.white,
-                    fontSize: SizeUtils.horizontalBlockSize * 11,
+                    color: AppConst.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 10,
                     fontFamily: 'MuseoSans',
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
@@ -254,8 +273,8 @@ class WalletTransactionCard extends StatelessWidget {
                 Text(
                   "Your available Balance",
                   style: TextStyle(
-                    color: AppConst.white,
-                    fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                    color: AppConst.black,
+                    fontSize: SizeUtils.horizontalBlockSize * 4,
                     fontFamily: 'MuseoSans',
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
@@ -281,19 +300,41 @@ class WalletTransactionCard extends StatelessWidget {
                           Get.to(() => ScanStoreViewScreen());
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.w, vertical: 1.h),
-                          height: 12.h,
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(
-                          //   width: 0.1,
-                          // )),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/images/scanme.png',
-                            ),
-                          ),
-                        ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 1.w, vertical: 1.h),
+                            height: 10.h,
+                            width: 12.h,
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  width: 0.1,
+                                )),
+
+                            // child: Image(
+                            //   image: AssetImage(
+                            //     'assets/images/scanme.png',
+                            //   ),
+                            //   color: AppConst.green,
+                            // ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  Icons.local_grocery_store,
+                                  size: 30,
+                                ),
+                                Text("scan")
+                              ],
+                            )),
 
                         // CircleAvatar(
                         //   radius: 6.w,
@@ -323,19 +364,41 @@ class WalletTransactionCard extends StatelessWidget {
                               arguments: {"color": randomGenerator()});
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.w, vertical: 1.h),
-                          height: 12.h,
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(
-                          //   width: 0.1,
-                          // )),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/images/refund.png',
-                            ),
-                          ),
-                        ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 1.w, vertical: 1.h),
+                            height: 10.h,
+                            width: 12.h,
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  width: 0.1,
+                                )),
+
+                            // child: Image(
+                            //   image: AssetImage(
+                            //     'assets/images/scanme.png',
+                            //   ),
+                            //   color: AppConst.green,
+                            // ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  Icons.local_grocery_store,
+                                  size: 30,
+                                ),
+                                Text("Refund")
+                              ],
+                            )),
 
                         // CircleAvatar(
                         //   radius: 6.w,
@@ -370,19 +433,41 @@ class WalletTransactionCard extends StatelessWidget {
                           //     : Get.toNamed(AppRoutes.MoreStoreProductView);
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.w, vertical: 1.h),
-                          height: 12.h,
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(
-                          //   width: 0.1,
-                          // )),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/images/storevisit.png',
-                            ),
-                          ),
-                        ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 1.w, vertical: 1.h),
+                            height: 10.h,
+                            width: 12.h,
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  width: 0.1,
+                                )),
+
+                            // child: Image(
+                            //   image: AssetImage(
+                            //     'assets/images/scanme.png',
+                            //   ),
+                            //   color: AppConst.green,
+                            // ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  Icons.store,
+                                  size: 30,
+                                ),
+                                Text("Visit Store")
+                              ],
+                            )),
                         // CircleAvatar(
                         //   radius: 6.w,
                         //   backgroundColor: AppConst.white,
@@ -565,152 +650,195 @@ class TransactionList extends StatelessWidget {
     return Obx(
       (() => _myWalletController.isTransactionLoading.value
           ? LoadingWidget()
-          : ListView.separated(
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                  child: Row(
-                    children: [
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //       shape: BoxShape.circle,
-                      //       border: Border.all(color: Colors.grey.shade400)),
-                      //   child: ClipRRect(
-                      //     borderRadius: BorderRadius.circular(50),
-                      //     child: CachedNetworkImage(
-                      //       width: 12.w,
-                      //       height: 6.h,
-                      //       fit: BoxFit.fill,
-                      //       imageUrl: _myWalletController
-                      //               .myWalletTransactionModel
-                      //               .value
-                      //               ?.data?[index]
-                      //               .store
-                      //               ?.logo ??
-                      //           'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
-                      //       progressIndicatorBuilder:
-                      //           (context, url, downloadProgress) => Center(
-                      //               child: CircularProgressIndicator(
-                      //                   value: downloadProgress.progress)),
-                      //       errorWidget: (context, url, error) => Image.network(
-                      //           'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
-                      //     ),
-                      //   ),
-                      // ),
-                      ((_myWalletController.myWalletTransactionModel.value
-                                      ?.data?[index].debitOrCredit)
-                                  ?.toUpperCase() ==
-                              "DEBIT")
-                          ? CircleAvatar(
-                              child: Icon(
-                                CupertinoIcons.arrow_up_right,
-                                color: AppConst.white,
-                                size: 3.5.h,
-                              ),
-                              backgroundColor:
-                                  Color(0xff5764da), // AppConst.blue,
-                              radius: SizeUtils.horizontalBlockSize * 6,
-                            )
-                          : CircleAvatar(
-                              child: Icon(
-                                CupertinoIcons.arrow_down_left,
-                                color: AppConst.white,
-                                size: 3.5.h,
-                              ),
-                              backgroundColor: AppConst.green,
-                              radius: SizeUtils.horizontalBlockSize * 6,
+          : Expanded(
+              child: Container(
+                color: AppConst.white,
+                child: ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //       shape: BoxShape.circle,
+                            //       border: Border.all(color: Colors.grey.shade400)),
+                            //   child: ClipRRect(
+                            //     borderRadius: BorderRadius.circular(50),
+                            //     child: CachedNetworkImage(
+                            //       width: 12.w,
+                            //       height: 6.h,
+                            //       fit: BoxFit.fill,
+                            //       imageUrl: _myWalletController
+                            //               .myWalletTransactionModel
+                            //               .value
+                            //               ?.data?[index]
+                            //               .store
+                            //               ?.logo ??
+                            //           'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg',
+                            //       progressIndicatorBuilder:
+                            //           (context, url, downloadProgress) => Center(
+                            //               child: CircularProgressIndicator(
+                            //                   value: downloadProgress.progress)),
+                            //       errorWidget: (context, url, error) => Image.network(
+                            //           'https://image.freepik.com/free-vector/shop-with-sign-we-are-open_23-2148547718.jpg'),
+                            //     ),
+                            //   ),
+                            // ),
+                            ((_myWalletController.myWalletTransactionModel.value
+                                            ?.data?[index].debitOrCredit)
+                                        ?.toUpperCase() ==
+                                    "DEBIT")
+                                ? CircleAvatar(
+                                    child: Icon(
+                                      CupertinoIcons.arrow_up_right,
+                                      color: AppConst.white,
+                                      size: 2.5.h,
+                                    ),
+                                    backgroundColor:
+                                        Color(0xff5764da), // AppConst.blue,
+                                    radius: SizeUtils.horizontalBlockSize * 4.5,
+                                  )
+                                : CircleAvatar(
+                                    child: Icon(
+                                      CupertinoIcons.arrow_down_left,
+                                      color: AppConst.white,
+                                      size: 2.5.h,
+                                    ),
+                                    backgroundColor: AppConst.green,
+                                    radius: SizeUtils.horizontalBlockSize * 4.5,
+                                  ),
+                            SizedBox(
+                              width: 3.w,
                             ),
-                      SizedBox(
-                        width: 3.w,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 55.w,
+                                  child: Text(
+                                    '${_myWalletController.myWalletTransactionModel.value?.data?[index].comment ?? 'no comment'}',
+                                    overflow: TextOverflow.visible,
+                                    style: TextStyle(
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.5,
+                                      fontFamily: 'MuseoSans',
+                                      color: Color(0xff3a3a3a),
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 0.5.h,
+                                ),
+                                Text(
+                                  DateFormat('d MMMM yyyy  hh:mm a').format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                      _myWalletController
+                                                  .myWalletTransactionModel
+                                                  .value
+                                                  ?.data?[index]
+                                                  .createdAt !=
+                                              null
+                                          ? int.parse((_myWalletController
+                                                  .myWalletTransactionModel
+                                                  .value
+                                                  ?.data?[index]
+                                                  .createdAt)
+                                              .toString())
+                                          : 1638362708701,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                    fontSize:
+                                        SizeUtils.horizontalBlockSize * 2.8,
+                                    color: Color(0xff888888),
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                    'Amount${((_myWalletController.myWalletTransactionModel.value?.data?[index].debitOrCredit)?.toUpperCase() == "DEBIT") ? "" : ""} \u{20b9}${_myWalletController.myWalletTransactionModel.value?.data?[index].amount ?? '0.0'}',
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: ((_myWalletController
+                                                      .myWalletTransactionModel
+                                                      .value
+                                                      ?.data?[index]
+                                                      .debitOrCredit)
+                                                  ?.toUpperCase() ==
+                                              "DEBIT")
+                                          ? AppConst.black
+                                          : AppConst.green,
+                                      fontSize:
+                                          SizeUtils.horizontalBlockSize * 3.5,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 1.35.h,
+                                      width: 1.35.h,
+                                      decoration: BoxDecoration(
+                                          color: _myWalletController
+                                                      .myWalletTransactionModel
+                                                      .value
+                                                      ?.data?[index]
+                                                      .debitOrCredit ==
+                                                  "credit"
+                                              ? AppConst.green
+                                              : AppConst.red,
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Center(
+                                          child: Icon(
+                                        Icons.check,
+                                        size: 9,
+                                        color: AppConst.white,
+                                      )),
+                                    ),
+                                    Text(
+                                      ' ${_myWalletController.myWalletTransactionModel.value?.data?[index].debitOrCredit ?? '---'}',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeUtils.horizontalBlockSize *
+                                                  3.5,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'MuseoSans',
+                                          fontStyle: FontStyle.normal,
+                                          color: AppConst.darkGrey),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 55.w,
-                            child: Text(
-                              '${_myWalletController.myWalletTransactionModel.value?.data?[index].comment ?? 'no comment'}',
-                              overflow: TextOverflow.visible,
-                              style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 4.2,
-                                fontFamily: 'MuseoSans',
-                                color: Color(0xff3a3a3a),
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0.5.h,
-                          ),
-                          Text(
-                            DateFormat('d MMMM yyyy  hh:mm a').format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                _myWalletController.myWalletTransactionModel
-                                            .value?.data?[index].createdAt !=
-                                        null
-                                    ? int.parse((_myWalletController
-                                            .myWalletTransactionModel
-                                            .value
-                                            ?.data?[index]
-                                            .createdAt)
-                                        .toString())
-                                    : 1638362708701,
-                              ),
-                            ),
-                            style: TextStyle(
-                              fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                              color: Color(0xff888888),
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                              '${((_myWalletController.myWalletTransactionModel.value?.data?[index].debitOrCredit)?.toUpperCase() == "DEBIT") ? "" : "+"} \u{20b9}${_myWalletController.myWalletTransactionModel.value?.data?[index].amount ?? '0.0'}',
-                              style: TextStyle(
-                                fontFamily: 'MuseoSans',
-                                color: ((_myWalletController
-                                                .myWalletTransactionModel
-                                                .value
-                                                ?.data?[index]
-                                                .debitOrCredit)
-                                            ?.toUpperCase() ==
-                                        "DEBIT")
-                                    ? AppConst.black
-                                    : AppConst.green,
-                                fontSize: SizeUtils.horizontalBlockSize * 4.5,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              )),
-                          Text(
-                            ' ${_myWalletController.myWalletTransactionModel.value?.data?[index].debitOrCredit ?? '---'}',
-                            style: TextStyle(
-                                fontSize: SizeUtils.horizontalBlockSize * 4,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'MuseoSans',
-                                fontStyle: FontStyle.normal,
-                                color: AppConst.black),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-              itemCount: _myWalletController
-                      .myWalletTransactionModel.value?.data?.length ??
-                  0,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 1.h,
-                );
-              },
+                    );
+                  },
+                  itemCount: _myWalletController
+                          .myWalletTransactionModel.value?.data?.length ??
+                      0,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider(
+                      height: 1.h,
+                      color: AppConst.darkGrey,
+                    );
+                  },
+                ),
+              ),
             )),
     );
   }
