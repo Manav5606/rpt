@@ -304,7 +304,8 @@ class ScanReceiptStores extends StatelessWidget {
                               id: _myWalletController
                                       .myWalletModel.value!.data![index].sId ??
                                   "",
-                              isScanFunction: true);
+                              isScanFunction: true,
+                              navBackTo: "newbasescreen");
 
                           RedeemCashInStorePageData ScanReceiptData =
                               RedeemCashInStorePageData(
@@ -391,141 +392,141 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
               ? Container(height: 90.h, child: LoadingWidget())
               : Column(
                   children: [
-                    ((_myAccountController.activeOrdersModel.value?.data
-                                        ?.length ??
-                                    0) >
-                                0) ||
-                            ((_homeController.getAllCartsModel.value?.carts
-                                        ?.length) ??
-                                    0) >
-                                0
-                        ? Container(
-                            height: 20.h,
-                            decoration: BoxDecoration(color: Color(0xfff2f3f7)),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 2.w, top: 1.h, right: 1.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                          "See your Recent Order", //"Recent Transactions",
-                                          style: TextStyle(
-                                              fontFamily: 'MuseoSans',
-                                              color: Colors.black87,
-                                              fontSize: (SizerUtil.deviceType ==
-                                                      DeviceType.tablet)
-                                                  ? 9.5.sp
-                                                  : 11.5.sp,
-                                              fontWeight: FontWeight.w600,
-                                              fontStyle: FontStyle.normal,
-                                              letterSpacing: -0.5)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 1.h,
-                                  ),
-                                  Container(
-                                    height: 14.h,
-                                    color: AppConst.Lightgrey,
-                                    width: double.infinity,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Obx(() => ((_myAccountController
-                                                      .activeOrderCount.value) >
-                                                  0)
-                                              ? ListView.builder(
-                                                  // controller: _recentController,
-                                                  itemCount: ((_myAccountController
-                                                              .activeOrdersModel
-                                                              .value
-                                                              ?.data)
-                                                          ?.length) ??
-                                                      0,
-                                                  physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  shrinkWrap: true,
-                                                  itemExtent: 46.w,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    //currentItems = index;
-                                                    return RecentActiveOrders1(
-                                                      recentCount: recentCount,
-                                                      myAccountController:
-                                                          _myAccountController,
-                                                      itemIndex:
-                                                          (_myAccountController
-                                                                      .activeOrdersModel
-                                                                      .value
-                                                                      ?.data!
-                                                                      .length ??
-                                                                  0) -
-                                                              1 -
-                                                              index,
-                                                      navBackTo:
-                                                          "newbasescreen",
-                                                    );
-                                                  },
-                                                )
-                                              : SizedBox()),
-                                          Obx(() => ((_homeController
-                                                      .cartsCount.value) >
-                                                  0)
-                                              ? ListView.builder(
-                                                  // controller: _recentCartController,
-                                                  itemCount:
-                                                      // 1,
-                                                      ((_homeController
-                                                              .getAllCartsModel
-                                                              .value
-                                                              ?.carts
-                                                              ?.length) ??
-                                                          0),
-                                                  physics: PageScrollPhysics(),
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  shrinkWrap: true,
-                                                  itemExtent: 46.w,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    // currentItems = index;
-                                                    return RecentCarts12(
-                                                      recentCount:
-                                                          recentCount.value,
-                                                      moreStoreController:
-                                                          _moreStoreController,
-                                                      homeController:
-                                                          _homeController,
-                                                      itemIndex: (_homeController
-                                                              .getAllCartsModel
-                                                              .value
-                                                              ?.carts
-                                                              ?.length)! -
-                                                          1 -
-                                                          index,
-                                                      navBackTo:
-                                                          "newbasescreen",
-                                                    );
-                                                  },
-                                                )
-                                              : SizedBox()),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        : SizedBox(),
+                    // ((_myAccountController.activeOrdersModel.value?.data
+                    //                     ?.length ??
+                    //                 0) >
+                    //             0) ||
+                    //         ((_homeController.getAllCartsModel.value?.carts
+                    //                     ?.length) ??
+                    //                 0) >
+                    //             0
+                    //     ? Container(
+                    //         height: 20.h,
+                    //         decoration: BoxDecoration(color: Color(0xfff2f3f7)),
+                    //         child: Padding(
+                    //           padding: EdgeInsets.only(
+                    //               left: 2.w, top: 1.h, right: 1.w),
+                    //           child: Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+                    //               Row(
+                    //                 children: [
+                    //                   Text(
+                    //                       "See your Recent Order", //"Recent Transactions",
+                    //                       style: TextStyle(
+                    //                           fontFamily: 'MuseoSans',
+                    //                           color: Colors.black87,
+                    //                           fontSize: (SizerUtil.deviceType ==
+                    //                                   DeviceType.tablet)
+                    //                               ? 9.5.sp
+                    //                               : 11.5.sp,
+                    //                           fontWeight: FontWeight.w600,
+                    //                           fontStyle: FontStyle.normal,
+                    //                           letterSpacing: -0.5)),
+                    //                 ],
+                    //               ),
+                    //               SizedBox(
+                    //                 height: 1.h,
+                    //               ),
+                    //               Container(
+                    //                 height: 14.h,
+                    //                 color: AppConst.Lightgrey,
+                    //                 width: double.infinity,
+                    //                 child: SingleChildScrollView(
+                    //                   scrollDirection: Axis.horizontal,
+                    //                   child: Row(
+                    //                     mainAxisAlignment:
+                    //                         MainAxisAlignment.start,
+                    //                     children: [
+                    //                       Obx(() => ((_myAccountController
+                    //                                   .activeOrderCount.value) >
+                    //                               0)
+                    //                           ? ListView.builder(
+                    //                               // controller: _recentController,
+                    //                               itemCount: ((_myAccountController
+                    //                                           .activeOrdersModel
+                    //                                           .value
+                    //                                           ?.data)
+                    //                                       ?.length) ??
+                    //                                   0,
+                    //                               physics:
+                    //                                   NeverScrollableScrollPhysics(),
+                    //                               scrollDirection:
+                    //                                   Axis.horizontal,
+                    //                               shrinkWrap: true,
+                    //                               itemExtent: 46.w,
+                    //                               itemBuilder:
+                    //                                   (context, index) {
+                    //                                 //currentItems = index;
+                    //                                 return RecentActiveOrders1(
+                    //                                   recentCount: recentCount,
+                    //                                   myAccountController:
+                    //                                       _myAccountController,
+                    //                                   itemIndex:
+                    //                                       (_myAccountController
+                    //                                                   .activeOrdersModel
+                    //                                                   .value
+                    //                                                   ?.data!
+                    //                                                   .length ??
+                    //                                               0) -
+                    //                                           1 -
+                    //                                           index,
+                    //                                   navBackTo:
+                    //                                       "newbasescreen",
+                    //                                 );
+                    //                               },
+                    //                             )
+                    //                           : SizedBox()),
+                    //                       Obx(() => ((_homeController
+                    //                                   .cartsCount.value) >
+                    //                               0)
+                    //                           ? ListView.builder(
+                    //                               // controller: _recentCartController,
+                    //                               itemCount:
+                    //                                   // 1,
+                    //                                   ((_homeController
+                    //                                           .getAllCartsModel
+                    //                                           .value
+                    //                                           ?.carts
+                    //                                           ?.length) ??
+                    //                                       0),
+                    //                               physics: PageScrollPhysics(),
+                    //                               scrollDirection:
+                    //                                   Axis.horizontal,
+                    //                               shrinkWrap: true,
+                    //                               itemExtent: 46.w,
+                    //                               itemBuilder:
+                    //                                   (context, index) {
+                    //                                 // currentItems = index;
+                    //                                 return RecentCarts12(
+                    //                                   recentCount:
+                    //                                       recentCount.value,
+                    //                                   moreStoreController:
+                    //                                       _moreStoreController,
+                    //                                   homeController:
+                    //                                       _homeController,
+                    //                                   itemIndex: (_homeController
+                    //                                           .getAllCartsModel
+                    //                                           .value
+                    //                                           ?.carts
+                    //                                           ?.length)! -
+                    //                                       1 -
+                    //                                       index,
+                    //                                   navBackTo:
+                    //                                       "newbasescreen",
+                    //                                 );
+                    //                               },
+                    //                             )
+                    //                           : SizedBox()),
+                    //                     ],
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       )
+                    //     : SizedBox(),
                     (_myWalletController.myWalletModel.value?.data == null ||
                             _myWalletController
                                     .myWalletModel.value?.data?.length ==
@@ -872,7 +873,8 @@ class PayAtStore extends StatelessWidget {
                                     .redeemCashInStorePageDataIndex
                                     .value = payviewData;
 
-                                Get.toNamed(AppRoutes.PayView, arguments: {});
+                                Get.toNamed(AppRoutes.PayView,
+                                    arguments: {"navBackTo": "newbasescreen"});
                               },
                               child: Obx(
                                 () => ListOfAllWallets(
