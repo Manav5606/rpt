@@ -12,6 +12,7 @@ import 'package:customer_app/constants/app_const.dart';
 import 'package:customer_app/controllers/userViewModel.dart';
 import 'package:customer_app/models/getRedeemCashStorePageDataModel.dart';
 import 'package:customer_app/routes/app_list.dart';
+import 'package:customer_app/screens/addcart/active_order_tracking_screen.dart';
 import 'package:customer_app/screens/addcart/controller/addcart_controller.dart';
 import 'package:customer_app/screens/history/history_screen.dart';
 import 'package:customer_app/screens/home/controller/home_controller.dart';
@@ -20,6 +21,7 @@ import 'package:customer_app/screens/more_stores/all_offers_listview.dart';
 import 'package:customer_app/screens/more_stores/morestore_controller.dart';
 import 'package:customer_app/screens/root/network_check.dart';
 import 'package:customer_app/screens/wallet/controller/paymentController.dart';
+import 'package:customer_app/screens/wallet/loyaltyCardList.dart';
 import 'package:customer_app/widgets/all_offers_listview_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -85,38 +87,156 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
   final UserViewModel userViewModel = Get.put(UserViewModel());
   final MoreStoreController _moreStoreController =
       Get.put(MoreStoreController());
+  final AddLocationController _addLocationController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     var balance = _myWalletController.StoreTotalWelcomeAmount();
-    return Obx(
-      () => _myWalletController.isLoading.value
-          ? shimmer()
-          : AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle(
-                  statusBarColor: AppConst.green,
-                  statusBarIconBrightness: Brightness.light),
-              child: Scaffold(
-                backgroundColor: AppConst.green,
-                body: SafeArea(
-                  child: DefaultTabController(
-                    length: 3,
-                    child: Column(
-                      children: [
-                        // Obx(
-                        //   () => DisplayAmountAndSkipButton(
-                        //     walletAmount: _myWalletController
-                        //         .walletbalanceOfBusinessType.value,
-                        //   ),
-                        // ),
-                        TabBar(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+            statusBarColor: AppConst.green,
+            statusBarIconBrightness: Brightness.light),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppConst.green,
+            elevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("My wallets"),
+                GestureDetector(
+                  onTap: () {},
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.account_balance_wallet_rounded,
+                        color: AppConst.white,
+                        size: 2.5.h,
+                      ),
+                      Text(
+                        //\u{20B9}
+                        " ${_addLocationController.convertor(_myAccountController.user.balance ?? 0)}", //?.toStringAsFixed(2)
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
+                              ? 9.sp
+                              : 11.sp,
+                          fontFamily: 'MuseoSans',
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                          color: AppConst.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          backgroundColor: AppConst.green,
+          body: SafeArea(
+            child: Stack(
+              children: [
+                DefaultTabController(
+                  length: 3,
+                  child: Column(
+                    children: [
+                      // Obx(
+                      //   () => DisplayAmountAndSkipButton(
+                      //     walletAmount: _myWalletController
+                      //         .walletbalanceOfBusinessType.value,
+                      //   ),
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0)
+                            .copyWith(left: 3.w, right: 3.w),
+                        child: Container(
+                          height: 6.h,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 0.h),
+                          decoration: BoxDecoration(
+                            color: AppConst.white,
+                            // border: Border.all(color: AppConst.grey, width: 0.5),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppConst.grey,
+                                blurRadius: 1,
+                                // offset: Offset(1, 1),
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            textAlign: TextAlign.left,
+                            // textDirection: TextDirection.rtl,
+                            // controller: _exploreController.searchController,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 3.w),
+                                isDense: true,
+                                suffixIcon: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.search,
+                                      color: AppConst.grey,
+                                      size: SizeUtils.horizontalBlockSize * 6,
+                                    )),
+                                counterText: "",
+                                border: InputBorder.none,
+                                // OutlineInputBorder(
+                                //   borderRadius: BorderRadius.circular(12),
+                                //   borderSide:
+                                //       BorderSide(width: 1, color: AppConst.transparent),
+                                // ),
+                                focusedBorder: InputBorder.none,
+                                // OutlineInputBorder(
+                                //   borderRadius: BorderRadius.circular(12),
+                                //   borderSide: BorderSide(color: AppConst.black),
+                                // ),
+                                hintTextDirection: TextDirection.rtl,
+                                hintText: " Search products,stores & recipes",
+                                hintStyle: TextStyle(
+                                    color: AppConst.grey,
+                                    fontSize: (SizerUtil.deviceType ==
+                                            DeviceType.tablet)
+                                        ? 9.sp
+                                        : 10.sp)),
+                            showCursor: true,
+                            cursorColor: AppConst.black,
+                            cursorHeight: SizeUtils.horizontalBlockSize * 5,
+                            maxLength: 30,
+                            style: TextStyle(
+                              color: AppConst.black,
+                              fontSize:
+                                  (SizerUtil.deviceType == DeviceType.tablet)
+                                      ? 9.sp
+                                      : 10.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Divider(
+                      //   height: 2.h,
+                      //   thickness: 1.2.h,
+                      //   color: AppConst.white,
+                      // ),
+                      ClaimMoreButton(),
+                      Container(
+                        height: 6.h,
+                        child: TabBar(
                             isScrollable: true,
                             indicator: BoxDecoration(
-                              color: AppConst.white,
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.white, // Set the color to white
+                                  width: 5.0, // Set the width as desired
+                                ),
+                              ),
                             ),
+                            labelPadding: EdgeInsets.symmetric(horizontal: 7.w),
                             indicatorSize: TabBarIndicatorSize.tab,
-                            labelColor: AppConst.darkGreen,
-                            unselectedLabelColor: AppConst.white,
+                            labelColor: AppConst.white,
+                            unselectedLabelColor: AppConst.grey100,
                             // labelStyle: TextStyle(fontSize: 16),
 
                             labelStyle: TextStyle(
@@ -131,30 +251,130 @@ class _SignInWalletScreenState extends State<SignInWalletScreen> {
                               Text("Scan"),
                               Text("Order")
                             ]),
-                        ClaimMoreButton(),
-                        Container(
-                          color: AppConst.white,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4.w, vertical: 1.5.h),
-                            child: Container(
-                              height: 1,
-                              color: AppConst.grey,
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                            child: TabBarView(children: [
-                          PayAtStore(),
-                          ScanReceiptStores(),
-                          RecentOrdersAndStores()
-                        ]))
-                      ],
-                    ),
+                      ),
+                      // ClaimMoreButton(),
+                      // Container(
+                      //   color: AppConst.white,
+                      //   child: Padding(
+                      //     padding: EdgeInsets.symmetric(
+                      //         horizontal: 4.w, vertical: 1.5.h),
+                      //     child: Container(
+                      //       height: 1,
+                      //       color: AppConst.grey,
+                      //     ),
+                      //   ),
+                      // ),
+
+                      SizedBox(
+                        height: 0.2.h,
+                      ),
+                      Flexible(
+                          child: TabBarView(children: [
+                        PayAtStore(),
+                        ScanReceiptStores(),
+                        RecentOrdersAndStores()
+                      ])),
+                    ],
                   ),
                 ),
-              )),
-    );
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  // child: ActiveOrderBottomTab(
+                  //   headingText: _myAccountController
+                  //       .activeOrdersModel.value!.data!.last.store!.name!,
+                  //   baseText: _myAccountController
+                  //       .activeOrdersModel.value!.data!.last.store!.mobile!,
+                  //   // myAccountController: "",
+                  // ),
+                  child: Container(
+                    color: AppConst.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 4.w,
+                        top: 2.h,
+                        right: 3.w,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 2.8.h,
+                            width: 8.w,
+                            child: Image(
+                              image: AssetImage(
+                                'assets/images/CART.png',
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 28.w),
+                            child: Column(
+                              // mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                new Text("New Order Arrive",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: Color(0xff000000),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                                new Text("Click here to view order",
+                                    style: TextStyle(
+                                      fontFamily: 'MuseoSans',
+                                      color: Color(0xff9e9e9e),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    ))
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.offNamed(AppRoutes.BaseScreen,
+                                  arguments: {"index": 0});
+                              // Get.to(
+                              //   ActiveOrderTrackingScreen(
+                              //     activeOrder: (_myAccountController
+                              //         .activeOrdersModel.value?.data!.last),
+                              //     // navBackTo: navBackTo,
+                              //   ),
+                              // );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: AppConst.green,
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 3.w, vertical: 1.h),
+                                child: Center(
+                                  child: Text(
+                                    'Track Order',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontFamily: 'MuseoSans',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget shimmer() {
@@ -307,7 +527,7 @@ class ScanReceiptStores extends StatelessWidget {
                             isScanFunction: true,
                           );
                           // navBackTo: "newbasescreen");
-                          
+
                           RedeemCashInStorePageData ScanReceiptData =
                               RedeemCashInStorePageData(
                                   name: _myWalletController
@@ -346,6 +566,7 @@ class ScanReceiptStores extends StatelessWidget {
                           _paymentController.isLoading.value = false;
                         },
                         child: ListOfAllWallets(
+                          text: "Scan",
                           walletData: _myWalletController
                               .myWalletModel.value!.data!
                               .where((c) => c.deactivated == false)
@@ -393,141 +614,141 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
               ? Container(height: 90.h, child: LoadingWidget())
               : Column(
                   children: [
-                    // ((_myAccountController.activeOrdersModel.value?.data
-                    //                     ?.length ??
-                    //                 0) >
-                    //             0) ||
-                    //         ((_homeController.getAllCartsModel.value?.carts
-                    //                     ?.length) ??
-                    //                 0) >
-                    //             0
-                    //     ? Container(
-                    //         height: 20.h,
-                    //         decoration: BoxDecoration(color: Color(0xfff2f3f7)),
-                    //         child: Padding(
-                    //           padding: EdgeInsets.only(
-                    //               left: 2.w, top: 1.h, right: 1.w),
-                    //           child: Column(
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               Row(
-                    //                 children: [
-                    //                   Text(
-                    //                       "See your Recent Order", //"Recent Transactions",
-                    //                       style: TextStyle(
-                    //                           fontFamily: 'MuseoSans',
-                    //                           color: Colors.black87,
-                    //                           fontSize: (SizerUtil.deviceType ==
-                    //                                   DeviceType.tablet)
-                    //                               ? 9.5.sp
-                    //                               : 11.5.sp,
-                    //                           fontWeight: FontWeight.w600,
-                    //                           fontStyle: FontStyle.normal,
-                    //                           letterSpacing: -0.5)),
-                    //                 ],
-                    //               ),
-                    //               SizedBox(
-                    //                 height: 1.h,
-                    //               ),
-                    //               Container(
-                    //                 height: 14.h,
-                    //                 color: AppConst.Lightgrey,
-                    //                 width: double.infinity,
-                    //                 child: SingleChildScrollView(
-                    //                   scrollDirection: Axis.horizontal,
-                    //                   child: Row(
-                    //                     mainAxisAlignment:
-                    //                         MainAxisAlignment.start,
-                    //                     children: [
-                    //                       Obx(() => ((_myAccountController
-                    //                                   .activeOrderCount.value) >
-                    //                               0)
-                    //                           ? ListView.builder(
-                    //                               // controller: _recentController,
-                    //                               itemCount: ((_myAccountController
-                    //                                           .activeOrdersModel
-                    //                                           .value
-                    //                                           ?.data)
-                    //                                       ?.length) ??
-                    //                                   0,
-                    //                               physics:
-                    //                                   NeverScrollableScrollPhysics(),
-                    //                               scrollDirection:
-                    //                                   Axis.horizontal,
-                    //                               shrinkWrap: true,
-                    //                               itemExtent: 46.w,
-                    //                               itemBuilder:
-                    //                                   (context, index) {
-                    //                                 //currentItems = index;
-                    //                                 return RecentActiveOrders1(
-                    //                                   recentCount: recentCount,
-                    //                                   myAccountController:
-                    //                                       _myAccountController,
-                    //                                   itemIndex:
-                    //                                       (_myAccountController
-                    //                                                   .activeOrdersModel
-                    //                                                   .value
-                    //                                                   ?.data!
-                    //                                                   .length ??
-                    //                                               0) -
-                    //                                           1 -
-                    //                                           index,
-                    //                                   navBackTo:
-                    //                                       "newbasescreen",
-                    //                                 );
-                    //                               },
-                    //                             )
-                    //                           : SizedBox()),
-                    //                       Obx(() => ((_homeController
-                    //                                   .cartsCount.value) >
-                    //                               0)
-                    //                           ? ListView.builder(
-                    //                               // controller: _recentCartController,
-                    //                               itemCount:
-                    //                                   // 1,
-                    //                                   ((_homeController
-                    //                                           .getAllCartsModel
-                    //                                           .value
-                    //                                           ?.carts
-                    //                                           ?.length) ??
-                    //                                       0),
-                    //                               physics: PageScrollPhysics(),
-                    //                               scrollDirection:
-                    //                                   Axis.horizontal,
-                    //                               shrinkWrap: true,
-                    //                               itemExtent: 46.w,
-                    //                               itemBuilder:
-                    //                                   (context, index) {
-                    //                                 // currentItems = index;
-                    //                                 return RecentCarts12(
-                    //                                   recentCount:
-                    //                                       recentCount.value,
-                    //                                   moreStoreController:
-                    //                                       _moreStoreController,
-                    //                                   homeController:
-                    //                                       _homeController,
-                    //                                   itemIndex: (_homeController
-                    //                                           .getAllCartsModel
-                    //                                           .value
-                    //                                           ?.carts
-                    //                                           ?.length)! -
-                    //                                       1 -
-                    //                                       index,
-                    //                                   navBackTo:
-                    //                                       "newbasescreen",
-                    //                                 );
-                    //                               },
-                    //                             )
-                    //                           : SizedBox()),
-                    //                     ],
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       )
-                    //     : SizedBox(),
+                    ((_myAccountController.activeOrdersModel.value?.data
+                                        ?.length ??
+                                    0) >
+                                0) ||
+                            ((_homeController.getAllCartsModel.value?.carts
+                                        ?.length) ??
+                                    0) >
+                                0
+                        ? Container(
+                            height: 20.h,
+                            decoration: BoxDecoration(color: Color(0xfff2f3f7)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 2.w, top: 1.h, right: 1.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                          "See your Recent Order", //"Recent Transactions",
+                                          style: TextStyle(
+                                              fontFamily: 'MuseoSans',
+                                              color: Colors.black87,
+                                              fontSize: (SizerUtil.deviceType ==
+                                                      DeviceType.tablet)
+                                                  ? 9.5.sp
+                                                  : 11.5.sp,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.normal,
+                                              letterSpacing: -0.5)),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Container(
+                                    height: 14.h,
+                                    color: AppConst.Lightgrey,
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Obx(() => ((_myAccountController
+                                                      .activeOrderCount.value) >
+                                                  0)
+                                              ? ListView.builder(
+                                                  // controller: _recentController,
+                                                  itemCount: ((_myAccountController
+                                                              .activeOrdersModel
+                                                              .value
+                                                              ?.data)
+                                                          ?.length) ??
+                                                      0,
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  shrinkWrap: true,
+                                                  itemExtent: 46.w,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    //currentItems = index;
+                                                    return RecentActiveOrders1(
+                                                      recentCount: recentCount,
+                                                      myAccountController:
+                                                          _myAccountController,
+                                                      itemIndex:
+                                                          (_myAccountController
+                                                                      .activeOrdersModel
+                                                                      .value
+                                                                      ?.data!
+                                                                      .length ??
+                                                                  0) -
+                                                              1 -
+                                                              index,
+                                                      navBackTo:
+                                                          "newbasescreen",
+                                                    );
+                                                  },
+                                                )
+                                              : SizedBox()),
+                                          Obx(() => ((_homeController
+                                                      .cartsCount.value) >
+                                                  0)
+                                              ? ListView.builder(
+                                                  // controller: _recentCartController,
+                                                  itemCount:
+                                                      // 1,
+                                                      ((_homeController
+                                                              .getAllCartsModel
+                                                              .value
+                                                              ?.carts
+                                                              ?.length) ??
+                                                          0),
+                                                  physics: PageScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  shrinkWrap: true,
+                                                  itemExtent: 46.w,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    // currentItems = index;
+                                                    return RecentCarts12(
+                                                      recentCount:
+                                                          recentCount.value,
+                                                      moreStoreController:
+                                                          _moreStoreController,
+                                                      homeController:
+                                                          _homeController,
+                                                      itemIndex: (_homeController
+                                                              .getAllCartsModel
+                                                              .value
+                                                              ?.carts
+                                                              ?.length)! -
+                                                          1 -
+                                                          index,
+                                                      navBackTo:
+                                                          "newbasescreen",
+                                                    );
+                                                  },
+                                                )
+                                              : SizedBox()),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
                     (_myWalletController.myWalletModel.value?.data == null ||
                             _myWalletController
                                     .myWalletModel.value?.data?.length ==
@@ -562,6 +783,7 @@ class _RecentOrdersAndStoresState extends State<RecentOrdersAndStores> {
                                       navBackTo: "newbasescreen");
                                 },
                                 child: ListOfAllWallets(
+                                  text: "Order",
                                   walletData: _myWalletController
                                       .myWalletModel.value!.data!
                                       .where((c) => c.deactivated == false)
@@ -612,188 +834,188 @@ class PayAtStore extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                height: 6.h,
-                color: AppConst.Lightgrey,
-                child: ListView(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    //_myWalletController.myWalletModel.value?.data.first.businesstype.sId on basis of this id filter the list for each category
-                    Obx(
-                      () => (_myWalletController.intSelected.value == 1)
-                          ? GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 1;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    '';
-                              },
-                              child: SelectedDisplayBusinessType(
-                                text: "All",
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 1;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    '';
-                              },
-                              child: DisplayBusinessType(
-                                text: "All",
-                              ),
-                            ),
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Obx(
-                      () => (_myWalletController.intSelected.value == 2)
-                          ? GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 2;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "61f95fcd0a984e3d1c8f9ec9";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: SelectedDisplayBusinessType(
-                                text: "Grocery",
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 2;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "61f95fcd0a984e3d1c8f9ec9";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: DisplayBusinessType(
-                                text: "Grocery",
-                              ),
-                            ),
-                    ),
+              // Container(
+              //   height: 6.h,
+              //   color: AppConst.Lightgrey,
+              //   child: ListView(
+              //     padding:
+              //         EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+              //     scrollDirection: Axis.horizontal,
+              //     children: [
+              //       //_myWalletController.myWalletModel.value?.data.first.businesstype.sId on basis of this id filter the list for each category
+              //       Obx(
+              //         () => (_myWalletController.intSelected.value == 1)
+              //             ? GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 1;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       '';
+              //                 },
+              //                 child: SelectedDisplayBusinessType(
+              //                   text: "All",
+              //                 ),
+              //               )
+              //             : GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 1;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       '';
+              //                 },
+              //                 child: DisplayBusinessType(
+              //                   text: "All",
+              //                 ),
+              //               ),
+              //       ),
+              //       SizedBox(
+              //         width: 3.w,
+              //       ),
+              //       Obx(
+              //         () => (_myWalletController.intSelected.value == 2)
+              //             ? GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 2;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "61f95fcd0a984e3d1c8f9ec9";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: SelectedDisplayBusinessType(
+              //                   text: "Grocery",
+              //                 ),
+              //               )
+              //             : GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 2;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "61f95fcd0a984e3d1c8f9ec9";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: DisplayBusinessType(
+              //                   text: "Grocery",
+              //                 ),
+              //               ),
+              //       ),
 
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Obx(
-                      () => (_myWalletController.intSelected.value == 3)
-                          ? GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 3;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "641ecc4ad9f0df5fa16d708d";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: SelectedDisplayBusinessType(
-                                text: "Dry Fruits",
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 3;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "641ecc4ad9f0df5fa16d708d";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: DisplayBusinessType(
-                                text: "Dry Fruits",
-                              ),
-                            ),
-                    ),
+              //       SizedBox(
+              //         width: 3.w,
+              //       ),
+              //       Obx(
+              //         () => (_myWalletController.intSelected.value == 3)
+              //             ? GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 3;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "641ecc4ad9f0df5fa16d708d";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: SelectedDisplayBusinessType(
+              //                   text: "Dry Fruits",
+              //                 ),
+              //               )
+              //             : GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 3;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "641ecc4ad9f0df5fa16d708d";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: DisplayBusinessType(
+              //                   text: "Dry Fruits",
+              //                 ),
+              //               ),
+              //       ),
 
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Obx(
-                      () => (_myWalletController.intSelected.value == 4)
-                          ? GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 4;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "63a68a03f5416c5c5b0ab0a5";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: SelectedDisplayBusinessType(
-                                text: "Pharmacy",
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 4;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "63a68a03f5416c5c5b0ab0a5";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: DisplayBusinessType(
-                                text: "Pharmacy",
-                              ),
-                            ),
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Obx(
-                      () => (_myWalletController.intSelected.value == 5)
-                          ? GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 5;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "625cc6c0c30c356c00c6a9bb";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: SelectedDisplayBusinessType(
-                                text: "Meat",
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 5;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "625cc6c0c30c356c00c6a9bb";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: DisplayBusinessType(
-                                text: "Meat",
-                              ),
-                            ),
-                    ),
+              //       SizedBox(
+              //         width: 3.w,
+              //       ),
+              //       Obx(
+              //         () => (_myWalletController.intSelected.value == 4)
+              //             ? GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 4;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "63a68a03f5416c5c5b0ab0a5";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: SelectedDisplayBusinessType(
+              //                   text: "Pharmacy",
+              //                 ),
+              //               )
+              //             : GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 4;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "63a68a03f5416c5c5b0ab0a5";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: DisplayBusinessType(
+              //                   text: "Pharmacy",
+              //                 ),
+              //               ),
+              //       ),
+              //       SizedBox(
+              //         width: 3.w,
+              //       ),
+              //       Obx(
+              //         () => (_myWalletController.intSelected.value == 5)
+              //             ? GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 5;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "625cc6c0c30c356c00c6a9bb";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: SelectedDisplayBusinessType(
+              //                   text: "Meat",
+              //                 ),
+              //               )
+              //             : GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 5;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "625cc6c0c30c356c00c6a9bb";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: DisplayBusinessType(
+              //                   text: "Meat",
+              //                 ),
+              //               ),
+              //       ),
 
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Obx(
-                      () => (_myWalletController.intSelected.value == 6)
-                          ? GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 6;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "63a689eff5416c5c5b0ab0a4";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: SelectedDisplayBusinessType(
-                                text: "Pet food",
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                _myWalletController.intSelected.value = 6;
-                                _myWalletController.selectBusineesTypeId.value =
-                                    "63a689eff5416c5c5b0ab0a4";
-                                // print(_myWalletController.intSelected.value);
-                              },
-                              child: DisplayBusinessType(
-                                text: "Pet food",
-                              ),
-                            ),
-                    ),
+              //       SizedBox(
+              //         width: 3.w,
+              //       ),
+              //       Obx(
+              //         () => (_myWalletController.intSelected.value == 6)
+              //             ? GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 6;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "63a689eff5416c5c5b0ab0a4";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: SelectedDisplayBusinessType(
+              //                   text: "Pet food",
+              //                 ),
+              //               )
+              //             : GestureDetector(
+              //                 onTap: () {
+              //                   _myWalletController.intSelected.value = 6;
+              //                   _myWalletController.selectBusineesTypeId.value =
+              //                       "63a689eff5416c5c5b0ab0a4";
+              //                   // print(_myWalletController.intSelected.value);
+              //                 },
+              //                 child: DisplayBusinessType(
+              //                   text: "Pet food",
+              //                 ),
+              //               ),
+              //       ),
 
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                  ],
-                ),
-              ),
+              //       SizedBox(
+              //         width: 3.w,
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Obx(
                 () => (_myWalletController.myWalletModel.value?.data == null ||
                         _myWalletController.myWalletModel.value?.data?.length ==
@@ -879,6 +1101,7 @@ class PayAtStore extends StatelessWidget {
                               },
                               child: Obx(
                                 () => ListOfAllWallets(
+                                  text: "Pay",
                                   walletData: _myWalletController
                                               .selectBusineesTypeId.value ==
                                           ''
@@ -916,9 +1139,10 @@ class PayAtStore extends StatelessWidget {
 
 class ListOfAllWallets extends StatelessWidget {
   WalletData walletData;
-
+  String? text;
   ListOfAllWallets({
     Key? key,
+    this.text,
     required this.walletData,
   }) : super(key: key);
 
@@ -930,16 +1154,31 @@ class ListOfAllWallets extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
       child: Column(
         children: [
-          ListViewStoreDetails(
-            logo: "${walletData.logo ?? ""}",
-            // color: color,
-            // isDisplayDistance: true,
-            // StoreID: "${storeSearchModel.sId ?? ""}",
-            StoreName: "${walletData.name ?? ""}",
-            distance: walletData.distance ?? 0,
-            balance: (walletData.earnedCashback ?? 0) +
-                (walletData.welcomeOfferAmount ?? 0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CardlistView(
+              color: AppConst.white,
+              StoreID: walletData.name,
+              icon: walletData.logo,
+              StoreName: walletData.name,
+              rightGreenText: text,
+              secondText: (int.parse(walletData.distance.toString()) / 1000)
+                  .toStringAsFixed(2),
+              thirdText:
+                  (walletData.earnedCashback! + walletData.welcomeOfferAmount!)
+                      .toString(),
+            ),
           ),
+          // ListViewStoreDetails(
+          //   logo: "${walletData.logo ?? ""}",
+          //   // color: color,
+          //   // isDisplayDistance: true,
+          //   // StoreID: "${storeSearchModel.sId ?? ""}",
+          //   StoreName: "${walletData.name ?? ""}",
+          //   distance: walletData.distance ?? 0,
+          //   balance: (walletData.earnedCashback ?? 0) +
+          //       (walletData.welcomeOfferAmount ?? 0),
+          // ),
         ],
       ),
     );
@@ -1302,6 +1541,101 @@ class ClaimMoreButton extends StatelessWidget {
                         ),
                       ),
                     )),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ActiveOrderBottomTab extends StatelessWidget {
+  final String headingText;
+  final String baseText;
+  ActiveOrderBottomTab({
+    Key? key,
+    required this.headingText,
+    required this.baseText,
+    required MyAccountController myAccountController,
+  })  : _myAccountController = myAccountController,
+        super(key: key);
+  final MyAccountController _myAccountController;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppConst.white,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 4.w,
+          top: 2.h,
+          right: 3.w,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: 2.8.h,
+              width: 8.w,
+              child: Image(
+                image: AssetImage(
+                  'assets/images/CART.png',
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 28.w),
+              child: Column(
+                // mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  new Text(headingText,
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: Color(0xff000000),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      )),
+                  new Text(baseText,
+                      style: TextStyle(
+                        fontFamily: 'MuseoSans',
+                        color: Color(0xff9e9e9e),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                      ))
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                Get.to(
+                  ActiveOrderTrackingScreen(
+                    activeOrder: (_myAccountController
+                        .activeOrdersModel.value?.data!.last),
+                    // navBackTo: navBackTo,
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: AppConst.green,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                  child: Center(
+                    child: Text(
+                      'Track Order',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontFamily: 'MuseoSans',
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             )
           ],
         ),

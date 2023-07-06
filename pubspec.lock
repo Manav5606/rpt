@@ -2278,7 +2278,7 @@ packages:
     source: hosted
     version: "3.0.2"
   video_compress:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: video_compress
       sha256: "407693726e674a1e1958801deb2d9daf5a5297707ba6d03375007012dae7389a"

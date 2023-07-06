@@ -34,7 +34,7 @@ class HistoryOrderTrackingScreen extends StatefulWidget {
   final OrderData? order;
   String? type;
   String navBackTo;
-
+  
   HistoryOrderTrackingScreen(
       {Key? key, this.order, this.type, this.navBackTo = ""})
       : super(key: key);

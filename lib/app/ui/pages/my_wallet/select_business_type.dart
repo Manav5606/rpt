@@ -67,11 +67,66 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
     _myWalletcontroller.issignup.value = signup;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-          statusBarColor: AppConst.darkGreen,
+          statusBarColor: AppConst.green,
           statusBarIconBrightness: Brightness.light),
       child: WillPopScope(
         onWillPop: handleBackPressed,
         child: Scaffold(
+          
+          appBar: AppBar(
+            leading: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Icon(
+                Icons.arrow_back,
+                color: AppConst.white,
+              ),
+            ),
+            backgroundColor: AppConst.green,
+            elevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Balance available",
+                    style: TextStyle(
+                      fontFamily: 'MuseoSans',
+                      color: AppConst.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: -0.48,
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(right: 2.w),
+                  child: Obx(
+                    () => RichText(
+                        text: new TextSpan(children: [
+                      new TextSpan(
+                          text: "\u{20b9}",
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            color: AppConst.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          )),
+                      new TextSpan(
+                          text:
+                              " ${_myWalletcontroller.walletbalanceOfSignup.value}",
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
+                    ])),
+                  ),
+                )
+              ],
+            ),
+          ),
           backgroundColor: AppConst.white,
           bottomSheet: Padding(
               padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
@@ -134,106 +189,167 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  height: 9.h,
-                  color: AppConst.darkGreen,
-                  width: Device.screenWidth,
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 5.w),
-                            child: Text("Balance available",
-                                style: TextStyle(
-                                  fontFamily: 'MuseoSans',
-                                  color: AppConst.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FontStyle.normal,
-                                  letterSpacing: -0.48,
-                                )),
-                          ),
-                          Obx(
-                            () => RichText(
-                                text: new TextSpan(children: [
-                              new TextSpan(
-                                  text: "\u{20b9}",
-                                  style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color: AppConst.radiumGreen,
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.w400,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                              new TextSpan(
-                                  text:
-                                      "${_myWalletcontroller.walletbalanceOfSignup.value}",
-                                  style: TextStyle(
-                                    fontFamily: 'MuseoSans',
-                                    color: AppConst.white,
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                            ])),
-                          )
-                        ],
-                      )),
-                ),
+                // Container(
+                //   height: 9.h,
+                //   color: AppConst.green,
+                //   width: Device.screenWidth,
+                //   child: Align(
+                //       alignment: Alignment.centerLeft,
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           Padding(
+                //             padding: EdgeInsets.only(left: 5.w),
+                //             child: Text("Balance available",
+                //                 style: TextStyle(
+                //                   fontFamily: 'MuseoSans',
+                //                   color: AppConst.white,
+                //                   fontSize: 18,
+                //                   fontWeight: FontWeight.w500,
+                //                   fontStyle: FontStyle.normal,
+                //                   letterSpacing: -0.48,
+                //                 )),
+                //           ),
+                //           Padding(
+                //             padding: EdgeInsets.only(right: 5.w),
+                //             child: Obx(
+                //               () => RichText(
+                //                   text: new TextSpan(children: [
+                //                 new TextSpan(
+                //                     text: "\u{20b9}",
+                //                     style: TextStyle(
+                //                       fontFamily: 'Inter',
+                //                       color: AppConst.radiumGreen,
+                //                       fontSize: 32,
+                //                       fontWeight: FontWeight.w400,
+                //                       fontStyle: FontStyle.normal,
+                //                     )),
+                //                 new TextSpan(
+                //                     text:
+                //                         "${_myWalletcontroller.walletbalanceOfSignup.value}",
+                //                     style: TextStyle(
+                //                       fontFamily: 'MuseoSans',
+                //                       color: AppConst.white,
+                //                       fontSize: 32,
+                //                       fontWeight: FontWeight.w700,
+                //                       fontStyle: FontStyle.normal,
+                //                     )),
+                //               ])),
+                //             ),
+                //           )
+                //         ],
+                //       )),
+                // ),
                 Container(
                   height: 44.h,
                   width: Device.screenHeight,
                   child: Column(
                     children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              // height: 2.h,
-                              width: 60.w,
-                              child: Obx(
-                                () => Text(
-                                    "${_addLocationController.currentAddress.value}",
-                                    style: TextStyle(
-                                      fontFamily: 'MuseoSans',
-                                      color: AppConst.grey,
-                                      fontSize: 14,
-                                      overflow: TextOverflow.ellipsis,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    )),
-                              ),
+                      Container(
+                        height: 9.h,
+                        width: MediaQuery.of(context).size.width,
+                        color: AppConst.green,
+                        child: Padding(
+                          padding: EdgeInsets.all(1.4.h),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: AppConst.white,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 3.w),
+                                  child: SizedBox(
+                                    height: 2.h,
+                                    width: 60.w,
+                                    child: Obx(
+                                      () => Text(
+                                          "${_addLocationController.currentAddress.value}",
+                                          style: TextStyle(
+                                            fontFamily: 'MuseoSans',
+                                            color: AppConst.grey,
+                                            fontSize: 14,
+                                            overflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.w500,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    dynamic value = await Get.to(AddressModel(
+                                        isHomeScreen: false,
+                                        page: "claimmore",
+                                        isRecentAddress: false,
+                                        issignup: signup));
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 3.w),
+                                    child: Text("Update",
+                                        style: TextStyle(
+                                          fontFamily: 'MuseoSans',
+                                          color: AppConst.limegreen,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ),
+                                )
+                              ],
                             ),
-                            GestureDetector(
-                              onTap: () async {
-                                dynamic value = await Get.to(AddressModel(
-                                    isHomeScreen: false,
-                                    page: "claimmore",
-                                    isRecentAddress: false,
-                                    issignup: signup));
-                              },
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset('assets/icons/location.svg'),
-                                  SizedBox(width: 2.w),
-                                  Text("Update",
-                                      style: TextStyle(
-                                        fontFamily: 'MuseoSans',
-                                        color: AppConst.limegreen,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
+                          ),
                         ),
                       ),
+                      // Padding(
+                      //   padding:
+                      //       EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       SizedBox(
+                      //         // height: 2.h,
+                      //         width: 60.w,
+                      //         child: Obx(
+                      //           () => Text(
+                      //               "${_addLocationController.currentAddress.value}",
+                      //               style: TextStyle(
+                      //                 fontFamily: 'MuseoSans',
+                      //                 color: AppConst.grey,
+                      //                 fontSize: 14,
+                      //                 overflow: TextOverflow.ellipsis,
+                      //                 fontWeight: FontWeight.w500,
+                      //                 fontStyle: FontStyle.normal,
+                      //               )),
+                      //         ),
+                      //       ),
+                      //       GestureDetector(
+                      //         onTap: () async {
+                      //           dynamic value = await Get.to(AddressModel(
+                      //               isHomeScreen: false,
+                      //               page: "claimmore",
+                      //               isRecentAddress: false,
+                      //               issignup: signup));
+                      //         },
+                      //         child: Row(
+                      //           children: [
+                      //             SvgPicture.asset('assets/icons/location.svg'),
+                      //             SizedBox(width: 2.w),
+                      //             Text("Update",
+                      //                 style: TextStyle(
+                      //                   fontFamily: 'MuseoSans',
+                      //                   color: AppConst.limegreen,
+                      //                   fontSize: 16,
+                      //                   fontWeight: FontWeight.w700,
+                      //                   fontStyle: FontStyle.normal,
+                      //                 ))
+                      //           ],
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 1.h,
                       ),
@@ -242,7 +358,7 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3.w),
                             child: Container(
-                              height: 38.h,
+                              height: 32.h,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20)),
                               child: GoogleMap(
@@ -519,12 +635,12 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                                         decoration: BoxDecoration(
                                             color: _myWalletcontroller
                                                     .isNonVegSelected.value
-                                                ? AppConst.darkGreen
+                                                ? AppConst.green
                                                 : AppConst.white,
                                             borderRadius:
                                                 BorderRadius.circular(4),
                                             border: Border.all(
-                                                color: AppConst.darkGreen)),
+                                                color: AppConst.green)),
                                         child: Center(
                                           child: Text(
                                               _myWalletcontroller
@@ -536,7 +652,7 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                                                 color: _myWalletcontroller
                                                         .isNonVegSelected.value
                                                     ? AppConst.white
-                                                    : AppConst.darkGreen,
+                                                    : AppConst.green,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
@@ -625,12 +741,12 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                                         decoration: BoxDecoration(
                                             color: _myWalletcontroller
                                                     .isPetfoodSelected.value
-                                                ? AppConst.darkGreen
+                                                ? AppConst.green
                                                 : AppConst.white,
                                             borderRadius:
                                                 BorderRadius.circular(4),
                                             border: Border.all(
-                                                color: AppConst.darkGreen)),
+                                                color: AppConst.green)),
                                         child: Center(
                                           child: Text(
                                               _myWalletcontroller
@@ -642,7 +758,7 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                                                 color: _myWalletcontroller
                                                         .isPetfoodSelected.value
                                                     ? AppConst.white
-                                                    : AppConst.darkGreen,
+                                                    : AppConst.green,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
@@ -710,7 +826,7 @@ class _SelectBusinessTypeState extends State<SelectBusinessType> {
                       //                   height: 4.h,
                       //                   width: 20.w,
                       //                   decoration: BoxDecoration(
-                      //                       color: AppConst.darkGreen,
+                      //                       color: AppConst.green,
                       //                       borderRadius: BorderRadius.circular(8)),
                       //                   child: Center(
                       //                     child: Text("Select",

@@ -12,6 +12,7 @@ class AppConst {
   static const Color themeBlue = Color(0xff0067BD);
   static const Color blue = Color(0xff136EB4);
   static const Color black = Color(0xff131313);
+  static const Color claimMorebg = Color(0xfff4faf6);
   static const Color white = Color(0xffffffff);
   static const Color acentGreen = Color(0xff22ffb1);
   static const Color green = Color(0xff028353);

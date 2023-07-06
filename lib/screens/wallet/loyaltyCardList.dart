@@ -17,6 +17,7 @@ import 'package:customer_app/theme/styles.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+import '../more_stores/all_offers_listview.dart';
 import 'controller/paymentController.dart';
 
 class loyaltyCardList extends StatelessWidget {
@@ -113,15 +114,23 @@ class CardlistView extends StatelessWidget {
       required this.StoreID,
       this.StoreName,
       this.Balance,
+      this.icon,
       this.distanceOrOffer,
-      this.isDisplayDistance = false
+      this.isDisplayDistance = false,
+      this.rightGreenText,
+      this.secondText,
+      this.thirdText
       // required this.storeSearchModel,
       })
       : super(key: key);
 
   final Color? color;
   final String? StoreName;
+  final String? rightGreenText;
   final num? distanceOrOffer;
+  final String? icon;
+  final String? secondText;
+  final String? thirdText;
   final num? Balance;
   final String? StoreID;
   bool isDisplayDistance;
@@ -209,55 +218,57 @@ class CardlistView extends StatelessWidget {
                   height: 2.h,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 4.h,
-                          width: 8.w,
-                          color: AppConst.referBg,
-                          child: Image.asset('assets/icons/grocerry.png'),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Container(
-                          width: 50.w,
-                          // height: 4.5.h,
-                          child: Text(StoreName ?? '',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'MuseoSans',
-                                color: AppConst.black,
-                                fontSize: SizeUtils.horizontalBlockSize * 3.7,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              )),
-                        ),
-                      ],
+                    Container(
+                      height: 4.h,
+                      width: 8.w,
+                      color: AppConst.referBg,
+                      child: icon != null
+                          ? Image.network(icon!)
+                          : Image.asset('assets/icons/grocerry.png'),
                     ),
                     SizedBox(
-                      width: 6.w,
+                      width: 5.w,
                     ),
-                    Text("MANAGE",
-                        style: TextStyle(
-                          fontSize: (SizerUtil.deviceType == DeviceType.tablet)
-                              ? 8.sp
-                              : 9.5.sp,
-                          color: AppConst.green,
-                          fontFamily: 'MuseoSans',
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                        )),
+                    Container(
+                      width: 60.w,
+                      // height: 4.5.h,
+                      child: Text(StoreName ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'MuseoSans',
+                            color: AppConst.black,
+                            fontSize: SizeUtils.horizontalBlockSize * 3.7,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 4.w),
+                      child: Text(
+                          rightGreenText != null ? rightGreenText! : "MANAGE",
+                          style: TextStyle(
+                            fontSize:
+                                (SizerUtil.deviceType == DeviceType.tablet)
+                                    ? 8.sp
+                                    : 9.5.sp,
+                            color: AppConst.green,
+                            fontFamily: 'MuseoSans',
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
+                    ),
                   ],
                 ),
                 SizedBox(
                   height: 0.5.h,
                 ),
                 Text(
-                    "You have \u{20B9}${Balance?.toStringAsFixed(2).substring(0, Balance!.toStringAsFixed(2).length - 3)} to withdraw",
+                    secondText != null
+                        ? "${secondText} Km"
+                        : "You have \u{20B9}${Balance?.toStringAsFixed(2).substring(0, Balance!.toStringAsFixed(2).length - 3)} to withdraw",
                     style: TextStyle(
                       fontSize: SizeUtils.horizontalBlockSize * 3.5,
                       color: AppConst.walletText,
@@ -266,9 +277,11 @@ class CardlistView extends StatelessWidget {
                       fontStyle: FontStyle.normal,
                     )),
                 Text(
-                    isDisplayDistance
-                        ? "${(distanceOrOffer!.toInt() / 1000).toStringAsFixed(2)} km"
-                        : "Welcome Offer is \u{20B9} ${distanceOrOffer ?? 0}",
+                    thirdText != null
+                        ? "Balance is : \u20B9${thirdText}"
+                        : isDisplayDistance
+                            ? "${(distanceOrOffer!.toInt() / 1000).toStringAsFixed(2)} km"
+                            : "Welcome Offer is \u{20B9} ${distanceOrOffer ?? 0}",
                     style: TextStyle(
                       fontSize: SizeUtils.horizontalBlockSize * 3.5,
                       color: AppConst.black,
@@ -305,17 +318,19 @@ class CardlistView extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
-                Text(
-                    ((StoreID != Null && StoreID!.length > 6)
-                        ? "Card ID: ${StoreID?.substring(StoreID!.length - 6)}"
-                        : "Card ID: 123456"),
-                    style: TextStyle(
-                      fontFamily: 'MuseoSans',
-                      color: AppConst.cardIDText,
-                      fontSize: SizeUtils.horizontalBlockSize * 3.5,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.normal,
-                    )),
+                secondText != null
+                    ? DisplayPreminumStore()
+                    : Text(
+                        ((StoreID != Null && StoreID!.length > 6)
+                            ? "Card ID: ${StoreID?.substring(StoreID!.length - 6)}"
+                            : "Card ID: 123456"),
+                        style: TextStyle(
+                          fontFamily: 'MuseoSans',
+                          color: AppConst.cardIDText,
+                          fontSize: SizeUtils.horizontalBlockSize * 3.5,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        )),
                 SizedBox(
                   height: 2.h,
                 ),
